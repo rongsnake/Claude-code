@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
 Run this script on YOUR LOCAL MACHINE (not in the cloud).
-It bridges the micro:bit serial port to a TCP socket.
+It bridges the micro:bit serial port to a WebSocket server.
 
-Requirements: pip install pyserial
-Then expose it: ngrok tcp 5678
+Requirements: pip install pyserial websockets
+Then expose it: ngrok http 5678
 """
 
+import asyncio
 import serial
 import serial.tools.list_ports
-import socket
-import threading
 import sys
+import websockets
 
 PORT = 5678
 
@@ -32,38 +32,30 @@ def find_microbit():
     return None
 
 
-def bridge(ser, conn):
-    def serial_to_socket():
+async def bridge(websocket, ser):
+    async def serial_to_ws():
+        loop = asyncio.get_event_loop()
         try:
             while True:
-                data = ser.read(256)
+                data = await loop.run_in_executor(None, ser.read, 256)
                 if data:
-                    conn.sendall(data)
-        except Exception:
+                    await websocket.send(data)
+        except websockets.ConnectionClosed:
             pass
-        finally:
-            conn.close()
 
-    def socket_to_serial():
+    async def ws_to_serial():
         try:
-            while True:
-                data = conn.recv(256)
-                if not data:
-                    break
-                ser.write(data)
-        except Exception:
+            async for message in websocket:
+                if isinstance(message, str):
+                    message = message.encode()
+                ser.write(message)
+        except websockets.ConnectionClosed:
             pass
 
-    t1 = threading.Thread(target=serial_to_socket, daemon=True)
-    t2 = threading.Thread(target=socket_to_serial, daemon=True)
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-    print("Client disconnected, waiting for next connection...")
+    await asyncio.gather(serial_to_ws(), ws_to_serial())
 
 
-def main():
+async def main():
     port = find_microbit()
     if not port:
         print("No serial ports found. Is the micro:bit plugged in?")
@@ -77,23 +69,26 @@ def main():
         print(f"Failed to open port: {e}")
         sys.exit(1)
 
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind(("0.0.0.0", PORT))
-    server.listen(1)
+    async def handler(websocket):
+        print(f"Cloud connected from {websocket.remote_address}")
+        try:
+            await bridge(websocket, ser)
+        finally:
+            print("Client disconnected, waiting for next connection...")
 
-    print(f"\nBridge ready on port {PORT}")
+    print(f"\nWebSocket bridge ready on port {PORT}")
     print("─" * 40)
     print("Now run in another terminal:")
-    print("  ngrok tcp 5678")
+    print("  ngrok http 5678")
     print("─" * 40)
-    print("Then give Claude the ngrok host and port (e.g. 0.tcp.ngrok.io:12345)\n")
+    print("Then give Claude the ngrok https URL (e.g. https://abc123.ngrok-free.app)\n")
 
-    while True:
-        conn, addr = server.accept()
-        print(f"Cloud connected from {addr}")
-        bridge(ser, conn)
+    async with websockets.serve(handler, "0.0.0.0", PORT):
+        await asyncio.Future()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nShutting down.")

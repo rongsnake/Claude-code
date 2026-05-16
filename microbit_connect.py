@@ -1,74 +1,75 @@
 #!/usr/bin/env python3
 """
-Connects to a micro:bit via the local bridge script over TCP (e.g. through ngrok).
-Usage: python microbit_connect.py <host> <port>
-       python microbit_connect.py 0.tcp.ngrok.io 12345
+Connects to a micro:bit via the local WebSocket bridge (through ngrok https).
+Usage: python microbit_connect.py <wss-url>
+       python microbit_connect.py wss://abc123.ngrok-free.app
 """
 
-import socket
-import threading
+import asyncio
 import sys
+import websockets
 
 
-class MicrobitConnection:
-    def __init__(self, host, port):
-        self.host = host
-        self.port = int(port)
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((self.host, self.port))
-        print(f"Connected to micro:bit at {host}:{port}")
+async def repl(url):
+    if url.startswith("https://"):
+        url = "wss://" + url[len("https://"):]
+    elif url.startswith("http://"):
+        url = "ws://" + url[len("http://"):]
 
-    def send(self, text):
-        self.sock.sendall((text + "\r\n").encode())
+    print(f"Connecting to {url}...")
+    async with websockets.connect(url) as ws:
+        print("Connected to micro:bit.\n")
 
-    def recv_loop(self, on_data):
-        def _loop():
-            buf = b""
-            while True:
-                try:
-                    chunk = self.sock.recv(256)
-                    if not chunk:
-                        break
-                    buf += chunk
-                    while b"\n" in buf:
-                        line, buf = buf.split(b"\n", 1)
-                        on_data(line.decode(errors="replace").rstrip())
-                except Exception:
-                    break
-        t = threading.Thread(target=_loop, daemon=True)
-        t.start()
-
-    def close(self):
-        self.sock.close()
-
-
-def interactive_repl(host, port):
-    conn = MicrobitConnection(host, port)
-
-    def print_output(line):
-        print(f"  << {line}")
-
-    conn.recv_loop(print_output)
-
-    print("Type MicroPython commands. Ctrl+C to exit.\n")
-    try:
-        while True:
+        async def receive():
             try:
-                line = input(">> ")
-            except EOFError:
-                break
-            conn.send(line)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        conn.close()
-        print("\nDisconnected.")
+                async for message in ws:
+                    if isinstance(message, bytes):
+                        sys.stdout.write(message.decode(errors="replace"))
+                    else:
+                        sys.stdout.write(message)
+                    sys.stdout.flush()
+            except websockets.ConnectionClosed:
+                print("\n[connection closed]")
+
+        async def send():
+            loop = asyncio.get_event_loop()
+            while True:
+                line = await loop.run_in_executor(None, sys.stdin.readline)
+                if not line:
+                    break
+                await ws.send(line.encode())
+
+        await asyncio.gather(receive(), send())
+
+
+async def send_one(url, command):
+    """Send a single command and collect output briefly."""
+    if url.startswith("https://"):
+        url = "wss://" + url[len("https://"):]
+
+    async with websockets.connect(url) as ws:
+        await ws.send(b"\x03")  # Ctrl-C to interrupt
+        await asyncio.sleep(0.3)
+        await ws.send((command + "\r\n").encode())
+
+        try:
+            while True:
+                msg = await asyncio.wait_for(ws.recv(), timeout=1.5)
+                if isinstance(msg, bytes):
+                    sys.stdout.write(msg.decode(errors="replace"))
+                else:
+                    sys.stdout.write(msg)
+                sys.stdout.flush()
+        except asyncio.TimeoutError:
+            pass
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        host, port = sys.argv[1], sys.argv[2]
+    if len(sys.argv) < 2:
+        print("Usage: python microbit_connect.py <url> [command]")
+        sys.exit(1)
+    url = sys.argv[1]
+    if len(sys.argv) >= 3:
+        asyncio.run(send_one(url, " ".join(sys.argv[2:])))
     else:
-        addr = input("Enter ngrok address (host:port): ").strip()
-        host, port = addr.rsplit(":", 1)
-    interactive_repl(host, port)
+        asyncio.run(repl(url))
