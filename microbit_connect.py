@@ -17,7 +17,7 @@ async def repl(url):
         url = "ws://" + url[len("http://"):]
 
     print(f"Connecting to {url}...")
-    async with websockets.connect(url) as ws:
+    async with websockets.connect(url, additional_headers={"ngrok-skip-browser-warning": "true"}) as ws:
         print("Connected to micro:bit.\n")
 
         async def receive():
@@ -47,7 +47,7 @@ async def send_one(url, command):
     if url.startswith("https://"):
         url = "wss://" + url[len("https://"):]
 
-    async with websockets.connect(url) as ws:
+    async with websockets.connect(url, additional_headers={"ngrok-skip-browser-warning": "true"}) as ws:
         await ws.send(b"\x03")  # Ctrl-C to interrupt
         await asyncio.sleep(0.3)
         await ws.send((command + "\r\n").encode())
