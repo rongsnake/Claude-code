@@ -1,183 +1,126 @@
 """
-CDS Dashboard — visualises ERA5 climate data scraped from the
-Copernicus Climate Data Store (or demo data when credentials are absent).
+Interactive Streamlit dashboard for Credit Derivatives Determinations
+Committees (DC) data.
 
-Run with:
+This is the *local/interactive* companion to the static `build_dashboard.py`
+output. Run with:
+
     streamlit run dashboard.py
+
+For a deployable, server-free dashboard (e.g. for gcburton.org) use:
+
+    python build_dashboard.py      # -> dashboard.html
 """
 
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 
-import scraper
+import cds_dc_scraper as scraper
 
-# ── page config ──────────────────────────────────────────────────────────────
-st.set_page_config(
-    page_title="CDS Climate Dashboard",
-    page_icon="🌍",
-    layout="wide",
+DATA_CSV = Path("data/determinations.csv")
+
+st.set_page_config(page_title="CDS Determinations Committees", page_icon="⚖️", layout="wide")
+
+
+@st.cache_data(show_spinner="Loading determinations…")
+def load_data(mode: str) -> pd.DataFrame:
+    if mode == "Demo (synthetic)":
+        scraper.run(mode="demo")
+    elif mode == "Live refresh":
+        scraper.run(mode="live")
+    elif not DATA_CSV.exists():
+        scraper.run(mode="seed-only")
+    df = pd.read_csv(DATA_CSV)
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    return df.dropna(subset=["date"]).sort_values("date")
+
+
+# ── sidebar ─────────────────────────────────────────────────────────────────
+st.sidebar.title("⚙️ Data")
+mode = st.sidebar.radio(
+    "Source",
+    ["Use existing file", "Live refresh", "Demo (synthetic)"],
+    help="‘Live refresh’ scrapes cdsdeterminationscommittees.org — only works "
+    "from a network that can reach the site.",
 )
+df = load_data(mode)
 
-# ── sidebar ───────────────────────────────────────────────────────────────────
-st.sidebar.title("⚙️ Controls")
-
-force_demo = st.sidebar.checkbox("Use demo data", value=not scraper._HAS_CREDENTIALS)
-
-if not force_demo and scraper._HAS_CREDENTIALS:
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("ERA5 Parameters")
-    variable = st.sidebar.selectbox(
-        "Variable",
-        ["2m_temperature", "total_precipitation", "10m_u_component_of_wind"],
-        index=0,
-    )
-    year = st.sidebar.slider("Year", 1979, 2024, 2023)
-    month = st.sidebar.slider("Month", 1, 12, 6)
+# provenance banner
+sources = set(df["source"].dropna().unique()) if "source" in df else set()
+if sources == {"synthetic-demo"}:
+    st.warning("**Demo data** — synthetic and illustrative only. Use *Live refresh* "
+               "from a permitted network to pull real determinations.")
+elif sources <= {"reference"}:
+    st.warning("**Seed data** — a handful of verified reference determinations only. "
+               "A full live refresh has not been run here.")
+elif "synthetic-demo" in sources:
+    st.info("**Mixed data** — scraped/seed rows plus synthetic demo rows.")
 else:
-    variable, year, month = "2m_temperature", 2023, 6
+    st.success(f"Live scrape — {len(df):,} determinations from cdsdeterminationscommittees.org")
 
+# filters
+regions = sorted(df["committee"].dropna().unique())
+picked = st.sidebar.multiselect("Committee region", regions, default=regions)
+if picked:
+    df = df[df["committee"].isin(picked)]
 
-# ── load data ─────────────────────────────────────────────────────────────────
-@st.cache_data(show_spinner="Fetching climate data…")
-def load(demo: bool, var: str, yr: int, mo: int) -> pd.DataFrame:
-    if demo:
-        datasets = scraper.fetch_era5_demo()
-    else:
-        datasets = scraper.fetch_era5_api(variable=var, year=yr, month=mo)
-    return datasets["era5"]
+years = df["date"].dt.year
+if len(years):
+    lo, hi = int(years.min()), int(years.max())
+    if lo < hi:
+        yr_lo, yr_hi = st.sidebar.slider("Year range", lo, hi, (lo, hi))
+        df = df[(years >= yr_lo) & (years <= yr_hi)]
 
+# ── header + KPIs ───────────────────────────────────────────────────────────
+st.title("⚖️ Credit Derivatives Determinations Committees")
+st.caption("Determinations / decisions published at cdsdeterminationscommittees.org")
 
-df = load(force_demo, variable, year, month)
-df["date"] = pd.to_datetime(df["date"])
-
-# ── header ────────────────────────────────────────────────────────────────────
-st.title("🌍 CDS Climate Data Dashboard")
-mode_label = "Demo mode" if force_demo else "Live CDS data"
-st.caption(f"Data source: Copernicus Climate Data Store (ERA5) · {mode_label}")
-
-# ── KPI row ───────────────────────────────────────────────────────────────────
-col1, col2, col3, col4 = st.columns(4)
-
-if "t2m_celsius" in df.columns:
-    temp_col = "t2m_celsius"
-elif "t2m" in df.columns:
-    temp_col = "t2m"
-else:
-    temp_col = None
-
-precip_col = "tp_mm" if "tp_mm" in df.columns else ("tp" if "tp" in df.columns else None)
-
-with col1:
-    if temp_col:
-        st.metric("Avg Temperature", f"{df[temp_col].mean():.1f} °C")
-    else:
-        st.metric("Records", f"{len(df):,}")
-
-with col2:
-    if temp_col:
-        st.metric("Max Temperature", f"{df[temp_col].max():.1f} °C")
-    else:
-        st.metric("Columns", len(df.columns))
-
-with col3:
-    if precip_col:
-        st.metric("Total Precipitation", f"{df[precip_col].sum():.0f} mm")
-    elif temp_col:
-        st.metric("Min Temperature", f"{df[temp_col].min():.1f} °C")
-
-with col4:
-    date_range = f"{df['date'].min().date()} → {df['date'].max().date()}"
-    st.metric("Date Range", date_range)
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("Determinations", f"{len(df):,}")
+c2.metric("Reference entities", f"{df['reference_entity'].dropna().nunique():,}")
+c3.metric("Credit events tagged", f"{int(df['credit_event_type'].notna().sum()):,}")
+if len(df):
+    c4.metric("Date range", f"{df['date'].min().date()} → {df['date'].max().date()}")
 
 st.divider()
 
-# ── temperature time series ───────────────────────────────────────────────────
-if temp_col:
-    st.subheader("🌡️ Temperature over Time")
-    fig_temp = px.line(
-        df,
-        x="date",
-        y=temp_col,
-        labels={"date": "Date", temp_col: "Temperature (°C)"},
-        color_discrete_sequence=["#e74c3c"],
-    )
-    fig_temp.update_layout(hovermode="x unified", height=350)
-
-    # 30-day rolling average
-    df_sorted = df.sort_values("date")
-    df_sorted["rolling_30"] = df_sorted[temp_col].rolling(30, center=True).mean()
-    fig_temp.add_scatter(
-        x=df_sorted["date"],
-        y=df_sorted["rolling_30"],
-        mode="lines",
-        name="30-day avg",
-        line=dict(color="#2c3e50", width=2, dash="dash"),
-    )
-    st.plotly_chart(fig_temp, width="stretch")
-
-# ── precipitation ─────────────────────────────────────────────────────────────
-if precip_col:
-    st.subheader("🌧️ Precipitation over Time")
-    fig_precip = px.bar(
-        df.sort_values("date"),
-        x="date",
-        y=precip_col,
-        labels={"date": "Date", precip_col: "Precipitation (mm)"},
-        color_discrete_sequence=["#2980b9"],
-    )
-    fig_precip.update_layout(height=320)
-    st.plotly_chart(fig_precip, width="stretch")
-
-# ── side-by-side: monthly & distribution ─────────────────────────────────────
+# ── charts ──────────────────────────────────────────────────────────────────
 left, right = st.columns(2)
-
 with left:
-    st.subheader("📅 Monthly Summary")
-    df_monthly = df.copy()
-    df_monthly["month"] = df_monthly["date"].dt.to_period("M").astype(str)
-    agg: dict = {}
-    if temp_col:
-        agg[temp_col] = "mean"
-    if precip_col:
-        agg[precip_col] = "sum"
-    if agg:
-        monthly = df_monthly.groupby("month").agg(agg).reset_index()
-        primary = temp_col or precip_col
-        fig_bar = px.bar(
-            monthly,
-            x="month",
-            y=primary,
-            labels={"month": "Month", primary: primary},
-            color_discrete_sequence=["#27ae60"],
-        )
-        fig_bar.update_layout(xaxis_tickangle=-45, height=350)
-        st.plotly_chart(fig_bar, width="stretch")
-
+    st.subheader("Determinations per year")
+    per_year = df.groupby(df["date"].dt.year).size().reset_index(name="count")
+    per_year.columns = ["year", "count"]
+    st.plotly_chart(
+        px.bar(per_year, x="year", y="count", color_discrete_sequence=["#3aa0ff"]),
+        width="stretch",
+    )
 with right:
-    st.subheader("📊 Temperature Distribution")
-    if temp_col:
-        fig_hist = px.histogram(
-            df,
-            x=temp_col,
-            nbins=40,
-            labels={temp_col: "Temperature (°C)"},
-            color_discrete_sequence=["#8e44ad"],
-        )
-        fig_hist.update_layout(height=350)
-        st.plotly_chart(fig_hist, width="stretch")
-    else:
-        st.info("Temperature column not available.")
+    st.subheader("By committee region")
+    reg = df["committee"].fillna("Unknown").value_counts().reset_index()
+    reg.columns = ["region", "count"]
+    st.plotly_chart(
+        px.pie(reg, names="region", values="count", hole=0.55),
+        width="stretch",
+    )
 
-# ── raw data expander ─────────────────────────────────────────────────────────
-with st.expander("🗂️ Raw data"):
-    st.dataframe(df, width="stretch", height=300)
-    csv = df.to_csv(index=False).encode("utf-8")
-    st.download_button("Download CSV", csv, "cds_data.csv", "text/csv")
+st.subheader("By credit-event type")
+ev = df["credit_event_type"].fillna("Not specified").value_counts().reset_index()
+ev.columns = ["event", "count"]
+st.plotly_chart(
+    px.bar(ev, x="event", y="count", color_discrete_sequence=["#37c98b"]),
+    width="stretch",
+)
 
-st.sidebar.markdown("---")
-st.sidebar.caption("Built with Streamlit + Plotly · CDS ERA5")
+st.subheader("Determinations")
+show = df.sort_values("date", ascending=False)[
+    ["date", "committee", "reference_entity", "credit_event_type", "decision", "url"]
+]
+st.dataframe(show, width="stretch", height=380, column_config={
+    "url": st.column_config.LinkColumn("document")
+})
+st.download_button(
+    "Download CSV", df.to_csv(index=False).encode(), "determinations.csv", "text/csv"
+)

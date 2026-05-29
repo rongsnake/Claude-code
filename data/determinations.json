@@ -1,0 +1,80 @@
+[
+  {
+    "date": "2025-10-21",
+    "committee": "EMEA",
+    "reference_entity": "Ardagh Packaging Finance plc",
+    "issue_number": null,
+    "credit_event_type": null,
+    "decision": "DC decision published",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/documents/2025/10/dc-decision-ardagh-packaging-finance-plc-21-10-2025.pdf/",
+    "source": "reference",
+    "title": "DC Decision - Ardagh Packaging Finance plc",
+    "tags": []
+  },
+  {
+    "date": "2025-07-22",
+    "committee": "All DCs",
+    "reference_entity": null,
+    "issue_number": null,
+    "credit_event_type": null,
+    "decision": "All DCs statement published",
+    "doc_type": "statement",
+    "url": "https://www.cdsdeterminationscommittees.org/wp-content/files_mf/1753213406AllDCsStatement.pdf",
+    "source": "reference",
+    "title": "All Credit Derivatives Determinations Committees Statement",
+    "tags": []
+  },
+  {
+    "date": "2020-06-22",
+    "committee": "Americas",
+    "reference_entity": "The Hertz Corporation",
+    "issue_number": "2020052502",
+    "credit_event_type": "Bankruptcy",
+    "decision": "Resolution published",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/documents/2020/06/americas-dc-statement-issue-number-2020052502-the-hertz-corporation-06-22-2020.pdf/",
+    "source": "reference",
+    "title": "Americas DC Statement - The Hertz Corporation",
+    "tags": []
+  },
+  {
+    "date": "2012-03-20",
+    "committee": "EMEA",
+    "reference_entity": "ERC Ireland Finance Limited",
+    "issue_number": null,
+    "credit_event_type": "Restructuring",
+    "decision": "Determination published",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decisions_20032012ERC.pdf",
+    "source": "reference",
+    "title": "EMEA Determinations Committee Decisions - ERC Ireland",
+    "tags": []
+  },
+  {
+    "date": "2010-05-07",
+    "committee": "Americas",
+    "reference_entity": "Ambac Assurance Corporation",
+    "issue_number": "0325201001",
+    "credit_event_type": null,
+    "decision": "Determination published",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/docs/050710DeterminationsCommitteeDecision0325201001.pdf",
+    "source": "reference",
+    "title": "Determinations Committee Decision - Ambac",
+    "tags": []
+  },
+  {
+    "date": "2009-12-09",
+    "committee": "EMEA",
+    "reference_entity": "Hellas Telecommunications",
+    "issue_number": null,
+    "credit_event_type": "Bankruptcy",
+    "decision": "Determination published",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decision_2009091203.pdf",
+    "source": "reference",
+    "title": "EMEA Determinations Committee Decision - Hellas",
+    "tags": []
+  }
+]

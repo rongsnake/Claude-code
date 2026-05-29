@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CDS Determinations Committees — Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+  :root { --bg:#0f1620; --card:#172230; --ink:#e8eef5; --muted:#8aa0b6; --accent:#3aa0ff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header { padding:28px 32px 8px; }
+  h1 { margin:0; font-size:24px; letter-spacing:.2px; }
+  .sub { color:var(--muted); font-size:13px; margin-top:4px; }
+  .wrap { padding:16px 32px 48px; max-width:1200px; margin:0 auto; }
+  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin:12px 0 20px; }
+  .banner.warn { background:#3a2e12; color:#ffd58a; border:1px solid #6b531f; }
+  .banner.ok { background:#143524; color:#8af0b8; border:1px solid #1f6b46; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:22px; }
+  .kpi { background:var(--card); border-radius:12px; padding:16px 18px; }
+  .kpi .v { font-size:26px; font-weight:650; }
+  .kpi .l { color:var(--muted); font-size:12px; margin-top:4px; text-transform:uppercase; letter-spacing:.5px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .card { background:var(--card); border-radius:12px; padding:14px 16px 6px; }
+  .card h3 { margin:4px 6px 0; font-size:14px; font-weight:600; color:#cdd8e4; }
+  .full { grid-column:1 / -1; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid #243245; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); }
+  td a { color:var(--accent); text-decoration:none; }
+  .tablewrap { max-height:420px; overflow:auto; }
+  footer { color:var(--muted); font-size:12px; padding:0 32px 32px; max-width:1200px; margin:0 auto; }
+  @media (max-width:760px){ .grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Credit Derivatives Determinations Committees</h1>
+  <div class="sub">Determinations dashboard · source: cdsdeterminationscommittees.org</div>
+</header>
+<div class="wrap">
+  <div id="banner" class="banner"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="card"><h3>Determinations per year</h3><div id="byYear" style="height:320px"></div></div>
+    <div class="card"><h3>By committee region</h3><div id="byRegion" style="height:320px"></div></div>
+    <div class="card full"><h3>By credit-event type</h3><div id="byEvent" style="height:320px"></div></div>
+    <div class="card full">
+      <h3>Most recent determinations</h3>
+      <div class="tablewrap"><table id="recent"><thead><tr>
+        <th>Date</th><th>Committee</th><th>Reference entity</th>
+        <th>Credit event</th><th>Decision</th><th>Doc</th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</div>
+<footer>Generated <span id="gen"></span> · Static dashboard, no server required.</footer>
+
+<script>
+const DATA = {"kpis": {"total": 6, "entities": 5, "credit_events": 3, "date_min": "2009-12-09", "date_max": "2025-10-21"}, "by_year": {"x": [2009, 2010, 2012, 2020, 2025], "y": [1, 1, 1, 1, 2]}, "by_region": {"labels": ["EMEA", "Americas", "All DCs"], "values": [3, 2, 1]}, "by_event": {"x": ["Not specified", "Bankruptcy", "Restructuring"], "y": [3, 2, 1]}, "recent": [{"date": "2025-10-21", "committee": "EMEA", "reference_entity": "Ardagh Packaging Finance plc", "credit_event_type": "\u2014", "decision": "DC decision published", "url": "https://www.cdsdeterminationscommittees.org/documents/2025/10/dc-decision-ardagh-packaging-finance-plc-21-10-2025.pdf/"}, {"date": "2025-07-22", "committee": "All DCs", "reference_entity": "\u2014", "credit_event_type": "\u2014", "decision": "All DCs statement published", "url": "https://www.cdsdeterminationscommittees.org/wp-content/files_mf/1753213406AllDCsStatement.pdf"}, {"date": "2020-06-22", "committee": "Americas", "reference_entity": "The Hertz Corporation", "credit_event_type": "Bankruptcy", "decision": "Resolution published", "url": "https://www.cdsdeterminationscommittees.org/documents/2020/06/americas-dc-statement-issue-number-2020052502-the-hertz-corporation-06-22-2020.pdf/"}, {"date": "2012-03-20", "committee": "EMEA", "reference_entity": "ERC Ireland Finance Limited", "credit_event_type": "Restructuring", "decision": "Determination published", "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decisions_20032012ERC.pdf"}, {"date": "2010-05-07", "committee": "Americas", "reference_entity": "Ambac Assurance Corporation", "credit_event_type": "\u2014", "decision": "Determination published", "url": "https://www.cdsdeterminationscommittees.org/docs/050710DeterminationsCommitteeDecision0325201001.pdf"}, {"date": "2009-12-09", "committee": "EMEA", "reference_entity": "Hellas Telecommunications", "credit_event_type": "Bankruptcy", "decision": "Determination published", "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decision_2009091203.pdf"}], "banner": {"text": "SEED DATA \u2014 a small set of verified reference determinations only. A full live refresh was not run in this environment.", "cls": "warn"}, "generated": "2026-05-29 15:51 UTC"};
+const layout = { paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+  font:{color:'#cdd8e4'}, margin:{t:10,r:14,b:40,l:48}, showlegend:false };
+const conf = { displayModeBar:false, responsive:true };
+
+// banner
+const b = document.getElementById('banner');
+b.textContent = DATA.banner.text; b.classList.add(DATA.banner.cls);
+document.getElementById('gen').textContent = DATA.generated;
+
+// KPIs
+const k = DATA.kpis;
+const kpis = [
+  ['Determinations', k.total.toLocaleString()],
+  ['Reference entities', k.entities.toLocaleString()],
+  ['Credit events tagged', k.credit_events.toLocaleString()],
+  ['Earliest', k.date_min],
+  ['Latest', k.date_max],
+];
+document.getElementById('kpis').innerHTML = kpis.map(
+  ([l,v]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`
+).join('');
+
+Plotly.newPlot('byYear', [{
+  type:'bar', x:DATA.by_year.x, y:DATA.by_year.y, marker:{color:'#3aa0ff'}
+}], layout, conf);
+
+Plotly.newPlot('byRegion', [{
+  type:'pie', labels:DATA.by_region.labels, values:DATA.by_region.values, hole:.55,
+  textinfo:'label+percent', marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}
+}], {...layout, margin:{t:10,r:10,b:10,l:10}}, conf);
+
+Plotly.newPlot('byEvent', [{
+  type:'bar', x:DATA.by_event.x, y:DATA.by_event.y, marker:{color:'#37c98b'}
+}], layout, conf);
+
+// recent table
+const tb = document.querySelector('#recent tbody');
+tb.innerHTML = DATA.recent.map(r => `<tr>
+  <td>${r.date}</td><td>${r.committee}</td><td>${r.reference_entity}</td>
+  <td>${r.credit_event_type}</td><td>${r.decision}</td>
+  <td><a href="${r.url}" target="_blank" rel="noopener">PDF ↗</a></td></tr>`).join('');
+</script>
+</body>
+</html>

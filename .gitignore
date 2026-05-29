@@ -2,8 +2,10 @@
 __pycache__/
 *.pyc
 *.pyo
-*.nc
-data/
 .env
 *.egg-info/
 .DS_Store
+
+# downloaded source PDFs (large, re-fetchable) — keep the normalised CSV/JSON
+data/pdfs/
+data/*.pdf
