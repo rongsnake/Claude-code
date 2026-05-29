@@ -9,3 +9,7 @@ __pycache__/
 # downloaded source PDFs (large, re-fetchable) — keep the normalised CSV/JSON
 data/pdfs/
 data/*.pdf
+
+# Pi-side generated/local files (created by pi_autopilot.sh; not for the repo)
+cds_refresh.sh
+deploy.sh

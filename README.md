@@ -114,23 +114,40 @@ python build_dashboard.py --output public/index.html
 # then upload public/index.html via your normal gcburton.org deploy (scp/rsync/CI)
 ```
 
-## Scheduled refresh (GitHub Action)
+## Hands-off autopilot (set up once, never touch again)
 
-`.github/workflows/refresh-dashboard.yml` runs the full pipeline weekly (and on
-manual *Run workflow*), then commits any changed data + rebuilt dashboard back to
-the branch.
+The full loop links the Pi (which can reach the sites) to publishing:
 
-⚠️ **Hosted runners are likely 403'd** by both sites (same bot protection that
-blocks any sandbox), so on a GitHub-hosted runner this only rebuilds from the
-committed/seed data. For a **genuine live refresh, register a self-hosted runner
-on the Pi** (which is on a permitted network) and run with the `pi` option:
-
-```bash
-# one-time, on the Pi — from repo Settings → Actions → Runners → "New self-hosted runner":
-./config.sh --url https://github.com/rongsnake/claude-code --token <TOKEN>
-./run.sh                       # or install as a service: sudo ./svc.sh install && sudo ./svc.sh start
+```
+Pi systemd timer (weekly)
+  → git pull → live scrape → reconcile → analytics → build → git push
+      → push triggers the GitHub Action → publishes to GitHub Pages
 ```
 
-Then in the Actions tab → *Refresh CDS dashboard* → **Run workflow** → set
-**runner = pi**, **mode = live**. The Pi pulls real data, commits it, and you
-deploy `public/index.html` to gcburton.org as above.
+**One-time, on the Pi:**
+
+```bash
+git clone https://github.com/rongsnake/claude-code.git cds-dashboard
+cd cds-dashboard && git checkout claude/setup-cds-scraper-dashboard-i0TxS
+bash pi_autopilot.sh            # installs venv + a weekly systemd timer (uses sudo)
+```
+
+That's it — the Pi now refreshes and pushes on its own (`--daily` or
+`--on-calendar "…"` to change the schedule). Useful commands it prints:
+`sudo systemctl start cds-refresh.service` (run now),
+`journalctl -u cds-refresh.service -n 50` (logs),
+`systemctl list-timers cds-refresh.timer` (next run).
+
+**One-time, on GitHub:** repo **Settings → Pages → Source: "GitHub Actions"**.
+After that every push publishes `public/index.html` to a stable Pages URL — no
+hosting credentials, no manual deploy. `.github/workflows/refresh-dashboard.yml`
+handles it (and runs a weekly fallback rebuild; hosted runners are 403'd by the
+sites, so the Pi is what pulls fresh data).
+
+**Point gcburton.org at it (optional, one-time):** add a `CNAME` DNS record for
+`gcburton.org` → `rongsnake.github.io`, then set the custom domain under
+Settings → Pages. Until then the dashboard lives at the Pages URL.
+
+**Deploy somewhere other than Pages?** Copy `deploy.sh.example` → `deploy.sh`,
+fill in your one line (local copy / rsync / Netlify), `chmod +x deploy.sh`, and
+the Pi's weekly refresh will publish there too.

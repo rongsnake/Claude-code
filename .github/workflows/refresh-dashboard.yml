@@ -1,42 +1,41 @@
-name: Refresh CDS dashboard
+name: Publish CDS dashboard
 
-# Scrapes the DC determinations + Creditex auctions, reconciles, recomputes
-# analytics, rebuilds the static dashboard, and commits any changed artifacts.
+# Publishes the static dashboard to GitHub Pages.
 #
-# IMPORTANT — network reality:
-#   GitHub-hosted runners are very likely 403'd by both
-#   cdsdeterminationscommittees.org and creditfixings.com (the same bot
-#   protection that blocks the build sandbox). On a hosted runner this job
-#   therefore just rebuilds the dashboard from already-committed/seed data.
+# The LIVE data refresh happens on the Raspberry Pi (a systemd timer set up by
+# pi_autopilot.sh) which scrapes from a permitted network and pushes the rebuilt
+# public/index.html. That push triggers this workflow, which deploys to Pages —
+# giving a stable public URL with no hosting credentials.
 #
-#   To get a genuine LIVE refresh, run this workflow on a SELF-HOSTED runner
-#   on your Pi (the network the DC site permits). See README / the
-#   `runs-on` note below — flip `runs-on` to `[self-hosted]` (or trigger the
-#   `pi` path) and the same steps pull real data.
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+#
+# It also runs on a weekly cron and manual dispatch as a fallback rebuild (note:
+# GitHub-hosted runners are likely 403'd by the sites, so a hosted run only
+# rebuilds from already-committed data — the Pi is what pulls fresh data).
 
 on:
+  push:
+    branches: [main, claude/setup-cds-scraper-dashboard-i0TxS]
+    paths: ["public/**", "data/**", "build_dashboard.py", ".github/workflows/**"]
   schedule:
-    - cron: "0 6 * * 1"      # every Monday 06:00 UTC
+    - cron: "0 7 * * 1"
   workflow_dispatch:
-    inputs:
-      mode:
-        description: "Scrape mode"
-        type: choice
-        default: live
-        options: [live, demo, seed-only]
-      runner:
-        description: "Where to run (hosted = GitHub; pi = your self-hosted runner)"
-        type: choice
-        default: hosted
-        options: [hosted, pi]
 
 permissions:
-  contents: write           # needed to commit refreshed data back to the branch
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  refresh:
-    # Hosted by default; selectable to the Pi self-hosted runner via dispatch.
-    runs-on: ${{ (github.event.inputs.runner == 'pi') && fromJSON('["self-hosted"]') || 'ubuntu-latest' }}
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,38 +47,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run pipeline (scrape → reconcile → analytics → build)
+      - name: Rebuild dashboard from committed data
         run: |
-          MODE="${{ github.event.inputs.mode || 'live' }}"
-          echo "::group::DC determinations scraper"
-          python cds_dc_scraper.py --$MODE || python cds_dc_scraper.py
-          echo "::endgroup::"
-          echo "::group::Creditex auction scraper"
-          python creditex_scraper.py --$MODE || python creditex_scraper.py
-          echo "::endgroup::"
-          python reconcile.py
-          python analytics.py
           python build_dashboard.py
           mkdir -p public
           python build_dashboard.py --output public/index.html
 
-      - name: Upload dashboard artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: dashboard
-          path: |
-            dashboard.html
-            public/index.html
-            data/
+          path: public
 
-      - name: Commit refreshed data (if anything changed)
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A data dashboard.html public/index.html
-          if git diff --cached --quiet; then
-            echo "No changes — data already current (likely 403'd on a hosted runner)."
-          else
-            git commit -m "chore: scheduled CDS dashboard refresh [skip ci]"
-            git push
-          fi
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
