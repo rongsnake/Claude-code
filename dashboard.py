@@ -1,9 +1,6 @@
 """
 Interactive Streamlit dashboard for Credit Derivatives Determinations
-Committees (DC) data.
-
-This is the *local/interactive* companion to the static `build_dashboard.py`
-output. Run with:
+Committees (DC) data, with an "ask the data" SQL box.
 
     streamlit run dashboard.py
 
@@ -19,6 +16,7 @@ import plotly.express as px
 import streamlit as st
 
 import cds_dc_scraper as scraper
+import analytics
 
 DATA_CSV = Path("data/determinations.csv")
 
@@ -34,8 +32,7 @@ def load_data(mode: str) -> pd.DataFrame:
     elif not DATA_CSV.exists():
         scraper.run(mode="seed-only")
     df = pd.read_csv(DATA_CSV)
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")
-    return df.dropna(subset=["date"]).sort_values("date")
+    return analytics.enrich(df).dropna(subset=["date"]).sort_values("date")
 
 
 # ── sidebar ─────────────────────────────────────────────────────────────────
@@ -48,7 +45,6 @@ mode = st.sidebar.radio(
 )
 df = load_data(mode)
 
-# provenance banner
 sources = set(df["source"].dropna().unique()) if "source" in df else set()
 if sources == {"synthetic-demo"}:
     st.warning("**Demo data** — synthetic and illustrative only. Use *Live refresh* "
@@ -66,13 +62,13 @@ regions = sorted(df["committee"].dropna().unique())
 picked = st.sidebar.multiselect("Committee region", regions, default=regions)
 if picked:
     df = df[df["committee"].isin(picked)]
-
 years = df["date"].dt.year
-if len(years):
-    lo, hi = int(years.min()), int(years.max())
-    if lo < hi:
-        yr_lo, yr_hi = st.sidebar.slider("Year range", lo, hi, (lo, hi))
-        df = df[(years >= yr_lo) & (years <= yr_hi)]
+if len(years) and int(years.min()) < int(years.max()):
+    yr_lo, yr_hi = st.sidebar.slider("Year range", int(years.min()), int(years.max()),
+                                     (int(years.min()), int(years.max())))
+    df = df[(years >= yr_lo) & (years <= yr_hi)]
+
+metrics = analytics.compute(df)
 
 # ── header + KPIs ───────────────────────────────────────────────────────────
 st.title("⚖️ Credit Derivatives Determinations Committees")
@@ -85,6 +81,47 @@ c3.metric("Credit events tagged", f"{int(df['credit_event_type'].notna().sum()):
 if len(df):
     c4.metric("Date range", f"{df['date'].min().date()} → {df['date'].max().date()}")
 
+# ── ask-the-data: headline answers ──────────────────────────────────────────
+st.subheader("💬 Ask the data")
+a1, a2, a3 = st.columns(3)
+dta = metrics["days_to_auction"]
+a1.metric("% of credit events that are Restructuring",
+          "n/a" if metrics["pct_restructuring_of_events"] is None
+          else f"{metrics['pct_restructuring_of_events']}%")
+a2.metric("Avg days to auction",
+          "n/a" if dta["mean"] is None else f"{dta['mean']:.1f} days",
+          help=None if dta["mean"] is None else f"median {dta['median']:.0f}, n={dta['count']}")
+a3.metric("Determinations with an auction", f"{metrics['auctions_count']:,}")
+
+with st.expander("Ask your own question — SQL over the `determinations` table"):
+    st.caption("Columns include: date, year, committee, reference_entity, "
+               "credit_event_type, decision, days_to_auction, auction_held, "
+               "is_restructuring, credit_event_occurred.")
+    default_sql = (
+        "SELECT credit_event_type,\n"
+        "       count(*) AS n,\n"
+        "       round(100.0*count(*)/sum(count(*)) over (), 1) AS pct\n"
+        "FROM determinations\n"
+        "WHERE credit_event_type IS NOT NULL\n"
+        "GROUP BY credit_event_type\n"
+        "ORDER BY n DESC"
+    )
+    sql = st.text_area("Query", default_sql, height=160)
+    if st.button("Run query"):
+        try:
+            import duckdb
+            con = duckdb.connect()
+            con.register("determinations", df)
+            res = con.execute(sql).df()
+            st.dataframe(res, width="stretch")
+            num = res.select_dtypes("number").columns
+            if len(res.columns) >= 2 and len(num):
+                st.bar_chart(res.set_index(res.columns[0])[num[0]])
+        except ModuleNotFoundError:
+            st.error("duckdb not installed — run `pip install duckdb`.")
+        except Exception as exc:  # surface SQL errors to the user
+            st.error(f"Query error: {exc}")
+
 st.divider()
 
 # ── charts ──────────────────────────────────────────────────────────────────
@@ -93,34 +130,35 @@ with left:
     st.subheader("Determinations per year")
     per_year = df.groupby(df["date"].dt.year).size().reset_index(name="count")
     per_year.columns = ["year", "count"]
-    st.plotly_chart(
-        px.bar(per_year, x="year", y="count", color_discrete_sequence=["#3aa0ff"]),
-        width="stretch",
-    )
+    st.plotly_chart(px.bar(per_year, x="year", y="count",
+                           color_discrete_sequence=["#3aa0ff"]), width="stretch")
 with right:
     st.subheader("By committee region")
     reg = df["committee"].fillna("Unknown").value_counts().reset_index()
     reg.columns = ["region", "count"]
-    st.plotly_chart(
-        px.pie(reg, names="region", values="count", hole=0.55),
-        width="stretch",
-    )
+    st.plotly_chart(px.pie(reg, names="region", values="count", hole=0.55), width="stretch")
 
 st.subheader("By credit-event type")
 ev = df["credit_event_type"].fillna("Not specified").value_counts().reset_index()
 ev.columns = ["event", "count"]
-st.plotly_chart(
-    px.bar(ev, x="event", y="count", color_discrete_sequence=["#37c98b"]),
-    width="stretch",
-)
+st.plotly_chart(px.bar(ev, x="event", y="count",
+                       color_discrete_sequence=["#37c98b"]), width="stretch")
 
+# ── table + downloads ────────────────────────────────────────────────────────
 st.subheader("Determinations")
 show = df.sort_values("date", ascending=False)[
-    ["date", "committee", "reference_entity", "credit_event_type", "decision", "url"]
+    ["date", "committee", "reference_entity", "credit_event_type",
+     "decision", "days_to_auction", "url"]
 ]
-st.dataframe(show, width="stretch", height=380, column_config={
-    "url": st.column_config.LinkColumn("document")
-})
-st.download_button(
-    "Download CSV", df.to_csv(index=False).encode(), "determinations.csv", "text/csv"
-)
+st.dataframe(show, width="stretch", height=380,
+             column_config={"url": st.column_config.LinkColumn("document")})
+
+d1, d2, d3 = st.columns(3)
+d1.download_button("⬇ Raw CSV", df.to_csv(index=False).encode(),
+                   "determinations.csv", "text/csv")
+d2.download_button("⬇ Tidy CSV (derived cols)",
+                   analytics.enrich(df).to_csv(index=False).encode(),
+                   "determinations_tidy.csv", "text/csv")
+d3.download_button("⬇ Analytics JSON",
+                   pd.Series(metrics).to_json(indent=2).encode(),
+                   "determinations_analytics.json", "application/json")

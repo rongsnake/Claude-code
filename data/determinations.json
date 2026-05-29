@@ -10,7 +10,9 @@
     "url": "https://www.cdsdeterminationscommittees.org/documents/2025/10/dc-decision-ardagh-packaging-finance-plc-21-10-2025.pdf/",
     "source": "reference",
     "title": "DC Decision - Ardagh Packaging Finance plc",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   },
   {
     "date": "2025-07-22",
@@ -23,7 +25,9 @@
     "url": "https://www.cdsdeterminationscommittees.org/wp-content/files_mf/1753213406AllDCsStatement.pdf",
     "source": "reference",
     "title": "All Credit Derivatives Determinations Committees Statement",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   },
   {
     "date": "2020-06-22",
@@ -36,7 +40,9 @@
     "url": "https://www.cdsdeterminationscommittees.org/documents/2020/06/americas-dc-statement-issue-number-2020052502-the-hertz-corporation-06-22-2020.pdf/",
     "source": "reference",
     "title": "Americas DC Statement - The Hertz Corporation",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   },
   {
     "date": "2012-03-20",
@@ -49,7 +55,9 @@
     "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decisions_20032012ERC.pdf",
     "source": "reference",
     "title": "EMEA Determinations Committee Decisions - ERC Ireland",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   },
   {
     "date": "2010-05-07",
@@ -62,7 +70,9 @@
     "url": "https://www.cdsdeterminationscommittees.org/docs/050710DeterminationsCommitteeDecision0325201001.pdf",
     "source": "reference",
     "title": "Determinations Committee Decision - Ambac",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   },
   {
     "date": "2009-12-09",
@@ -75,6 +85,8 @@
     "url": "https://www.cdsdeterminationscommittees.org/docs/EMEA_Determinations_Committee_Decision_2009091203.pdf",
     "source": "reference",
     "title": "EMEA Determinations Committee Decision - Hellas",
-    "tags": []
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
   }
 ]

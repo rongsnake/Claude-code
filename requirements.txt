@@ -10,3 +10,4 @@ pandas>=2.0.0
 numpy>=1.26.0
 plotly>=5.20.0              # used by the interactive Streamlit app
 streamlit>=1.32.0          # optional interactive dashboard (run locally)
+duckdb>=0.10.0             # SQL "ask the data" box in the Streamlit dashboard

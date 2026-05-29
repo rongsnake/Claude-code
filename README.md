@@ -24,10 +24,13 @@ streamlit run dashboard.py
 | File | Purpose |
 |---|---|
 | `cds_dc_scraper.py` | Scrapes the DC site (WordPress REST API → sitemap → optional PDF parsing), normalises to a tidy table |
-| `build_dashboard.py` | Renders `data/determinations.csv` into a self-contained static `dashboard.html` (Plotly.js via CDN) |
-| `dashboard.py` | Interactive Streamlit dashboard over the same data |
+| `analytics.py` | Derives columns (days-to-auction, is-restructuring, …) and computes the metrics that answer the common questions |
+| `build_dashboard.py` | Renders a self-contained static `dashboard.html` (Plotly.js via CDN) with charts, an "ask the data" pivot, and downloads |
+| `dashboard.py` | Interactive Streamlit dashboard incl. a DuckDB SQL "ask the data" box |
 | `setup.sh` / `run_dashboard.sh` | venv setup and one-command refresh+build |
-| `data/determinations.csv` / `.json` | Scraper output |
+| `data/determinations.csv` / `.json` | Raw scraper output |
+| `data/determinations_tidy.csv` | Derived/analysis-ready table (for your own graphs) |
+| `data/determinations_analytics.json` | Pre-computed metrics |
 
 ## Scraper modes
 
@@ -41,6 +44,35 @@ python cds_dc_scraper.py --seed-only # only the verified reference determination
 Each determination is normalised to:
 `date, committee (Americas/EMEA/Asia ex-Japan/Japan/Australia-NZ),
 reference_entity, issue_number, credit_event_type, decision, doc_type, url, source`.
+
+## Ask the data / analytics
+
+Both dashboards answer questions like *"average days to auction"* or *"what % of
+credit events are Restructuring"*:
+
+- **Static `dashboard.html`** — headline answers + an interactive **group-by pivot**
+  (group by region / credit-event type / year / decision × measure count / % /
+  avg days-to-auction / credit-event rate), computed client-side. No server.
+- **Streamlit `dashboard.py`** — the same headline answers plus a **DuckDB SQL box**:
+  query the `determinations` table directly, e.g.
+
+  ```sql
+  SELECT credit_event_type, count(*) n,
+         round(100.0*count(*)/sum(count(*)) over (),1) pct
+  FROM determinations WHERE credit_event_type IS NOT NULL
+  GROUP BY credit_event_type ORDER BY n DESC;
+  ```
+
+### Downloadable data (for your own graphs)
+
+| File / button | Contents |
+|---|---|
+| `determinations.csv` | raw scraped rows |
+| `determinations_tidy.csv` | derived columns: `year, month, days_to_auction, is_restructuring, credit_event_occurred, …` |
+| `determinations_analytics.json` | pre-computed metrics |
+
+All three are downloadable from both dashboards, or regenerated with
+`python analytics.py`.
 
 ## ⚠️ Network note (important)
 

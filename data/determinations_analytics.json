@@ -1,0 +1,37 @@
+{
+  "total_determinations": 6,
+  "date_min": "2009-12-09",
+  "date_max": "2025-10-21",
+  "distinct_reference_entities": 5,
+  "credit_events_tagged": 3,
+  "pct_restructuring_of_events": 33.3,
+  "credit_event_occurred_count": 0,
+  "auctions_count": 0,
+  "days_to_auction": {
+    "count": 0,
+    "mean": null,
+    "median": null,
+    "min": null,
+    "max": null
+  },
+  "credit_event_type_counts": {
+    "Bankruptcy": 2,
+    "Restructuring": 1
+  },
+  "credit_event_type_pct": {
+    "Bankruptcy": 66.7,
+    "Restructuring": 33.3
+  },
+  "by_region_counts": {
+    "EMEA": 3,
+    "Americas": 2,
+    "All DCs": 1
+  },
+  "by_year_counts": {
+    "2009": 1,
+    "2010": 1,
+    "2012": 1,
+    "2020": 1,
+    "2025": 2
+  }
+}

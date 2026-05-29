@@ -38,7 +38,7 @@ import logging
 import re
 import time
 from dataclasses import dataclass, asdict, field
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from pathlib import Path
 from typing import Iterable
 
@@ -107,6 +107,8 @@ class Determination:
     source: str
     title: str = ""
     tags: list[str] = field(default_factory=list)
+    auction_date: str | None = None
+    auction_held: bool = False
 
 
 # ── verified seed references (real documents found via public search) ──────────
@@ -335,6 +337,10 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
     rec.date = rec.date or _parse_date(text)
     if re.search(r"\bauction\b", text, re.I):
         rec.tags.append("auction")
+        rec.auction_held = True
+        m = re.search(r"auction.{0,40}?(\d{1,2}[-/ ]\w+[-/ ]\d{4}|\d{4}-\d{2}-\d{2})", text, re.I)
+        if m:
+            rec.auction_date = _parse_date(m.group(1)) or rec.auction_date
     if re.search(r"\bno\b.{0,20}credit event", text, re.I):
         rec.decision = rec.decision or "No credit event"
     elif re.search(r"credit event.{0,20}(occurred|has occurred)", text, re.I):
@@ -407,21 +413,32 @@ def make_demo(n: int = 140) -> list[Determination]:
         yr = int(rng.integers(2010, 2027))
         mo = int(rng.integers(1, 13))
         dy = int(rng.integers(1, 28))
+        d = date(yr, mo, dy)
         region = str(rng.choice(regions, p=region_w))
         ev = events[int(rng.choice(len(events), p=event_w))]
         ent = f"{rng.choice(sectors)} Holdings {i + 1:03d} (demo)"
+        decision = str(rng.choice(outcomes))
+        # a credit event sometimes proceeds to a settlement auction ~3-6 weeks later
+        auction_date = None
+        auction_held = False
+        if ev is not None and decision in ("Credit event occurred", "Auction held") \
+                and rng.random() < 0.75:
+            auction_held = True
+            auction_date = (d + timedelta(days=int(rng.integers(18, 45)))).isoformat()
         out.append(
             Determination(
-                date=date(yr, mo, dy).isoformat(),
+                date=d.isoformat(),
                 committee=region,
                 reference_entity=ent,
                 issue_number=f"{yr}{rng.integers(100000, 999999)}",
                 credit_event_type=ev,
-                decision=str(rng.choice(outcomes)),
+                decision=decision,
                 doc_type="decision",
                 url=f"{BASE_URL}/documents/{yr}/{mo:02d}/demo-{i+1:03d}.pdf/",
                 source="synthetic-demo",
                 title=f"[DEMO] {ent}",
+                auction_held=auction_held,
+                auction_date=auction_date,
             )
         )
     return out
