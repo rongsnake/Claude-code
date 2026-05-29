@@ -113,3 +113,24 @@ deployment is just copying one file, e.g.:
 python build_dashboard.py --output public/index.html
 # then upload public/index.html via your normal gcburton.org deploy (scp/rsync/CI)
 ```
+
+## Scheduled refresh (GitHub Action)
+
+`.github/workflows/refresh-dashboard.yml` runs the full pipeline weekly (and on
+manual *Run workflow*), then commits any changed data + rebuilt dashboard back to
+the branch.
+
+⚠️ **Hosted runners are likely 403'd** by both sites (same bot protection that
+blocks any sandbox), so on a GitHub-hosted runner this only rebuilds from the
+committed/seed data. For a **genuine live refresh, register a self-hosted runner
+on the Pi** (which is on a permitted network) and run with the `pi` option:
+
+```bash
+# one-time, on the Pi — from repo Settings → Actions → Runners → "New self-hosted runner":
+./config.sh --url https://github.com/rongsnake/claude-code --token <TOKEN>
+./run.sh                       # or install as a service: sudo ./svc.sh install && sudo ./svc.sh start
+```
+
+Then in the Actions tab → *Refresh CDS dashboard* → **Run workflow** → set
+**runner = pi**, **mode = live**. The Pi pulls real data, commits it, and you
+deploy `public/index.html` to gcburton.org as above.

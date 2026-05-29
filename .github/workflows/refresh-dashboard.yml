@@ -1,0 +1,85 @@
+name: Refresh CDS dashboard
+
+# Scrapes the DC determinations + Creditex auctions, reconciles, recomputes
+# analytics, rebuilds the static dashboard, and commits any changed artifacts.
+#
+# IMPORTANT — network reality:
+#   GitHub-hosted runners are very likely 403'd by both
+#   cdsdeterminationscommittees.org and creditfixings.com (the same bot
+#   protection that blocks the build sandbox). On a hosted runner this job
+#   therefore just rebuilds the dashboard from already-committed/seed data.
+#
+#   To get a genuine LIVE refresh, run this workflow on a SELF-HOSTED runner
+#   on your Pi (the network the DC site permits). See README / the
+#   `runs-on` note below — flip `runs-on` to `[self-hosted]` (or trigger the
+#   `pi` path) and the same steps pull real data.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"      # every Monday 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Scrape mode"
+        type: choice
+        default: live
+        options: [live, demo, seed-only]
+      runner:
+        description: "Where to run (hosted = GitHub; pi = your self-hosted runner)"
+        type: choice
+        default: hosted
+        options: [hosted, pi]
+
+permissions:
+  contents: write           # needed to commit refreshed data back to the branch
+
+jobs:
+  refresh:
+    # Hosted by default; selectable to the Pi self-hosted runner via dispatch.
+    runs-on: ${{ (github.event.inputs.runner == 'pi') && fromJSON('["self-hosted"]') || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline (scrape → reconcile → analytics → build)
+        run: |
+          MODE="${{ github.event.inputs.mode || 'live' }}"
+          echo "::group::DC determinations scraper"
+          python cds_dc_scraper.py --$MODE || python cds_dc_scraper.py
+          echo "::endgroup::"
+          echo "::group::Creditex auction scraper"
+          python creditex_scraper.py --$MODE || python creditex_scraper.py
+          echo "::endgroup::"
+          python reconcile.py
+          python analytics.py
+          python build_dashboard.py
+          mkdir -p public
+          python build_dashboard.py --output public/index.html
+
+      - name: Upload dashboard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard
+          path: |
+            dashboard.html
+            public/index.html
+            data/
+
+      - name: Commit refreshed data (if anything changed)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A data dashboard.html public/index.html
+          if git diff --cached --quiet; then
+            echo "No changes — data already current (likely 403'd on a hosted runner)."
+          else
+            git commit -m "chore: scheduled CDS dashboard refresh [skip ci]"
+            git push
+          fi
