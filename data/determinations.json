@@ -1,5 +1,2111 @@
 [
   {
+    "date": null,
+    "committee": "Americas",
+    "reference_entity": "Liberty Interactive LLC",
+    "issue_number": "9186",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/documents/2026/04/liberty-interactive-llc-bankruptcy-credit-event-4-21-26.pdf/",
+    "source": "dc-isda",
+    "title": "Liberty Interactive LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2026-05-13",
+    "auction_held": true
+  },
+  {
+    "date": "2025-10-07",
+    "committee": "EMEA",
+    "reference_entity": "Ardagh Packaging Finance PLC",
+    "issue_number": "9184",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/ardagh-packaging-finance-plc-3/",
+    "source": "dc-isda",
+    "title": "Ardagh Packaging Finance PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2026-03-11",
+    "auction_held": true
+  },
+  {
+    "date": "2026-01-12",
+    "committee": "Americas",
+    "reference_entity": "New Fortress Energy Inc.",
+    "issue_number": "9185",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/new-fortress-energy-inc-2/",
+    "source": "dc-isda",
+    "title": "New Fortress Energy Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2026-02-11",
+    "auction_held": true
+  },
+  {
+    "date": "2025-11-21",
+    "committee": "Americas",
+    "reference_entity": "NFE Financing LLC",
+    "issue_number": "9183",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/nfe-financing-llc/",
+    "source": "dc-isda",
+    "title": "NFE Financing LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2026-01-14",
+    "auction_held": true
+  },
+  {
+    "date": "2024-07-30",
+    "committee": "EMEA",
+    "reference_entity": "ALTICE FRANCE",
+    "issue_number": "9181",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/altice-france-s-a/",
+    "source": "dc-isda",
+    "title": "ALTICE FRANCE",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2025-08-27",
+    "auction_held": true
+  },
+  {
+    "date": "2024-11-15",
+    "committee": "EMEA",
+    "reference_entity": "Intrum AB",
+    "issue_number": "9180",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/intrum-ab/",
+    "source": "dc-isda",
+    "title": "Intrum AB",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2025-01-16",
+    "auction_held": true
+  },
+  {
+    "date": "2024-07-18",
+    "committee": "EMEA",
+    "reference_entity": "Atos SE",
+    "issue_number": "9177",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/atos-se/",
+    "source": "dc-isda",
+    "title": "Atos SE",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2024-10-09",
+    "auction_held": true
+  },
+  {
+    "date": "2024-08-13",
+    "committee": "Americas",
+    "reference_entity": "Avon Products, Inc.",
+    "issue_number": "9178",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/avon-products-inc-2/",
+    "source": "dc-isda",
+    "title": "Avon Products, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2024-09-24",
+    "auction_held": true
+  },
+  {
+    "date": "2023-10-16",
+    "committee": "Americas",
+    "reference_entity": "Rite Aid Corporation",
+    "issue_number": "9176",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/rite-aid-corporation/",
+    "source": "dc-isda",
+    "title": "Rite Aid Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2023-11-08",
+    "auction_held": true
+  },
+  {
+    "date": "2023-06-21",
+    "committee": "EMEA",
+    "reference_entity": "CASINO GUICHARD-PERRACHON",
+    "issue_number": "9175",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/casino-guichard-perrachon-sa-11/",
+    "source": "dc-isda",
+    "title": "CASINO GUICHARD-PERRACHON",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2023-09-25",
+    "auction_held": true
+  },
+  {
+    "date": "2022-07-27",
+    "committee": "EMEA",
+    "reference_entity": "Vue Entertainment International Limited",
+    "issue_number": "9174",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/vue-international-bidco-plc/",
+    "source": "dc-isda",
+    "title": "Vue Entertainment International Limited",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2023-09-14",
+    "auction_held": true
+  },
+  {
+    "date": "2023-03-17",
+    "committee": "Americas",
+    "reference_entity": "DIAMOND SPORTS GROUP, LLC",
+    "issue_number": "9173",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/diamond-sports-group-llc/",
+    "source": "dc-isda",
+    "title": "DIAMOND SPORTS GROUP, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2023-04-13",
+    "auction_held": true
+  },
+  {
+    "date": "2022-08-10",
+    "committee": "EMEA",
+    "reference_entity": "Ukraine",
+    "issue_number": "9171",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/ukraine/",
+    "source": "dc-isda",
+    "title": "Ukraine",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2022-09-28",
+    "auction_held": true
+  },
+  {
+    "date": "2022-04-04",
+    "committee": "EMEA",
+    "reference_entity": "Russian Federation",
+    "issue_number": "9172",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-russian-federation-3/",
+    "source": "dc-isda",
+    "title": "Russian Federation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2022-09-12",
+    "auction_held": true
+  },
+  {
+    "date": "2022-05-10",
+    "committee": "Americas",
+    "reference_entity": "Talen Energy Supply, LLC",
+    "issue_number": "9170",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/talen-energy-supply-llc/",
+    "source": "dc-isda",
+    "title": "Talen Energy Supply, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2022-06-07",
+    "auction_held": true
+  },
+  {
+    "date": "2019-12-27",
+    "committee": "EMEA",
+    "reference_entity": "Europcar Mobility Group",
+    "issue_number": "9169",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/europcar-mobility-group-s-a/",
+    "source": "dc-isda",
+    "title": "Europcar Mobility Group",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2021-01-13",
+    "auction_held": true
+  },
+  {
+    "date": "2020-10-08",
+    "committee": "EMEA",
+    "reference_entity": "Selecta Group B.V.",
+    "issue_number": "9168",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/selecta-group-b-v/",
+    "source": "dc-isda",
+    "title": "Selecta Group B.V.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-10-20",
+    "auction_held": true
+  },
+  {
+    "date": "2020-09-02",
+    "committee": "EMEA",
+    "reference_entity": "Pizzaexpress Financing 1 PLC",
+    "issue_number": "9167",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/pizzaexpress-financing-1-plc/",
+    "source": "dc-isda",
+    "title": "Pizzaexpress Financing 1 PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-10-01",
+    "auction_held": true
+  },
+  {
+    "date": "2020-07-30",
+    "committee": "EMEA",
+    "reference_entity": "MATALAN FINANCE PLC",
+    "issue_number": "9165",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/matalan-finance-plc/",
+    "source": "dc-isda",
+    "title": "MATALAN FINANCE PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-09-15",
+    "auction_held": true
+  },
+  {
+    "date": "2020-07-31",
+    "committee": "Americas",
+    "reference_entity": "Noble Corporation",
+    "issue_number": "9164",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/noble-corporation-plc/",
+    "source": "dc-isda",
+    "title": "Noble Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-09-10",
+    "auction_held": true
+  },
+  {
+    "date": "2019-09-13",
+    "committee": "EMEA",
+    "reference_entity": "HEMA BondCo I B.V.",
+    "issue_number": "9166",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/hema-bondco-i-b-v/",
+    "source": "dc-isda",
+    "title": "HEMA BondCo I B.V.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-09-08",
+    "auction_held": true
+  },
+  {
+    "date": "2019-12-27",
+    "committee": "Americas",
+    "reference_entity": "Chesapeake Energy Corporation",
+    "issue_number": "9160",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/chesapeake-energy-corporation/",
+    "source": "dc-isda",
+    "title": "Chesapeake Energy Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-08-04",
+    "auction_held": true
+  },
+  {
+    "date": "2020-06-26",
+    "committee": "EMEA",
+    "reference_entity": "Wirecard AG",
+    "issue_number": "9163",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/wirecard-ag/",
+    "source": "dc-isda",
+    "title": "Wirecard AG",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-07-29",
+    "auction_held": true
+  },
+  {
+    "date": "2019-07-15",
+    "committee": "Americas",
+    "reference_entity": "CALIFORNIA RESOURCES CORPORATION",
+    "issue_number": "9158",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/california-resources-corporation/",
+    "source": "dc-isda",
+    "title": "CALIFORNIA RESOURCES CORPORATION",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-07-07",
+    "auction_held": true
+  },
+  {
+    "date": "2020-05-22",
+    "committee": "Americas",
+    "reference_entity": "THE HERTZ CORPORATION",
+    "issue_number": "9155",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-hertz-corporation/",
+    "source": "dc-isda",
+    "title": "THE HERTZ CORPORATION",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-06-24",
+    "auction_held": true
+  },
+  {
+    "date": "2020-05-26",
+    "committee": "Americas",
+    "reference_entity": "Argentine Republic",
+    "issue_number": "9159",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/republic-of-argentina-3/",
+    "source": "dc-isda",
+    "title": "Argentine Republic",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-06-12",
+    "auction_held": true
+  },
+  {
+    "date": "2020-05-18",
+    "committee": "Americas",
+    "reference_entity": "J. C. Penney Company, Inc.",
+    "issue_number": "9154",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/j-c-penney-company-inc/",
+    "source": "dc-isda",
+    "title": "J. C. Penney Company, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-06-09",
+    "auction_held": true
+  },
+  {
+    "date": "2020-05-15",
+    "committee": "Americas",
+    "reference_entity": "Intelsat Investments S.A.",
+    "issue_number": "9157",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/intelsat-investments-s-a/",
+    "source": "dc-isda",
+    "title": "Intelsat Investments S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-06-04",
+    "auction_held": true
+  },
+  {
+    "date": "2020-05-07",
+    "committee": "Americas",
+    "reference_entity": "The Neiman Marcus Group LLC",
+    "issue_number": "9151",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/neiman-marcus-group-llc/",
+    "source": "dc-isda",
+    "title": "The Neiman Marcus Group LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-05-29",
+    "auction_held": true
+  },
+  {
+    "date": "2020-04-27",
+    "committee": "Americas",
+    "reference_entity": "Diamond Offshore Drilling, Inc.",
+    "issue_number": "9150",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/diamond-offshore-drilling-inc/",
+    "source": "dc-isda",
+    "title": "Diamond Offshore Drilling, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-05-22",
+    "auction_held": true
+  },
+  {
+    "date": "2020-04-20",
+    "committee": "Americas",
+    "reference_entity": "Republic of Ecuador",
+    "issue_number": "9149",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/republic-of-ecuador/",
+    "source": "dc-isda",
+    "title": "Republic of Ecuador",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-05-19",
+    "auction_held": true
+  },
+  {
+    "date": "2020-04-15",
+    "committee": "Americas",
+    "reference_entity": "FRONTIER COMMUNICATIONS CORPORATION",
+    "issue_number": "9148",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/frontier-communications-corporation/",
+    "source": "dc-isda",
+    "title": "FRONTIER COMMUNICATIONS CORPORATION",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-05-13",
+    "auction_held": true
+  },
+  {
+    "date": "2020-04-01",
+    "committee": "Americas",
+    "reference_entity": "Whiting Petroleum Corporation",
+    "issue_number": "9147",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/whiting-petroleum-corporation/",
+    "source": "dc-isda",
+    "title": "Whiting Petroleum Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-05-06",
+    "auction_held": true
+  },
+  {
+    "date": "2020-03-09",
+    "committee": "EMEA",
+    "reference_entity": "Lebanese Republic",
+    "issue_number": "9146",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-lebanese-republic/",
+    "source": "dc-isda",
+    "title": "Lebanese Republic",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-04-23",
+    "auction_held": true
+  },
+  {
+    "date": "2020-02-13",
+    "committee": "Americas",
+    "reference_entity": "THE McCLATCHY COMPANY",
+    "issue_number": "9145",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-mcclatchy-company/",
+    "source": "dc-isda",
+    "title": "THE McCLATCHY COMPANY",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2020-03-10",
+    "auction_held": true
+  },
+  {
+    "date": "2019-11-12",
+    "committee": "Americas",
+    "reference_entity": "Dean Foods Company",
+    "issue_number": "9144",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/dean-foods-company/",
+    "source": "dc-isda",
+    "title": "Dean Foods Company",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-12-10",
+    "auction_held": true
+  },
+  {
+    "date": "2019-09-17",
+    "committee": "EMEA",
+    "reference_entity": "THOMAS COOK GROUP PLC",
+    "issue_number": "9143",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/thomas-cook-group-plc/",
+    "source": "dc-isda",
+    "title": "THOMAS COOK GROUP PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-10-30",
+    "auction_held": true
+  },
+  {
+    "date": "2019-02-08",
+    "committee": "EMEA",
+    "reference_entity": "STEINHOFF EUROPE AG",
+    "issue_number": "9138",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/steinhoff-europe-ag/",
+    "source": "dc-isda",
+    "title": "STEINHOFF EUROPE AG",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-09-25",
+    "auction_held": true
+  },
+  {
+    "date": "2019-08-06",
+    "committee": "EMEA",
+    "reference_entity": "TOP GUN REALISATIONS 61 LIMITED",
+    "issue_number": "9142",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/top-gun-realisations-61-limited/",
+    "source": "dc-isda",
+    "title": "TOP GUN REALISATIONS 61 LIMITED",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-09-11",
+    "auction_held": true
+  },
+  {
+    "date": "2018-09-28",
+    "committee": "EMEA",
+    "reference_entity": "Galapagos Holding S.A.",
+    "issue_number": "9141",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/galapagos-holding-sa/",
+    "source": "dc-isda",
+    "title": "Galapagos Holding S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-08-07",
+    "auction_held": true
+  },
+  {
+    "date": "2019-07-02",
+    "committee": "Americas",
+    "reference_entity": "Weatherford International Ltd.",
+    "issue_number": "9140",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/weatherford-international-ltd-2/",
+    "source": "dc-isda",
+    "title": "Weatherford International Ltd.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-07-24",
+    "auction_held": true
+  },
+  {
+    "date": "2019-05-23",
+    "committee": "EMEA",
+    "reference_entity": "RALLYE",
+    "issue_number": "9139",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/rallye/",
+    "source": "dc-isda",
+    "title": "RALLYE",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-06-27",
+    "auction_held": true
+  },
+  {
+    "date": "2019-05-03",
+    "committee": "EMEA",
+    "reference_entity": "NEW LOOK SENIOR ISSUER PLC",
+    "issue_number": "9137",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/new-look-senior-issuer-plc-3/",
+    "source": "dc-isda",
+    "title": "NEW LOOK SENIOR ISSUER PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-06-05",
+    "auction_held": true
+  },
+  {
+    "date": "2019-02-25",
+    "committee": "Americas",
+    "reference_entity": "Windstream Services, LLC",
+    "issue_number": "9136",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/windstream-services-llc-6/",
+    "source": "dc-isda",
+    "title": "Windstream Services, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-04-03",
+    "auction_held": true
+  },
+  {
+    "date": "2019-01-29",
+    "committee": "Americas",
+    "reference_entity": "PACIFIC GAS AND ELECTRIC COMPANY",
+    "issue_number": "9135",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/pacific-gas-and-electric-company/",
+    "source": "dc-isda",
+    "title": "PACIFIC GAS AND ELECTRIC COMPANY",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-02-27",
+    "auction_held": true
+  },
+  {
+    "date": "2018-12-13",
+    "committee": "Americas",
+    "reference_entity": "Parker Drilling Company",
+    "issue_number": "9134",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/parker-drilling-company/",
+    "source": "dc-isda",
+    "title": "Parker Drilling Company",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-01-23",
+    "auction_held": true
+  },
+  {
+    "date": "2018-07-05",
+    "committee": "Americas",
+    "reference_entity": "Sears Roebuck Acceptance Corp.",
+    "issue_number": "9129",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/sears-roebuck-acceptance-corp/",
+    "source": "dc-isda",
+    "title": "Sears Roebuck Acceptance Corp.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2019-01-17",
+    "auction_held": true
+  },
+  {
+    "date": "2018-10-01",
+    "committee": "EMEA",
+    "reference_entity": "ASTALDI SOCIETA PER AZIONI",
+    "issue_number": "9128",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/astaldi-spa-2/",
+    "source": "dc-isda",
+    "title": "ASTALDI SOCIETA PER AZIONI",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2018-11-29",
+    "auction_held": true
+  },
+  {
+    "date": "2017-07-24",
+    "committee": "EMEA",
+    "reference_entity": "NOVO BANCO, S.A.",
+    "issue_number": "9132",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/novo-banco-s-a-3/",
+    "source": "dc-isda",
+    "title": "NOVO BANCO, S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2018-11-27",
+    "auction_held": true
+  },
+  {
+    "date": "2017-06-07",
+    "committee": "EMEA",
+    "reference_entity": "BANCO POPULAR ESPANOL, S.A.",
+    "issue_number": "9127",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/banco-popular-espanol-sa/",
+    "source": "dc-isda",
+    "title": "BANCO POPULAR ESPANOL, S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2018-09-06",
+    "auction_held": true
+  },
+  {
+    "date": "2018-03-21",
+    "committee": "Asia ex-Japan",
+    "reference_entity": "Noble Group Limited",
+    "issue_number": "9124",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/noble-group-limited-4/",
+    "source": "dc-isda",
+    "title": "Noble Group Limited",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2018-04-25",
+    "auction_held": true
+  },
+  {
+    "date": "2018-04-06",
+    "committee": "Americas",
+    "reference_entity": "Nine West Holdings, Inc.",
+    "issue_number": "9125",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/nine-west-holdings-inc/",
+    "source": "dc-isda",
+    "title": "Nine West Holdings, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2018-04-25",
+    "auction_held": true
+  },
+  {
+    "date": "2017-11-13",
+    "committee": "Americas",
+    "reference_entity": "Petroleos de Venezuela, S.A.",
+    "issue_number": "9122",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/petroleos-de-venezuela-s-a-3/",
+    "source": "dc-isda",
+    "title": "Petroleos de Venezuela, S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-12-13",
+    "auction_held": true
+  },
+  {
+    "date": "2017-01-06",
+    "committee": "Americas",
+    "reference_entity": "Bolivarian Republic of Venezuela",
+    "issue_number": "9123",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/usp97475an08/",
+    "source": "dc-isda",
+    "title": "Bolivarian Republic of Venezuela",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-12-12",
+    "auction_held": true
+  },
+  {
+    "date": "2017-07-28",
+    "committee": "EMEA",
+    "reference_entity": "BANCA MONTE DEI PASCHI DI SIENA S.P.A.",
+    "issue_number": "9121",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/banca-monte-dei-paschi-di-siena-s-p-a/",
+    "source": "dc-isda",
+    "title": "BANCA MONTE DEI PASCHI DI SIENA S.P.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-11-01",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "Americas",
+    "reference_entity": "TOYS",
+    "issue_number": "9120",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/toys-to-toys-r-us-delaware-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "TOYS",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-10-11",
+    "auction_held": true
+  },
+  {
+    "date": "2017-09-19",
+    "committee": "Americas",
+    "reference_entity": "TOYS",
+    "issue_number": "9117",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/toys-r-us-inc/",
+    "source": "dc-isda",
+    "title": "TOYS",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-10-11",
+    "auction_held": true
+  },
+  {
+    "date": "2016-05-20",
+    "committee": "EMEA",
+    "reference_entity": "NORSKE SKOGINDUSTRIER ASA",
+    "issue_number": "9103",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/norske-skogsindustrier-asa/",
+    "source": "dc-isda",
+    "title": "NORSKE SKOGINDUSTRIER ASA",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-09-14",
+    "auction_held": true
+  },
+  {
+    "date": "2017-07-03",
+    "committee": "Americas",
+    "reference_entity": "Puerto Rico Electric Power Authority",
+    "issue_number": "9102",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/puerto-rico-electric-power-authority-prepa/",
+    "source": "dc-isda",
+    "title": "Puerto Rico Electric Power Authority",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-08-02",
+    "auction_held": true
+  },
+  {
+    "date": "2017-06-14",
+    "committee": "Americas",
+    "reference_entity": "GenOn Energy, Inc.",
+    "issue_number": "9097",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/genon-energy-inc/",
+    "source": "dc-isda",
+    "title": "GenOn Energy, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-07-11",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "Americas",
+    "reference_entity": "Avaya Inc.",
+    "issue_number": "9096",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/avaya-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "Avaya Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-03-01",
+    "auction_held": true
+  },
+  {
+    "date": "2016-12-20",
+    "committee": "Americas",
+    "reference_entity": "iHeartCommunications, Inc.",
+    "issue_number": "9094",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/iheart-communications-inc/",
+    "source": "dc-isda",
+    "title": "iHeartCommunications, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-02-02",
+    "auction_held": true
+  },
+  {
+    "date": "2016-12-20",
+    "committee": "Americas",
+    "reference_entity": "iHeartCommunications, Inc.",
+    "issue_number": "9095",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/iheart-communications-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "iHeartCommunications, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2017-02-02",
+    "auction_held": true
+  },
+  {
+    "date": "2016-08-02",
+    "committee": "EMEA",
+    "reference_entity": "Grupo Isolux Corsan Finance B.V.",
+    "issue_number": "9093",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/grupo-isolux-corsan-finance-b-v/",
+    "source": "dc-isda",
+    "title": "Grupo Isolux Corsan Finance B.V.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-08-24",
+    "auction_held": true
+  },
+  {
+    "date": "2016-07-08",
+    "committee": "Americas",
+    "reference_entity": "Commonwealth of Puerto Rico",
+    "issue_number": "9092",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/commonwealth-of-puerto-rico/",
+    "source": "dc-isda",
+    "title": "Commonwealth of Puerto Rico",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-08-17",
+    "auction_held": true
+  },
+  {
+    "date": "2016-06-21",
+    "committee": "EMEA",
+    "reference_entity": "Portugal Telecom International Finance B.V.",
+    "issue_number": "9091",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/portugal-telecom-international-finance-b-v/",
+    "source": "dc-isda",
+    "title": "Portugal Telecom International Finance B.V.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-07-21",
+    "auction_held": true
+  },
+  {
+    "date": "2016-04-13",
+    "committee": "Americas",
+    "reference_entity": "Peabody Energy Corporation",
+    "issue_number": "9083",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/peabody-energy-corporation/",
+    "source": "dc-isda",
+    "title": "Peabody Energy Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-05-04",
+    "auction_held": true
+  },
+  {
+    "date": "2016-02-18",
+    "committee": "Americas",
+    "reference_entity": "PACIFIC EXPLORATION & PRODUCTION CORPORATION",
+    "issue_number": "9082",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/pacific-exploration-production-corporation/",
+    "source": "dc-isda",
+    "title": "PACIFIC EXPLORATION & PRODUCTION CORPORATION",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-04-06",
+    "auction_held": true
+  },
+  {
+    "date": "2015-12-10",
+    "committee": "EMEA",
+    "reference_entity": "ABENGOA, S.A.",
+    "issue_number": "9081",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/abengoa-sa-3/",
+    "source": "dc-isda",
+    "title": "ABENGOA, S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2016-01-14",
+    "auction_held": true
+  },
+  {
+    "date": "2015-09-19",
+    "committee": "EMEA",
+    "reference_entity": "The Republic of Ukraine",
+    "issue_number": "9080",
+    "credit_event_type": "Repudiation/Moratorium",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/republic-of-ukraine-6/",
+    "source": "dc-isda",
+    "title": "The Republic of Ukraine",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-10-06",
+    "auction_held": true
+  },
+  {
+    "date": "2015-08-03",
+    "committee": "Americas",
+    "reference_entity": "Alpha Appalachia Holdings, Inc.",
+    "issue_number": "9079",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/alpha-appalachia-holdings-inc-fka-massey-energy-company/",
+    "source": "dc-isda",
+    "title": "Alpha Appalachia Holdings, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-09-17",
+    "auction_held": true
+  },
+  {
+    "date": "2015-05-20",
+    "committee": "Americas",
+    "reference_entity": "Sabine Oil & Gas Corporation",
+    "issue_number": "9078",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/sabine-oil-gas-corporation/",
+    "source": "dc-isda",
+    "title": "Sabine Oil & Gas Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-06-23",
+    "auction_held": true
+  },
+  {
+    "date": "2015-02-06",
+    "committee": "Americas",
+    "reference_entity": "RadioShack Corporation",
+    "issue_number": "9076",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/radioshack-corporation-2/",
+    "source": "dc-isda",
+    "title": "RadioShack Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-03-05",
+    "auction_held": true
+  },
+  {
+    "date": "2015-01-15",
+    "committee": "Americas",
+    "reference_entity": "Caesars Entertainment Operating Company, Inc.",
+    "issue_number": "9074",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/caesars-entertainment-operating-co/",
+    "source": "dc-isda",
+    "title": "Caesars Entertainment Operating Company, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-02-19",
+    "auction_held": true
+  },
+  {
+    "date": "2015-01-15",
+    "committee": "Americas",
+    "reference_entity": "Caesars Entertainment Operating Company, Inc.",
+    "issue_number": "9075",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/caesars-entertainment-operating-company-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "Caesars Entertainment Operating Company, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2015-02-19",
+    "auction_held": true
+  },
+  {
+    "date": "2014-07-30",
+    "committee": "Americas",
+    "reference_entity": "Argentine Republic",
+    "issue_number": "9073",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/argentine-republic/",
+    "source": "dc-isda",
+    "title": "Argentine Republic",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-09-03",
+    "auction_held": true
+  },
+  {
+    "date": "2014-08-13",
+    "committee": "EMEA",
+    "reference_entity": "Solocal Group S.A. (formerly known as PagesJaunes Group S.A.)",
+    "issue_number": "9072",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/pages-jaunes-credit-event-2/",
+    "source": "dc-isda",
+    "title": "Solocal Group S.A. (formerly known as PagesJaunes Group S.A.)",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-08-19",
+    "auction_held": true
+  },
+  {
+    "date": "2014-05-01",
+    "committee": "Americas",
+    "reference_entity": "Texas Competitive Electric Holdings Company LLC",
+    "issue_number": "9063",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/texas-competitive-electric-holdings-company-llc-2/",
+    "source": "dc-isda",
+    "title": "Texas Competitive Electric Holdings Company LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-05-21",
+    "auction_held": true
+  },
+  {
+    "date": "2014-04-29",
+    "committee": "Americas",
+    "reference_entity": "Texas Competitive Electric Holdings Company LLC",
+    "issue_number": "9071",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/texas-competitive-electric-holdings-company-llc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "Texas Competitive Electric Holdings Company LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-05-21",
+    "auction_held": true
+  },
+  {
+    "date": "2014-05-01",
+    "committee": "Americas",
+    "reference_entity": "Energy Future Intermediate Holding Company LLC",
+    "issue_number": "9065",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/energy-future-intermediate-holding-company-llc/",
+    "source": "dc-isda",
+    "title": "Energy Future Intermediate Holding Company LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-05-21",
+    "auction_held": true
+  },
+  {
+    "date": "2014-05-01",
+    "committee": "Americas",
+    "reference_entity": "Energy Future Holdings Corp.",
+    "issue_number": "9068",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/energy-future-holdings-corp-4/",
+    "source": "dc-isda",
+    "title": "Energy Future Holdings Corp.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2014-05-21",
+    "auction_held": true
+  },
+  {
+    "date": "2013-11-04",
+    "committee": "Americas",
+    "reference_entity": "OGX PETROLEO E GAS PARTICIPACOES S.A.",
+    "issue_number": "9062",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/ogx-petroleo-e-gas-participacoes-s-a/",
+    "source": "dc-isda",
+    "title": "OGX PETROLEO E GAS PARTICIPACOES S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-12-04",
+    "auction_held": true
+  },
+  {
+    "date": "2013-09-15",
+    "committee": "EMEA",
+    "reference_entity": "CODERE FINANCE (LUXEMBOURG) S.A.",
+    "issue_number": "9061",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/cds/codere-finance-luxembourg-sa/",
+    "source": "dc-isda",
+    "title": "CODERE FINANCE (LUXEMBOURG) S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-10-09",
+    "auction_held": true
+  },
+  {
+    "date": "2013-07-09",
+    "committee": "Americas",
+    "reference_entity": "CENGAGE LEARNING ACQUISITIONS, INC.",
+    "issue_number": "9060",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/cengage-learning-acquisitions-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "CENGAGE LEARNING ACQUISITIONS, INC.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-08-06",
+    "auction_held": true
+  },
+  {
+    "date": "2013-05-20",
+    "committee": "Americas",
+    "reference_entity": "URBI, Desarollos Urbanos, Sociedad Anonima Bursatil De Capital Variable",
+    "issue_number": "9056",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/urbi-desarrollos-urbanos-s-a-b-de-c-v/",
+    "source": "dc-isda",
+    "title": "URBI, Desarollos Urbanos, Sociedad Anonima Bursatil De Capital Variable",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-06-06",
+    "auction_held": true
+  },
+  {
+    "date": "2013-04-16",
+    "committee": "EMEA",
+    "reference_entity": "Bankia, S.A.",
+    "issue_number": "9055",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/bankia-s-a/",
+    "source": "dc-isda",
+    "title": "Bankia, S.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-06-05",
+    "auction_held": true
+  },
+  {
+    "date": "2013-03-18",
+    "committee": "Americas",
+    "reference_entity": "SuperMedia Inc.",
+    "issue_number": "9053",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/supermedia-inc-dex-media-west-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "SuperMedia Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-04-24",
+    "auction_held": true
+  },
+  {
+    "date": "2013-03-18",
+    "committee": "Americas",
+    "reference_entity": "Dex Media West, Inc.",
+    "issue_number": "9054",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/lcds/supermedia-inc-dex-media-west-inc-lcds-credit-event/",
+    "source": "dc-isda",
+    "title": "Dex Media West, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-04-24",
+    "auction_held": true
+  },
+  {
+    "date": "2013-02-01",
+    "committee": "EMEA",
+    "reference_entity": "SNS Bank N.V.",
+    "issue_number": "9051",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/sns-bank-nv/",
+    "source": "dc-isda",
+    "title": "SNS Bank N.V.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-04-04",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "EMEA",
+    "reference_entity": "Mediannuaire",
+    "issue_number": "9050",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/mediannuaire-credit-event/",
+    "source": "dc-isda",
+    "title": "Mediannuaire",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-01-31",
+    "auction_held": true
+  },
+  {
+    "date": "2012-12-17",
+    "committee": "Americas",
+    "reference_entity": "Edison Mission Energy",
+    "issue_number": "9049",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/edison-mission-energy/",
+    "source": "dc-isda",
+    "title": "Edison Mission Energy",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2013-01-16",
+    "auction_held": true
+  },
+  {
+    "date": "2012-11-14",
+    "committee": "Americas",
+    "reference_entity": "OVERSEAS SHIPHOLDING GROUP, INC.",
+    "issue_number": "9048",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/overseas-shipholding-group-inc/",
+    "source": "dc-isda",
+    "title": "OVERSEAS SHIPHOLDING GROUP, INC.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-12-06",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "EMEA",
+    "reference_entity": "Yell Limited",
+    "issue_number": "9047",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/yell-limited-credit-event/",
+    "source": "dc-isda",
+    "title": "Yell Limited",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-11-15",
+    "auction_held": true
+  },
+  {
+    "date": "2012-05-14",
+    "committee": "Americas",
+    "reference_entity": "Residential Capital, LLC",
+    "issue_number": "9045",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/residential-capital-llc/",
+    "source": "dc-isda",
+    "title": "Residential Capital, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-06-06",
+    "auction_held": true
+  },
+  {
+    "date": "2012-05-21",
+    "committee": "Americas",
+    "reference_entity": "Houghton Mifflin Harcourt Publishing Company",
+    "issue_number": "9046",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/houghton-mifflin-harcourt-publishing-company/",
+    "source": "dc-isda",
+    "title": "Houghton Mifflin Harcourt Publishing Company",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-05-30",
+    "auction_held": true
+  },
+  {
+    "date": "2012-04-02",
+    "committee": "Asia ex-Japan",
+    "reference_entity": "SINO-FOREST CORPORATION",
+    "issue_number": "9042",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/sino-forest-corporation-2/",
+    "source": "dc-isda",
+    "title": "SINO-FOREST CORPORATION",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-05-09",
+    "auction_held": true
+  },
+  {
+    "date": "2012-03-28",
+    "committee": "EMEA",
+    "reference_entity": "Eircom",
+    "issue_number": "9044",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/eircom/",
+    "source": "dc-isda",
+    "title": "Eircom",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-05-02",
+    "auction_held": true
+  },
+  {
+    "date": "2012-04-04",
+    "committee": "Americas",
+    "reference_entity": "Hawker Beechcraft Acquisition Company, LLC",
+    "issue_number": "9043",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/hawker-beechcraft-acquisition-co-llc/",
+    "source": "dc-isda",
+    "title": "Hawker Beechcraft Acquisition Company, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-04-26",
+    "auction_held": true
+  },
+  {
+    "date": "2012-03-16",
+    "committee": "EMEA",
+    "reference_entity": "ERC Ireland Finance Limited",
+    "issue_number": "9039",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/erc-ireland-finance-limited/",
+    "source": "dc-isda",
+    "title": "ERC Ireland Finance Limited",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-03-29",
+    "auction_held": true
+  },
+  {
+    "date": "2012-03-15",
+    "committee": "EMEA",
+    "reference_entity": "Financiere Gaillon 7 S.A.S., LR",
+    "issue_number": "5000",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/financier-gaillon-7/",
+    "source": "dc-isda",
+    "title": "Financiere Gaillon 7 S.A.S., LR",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-03-28",
+    "auction_held": true
+  },
+  {
+    "date": "2012-02-27",
+    "committee": "Japan",
+    "reference_entity": "Elpida Memory, Inc.",
+    "issue_number": "9037",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/elpida-memory-inc/",
+    "source": "dc-isda",
+    "title": "Elpida Memory, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-03-22",
+    "auction_held": true
+  },
+  {
+    "date": "2012-03-09",
+    "committee": "EMEA",
+    "reference_entity": "Hellenic Republic",
+    "issue_number": "9038",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-hellenic-republic-3/",
+    "source": "dc-isda",
+    "title": "Hellenic Republic",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-03-19",
+    "auction_held": true
+  },
+  {
+    "date": "2012-01-19",
+    "committee": "Americas",
+    "reference_entity": "Eastman Kodak Company",
+    "issue_number": "9035",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/eastman-kodak-company/",
+    "source": "dc-isda",
+    "title": "Eastman Kodak Company",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-02-22",
+    "auction_held": true
+  },
+  {
+    "date": "2011-12-15",
+    "committee": "EMEA",
+    "reference_entity": "NORTHERN ROCK (ASSET MANAGEMENT) PLC",
+    "issue_number": "9032",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/northern-rock-asset-management-plc/",
+    "source": "dc-isda",
+    "title": "NORTHERN ROCK (ASSET MANAGEMENT) PLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-02-02",
+    "auction_held": true
+  },
+  {
+    "date": "2012-01-12",
+    "committee": "EMEA",
+    "reference_entity": "SEAT PAGINE GIALLE S.P.A.",
+    "issue_number": "9033",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/seat-elcds-credit-event/",
+    "source": "dc-isda",
+    "title": "SEAT PAGINE GIALLE S.P.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2012-01-17",
+    "auction_held": true
+  },
+  {
+    "date": "2011-11-30",
+    "committee": "Americas",
+    "reference_entity": "AMR Corporation",
+    "issue_number": "9031",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/amr-corporation/",
+    "source": "dc-isda",
+    "title": "AMR Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-12-15",
+    "auction_held": true
+  },
+  {
+    "date": "2011-11-28",
+    "committee": "Americas",
+    "reference_entity": "The PMI Group, Inc.",
+    "issue_number": "9029",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-pmi-group-inc/",
+    "source": "dc-isda",
+    "title": "The PMI Group, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-12-13",
+    "auction_held": true
+  },
+  {
+    "date": "2011-10-27",
+    "committee": "EMEA",
+    "reference_entity": "SEAT PAGINE GIALLE S.P.A.",
+    "issue_number": "9030",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/seat-paginegialle-s-p-a-2/",
+    "source": "dc-isda",
+    "title": "SEAT PAGINE GIALLE S.P.A.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-12-09",
+    "auction_held": true
+  },
+  {
+    "date": "2011-11-08",
+    "committee": "Americas",
+    "reference_entity": "DYNEGY HOLDINGS, LLC",
+    "issue_number": "9028",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/dynegy-holdings-llc/",
+    "source": "dc-isda",
+    "title": "DYNEGY HOLDINGS, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-11-29",
+    "auction_held": true
+  },
+  {
+    "date": "2011-11-16",
+    "committee": "EMEA",
+    "reference_entity": "Panrico, S.L. Unipersonal",
+    "issue_number": "9011",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/panrico-credit-event/",
+    "source": "dc-isda",
+    "title": "Panrico, S.L. Unipersonal",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-11-23",
+    "auction_held": true
+  },
+  {
+    "date": "2011-07-15",
+    "committee": "Japan",
+    "reference_entity": "Victor Company of Japan, Limited",
+    "issue_number": "9026",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/victor-company-of-japan-limited/",
+    "source": "dc-isda",
+    "title": "Victor Company of Japan, Limited",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-11-09",
+    "auction_held": true
+  },
+  {
+    "date": "2011-08-25",
+    "committee": "EMEA",
+    "reference_entity": "IRISH LIFE & PERMANENT PUBLIC LIMITED COMPANY",
+    "issue_number": "9025",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/irish-life-permanent-plc-august-restructuring/",
+    "source": "dc-isda",
+    "title": "IRISH LIFE & PERMANENT PUBLIC LIMITED COMPANY",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-10-05",
+    "auction_held": true
+  },
+  {
+    "date": "2011-07-05",
+    "committee": "EMEA",
+    "reference_entity": "IRISH LIFE & PERMANENT PUBLIC LIMITED COMPANY",
+    "issue_number": "9013",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/irish-life-permanent-plc/",
+    "source": "dc-isda",
+    "title": "IRISH LIFE & PERMANENT PUBLIC LIMITED COMPANY",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-07-29",
+    "auction_held": true
+  },
+  {
+    "date": "2011-07-11",
+    "committee": "EMEA",
+    "reference_entity": "The Governor and Company of the Bank of Ireland",
+    "issue_number": "9012",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/the-governor-and-company-of-the-bank-of-ireland/",
+    "source": "dc-isda",
+    "title": "The Governor and Company of the Bank of Ireland",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-07-28",
+    "auction_held": true
+  },
+  {
+    "date": "2011-06-16",
+    "committee": "EMEA",
+    "reference_entity": "ALLIED IRISH BANKS PUBLIC LIMITED COMPANY",
+    "issue_number": "9009",
+    "credit_event_type": "Failure to Pay",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/allied-irish-banks-plc-3/",
+    "source": "dc-isda",
+    "title": "ALLIED IRISH BANKS PUBLIC LIMITED COMPANY",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-06-30",
+    "auction_held": true
+  },
+  {
+    "date": "2010-11-23",
+    "committee": "EMEA",
+    "reference_entity": "ANGLO IRISH BANK CORPORATION LIMITED",
+    "issue_number": "9008",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/anglo-irish-bank-corporation-limited-credit-event-december-restructuring/",
+    "source": "dc-isda",
+    "title": "ANGLO IRISH BANK CORPORATION LIMITED",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2011-02-02",
+    "auction_held": true
+  },
+  {
+    "date": "2010-11-09",
+    "committee": "Americas",
+    "reference_entity": "Ambac Financial Group, Inc.",
+    "issue_number": "9001",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/ambac-financial-group-inc/",
+    "source": "dc-isda",
+    "title": "Ambac Financial Group, Inc.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-12-10",
+    "auction_held": true
+  },
+  {
+    "date": "2010-11-24",
+    "committee": "EMEA",
+    "reference_entity": "ANGLO IRISH BANK CORPORATION LIMITED",
+    "issue_number": "9002",
+    "credit_event_type": "Restructuring",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/anglo-irish-bank-corporation-limited/",
+    "source": "dc-isda",
+    "title": "ANGLO IRISH BANK CORPORATION LIMITED",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-12-09",
+    "auction_held": true
+  },
+  {
+    "date": "2011-04-14",
+    "committee": "Japan",
+    "reference_entity": "Takefuji Corporation",
+    "issue_number": "9000",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/takefuji-corporation/",
+    "source": "dc-isda",
+    "title": "Takefuji Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-10-28",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "Americas",
+    "reference_entity": "Boston Generating, LLC",
+    "issue_number": "8000",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/boston-generating-llc/",
+    "source": "dc-isda",
+    "title": "Boston Generating, LLC",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-09-21",
+    "auction_held": true
+  },
+  {
+    "date": null,
+    "committee": "EMEA",
+    "reference_entity": "Truvo (formerly known as World Directories)",
+    "issue_number": "7000",
+    "credit_event_type": null,
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/lcds/truvo-usa-llc-credit-event/",
+    "source": "dc-isda",
+    "title": "Truvo (formerly known as World Directories)",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-09-09",
+    "auction_held": true
+  },
+  {
+    "date": "2010-06-29",
+    "committee": "EMEA",
+    "reference_entity": "TRUVO SUBSIDIARY CORP.",
+    "issue_number": "3000",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/truvo-subsidiary-corp/",
+    "source": "dc-isda",
+    "title": "TRUVO SUBSIDIARY CORP.",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-07-15",
+    "auction_held": true
+  },
+  {
+    "date": "2010-03-26",
+    "committee": "Americas",
+    "reference_entity": "Ambac Assurance Corporation",
+    "issue_number": "4000",
+    "credit_event_type": "Bankruptcy",
+    "decision": "DC credit event determination (auction held)",
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/cds/ambac-assurance-corporation/",
+    "source": "dc-isda",
+    "title": "Ambac Assurance Corporation",
+    "tags": [
+      "auction"
+    ],
+    "auction_date": "2010-06-04",
+    "auction_held": true
+  },
+  {
+    "date": "2012-06-01",
+    "committee": null,
+    "reference_entity": "Dc Requests Feed",
+    "issue_number": null,
+    "credit_event_type": null,
+    "decision": null,
+    "doc_type": "decision",
+    "url": "https://www.cdsdeterminationscommittees.org/2012/06/dc-requests-feed/",
+    "source": "rest-api",
+    "title": "DC Requests Feed",
+    "tags": [],
+    "auction_date": null,
+    "auction_held": false
+  },
+  {
     "date": "2025-10-21",
     "committee": "EMEA",
     "reference_entity": "Ardagh Packaging Finance plc",

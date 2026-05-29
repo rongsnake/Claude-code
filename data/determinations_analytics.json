@@ -1,54 +1,76 @@
 {
-  "total_determinations": 6,
-  "total_auctions": 3,
+  "total_determinations": 130,
+  "total_auctions": 254,
   "date_min": "2009-12-09",
-  "date_max": "2025-10-21",
-  "distinct_reference_entities": 5,
-  "credit_events_tagged": 3,
-  "pct_restructuring_of_events": 33.3,
-  "credit_event_occurred_count": 2,
-  "auctions_count": 2,
+  "date_max": "2026-01-12",
+  "distinct_reference_entities": 119,
+  "credit_events_tagged": 102,
+  "pct_restructuring_of_events": 18.6,
+  "credit_event_occurred_count": 127,
+  "auctions_count": 120,
   "days_to_auction": {
-    "count": 2,
-    "mean": 71.5,
-    "median": 71.5,
-    "min": 2,
-    "max": 141
+    "count": 120,
+    "mean": 59.9,
+    "median": 30.5,
+    "min": -168,
+    "max": 414
   },
   "credit_event_type_counts": {
-    "Bankruptcy": 2,
-    "Restructuring": 1
+    "Bankruptcy": 51,
+    "Failure to Pay": 31,
+    "Restructuring": 19,
+    "Repudiation/Moratorium": 1
   },
   "credit_event_type_pct": {
-    "Bankruptcy": 66.7,
-    "Restructuring": 33.3
+    "Bankruptcy": 50.0,
+    "Failure to Pay": 30.4,
+    "Restructuring": 18.6,
+    "Repudiation/Moratorium": 1.0
   },
   "by_region_counts": {
-    "EMEA": 3,
-    "Americas": 2,
+    "Americas": 68,
+    "EMEA": 55,
+    "Japan": 3,
+    "Asia ex-Japan": 2,
+    "Unknown": 1,
     "All DCs": 1
   },
   "by_year_counts": {
     "2009": 1,
-    "2010": 1,
-    "2012": 1,
-    "2020": 1,
-    "2025": 2
+    "2010": 6,
+    "2011": 12,
+    "2012": 15,
+    "2013": 8,
+    "2014": 6,
+    "2015": 7,
+    "2016": 8,
+    "2017": 8,
+    "2018": 6,
+    "2019": 13,
+    "2020": 17,
+    "2022": 4,
+    "2023": 3,
+    "2024": 4,
+    "2025": 4,
+    "2026": 1
   },
   "auction_final_price": {
-    "count": 2,
-    "mean": 30.14,
-    "median": 30.14,
-    "min": 26.38,
-    "max": 33.9
+    "count": 253,
+    "mean": 41.44,
+    "median": 31.5,
+    "min": 0.0,
+    "max": 105.75
   },
   "avg_final_price_by_event": {
-    "Bankruptcy": 26.38
+    "Bankruptcy": 35.37,
+    "Failure to Pay": 36.55,
+    "Repudiation/Moratorium": 80.62,
+    "Restructuring": 63.38
   },
   "match_status_counts": {
-    "determination_only": 4,
-    "matched": 2,
-    "auction_only": 1
+    "auction_only": 130,
+    "matched": 124,
+    "determination_only": 6
   },
-  "reconciliation_rate_pct": 33.3
+  "reconciliation_rate_pct": 95.4
 }

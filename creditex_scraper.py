@@ -174,7 +174,24 @@ def parse_results(html: str, ticker: str, url: str) -> Auction:
     )
 
 
-# ── live scrape ────────────────────────────────────────────────────────────────
+# ── live scrape (JSON/CSV API + browser fallback) ───────────────────────────────
+# creditfixings.com is now a client-side Angular app: the homepage HTML is an
+# empty <app-root> shell, so the old results.jsp HTML scrape returns nothing.
+# The app is backed by a JSON/CSV API which we hit directly:
+#   /api/history/download  → CSV of every settled auction WITH the final price
+#   /api/auctions          → JSON list (legal name, ticker, region, currency,
+#                            isdaLink to the DC determination, auction state)
+# If a plain request is blocked (403 / empty), `fetch_text` transparently retries
+# with a real headless Chromium via Playwright (see cds_dc_scraper.browser_fetch).
+HISTORY_CSV_API = BASE_URL + "/api/history/download"
+AUCTIONS_API = BASE_URL + "/api/auctions"
+
+# CDS debt tiers → coarse transaction_type used by the dashboard.
+_TIER_MAP = {"SENIOR": "Senior", "SNRFOR": "Senior", "SUBLT2": "Subordinated",
+             "SUBORD": "Subordinated", "SECDOM": "Senior Secured", "LIEN2": "2nd Lien",
+             "LIEN3": "3rd Lien", "PREFT1": "Preferred"}
+
+
 def _session():
     import requests
 
@@ -183,55 +200,88 @@ def _session():
     return s
 
 
-def discover_tickers(session) -> list[str]:
-    """Parse the homepage for results.jsp?ticker=… links; fall back to known list."""
-    from bs4 import BeautifulSoup
-
-    found: list[str] = []
-    try:
-        resp = session.get(BASE_URL + "/", timeout=REQUEST_TIMEOUT)
-        if resp.status_code == 200:
-            soup = BeautifulSoup(resp.text, "html.parser")
-            for a in soup.find_all("a", href=True):
-                m = re.search(r"ticker=([^&\"']+)", a["href"])
-                if m:
-                    found.append(m.group(1))
-    except Exception as exc:
-        log.warning("ticker discovery failed: %s", exc)
-    tickers = sorted(set(found) | set(KNOWN_TICKERS))
-    log.info("Discovered %d tickers (%d from site)", len(tickers), len(set(found)))
-    return tickers
+def _parse_history_date(s: str | None) -> str | None:
+    """'13-May-26' → '2026-05-13'."""
+    if not s:
+        return None
+    from datetime import datetime
+    for fmt in ("%d-%b-%y", "%d-%b-%Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s.strip(), fmt).date().isoformat()
+        except ValueError:
+            continue
+    return _parse_date(s)
 
 
 def scrape_live() -> list[Auction]:
+    """Pull real auctions from the creditfixings JSON/CSV API.
+
+    Uses cds_dc_scraper.fetch_text, which falls back to a headless browser when a
+    plain HTTP request is blocked. Raises RuntimeError if nothing is reachable.
+    """
     try:
         import requests  # noqa
-        from bs4 import BeautifulSoup  # noqa
     except ImportError as exc:
         raise SystemExit("pip install requests beautifulsoup4 lxml") from exc
 
-    import requests
+    import csv
+    import io
+    from cds_dc_scraper import fetch_text
 
     session = _session()
-    try:
-        probe = session.get(BASE_URL + "/", timeout=REQUEST_TIMEOUT)
-    except requests.RequestException as exc:
-        raise RuntimeError(f"Cannot reach {BASE_URL}: {exc}") from exc
-    if probe.status_code == 403:
+
+    # 1) live index (region / currency / legal name / DC link) keyed by ticker
+    meta: dict[str, dict] = {}
+    status, body = fetch_text(session, AUCTIONS_API, accept="application/json")
+    if body:
+        try:
+            for it in json.loads(body):
+                tk = (it.get("ticker") or "").strip()
+                if tk:
+                    meta[tk] = it
+        except json.JSONDecodeError:
+            log.warning("auctions index was not valid JSON")
+    log.info("Auction index: %d live entries", len(meta))
+
+    # 2) authoritative history CSV with final prices
+    status, body = fetch_text(session, HISTORY_CSV_API, accept="text/csv")
+    if not body:
         raise RuntimeError(
-            f"{BASE_URL} returned 403 (bot protection). Run from a permitted network."
+            f"creditfixings API unreachable (status={status}). "
+            "Run from a permitted network or install Playwright for the browser fallback."
         )
 
     out: list[Auction] = []
-    for ticker in discover_tickers(session):
-        url = RESULTS.format(ticker=ticker)
+    reader = csv.DictReader(io.StringIO(body))
+    for row in reader:
+        ticker = (row.get("Ticker") or "").strip() or None
+        m = meta.get(ticker or "", {})
+        tier = (row.get("Tier") or m.get("tier") or "").strip().upper()
+        fp = (row.get("Final Price") or "").strip()
         try:
-            r = session.get(url, timeout=REQUEST_TIMEOUT)
-            if r.status_code == 200:
-                out.append(parse_results(r.text, ticker, url))
-        except Exception as exc:
-            log.debug("ticker %s failed: %s", ticker, exc)
-        time.sleep(POLITE_DELAY)
+            final_price = float(fp) if fp not in ("", "N/A", "-") else None
+        except ValueError:
+            final_price = None
+        entity = (m.get("legalName") or m.get("shortName") or row.get("Name") or "").strip()
+        link = (m.get("isdaLink") or "").strip()
+        out.append(
+            Auction(
+                reference_entity=entity or None,
+                auction_date=_parse_history_date(row.get("Auction Date")),
+                currency=m.get("CCY") or None,
+                final_price=final_price,
+                initial_market_midpoint=None,
+                net_open_interest_amount=None,
+                net_open_interest_direction=None,
+                transaction_type=_TIER_MAP.get(tier, tier.title() or "Senior"),
+                ticker=ticker,
+                url=link or (RESULTS.format(ticker=ticker) if ticker else BASE_URL + "/"),
+                source="creditfixings",
+                title=f"{entity or ticker} Credit Event Auction",
+            )
+        )
+    log.info("Parsed %d auctions from history CSV (%d with final price)",
+             len(out), sum(1 for a in out if a.final_price is not None))
     return out
 
 
@@ -296,8 +346,10 @@ def run(mode: str = "live") -> pd.DataFrame:
         aucs = scrape_live()
         if not aucs:
             raise RuntimeError("No auctions parsed.")
-        urls = {a.url for a in aucs}
-        aucs += [a for a in SEED_AUCTIONS if a.url not in urls]
+        # fold in any verified seed not already covered by live data (by entity)
+        have = {(a.reference_entity or "").strip().lower() for a in aucs}
+        aucs += [a for a in SEED_AUCTIONS
+                 if (a.reference_entity or "").strip().lower() not in have]
         return save(aucs)
     except RuntimeError as exc:
         log.error("LIVE AUCTION SCRAPE FAILED: %s", exc)

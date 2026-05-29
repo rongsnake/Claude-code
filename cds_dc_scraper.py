@@ -48,6 +48,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 log = logging.getLogger("cds_dc")
 
 BASE_URL = "https://www.cdsdeterminationscommittees.org"
+# ISDA's official auction administrator (creditfixings.com) exposes a JSON index
+# of every credit-event auction, each linking back to its DC determination on the
+# DC site (field `isdaLink`). It is the most reliable index of recent
+# determinations, so we use it to discover real, cleanly-named determinations
+# (the DC WordPress site stores its decision PDFs under MD5-hashed filenames,
+# which carry no entity/date signal).
+CREDITFIXINGS_AUCTIONS_API = "https://www.creditfixings.com/api/auctions"
 DATA_DIR = Path("data")
 DATA_DIR.mkdir(exist_ok=True)
 
@@ -254,6 +261,207 @@ def _session():
     return s
 
 
+# ── browser fetch fallback ──────────────────────────────────────────────────────
+# Some networks (and some sites' bot protection) return 403 to plain `requests`,
+# and creditfixings.com is a client-side Angular app whose data only loads via
+# JS/XHR. When a plain fetch is blocked or empty, fall back to a real headless
+# Chromium via Playwright, which uses a genuine browser network stack/TLS.
+_PLAYWRIGHT_OK: bool | None = None
+
+
+def _playwright_available() -> bool:
+    global _PLAYWRIGHT_OK
+    if _PLAYWRIGHT_OK is None:
+        try:
+            import playwright  # noqa: F401
+            _PLAYWRIGHT_OK = True
+        except ImportError:
+            _PLAYWRIGHT_OK = False
+            log.warning("playwright not installed; browser fallback disabled "
+                        "(pip install playwright && python -m playwright install chromium)")
+    return _PLAYWRIGHT_OK
+
+
+def browser_fetch(url: str, *, timeout_ms: int = 45000) -> str | None:
+    """Fetch `url` with a real headless Chromium and return the response body
+    (text). Returns None if Playwright is unavailable or the fetch fails."""
+    if not _playwright_available():
+        return None
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return None
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            try:
+                ctx = browser.new_context(user_agent=USER_AGENT)
+                # APIRequestContext uses the browser's network stack — ideal for
+                # JSON/CSV endpoints and for slipping past basic bot protection.
+                resp = ctx.request.get(url, timeout=timeout_ms)
+                if resp.ok:
+                    return resp.text()
+                log.warning("browser_fetch %s -> HTTP %s", url, resp.status)
+                return None
+            finally:
+                browser.close()
+    except Exception as exc:  # pragma: no cover - environment dependent
+        log.warning("browser_fetch failed for %s: %s", url, exc)
+        return None
+
+
+def fetch_text(session, url: str, *, accept: str = "*/*") -> tuple[int, str | None]:
+    """GET `url` via requests; on 403/empty/error, retry with headless browser.
+    Returns (status_code, body or None). status_code 0 means transport error."""
+    import requests
+
+    try:
+        r = session.get(url, timeout=REQUEST_TIMEOUT, headers={"Accept": accept})
+        status, body = r.status_code, r.text
+    except requests.RequestException as exc:
+        log.debug("requests failed for %s: %s", url, exc)
+        status, body = 0, None
+    if status == 200 and body and body.strip():
+        return status, body
+    # blocked, empty, or errored -> try a real browser
+    log.info("Falling back to headless browser for %s (requests status=%s)", url, status)
+    body = browser_fetch(url)
+    return (200 if body else status), body
+
+
+# ── determinations discovery via the official auction index ─────────────────────
+_REGION_ALIASES = {"america": "Americas", "americas": "Americas", "us": "Americas",
+                   "europe": "EMEA", "emea": "EMEA"}
+
+
+def _region_to_committee(region: str | None) -> str | None:
+    if not region:
+        return None
+    key = region.strip().lower()
+    if key in _REGION_ALIASES:
+        return _REGION_ALIASES[key]
+    return REGIONS.get(key.replace(" ", "-"), region.strip())
+
+
+_MONTH_DATE_RE = re.compile(
+    r"\b(\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|"
+    r"October|November|December)\s+20\d{2}|"
+    r"(?:January|February|March|April|May|June|July|August|September|October|"
+    r"November|December)\s+\d{1,2},\s*20\d{2}|20\d{2}-\d{2}-\d{2})\b",
+    re.I,
+)
+
+
+def enrich_from_dc_page(session, rec: Determination) -> Determination:
+    """Fetch the determination's page on the DC site and extract a real
+    determination date (earliest dated step, on/before the auction) plus the
+    credit-event type. Honest no-op if the page can't be read/parsed."""
+    from bs4 import BeautifulSoup
+    from datetime import date as _date
+
+    if not rec.url or "cdsdeterminationscommittees.org" not in rec.url:
+        return rec
+    status, body = fetch_text(session, rec.url, accept="text/html")
+    if not body:
+        return rec
+    try:
+        text = BeautifulSoup(body, "html.parser").get_text(" ", strip=True)
+    except Exception:
+        return rec
+
+    rec.credit_event_type = rec.credit_event_type or _classify(text, CREDIT_EVENTS)
+    issue = re.search(r"Issue Number\s*(\d{6,})", text)
+    if issue:
+        rec.issue_number = rec.issue_number or issue.group(1)
+
+    # parse every date on the page; the determination precedes its auction
+    parsed: list[str] = []
+    for tok in _MONTH_DATE_RE.findall(text):
+        iso = _to_iso(tok)
+        if iso:
+            parsed.append(iso)
+    if parsed:
+        auc = rec.auction_date
+        if auc:
+            # the credit-event determination precedes its auction, but not by
+            # years — older dates on the page are stale references. Take the
+            # earliest determination date within ~18 months before the auction.
+            from datetime import date as _d
+            ay, am, ad = (int(x) for x in auc.split("-"))
+            lo = (_d(ay, am, ad) - timedelta(days=548)).isoformat()
+            window = sorted(d for d in parsed if lo <= d <= auc)
+            if window:
+                rec.date = window[0]
+            else:
+                before = sorted(d for d in parsed if d <= auc)
+                rec.date = before[-1] if before else min(parsed)
+        else:
+            rec.date = min(parsed)
+    time.sleep(POLITE_DELAY)
+    return rec
+
+
+def _to_iso(token: str) -> str | None:
+    from datetime import datetime
+    token = token.strip()
+    for fmt in ("%d %B %Y", "%B %d, %Y", "%B %d %Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(token, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
+
+
+def _event_from_slug(url: str) -> str | None:
+    return _classify(url.replace("-", " ").replace("_", " "), CREDIT_EVENTS)
+
+
+def fetch_via_isda_index(session) -> list[Determination]:
+    """Discover real, cleanly-named DC determinations from the official ISDA
+    auction index (creditfixings /api/auctions). Each entry carries the legal
+    entity name, DC region, ticker, and a link (`isdaLink`) to the actual DC
+    determination document on the DC site."""
+    status, body = fetch_text(session, CREDITFIXINGS_AUCTIONS_API, accept="application/json")
+    if not body:
+        log.warning("ISDA auction index unreachable (status=%s)", status)
+        return []
+    try:
+        items = json.loads(body)
+    except json.JSONDecodeError as exc:
+        log.warning("ISDA auction index not JSON: %s", exc)
+        return []
+
+    out: list[Determination] = []
+    for it in items:
+        link = (it.get("isdaLink") or "").strip()
+        entity = (it.get("legalName") or it.get("shortName") or "").strip()
+        if not entity:
+            continue
+        adate = (it.get("auctionDate") or "")[:10] or None
+        # the DC determination precedes the auction; if the document slug encodes
+        # an explicit date/event use it, else leave date None (don't fabricate).
+        det_date = _parse_date(link) if link else None
+        out.append(
+            Determination(
+                date=det_date,
+                committee=_region_to_committee(it.get("dcRegion")),
+                reference_entity=entity,
+                issue_number=str(it.get("auctionID")) if it.get("auctionID") else None,
+                credit_event_type=_event_from_slug(link) if link else None,
+                decision="DC credit event determination (auction held)",
+                doc_type="decision",
+                url=link or BASE_URL,
+                source="dc-isda",
+                title=entity,
+                tags=["auction"],
+                auction_date=adate,
+                auction_held=True,
+            )
+        )
+    log.info("ISDA index: %d determinations with clean entity names", len(out))
+    return out
+
+
 def fetch_via_rest(session, max_pages: int = 20) -> list[Determination]:
     """Pull documents/posts from the WordPress REST API."""
     out: list[Determination] = []
@@ -349,8 +557,26 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
     return rec
 
 
+_HASH_RE = re.compile(r"^[0-9a-f]{16,}$", re.I)
+
+
+def _is_garbage_entity(name: str | None) -> bool:
+    """Reject MD5-style hashed filenames masquerading as entity names."""
+    if not name:
+        return False
+    compact = re.sub(r"[^0-9a-zA-Z]", "", name)
+    return bool(_HASH_RE.match(compact)) or (
+        sum(c.isdigit() for c in compact) > len(compact) * 0.5 and len(compact) > 12
+    )
+
+
 def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
-    """Run the full live scrape. Raises RuntimeError if the site is unreachable."""
+    """Run the full live scrape. Raises RuntimeError if no source is reachable.
+
+    Primary source is the official ISDA auction index (clean entity names +
+    links to DC determinations); the DC WordPress REST/sitemap are kept only as
+    a supplementary fallback and are filtered for hash-garbage filenames.
+    """
     try:
         import requests  # noqa
         from bs4 import BeautifulSoup  # noqa
@@ -359,34 +585,57 @@ def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
             "Install deps first: pip install requests beautifulsoup4 lxml"
         ) from exc
 
-    import requests
-
     session = _session()
-    # connectivity probe
-    try:
-        probe = session.get(BASE_URL, timeout=REQUEST_TIMEOUT)
-    except requests.RequestException as exc:
-        raise RuntimeError(f"Cannot reach {BASE_URL}: {exc}") from exc
-    if probe.status_code == 403:
-        raise RuntimeError(
-            f"{BASE_URL} returned 403 (bot protection). Run this scraper from a "
-            "network/host that the DC site permits (e.g. your own machine)."
-        )
 
     records: dict[str, Determination] = {}
+
+    # 1) primary: official auction index → real, cleanly-named determinations
+    try:
+        for rec in fetch_via_isda_index(session):
+            if rec.url:
+                records.setdefault(rec.url, rec)
+    except Exception as exc:
+        log.warning("fetch_via_isda_index failed: %s", exc)
+
+    # 2) supplementary: DC WordPress REST/sitemap. The DC site stores its decision
+    #    PDFs under MD5-hashed filenames, so only keep rows that carry a real,
+    #    human-readable entity name (clean slugs); never emit a hash as data.
     for fetcher in (fetch_via_rest, fetch_via_sitemap):
         try:
             for rec in fetcher(session):
-                if rec.url:
-                    records.setdefault(rec.url, rec)
+                if not rec.url or rec.url in records:
+                    continue
+                if not rec.reference_entity or _is_garbage_entity(rec.reference_entity):
+                    continue
+                records.setdefault(rec.url, rec)
         except Exception as exc:
             log.warning("%s failed: %s", fetcher.__name__, exc)
 
     recs = list(records.values())
-    log.info("Discovered %d documents", len(recs))
+    if not recs:
+        raise RuntimeError(
+            "No determinations discoverable (auction index + DC site both empty/"
+            "blocked). Run from a permitted network."
+        )
+    log.info("Discovered %d documents (%d with a known entity)",
+             len(recs), sum(1 for r in recs if r.reference_entity))
+
+    # enrich the auction-linked determinations by scraping their DC-site page for
+    # a real determination date + credit event (skip rows that already have both)
+    to_enrich = [r for r in recs if r.source == "dc-isda"
+                 and "cdsdeterminationscommittees.org" in (r.url or "")]
+    if to_enrich:
+        log.info("Enriching %d determinations from their DC-site pages…", len(to_enrich))
+        for rec in to_enrich:
+            try:
+                enrich_from_dc_page(session, rec)
+            except Exception as exc:
+                log.debug("page enrich failed for %s: %s", rec.url, exc)
 
     if parse_pdfs:
-        decisions = [r for r in recs if r.doc_type == "decision"]
+        # enrich only real DC-site PDFs (skip the clean isda-index rows)
+        decisions = [r for r in recs if r.doc_type == "decision"
+                     and r.url.lower().endswith(".pdf") and r.source != "dc-isda"]
         log.info("Parsing %d decision PDFs…", len(decisions))
         for rec in decisions:
             enrich_with_pdf(session, rec)
