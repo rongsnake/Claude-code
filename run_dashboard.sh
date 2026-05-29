@@ -19,9 +19,15 @@ for arg in "$@"; do
   esac
 done
 
-if [ ! -f "data/determinations.csv" ] || [ -n "${SCRAPE_MODE}" ]; then
-  echo "==> Refreshing determinations data…"
+if [ ! -f "data/reconciled.csv" ] || [ -n "${SCRAPE_MODE}" ]; then
+  echo "==> Refreshing DC determinations…"
   python cds_dc_scraper.py ${SCRAPE_MODE} || true
+  echo "==> Refreshing Creditex auctions…"
+  python creditex_scraper.py ${SCRAPE_MODE} || true
+  echo "==> Reconciling determinations × auctions…"
+  python reconcile.py || true
+  echo "==> Computing analytics…"
+  python analytics.py || true
 fi
 
 echo "==> Building static dashboard (dashboard.html)…"

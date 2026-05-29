@@ -9,8 +9,12 @@ Committees** (CDS = credit default swaps; source
 ## Layout
 - `cds_dc_scraper.py` — scrape DC site → `data/determinations.csv`/`.json`.
   Modes: live (default), `--pdf`, `--demo`, `--seed-only`.
-- `analytics.py` — derived columns + metrics → `determinations_tidy.csv`,
-  `determinations_analytics.json`.
+- `creditex_scraper.py` — scrape Creditex/creditfixings.com auctions
+  (`results.jsp?ticker=…`) → `data/auctions.csv`. Same modes.
+- `reconcile.py` — join auctions↔determinations → `data/reconciled.csv`
+  (`match_status`: matched / determination_only / auction_only).
+- `analytics.py` — derived columns + metrics over the reconciled table →
+  `determinations_tidy.csv`, `determinations_analytics.json`.
 - `build_dashboard.py` — static `dashboard.html` (deploy target: **gcburton.org**).
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
 
@@ -27,6 +31,15 @@ Committees** (CDS = credit default swaps; source
   permitted network. Without it the scraper falls back to verified seed refs.
 - Deploy to gcburton.org happens from the user's own host (no creds in CI/cloud).
 
+## Auctions & reconciliation
+- Auction schema: `reference_entity, auction_date, currency, final_price,
+  initial_market_midpoint, net_open_interest_amount/direction, transaction_type,
+  ticker, url, source`. `final_price` = recovery / cash-settlement price.
+- Reconcile by normalised entity name + date window (auction on/after the DC
+  determination). Dashboards/analytics prefer `reconciled.csv` when present.
+
 ## Workflow
 - Branch: `claude/setup-cds-scraper-dashboard-i0TxS`; PR **#1**.
-- After changes: `python analytics.py && python build_dashboard.py`, then commit.
+- Pipeline: `cds_dc_scraper.py` → `creditex_scraper.py` → `reconcile.py` →
+  `analytics.py` → `build_dashboard.py` (or just `bash run_dashboard.sh`).
+- After changes regenerate artifacts, then commit.

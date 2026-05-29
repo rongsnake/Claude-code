@@ -53,21 +53,26 @@ as an instruction bus is **GitHub**, which both sides already share:
 
 ## Current state
 
-- ✅ Scraper, analytics, static + Streamlit dashboards built and tested.
-- ⚠️ **Live data not refreshed here**: `cdsdeterminationscommittees.org` returns
-  403 (bot protection) and this sandbox's egress is allowlisted, so it can't
-  reach the site. Committed data is the **6 verified seed references**.
+- ✅ DC scraper, **Creditex auction scraper**, **reconciliation**, analytics, and
+  static + Streamlit dashboards built and tested (recovery / days-to-auction).
+- ⚠️ **Live data not refreshed here**: both `cdsdeterminationscommittees.org` and
+  `creditfixings.com` return 403 (bot protection) and this sandbox's egress is
+  allowlisted, so neither is reachable. Committed data is the verified seed
+  (6 determinations + 3 auctions; Hertz & Ardagh reconciled with real recoveries).
 - ⚠️ **Not deployed to gcburton.org**: no hosting creds in this session.
 
 ## Next steps (run on the Pi / gcburton.org host — it can reach the DC site)
 
 ```bash
 bash setup.sh && source .venv/bin/activate
-python cds_dc_scraper.py --pdf                  # FULL live refresh (+ parse PDFs)
+python cds_dc_scraper.py --pdf                  # FULL live DC refresh (+ parse PDFs)
+python creditex_scraper.py                      # live Creditex auction scrape
+python reconcile.py                             # join auctions ↔ determinations
 python analytics.py                             # refresh metrics + tidy export
 python build_dashboard.py --output public/index.html
 # deploy, e.g.:  rsync -av public/index.html gcburton.org:/var/www/html/
 streamlit run dashboard.py                      # optional: interactive + SQL box
+# (all of the above except deploy: `bash run_dashboard.sh`)
 ```
 
 If the live scrape still 403s from the Pi, the site may require a residential IP

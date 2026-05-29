@@ -1,18 +1,19 @@
 {
   "total_determinations": 6,
+  "total_auctions": 3,
   "date_min": "2009-12-09",
   "date_max": "2025-10-21",
   "distinct_reference_entities": 5,
   "credit_events_tagged": 3,
   "pct_restructuring_of_events": 33.3,
-  "credit_event_occurred_count": 0,
-  "auctions_count": 0,
+  "credit_event_occurred_count": 2,
+  "auctions_count": 2,
   "days_to_auction": {
-    "count": 0,
-    "mean": null,
-    "median": null,
-    "min": null,
-    "max": null
+    "count": 2,
+    "mean": 71.5,
+    "median": 71.5,
+    "min": 2,
+    "max": 141
   },
   "credit_event_type_counts": {
     "Bankruptcy": 2,
@@ -33,5 +34,21 @@
     "2012": 1,
     "2020": 1,
     "2025": 2
-  }
+  },
+  "auction_final_price": {
+    "count": 2,
+    "mean": 30.14,
+    "median": 30.14,
+    "min": 26.38,
+    "max": 33.9
+  },
+  "avg_final_price_by_event": {
+    "Bankruptcy": 26.38
+  },
+  "match_status_counts": {
+    "determination_only": 4,
+    "matched": 2,
+    "auction_only": 1
+  },
+  "reconciliation_rate_pct": 33.3
 }

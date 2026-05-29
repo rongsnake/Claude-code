@@ -25,13 +25,13 @@ import pandas as pd
 
 import analytics
 
-DEFAULT_INPUT = Path("data/determinations.csv")
 DEFAULT_OUTPUT = Path("dashboard.html")
 
 ROW_COLS = [
     "date", "year", "committee", "reference_entity", "credit_event_type",
     "decision", "days_to_auction", "auction_held", "is_restructuring",
-    "credit_event_occurred", "url",
+    "credit_event_occurred", "final_price", "auction_date", "ticker",
+    "currency", "net_open_interest_amount", "match_status", "url",
 ]
 
 
@@ -80,13 +80,16 @@ def build(input_path: Path, output_path: Path) -> Path:
     by_region = d["committee"].fillna("Unknown").value_counts()
     by_event = d["credit_event_type"].fillna("Not specified").value_counts()
 
+    recent_cols = ["date", "committee", "reference_entity", "credit_event_type",
+                   "final_price", "auction_date", "decision", "url"]
     recent = (
         d.sort_values("date", ascending=False)
-        .head(25)[["date", "committee", "reference_entity", "credit_event_type",
-                   "decision", "url"]]
+        .head(25)[[c for c in recent_cols if c in d.columns]]
         .copy()
     )
     recent["date"] = recent["date"].dt.date.astype(str)
+    if "auction_date" in recent:
+        recent["auction_date"] = pd.to_datetime(recent["auction_date"], errors="coerce").dt.date.astype(str)
     recent = recent.astype(object).where(pd.notna(recent), "—")
 
     payload = {
@@ -101,6 +104,10 @@ def build(input_path: Path, output_path: Path) -> Path:
         "by_year": {"x": [int(y) for y in by_year.index], "y": [int(v) for v in by_year.values]},
         "by_region": {"labels": list(by_region.index), "values": [int(v) for v in by_region.values]},
         "by_event": {"x": list(by_event.index), "y": [int(v) for v in by_event.values]},
+        "by_recovery": {
+            "x": list(metrics.get("avg_final_price_by_event", {}).keys()),
+            "y": [round(v, 2) for v in metrics.get("avg_final_price_by_event", {}).values()],
+        },
         "recent": recent.to_dict(orient="records"),
         "rows": _clean_rows(df),
         "analytics": metrics,
@@ -185,6 +192,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
         <option value="count">Count of determinations</option>
         <option value="pct">% of total</option>
         <option value="avg_days_to_auction">Avg days to auction</option>
+        <option value="avg_final_price">Avg final price (recovery)</option>
         <option value="credit_event_rate">Credit-event rate (%)</option>
       </select>
       <button id="dlCsv">⬇ Raw CSV</button>
@@ -199,12 +207,13 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <div class="card"><h3>By committee region</h3><div id="byRegion" style="height:320px"></div></div>
   </div>
   <div class="card full"><h3>By credit-event type</h3><div id="byEvent" style="height:320px"></div></div>
+  <div class="card full"><h3>Avg auction final price / recovery (Creditex) by credit-event type</h3><div id="byRecovery" style="height:320px"></div></div>
 
   <div class="card full">
-    <h3>Most recent determinations</h3>
+    <h3>Most recent determinations (reconciled with Creditex auctions)</h3>
     <div class="tablewrap"><table id="recent"><thead><tr>
       <th>Date</th><th>Committee</th><th>Reference entity</th>
-      <th>Credit event</th><th>Decision</th><th>Doc</th>
+      <th>Credit event</th><th>Final price</th><th>Auction date</th><th>Decision</th><th>Doc</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 </div>
@@ -238,6 +247,11 @@ Plotly.newPlot('byRegion', [{type:'pie', labels:DATA.by_region.labels, values:DA
   textinfo:'label+percent', marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}}],
   {...layout, margin:{t:10,r:10,b:10,l:10}}, conf);
 Plotly.newPlot('byEvent', [{type:'bar', x:DATA.by_event.x, y:DATA.by_event.y, marker:{color:'#37c98b'}}], layout, conf);
+if (DATA.by_recovery.x.length)
+  Plotly.newPlot('byRecovery', [{type:'bar', x:DATA.by_recovery.x, y:DATA.by_recovery.y, marker:{color:'#c86bff'},
+    text:DATA.by_recovery.y.map(v=>v.toFixed(2)), textposition:'auto'}], {...layout, yaxis:{range:[0,100], title:'final price'}}, conf);
+else document.getElementById('byRecovery').innerHTML =
+  '<div style="color:#8aa0b6;padding:24px">No auction final-price data yet — run a live Creditex refresh.</div>';
 
 // ── interactive pivot ────────────────────────────────────────────────────────
 function aggregate(dim, measure) {
@@ -254,6 +268,10 @@ function aggregate(dim, measure) {
     if (measure === 'avg_days_to_auction') {
       const d = rows.map(r => r.days_to_auction).filter(v => v !== null && v !== undefined);
       return d.length ? +(d.reduce((a,b)=>a+b,0)/d.length).toFixed(1) : 0;
+    }
+    if (measure === 'avg_final_price') {
+      const d = rows.map(r => r.final_price).filter(v => v !== null && v !== undefined && v !== '');
+      return d.length ? +(d.reduce((a,b)=>a+Number(b),0)/d.length).toFixed(2) : 0;
     }
     if (measure === 'credit_event_rate') {
       const ce = rows.filter(r => r.credit_event_occurred).length;
@@ -294,7 +312,7 @@ document.getElementById('dlJson').onclick = () => download('determinations_analy
 // ── recent table ──────────────────────────────────────────────────────────────
 document.querySelector('#recent tbody').innerHTML = DATA.recent.map(r => `<tr>
   <td>${r.date}</td><td>${r.committee}</td><td>${r.reference_entity}</td>
-  <td>${r.credit_event_type}</td><td>${r.decision}</td>
+  <td>${r.credit_event_type}</td><td>${r.final_price ?? '—'}</td><td>${r.auction_date ?? '—'}</td><td>${r.decision}</td>
   <td><a href="${r.url}" target="_blank" rel="noopener">PDF ↗</a></td></tr>`).join('');
 </script>
 </body>
@@ -304,7 +322,7 @@ document.querySelector('#recent tbody').innerHTML = DATA.recent.map(r => `<tr>
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Build static DC dashboard")
-    ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
+    ap.add_argument("--input", type=Path, default=None)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = ap.parse_args()
-    build(args.input, args.output)
+    build(args.input or analytics.default_input(), args.output)

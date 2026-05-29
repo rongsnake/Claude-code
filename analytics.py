@@ -22,10 +22,16 @@ import pandas as pd
 
 DATA_DIR = Path("data")
 RAW_CSV = DATA_DIR / "determinations.csv"
+RECONCILED_CSV = DATA_DIR / "reconciled.csv"
 ANALYTICS_JSON = DATA_DIR / "determinations_analytics.json"
 TIDY_CSV = DATA_DIR / "determinations_tidy.csv"
 
 RESTRUCTURING = "Restructuring"
+
+
+def default_input() -> Path:
+    """Prefer the reconciled (determinations + auctions) table when present."""
+    return RECONCILED_CSV if RECONCILED_CSV.exists() else RAW_CSV
 
 
 def enrich(df: pd.DataFrame) -> pd.DataFrame:
@@ -40,6 +46,10 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
     df["year"] = df["date"].dt.year.astype("Int64")
     df["month"] = df["date"].dt.to_period("M").astype(str)
     df["days_to_auction"] = (df["auction_date"] - df["date"]).dt.days
+    df["final_price"] = (
+        pd.to_numeric(df["final_price"], errors="coerce")
+        if "final_price" in df.columns else float("nan")
+    )
     df["is_restructuring"] = df.get("credit_event_type").eq(RESTRUCTURING)
     df["is_credit_event"] = df.get("credit_event_type").notna()
 
@@ -62,26 +72,34 @@ def _int_keys(series_dict: dict) -> dict:
 def compute(df: pd.DataFrame) -> dict:
     """Return a JSON-serialisable metrics dict answering the common questions."""
     d = enrich(df)
-    n = len(d)
-    events = d["credit_event_type"].dropna()
+    # determination-centric metrics exclude auction-only rows (auctions with no
+    # matched determination); auction metrics below use the full table.
+    det = d[d["match_status"] != "auction_only"] if "match_status" in d.columns else d
+    n = len(det)
+    events = det["credit_event_type"].dropna()
     n_events = int(len(events))
     by_event = events.value_counts()
     event_pct = (
         (by_event / n_events * 100).round(1).to_dict() if n_events else {}
     )
-    dta = d["days_to_auction"].dropna()
+    dta = det["days_to_auction"].dropna()
+    if "match_status" in d.columns:
+        n_auctions = int(d["match_status"].isin(["matched", "auction_only"]).sum())
+    else:
+        n_auctions = int(d["auction_date"].notna().sum())
 
-    return {
+    metrics = {
         "total_determinations": int(n),
-        "date_min": d["date"].min().date().isoformat() if n and d["date"].notna().any() else None,
-        "date_max": d["date"].max().date().isoformat() if n and d["date"].notna().any() else None,
-        "distinct_reference_entities": int(d["reference_entity"].dropna().nunique()),
+        "total_auctions": n_auctions,
+        "date_min": det["date"].min().date().isoformat() if n and det["date"].notna().any() else None,
+        "date_max": det["date"].max().date().isoformat() if n and det["date"].notna().any() else None,
+        "distinct_reference_entities": int(det["reference_entity"].dropna().nunique()),
         "credit_events_tagged": n_events,
         "pct_restructuring_of_events": (
-            round(float(d["is_restructuring"].sum()) / n_events * 100, 1) if n_events else None
+            round(float(det["is_restructuring"].sum()) / n_events * 100, 1) if n_events else None
         ),
-        "credit_event_occurred_count": int(d["credit_event_occurred"].sum()),
-        "auctions_count": int(d["days_to_auction"].notna().sum()),
+        "credit_event_occurred_count": int(det["credit_event_occurred"].sum()),
+        "auctions_count": int(det["days_to_auction"].notna().sum()),
         "days_to_auction": {
             "count": int(dta.count()),
             "mean": round(float(dta.mean()), 1) if dta.count() else None,
@@ -91,9 +109,32 @@ def compute(df: pd.DataFrame) -> dict:
         },
         "credit_event_type_counts": {str(k): int(v) for k, v in by_event.to_dict().items()},
         "credit_event_type_pct": {str(k): float(v) for k, v in event_pct.items()},
-        "by_region_counts": {str(k): int(v) for k, v in d["committee"].fillna("Unknown").value_counts().to_dict().items()},
-        "by_year_counts": _int_keys(d.groupby("year", dropna=True).size().to_dict()),
+        "by_region_counts": {str(k): int(v) for k, v in det["committee"].fillna("Unknown").value_counts().to_dict().items()},
+        "by_year_counts": _int_keys(det.groupby("year", dropna=True).size().to_dict()),
     }
+
+    # ── auction / reconciliation metrics (present when reconciled data is used) ──
+    fp = d["final_price"].dropna() if "final_price" in d else pd.Series(dtype=float)
+    if len(fp):
+        metrics["auction_final_price"] = {
+            "count": int(fp.count()),
+            "mean": round(float(fp.mean()), 2),
+            "median": round(float(fp.median()), 2),
+            "min": round(float(fp.min()), 2),
+            "max": round(float(fp.max()), 2),
+        }
+        rec = (d.dropna(subset=["final_price"])
+                .groupby("credit_event_type")["final_price"].mean().round(2))
+        metrics["avg_final_price_by_event"] = {str(k): float(v) for k, v in rec.to_dict().items()}
+    if "match_status" in d.columns:
+        ms = d["match_status"].value_counts().to_dict()
+        metrics["match_status_counts"] = {str(k): int(v) for k, v in ms.items()}
+        dets = int(ms.get("matched", 0)) + int(ms.get("determination_only", 0))
+        metrics["reconciliation_rate_pct"] = (
+            round(100 * ms.get("matched", 0) / dets, 1) if dets else None
+        )
+
+    return metrics
 
 
 def headline_answers(metrics: dict) -> list[tuple[str, str]]:
@@ -108,10 +149,18 @@ def headline_answers(metrics: dict) -> list[tuple[str, str]]:
          "n/a" if dta["mean"] is None else f"{dta['mean']} days  (median {dta['median']:.0f}, n={dta['count']})"),
         ("Distinct reference entities", f"{metrics['distinct_reference_entities']:,}"),
     ]
+    fp = metrics.get("auction_final_price")
+    if fp:
+        out.append(("Avg auction final price (recovery)",
+                    f"{fp['mean']:.2f}  (median {fp['median']:.2f}, n={fp['count']})"))
+    if metrics.get("reconciliation_rate_pct") is not None:
+        out.append(("Determinations reconciled to an auction",
+                    f"{metrics['reconciliation_rate_pct']}%"))
     return out
 
 
-def export(input_csv: str | Path = RAW_CSV) -> dict:
+def export(input_csv: str | Path | None = None) -> dict:
+    input_csv = input_csv or default_input()
     df = pd.read_csv(input_csv)
     metrics = compute(df)
     ANALYTICS_JSON.write_text(json.dumps(metrics, indent=2))

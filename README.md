@@ -12,11 +12,14 @@ a plain web host such as **gcburton.org**) and an interactive Streamlit app.
 bash setup.sh                      # create .venv + install deps
 source .venv/bin/activate
 
-python cds_dc_scraper.py           # live refresh -> data/determinations.csv
+python cds_dc_scraper.py           # DC determinations  -> data/determinations.csv
+python creditex_scraper.py         # Creditex auctions  -> data/auctions.csv
+python reconcile.py                # join the two       -> data/reconciled.csv
+python analytics.py                # metrics + tidy export
 python build_dashboard.py          # -> dashboard.html  (upload this to gcburton.org)
 
-# or, interactive:
-streamlit run dashboard.py
+# …or do all of that + launch Streamlit in one go:
+bash run_dashboard.sh              # add --demo for synthetic data, --static for html only
 ```
 
 ## Files
@@ -24,11 +27,15 @@ streamlit run dashboard.py
 | File | Purpose |
 |---|---|
 | `cds_dc_scraper.py` | Scrapes the DC site (WordPress REST API → sitemap → optional PDF parsing), normalises to a tidy table |
-| `analytics.py` | Derives columns (days-to-auction, is-restructuring, …) and computes the metrics that answer the common questions |
+| `creditex_scraper.py` | Scrapes Creditex/Markit auction results from creditfixings.com (`results.jsp?ticker=…`): final price, initial market midpoint, net open interest |
+| `reconcile.py` | Joins auctions to determinations by normalised entity + date window → `data/reconciled.csv` (`match_status`: matched / determination_only / auction_only) |
+| `analytics.py` | Derives columns (days-to-auction, recovery, is-restructuring, …) and computes the metrics that answer the common questions |
 | `build_dashboard.py` | Renders a self-contained static `dashboard.html` (Plotly.js via CDN) with charts, an "ask the data" pivot, and downloads |
 | `dashboard.py` | Interactive Streamlit dashboard incl. a DuckDB SQL "ask the data" box |
 | `setup.sh` / `run_dashboard.sh` | venv setup and one-command refresh+build |
-| `data/determinations.csv` / `.json` | Raw scraper output |
+| `data/determinations.csv` / `.json` | Raw DC scraper output |
+| `data/auctions.csv` / `.json` | Raw Creditex auction output |
+| `data/reconciled.csv` / `.json` | Determinations joined to auctions (the dashboards' primary input) |
 | `data/determinations_tidy.csv` | Derived/analysis-ready table (for your own graphs) |
 | `data/determinations_analytics.json` | Pre-computed metrics |
 
@@ -44,6 +51,19 @@ python cds_dc_scraper.py --seed-only # only the verified reference determination
 Each determination is normalised to:
 `date, committee (Americas/EMEA/Asia ex-Japan/Japan/Australia-NZ),
 reference_entity, issue_number, credit_event_type, decision, doc_type, url, source`.
+
+## Creditex auctions & reconciliation
+
+The DC **declares** a credit event; **Creditex + S&P Global** (formerly Markit)
+then run the **settlement auction** that fixes the final price (recovery),
+published at [creditfixings.com](https://www.creditfixings.com/). `reconcile.py`
+links each auction to its determination by normalised reference-entity name
+within a date window, so the dataset carries — per credit event — both the DC
+decision and the auction outcome (`final_price`, `initial_market_midpoint`,
+`net_open_interest_*`, `auction_date`, `currency`, `ticker`). Rows are tagged
+`matched`, `determination_only`, or `auction_only`. This unlocks
+*days-to-auction* and *recovery* analysis (e.g. avg final price by credit-event
+type).
 
 ## Ask the data / analytics
 

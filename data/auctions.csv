@@ -1,0 +1,4 @@
+reference_entity,auction_date,currency,final_price,initial_market_midpoint,net_open_interest_amount,net_open_interest_direction,transaction_type,ticker,url,source,title
+Northern Rock (Asset Management) plc,2012-02-02,GBP,,,,,Senior,NRAMC,https://www.creditfixings.com/CreditEventAuctions/results.jsp?ticker=NRAMC,reference,Northern Rock (Asset Management) plc auction results
+The Hertz Corporation,2020-06-24,USD,26.375,,,,Senior,F-Hertz,https://www.creditfixings.com/CreditEventAuctions/results.jsp?ticker=F-Hertz,reference,The Hertz Corporation Credit Event Auction
+Ardagh Packaging Finance plc,2026-03-11,EUR,33.9,,,,Senior,,https://www.creditfixings.com/,reference,Ardagh Packaging Finance plc Credit Event Auction

@@ -16,23 +16,30 @@ import plotly.express as px
 import streamlit as st
 
 import cds_dc_scraper as scraper
+import creditex_scraper
+import reconcile
 import analytics
-
-DATA_CSV = Path("data/determinations.csv")
 
 st.set_page_config(page_title="CDS Determinations Committees", page_icon="⚖️", layout="wide")
 
 
-@st.cache_data(show_spinner="Loading determinations…")
+def _pipeline(mode: str) -> None:
+    """Scrape determinations + Creditex auctions, then reconcile."""
+    scraper.run(mode=mode)
+    creditex_scraper.run(mode=mode)
+    reconcile.run()
+
+
+@st.cache_data(show_spinner="Loading determinations + auctions…")
 def load_data(mode: str) -> pd.DataFrame:
     if mode == "Demo (synthetic)":
-        scraper.run(mode="demo")
+        _pipeline("demo")
     elif mode == "Live refresh":
-        scraper.run(mode="live")
-    elif not DATA_CSV.exists():
-        scraper.run(mode="seed-only")
-    df = pd.read_csv(DATA_CSV)
-    return analytics.enrich(df).dropna(subset=["date"]).sort_values("date")
+        _pipeline("live")
+    elif not analytics.default_input().exists():
+        _pipeline("seed-only")
+    df = pd.read_csv(analytics.default_input())
+    return analytics.enrich(df).sort_values("date", na_position="last")
 
 
 # ── sidebar ─────────────────────────────────────────────────────────────────
@@ -83,24 +90,32 @@ if len(df):
 
 # ── ask-the-data: headline answers ──────────────────────────────────────────
 st.subheader("💬 Ask the data")
-a1, a2, a3 = st.columns(3)
 dta = metrics["days_to_auction"]
+fp = metrics.get("auction_final_price")
+a1, a2, a3, a4 = st.columns(4)
 a1.metric("% of credit events that are Restructuring",
           "n/a" if metrics["pct_restructuring_of_events"] is None
           else f"{metrics['pct_restructuring_of_events']}%")
 a2.metric("Avg days to auction",
           "n/a" if dta["mean"] is None else f"{dta['mean']:.1f} days",
           help=None if dta["mean"] is None else f"median {dta['median']:.0f}, n={dta['count']}")
-a3.metric("Determinations with an auction", f"{metrics['auctions_count']:,}")
+a3.metric("Avg final price (recovery)",
+          "n/a" if not fp else f"{fp['mean']:.2f}",
+          help=None if not fp else f"median {fp['median']:.2f}, n={fp['count']} (Creditex)")
+a4.metric("Determinations reconciled to an auction",
+          "n/a" if metrics.get("reconciliation_rate_pct") is None
+          else f"{metrics['reconciliation_rate_pct']}%")
 
 with st.expander("Ask your own question — SQL over the `determinations` table"):
     st.caption("Columns include: date, year, committee, reference_entity, "
-               "credit_event_type, decision, days_to_auction, auction_held, "
-               "is_restructuring, credit_event_occurred.")
+               "credit_event_type, decision, days_to_auction, final_price, "
+               "auction_date, ticker, currency, net_open_interest_amount, "
+               "match_status, is_restructuring, credit_event_occurred.")
     default_sql = (
         "SELECT credit_event_type,\n"
         "       count(*) AS n,\n"
-        "       round(100.0*count(*)/sum(count(*)) over (), 1) AS pct\n"
+        "       round(avg(final_price), 2) AS avg_recovery,\n"
+        "       round(avg(days_to_auction), 1) AS avg_days_to_auction\n"
         "FROM determinations\n"
         "WHERE credit_event_type IS NOT NULL\n"
         "GROUP BY credit_event_type\n"
@@ -145,13 +160,13 @@ st.plotly_chart(px.bar(ev, x="event", y="count",
                        color_discrete_sequence=["#37c98b"]), width="stretch")
 
 # ── table + downloads ────────────────────────────────────────────────────────
-st.subheader("Determinations")
-show = df.sort_values("date", ascending=False)[
-    ["date", "committee", "reference_entity", "credit_event_type",
-     "decision", "days_to_auction", "url"]
-]
+st.subheader("Determinations × Creditex auctions (reconciled)")
+cols = ["date", "committee", "reference_entity", "credit_event_type",
+        "final_price", "auction_date", "days_to_auction", "match_status", "url"]
+show = df.sort_values("date", ascending=False)[[c for c in cols if c in df.columns]]
 st.dataframe(show, width="stretch", height=380,
-             column_config={"url": st.column_config.LinkColumn("document")})
+             column_config={"url": st.column_config.LinkColumn("document"),
+                            "final_price": st.column_config.NumberColumn("final price", format="%.3f")})
 
 d1, d2, d3 = st.columns(3)
 d1.download_button("⬇ Raw CSV", df.to_csv(index=False).encode(),
