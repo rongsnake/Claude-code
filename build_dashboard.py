@@ -18,7 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -112,7 +112,7 @@ def build(input_path: Path, output_path: Path) -> Path:
         "rows": _clean_rows(df),
         "analytics": metrics,
         "banner": {"text": banner_text, "cls": banner_class},
-        "generated": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
+        "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
     }
 
     html = _TEMPLATE.replace("/*__DATA__*/", json.dumps(payload))
