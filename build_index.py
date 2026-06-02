@@ -319,6 +319,11 @@ def main() -> None:
 
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
     det = load_determinations()
+    # The reconciled table also carries auction-only rows (standalone auctions
+    # with no DC determination). They are not determinations, so exclude them
+    # from the index — otherwise n_determinations and the clean table double.
+    if "match_status" in det.columns:
+        det = det[det["match_status"] != "auction_only"].copy()
     det_out = det.copy()
     for col in ("date", "auction_date"):
         if col in det_out:
