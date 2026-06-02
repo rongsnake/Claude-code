@@ -51,6 +51,23 @@ as an instruction bus is **GitHub**, which both sides already share:
   mention in an issue/PR triggers a Claude run that opens a PR — instructions
   left on GitHub get executed automatically (runs in Actions, not on the Pi).
 
+## 2026-06 update — richer presentation + local-LLM Q&A
+
+- The static dashboard was rebuilt: dropdown **filters** (committee incl. EMEA-only,
+  credit event, decision, year range, entity, notable-issue), a wide **sortable table**,
+  per-row **document drawers** (decisions / explanatory statements / pro-forma ASTs /
+  final lists / participating bidders), a free-text **Ask** box, and an **Update** button.
+- New `build_index.py` builds `data/index/` (cleaned determinations, a `documents.json`
+  manifest with qualitative flags — discretion under the Rules, external review, lock-up,
+  restructuring… — and RAG `chunks.json`+`embeddings.npy` via local Ollama).
+- New `cds_api.py` (FastAPI :5055, behind Caddy `/cds/api/`) streams local-LLM RAG
+  answers (`llama3.2:1b` — chosen because CPU prompt-eval dominates on the Pi; 1B evals
+  ~3.6× faster than 3B) with citations, plus `/refresh` and `/status`. **Zero API cost.**
+- systemd user units `cds-api.service` + `cds-refresh.timer` (Mon 06:00) installed; linger on.
+- **Action still needed:** the Caddy reverse-proxy block for `/cds/api/*` (see the prepared
+  `/tmp/Caddyfile.new`) must be applied with sudo + `systemctl reload caddy` — this was
+  deliberately left for explicit approval as it edits the live production Caddyfile.
+
 ## Current state
 
 - ✅ DC scraper, **Creditex auction scraper**, **reconciliation**, analytics, and
@@ -60,6 +77,8 @@ as an instruction bus is **GitHub**, which both sides already share:
   allowlisted, so neither is reachable. Committed data is the verified seed
   (6 determinations + 3 auctions; Hertz & Ardagh reconciled with real recoveries).
 - ⚠️ **Not deployed to gcburton.org**: no hosting creds in this session.
+- 📌 **Requirement (Gareth):** the dashboard must be **accessible behind a login
+  at gcburton.org** — not public. Deploy gated, not to an open `/var/www/html`.
 
 ## Next steps (run on the Pi / gcburton.org host — it can reach the DC site)
 
@@ -70,10 +89,33 @@ python creditex_scraper.py                      # live Creditex auction scrape
 python reconcile.py                             # join auctions ↔ determinations
 python analytics.py                             # refresh metrics + tidy export
 python build_dashboard.py --output public/index.html
-# deploy, e.g.:  rsync -av public/index.html gcburton.org:/var/www/html/
+# deploy behind a login (see "Gated access" below — do NOT deploy public)
 streamlit run dashboard.py                      # optional: interactive + SQL box
 # (all of the above except deploy: `bash run_dashboard.sh`)
 ```
+
+## Gated access at gcburton.org (required)
+
+Gareth wants this reachable **only after a login** at gcburton.org. The static
+`dashboard.html` has no auth of its own, so put the gate in front of it. Pick one:
+
+- **nginx HTTP Basic auth (simplest):** serve `public/` from an auth-protected
+  location and rsync the build to it:
+  ```nginx
+  location /cds/ {
+      auth_basic           "CDS dashboard";
+      auth_basic_user_file /etc/nginx/.htpasswd;   # htpasswd -c … <user>
+      root /var/www/gated;                          # file at /var/www/gated/cds/index.html
+  }
+  ```
+  `rsync -av public/index.html gcburton.org:/var/www/gated/cds/index.html`
+- **Cloudflare Access (SSO, no server config):** front gcburton.org with
+  Cloudflare, add an Access policy on `/cds/*` (email OTP or Google). Best if the
+  site is already on Cloudflare.
+- **Streamlit instead of static:** run `dashboard.py` behind the same nginx
+  Basic-auth `location` (reverse-proxy to the Streamlit port) for the live SQL box.
+
+Deploy creds live on the Pi / host, not in this session — run the chosen option there.
 
 If the live scrape still 403s from the Pi, the site may require a residential IP
 / real browser — fall back to `--pdf` from a desktop browser network, or wire a

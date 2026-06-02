@@ -9,6 +9,14 @@ __pycache__/
 # downloaded source PDFs (large, re-fetchable) — keep the normalised CSV/JSON
 data/pdfs/
 data/*.pdf
+data/docs/
+
+# RAG index: keep the JSON (documents/chunks/meta + clean CSV), drop the large
+# rebuildable embedding matrix and the transient refresh lock/state/log
+data/index/embeddings.npy
+data/index/refresh.lock
+data/index/refresh_state.json
+data/index/refresh.log
 
 # Pi-side generated/local files (created by pi_autopilot.sh; not for the repo)
 cds_refresh.sh

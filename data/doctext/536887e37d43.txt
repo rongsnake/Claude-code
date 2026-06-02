@@ -1,0 +1,110 @@
+Determinations Committee Decision
+Date: May 28, 2010
+Determinations Committee: Americas
+Meeting Date: May 28, 2010
+DC Issue 2010032501: Has a Bankruptcy Credit Event occurred with
+respect to Ambac Assurance Corporation?
+1st Question for vote: Do you agree that (a) a revised Supplemental List for
+the Ambac Assurance Corporation Auction (the
+"Revised Supplemental List") should be published
+after 5:00pm New York time on Friday May 28, 2010,
+(b) notwithstanding anything to the contrary in the DC
+Rules, an obligation on the Revised Supplemental List
+may only be challenged if it was not included in the
+Supplemental List published on Monday May 24,
+2010, (c) the deadline for such a challenge will be
+5:00pm New York time on Tuesday June 1, 2010, and
+(d) for all other purposes of the DC Rules, the Revised
+Supplemental List will be deemed to be the
+Supplemental List for purposes of the Ambac
+Assurance Corporation Auction?
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+Citibank Yes
+Credit Suisse Yes
+Deutsche Bank AG Yes
+Elliott Management Corporation Yes
+Goldman Sachs Yes
+JPMorgan Chase Bank, N.A. Yes
+Legal & General Investment Management Limited Yes
+Morgan Stanley Yes
+Pacific Investment Management Company LLC Yes
+Primus Asset Management, Inc. Yes
+Rabobank International Yes
+The Royal Bank of Scotland Yes
+UBS Yes
+2nd Question for vote: Do you agree to the publication by the DC Secretary
+on its Website of the statement attached on behalf of
+the Convened DC for this DC question? (Please see
+Annex.)
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+Citibank Yes
+Credit Suisse Yes
+Deutsche Bank AG Yes
+Elliott Management Corporation Yes
+Goldman Sachs Yes
+JPMorgan Chase Bank, N.A. Yes
+Legal & General Investment Management Limited Yes
+Morgan Stanley Yes
+Pacific Investment Management Company LLC Yes
+Primus Asset Management, Inc. Yes
+Rabobank International Yes
+The Royal Bank of Scotland Yes
+UBS Yes
+Annex
+ISDA Credit Derivatives Determinations Committee for the Americas
+Statement regarding DC question number 2010032501, "Has a Bankruptcy Credit Event occurred
+with respect to Ambac Assurance Corporation?"
+The ISDA Credit Derivatives Determinations Committee for the Americas (the "DC") has resolved to
+publish the following statement regarding DC question number 2010032501, "Has a Bankruptcy Credit
+Event occurred with respect to Ambac Assurance Corporation?".
+Any capitalized term used but not defined in this statement shall have the meaning given to such term in
+the 2003 ISDA Credit Derivatives Definitions, as amended by the 2009 ISDA Credit Derivatives
+Determinations Committees, Auction Settlement and Restructuring Supplement to the 2003 ISDA Credit
+Derivatives Definitions published by the International Swaps and Derivatives Association, Inc. ("ISDA") on
+July 14, 2009, or the Credit Derivatives Determinations Committee Rules published by ISDA on
+December 18, 2009 (the "DC Rules")1.
+On Friday May 21, 2010, ISDA published the Initial List of Deliverable Obligations for the auction to be
+held for purposes of settling Credit Derivatives Transactions referencing Ambac Assurance Corporation
+(the "Initial List"), and on Monday May 24, 2010, ISDA published the Supplemental List for that auction
+(the "Supplemental List"). Ten obligations that did not appear on the Initial List were submitted by Eligible
+Market Participants for inclusion on the Supplemental List.
+One of these obligations was an RMBS obligation that was submitted without a copy of the financial
+guaranty insurance policy but with all of the other material documents, including the policy endorsement
+and the relevant underlying transaction documents as well as the offering documents. In connection with
+this obligation, it was brought to the DC's attention that investors have been unable to obtain a copy of the
+financial guaranty insurance policy from the trustee for a number of RMBS obligations, including this
+obligation, despite efforts made to try to obtain the policy. Although the DC will require the policy to be
+provided where it is available, the DC believes that where the policy is not available it can fairly ascertain
+the material terms of the policy from the policy endorsement, the description of the policy in the offering
+documents and review of policies issued by Ambac covering other RMBS obligations. As a result, the DC
+has decided not to challenge the inclusion of this obligation on the Final List.
+Since the DC had previously excluded RMBS obligations from the Initial List where the financial guaranty
+insurance policy may have been unavailable, the DC has resolved to provide for a short additional period
+of time for Eligible Market Participants to submit certain RMBS obligations meeting specific conditions (set
+out below) for inclusion in a revised Supplemental List. This is intended to ensure that market participants
+are not prevented from having RMBS obligations included on the Final List in situations where the only
+matter preventing such obligation from being included is the unavailability of the policy and the DC is able
+to fairly ascertain the material terms of the policy.
+Market participants who wish to submit obligations meeting the conditions below must submit
+such obligations to deliverableobligations@isda.org by 5pm New York time on Friday, May 28,
+2010.
+1 The DC Rules are available online at: http://www.isda.org/credit/docs/DC_Rules_December_2009_version.pdf.
+Please note that any such obligations will remain subject to any possible challenge, and a party
+who submits an obligation for inclusion on the revised Supplemental List will be subject to
+bearing the legal costs of reviewing the relevant documentation if such obligation is successfully
+challenged, as described further in Section 3.3(e) of the DC Rules.
+The conditions for submission are: (a) the obligation proposed is an RMBS obligation that was included in
+the "Not on prelim" tab in the final version of the Preliminary List of Obligations for the Ambac Assurance
+Corporation Auction dated May 13, 2010 (the "Preliminary List"); (b) the only document(s) shown in the
+Preliminary List to be missing for such obligation is the Policy or the Policy and the Insurance and
+Indemnity Agreement; (c) the Preliminary List does NOT show the offering document as missing for such
+obligation; (d) the Eligible Market Participant submits evidence showing that attempts have been made to
+obtain a copy of the Policy for such obligation, and that the Policy for such obligation is not available; and
+(e) the Eligible Market Participant agrees to pay any of the reasonable costs related to any successful
+challenge to the inclusions of such obligation that could be incurred under Section 3.3(e) of the DC Rules.

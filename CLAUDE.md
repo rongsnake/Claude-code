@@ -16,7 +16,29 @@ Committees** (CDS = credit default swaps; source
 - `analytics.py` — derived columns + metrics over the reconciled table →
   `determinations_tidy.csv`, `determinations_analytics.json`.
 - `build_dashboard.py` — static `dashboard.html` (deploy target: **gcburton.org**).
+  Now a filterable app: committee/event/year/entity/notable dropdowns, a wide
+  sortable determinations table, per-row **document drawers** (decisions, explanatory
+  statements, pro-forma ASTs, final lists…), a free-text **Ask** box, and an **Update**
+  button. The Ask box + Update call the local API; both degrade gracefully when it's off.
+- `fetch_docs.py` — downloads source docs (ASTs, statements, decisions) → `data/docs/`,
+  extracts text → `data/doctext/`, writes the `data/documents.csv` provenance manifest.
+- `build_index.py` — offline builder → `data/index/`: `determinations_clean.csv`,
+  `documents.json` (doc_kind, entity, meeting date, vote, qualitative flags, snippet),
+  `chunks.json` + `embeddings.npy` (RAG via local Ollama `nomic-embed-text`). Prefers
+  `data/documents.csv` when present, else scans `data/docs`+`data/doctext` locally.
+- `cds_api.py` — FastAPI (uvicorn :5055) behind Caddy at **/cds/api/**. `POST /ask`
+  streams a local-LLM RAG answer (`llama3.2:1b`, override `CDS_LLM_MODEL`) + citations;
+  `POST /refresh` runs the pipeline async (locked, rate-limited); `GET /status`;
+  `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
+
+## Serving / scheduling (this Pi)
+- `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`
+  reverse-proxied to `localhost:5055` (same gate, `flush_interval -1` for streaming).
+- systemd **user** units: `cds-api.service` (the API) + `cds-refresh.timer`
+  (Mon 06:00) → `cds-refresh.service` (= `cds_refresh.sh`). Linger is enabled.
+- The embedding reindex is heavy on a Pi (~8.8k chunks ≈ 70 min) — it runs weekly or
+  on demand via the dashboard's Update button, never per query.
 
 ## Conventions
 - Determination schema: `date, committee, reference_entity, issue_number,

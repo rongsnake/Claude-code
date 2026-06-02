@@ -1,0 +1,70 @@
+Operational Clarification on the Hellenic Republic Restructuring
+ISDA has been notified by DTCC that they have been receiving queries regarding the Hellenic Republic (Greece) Restructuring Credit
+Event. ISDA and DTCC have prepared the below notice to assist in answering queries members may have.
+Please be advised that DTCC has set up a Restructuring Event for HELLENIC REPUBLIC. A Restructuring Event Master Record has
+been established in the Warehouse system for this event as HELLENIC MAR12.
+Component Transactions:
+Hellenic Republic is a constituent of the Markit iTraxx SovX Western Europe Index. In accordance with the Markit iTraxx SovX
+Standard Terms Supplement and in order to correctly reflect the trading positions, for index transactions referencing Hellenic
+Republic, participants should book separate single name credit default swap transactions referencing Hellenic Republic (each a
+“Credit Event Component Transaction”). The impacted index transactions were re-versioned on March 12. In order for transactions to
+be included in the DTCC restructuring processing cycle, the single names will need to be booked before the end of the triggering
+period on March 16th.
+The booking of the credit event component transaction is not an automated process; participants will need to submit these transactions
+to MarkitSERV DSMatch. The CIG has proposed that firms follow the following field guidance when submitting the component
+transactions into DSMatch:
+Field Value
+Master Document Transaction Type
+WesternEuropeanSovereign
+(should be non-standard)
+Trade date Original index trade date
+Trades resulting from Step-In assignments
+on the original index trade will be booked
+Trade Date Exception
+with a trade date of the Latest
+Assignment trade date
+Effective Date Original index effective date
+Maturity Date Original index maturity date
+Fixed Rate Original Index Fixed Rate
+Component Notional in Original index
+Notional
+trade
+Accrual commencement date Previous coupon date (adjusted)
+RED ID Existing RED ID
+First Payment date Next IMM (March 20, 2012)
+Ref Ob Original index Ref Ob
+Master Document Type Matrix or MCA - dependent on firms static
+Uniform Settlement Agreement (USA) & Triggering in DTCC:
+A Uniform Settlement Agreement (“USA”) for the Hellenic Republic Restructuring Credit Event has been published by ISDA. Please
+note that the adherence period for the USA has now closed. Parties who have adhered to the USA agree amongst themselves that a
+credit event notice is deemed to have been validly delivered for all covered credit derivative transactions between them which
+reference The Hellenic Republic. ISDA has published an FAQ setting out further information in respect of the USA which can be
+accessed here.
+As indicated in the FAQ, for trades that are registered in DTCC’s TIW, adherence to the USA does not automatically ensure electronic
+processing in the DTCC TIW platform. As such firms will need to ensure that transactions triggered either by adherence to the USA
+or by actual service of a credit event notice are also actively triggered in DTCC. Users of DTCC will need to access the Strategic
+Restructuring platform in order to electronically trigger transactions via that platform. The deadline for triggering in DTCC is 4pm
+London time on the Exercise Cut-off Date (March 16) for all transactions.
+Access to the Restructuring Dashboard on the DerivSERV portal requires an additional application. If your firm does not currently
+have access to the Restructuring Dashboard then your DTCC Access Coordinator may request access by completing an updated access
+coordinator form (available from http://www.dtcc.com/customer/membership/derivserv/derivserv.php) and submitting the completed
+form to dsmatch-implementation@markitserv.com . Access coordinators can grant access directly to users within their own firm once
+the above application submission is completed.
+Here are the key dates relating to the Hellenic Republic credit event:
+Event Determination Date (EDD) March 9th
+Auction Date March 19th
+Event Processing Start Date (EPSD) March 21st
+Event Processing End Date (EPED) March 22nd
+Cash Settlement Date March 26th
+Please reach out to ISDA’s Andrew Kayiira (akayiira@isda.org) with any questions.
+DTCC Operational Contacts
+Any questions regarding the DTCC Restructuring functionality or transactional based queries can be directed towards
+Deriv/SERV Operations at 1-888-382-2721, Option 3 and 1 (North America);
++44-(0)20-7136-6328, Option 1 (UK/Europe/Asia);
+Or via e-mail at derivserv_operations@dtcc.com.
+DTCC Escalation Contacts
+E- mail TIWLifecycle@dtcc.com
+US : Chris Nardo : cnardo@dtcc.com 212.855.3563
+US: Andreina Issac: aissac@dtcc.com 212 .855. 2381
+UK: Andrew Byatt: abyatt@dtcc.com 207.650.1452
+UK: Aishling Baker: abaker@dtcc.com 207.650.1419

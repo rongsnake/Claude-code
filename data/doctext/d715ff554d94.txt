@@ -1,0 +1,71 @@
+25 January 2012
+MATURITY BUCKETS FOR THE
+NORTHERN ROCK (ASSET MANAGEMENT)PLC ("NRAM") AUCTION
+The below is based on the assumption that the only Deliverable Obligationsare those on the FinalList.
+I. Limitation Dates1
+2.5-year Maturity Bucket 20 June 2014
+5-year Maturity Bucket 20 December 2016
+7.5-year Maturity Bucket 20 June 2019
+10-year Maturity Bucket 20 December 2021
+12.5-year Maturity Bucket 20 June 2024
+15-year Maturity Bucket 20 December 2026
+20-year Maturity Bucket 20 December 2031
+II. Ranges ofScheduled Termination Dates
+It has been resolved that neither Senior Auctions nor Subordinated Auctions will be held in respect of
+Bucket 3 and Bucket 4. If the Buyer exercises the Movement Option (as set out below), the applicable
+Deliverable Obligations will be settled through the application auction for Bucket 2. The Movement
+Option Cut-off Date is Monday 30 January 2012, but ISDA would encourage market participants
+intending to utilize the Movement Option to exercise it as soon as possible to avoid operational difficulties.
+(A) PerSenior Auction
+Maturity Buckets Range ofScheduled Termination Dates Potential Auctions to be held?
+2.5 year Maturity 15 December 2011 – 19 October 2014 Yes. This Auction willbe combined with
+Bucket (Buyer Exercise or Seller M(M)R Trades the Subordinated Auction for Bucket 1 as
+(as defined in the NRAM Credit the Deliverable Obligations are identical.
+Derivatives Senior Auction Settlement
+Terms) only) ("Bucket 1")
+5 year Maturity 20 October2014 –26 March2018 (Buyer Yes. This Auction willbe combined with
+Bucket Exercise or Seller M(M)R Trades only) the Subordinated Auction for Bucket 2 as
+("Bucket 2") the Deliverable Obligations are identical.
+7.5 year Maturity 27 March 2018 – 1 December 2019 No Senior Auction for Bucket 3, Buyer
+Bucket (Buyer Exercise or Seller M(M)R Trades can exercise the Movement Option in
+only) ("Bucket 3") accordance with Section 12.17 of the
+2003 ISDA Credit Derivatives Definitions
+(as supplemented) and the NRAM Credit
+Derivatives Auction Settlement Terms in
+respect of Bucket 2 will apply.
+Seller Bucket 2 December 2019 onwards (Buyer No Senior Auction for Bucket 4, Buyer
+Exercise and all Seller Exercise (except can exercise the Movement Option in
+for Seller M(M)R Trades which fall within accordance with Section 12.17 of the
+the Senior Auction for Buckets 1, 2 or 3)) 2003 ISDA Credit Derivatives Definitions
+1 The Limitation Dates are based on a Restructuring Date of 15 December 2011.
+0096820-0000027 ICM:14183382.9 1
+25 January 2012
+Maturity Buckets Range ofScheduled Termination Dates Potential Auctions to be held?
+("Bucket 4") (as supplemented) and the NRAM Credit
+Derivatives Auction Settlement Terms in
+respect of Bucket 2 will apply.
+(B) Per Subordinated Auction
+Maturity Buckets Range ofScheduled Termination Dates Potential Auctions to be held?
+2.5 year Maturity 15 December 2011 – 19 October 2014 This Auction will be combined with the
+Bucket (Buyer Exercise or Seller M(M)R Trades Senior Auction for Bucket 1 as the
+(as defined in the NRAM Credit Deliverable Obligations are identical.
+Derivatives Subordinated Auction
+Settlement Terms) only) ("Bucket 1")
+5 year Maturity 20 October 2014 – 29 December 2016 This Auction will be combined with the
+Bucket (Buyer Exercise or Seller M(M)R Trades Senior Auction for Bucket 2 as the
+only) ("Bucket 2") Deliverable Obligations are identical.
+7.5 year Maturity 30 December 2016 – 1 December 2019 No Subordinated Auction for Bucket 3,
+Bucket (Buyer Exercise or Seller M(M)R Trades Buyer can exercise the Movement Option
+only) ("Bucket 3") in accordance with Section 12.17 of the
+2003 ISDA Credit Derivatives Definitions
+(as supplemented) and the NRAM Credit
+Derivatives Auction Settlement Terms in
+respect of Bucket 2 will apply.
+Seller Bucket 2 December 2019 onwards (Buyer No Subordinated Auction for Bucket 4,
+Exercise and all Seller Exercise (except Buyer can exercise the Movement Option
+for Seller M(M)R Trades which fall within in accordance with Section 12.17 of the
+the Subordinated Auction for Buckets 1, 2 2003 ISDA Credit Derivatives Definitions
+or 3)) ("Bucket 4") (as supplemented) and the NRAM Credit
+Derivatives Auction Settlement Terms in
+respect of Bucket 2 will apply.
+0096820-0000027 ICM:14183382.9 2

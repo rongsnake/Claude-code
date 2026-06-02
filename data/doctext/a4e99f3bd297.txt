@@ -1,0 +1,84 @@
+Determinations Committee Decision
+Date: November 10, 2011
+Determinations Committee: Americas
+Meeting Date: November 10, 2011
+DC Issue 2011110801: Has a Bankruptcy Credit Event occurred with
+respect to Dynegy Holdings, LLC (formerly
+known as Dynegy Holdings Inc.)?
+1st Question for vote: Should ISDA publish a preliminary list of
+Obligations for the Dynegy Holdings, LLC auction
+based on the list provided? (Please see Annex).
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+BlackRock Yes
+BlueMountain Capital Yes
+Citadel Yes
+Citibank Yes
+Credit Suisse Yes
+D.E. Shaw Yes
+Deutsche Bank Yes
+Goldman Sachs Yes
+JPMorgan Yes
+Morgan Stanley Yes
+Pacific Investment Management Co., LLC Yes
+Société Générale Yes
+UBS Yes
+2nd Question for vote: Do you agree to publish a statement that the Auction
+Date for the Dynegy Holdings, LLC auction is
+expected to be November 29, 2011?
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+BlackRock Yes
+BlueMountain Capital Yes
+Citadel Yes
+Citibank Yes
+Credit Suisse Yes
+D.E. Shaw Yes
+Deutsche Bank Yes
+Goldman Sachs Yes
+JPMorgan Yes
+Morgan Stanley Yes
+Pacific Investment Management Co., LLC Yes
+Société Générale Yes
+UBS Yes
+Annex
+Preliminary List of Obligations Under Consideration In Connection With The 2011 Dynegy Holdings,
+LLC Credit Derivatives Auction Settlement Terms 1 - published November 10, 2011
+PRELIMINARY LIST: NOT REVIEWED OR CONFIRMED FOR DELIVERABILITY
+Bonds:
+ISIN/CUSIP Issuer Name Coupon Maturity
+US26816LAG77 Dynegy Holdings, LLC 8.750% February 15, 2012
+US26816LAX01 Dynegy Holdings, LLC 7.500% June 1, 2015
+US26816LBB71 Dynegy Holdings, LLC 7.500% June 1, 2015
+26816LBB7 Dynegy Holdings, LLC 7.500% June 1, 2015
+US26816LAT98 Dynegy Holdings, LLC 8.375% May 1, 2016
+US629121AF11 Dynegy Holdings, LLC 7.125% May 15, 2018
+US26816LAW28 Dynegy Holdings, LLC 7.750% June 1, 2019
+US629121AC89 Dynegy Holdings, LLC 7.625% October 15, 2026
+US26816LAG77 Dynegy Holdings, LLC 8.750% February 15, 2012
+1
+The information contained in this preliminary list of potential deliverable obligations (the "Information" and the "List", respectively)
+is presented by the International Swaps and Derivatives Association, Inc. ("ISDA") at the request of the Credit Derivatives Determinations
+Committee for the Americas as a service to market participants in the interests of transparency and market efficiency. The Information is
+presented as received by ISDA and ISDA has not agreed to, and will not, review such information for accuracy or completeness. ISDA makes no
+representation or warranty with respect to the accuracy or completeness of the Information, nor is ISDA obligated to provide updated
+information. The Information will not be up-dated systematically but rather in ISDA’s sole discretion and only after receipt of new information
+from market participants. Accordingly, the Information, and any descriptions, analysis, data and assumptions set forth therein may not be
+accurate, complete, timely or applicable at any particular time. Inclusion of an obligation in the List does not imply that either the contributor or
+ISDA has verified that the obligation actually is deliverable under the terms of any credit default swap contract.
+The List is not the definitive list with respect to the reference entity. The purpose of the List is to facilitate the collection of certain
+limited information from market participants in order to create a publicly available indicative list of obligations that market participants believe
+would be likely to be delivered as part of the auction relating the reference entity. It is not complete and obligations appearing on the List may not
+actually be deliverable. There is no direct relationship between the List and any list that would be included in the Auction Settlement Terms for
+the reference entity.
+UNDER NO CIRCUMSTANCES SHALL ISDA BE LIABLE TO ANY PERSON, REGARDLESS OF THE FORM OF ACTION,
+ARISING FROM OR IN CONNECTION WITH THE INFORMATION OR ANY PERSON'S USE OF THE INFORMATION, OR FOR ANY
+INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES THAT RESULT FROM THE USE OF, OR THE
+INABILITY TO USE, THE INFORMATION.
+The Information is not investment advice and you should not rely on it for its content or to make any investment decisions. ISDA does
+not assume any responsibility for the Information or for the results or conclusions derived from it or for any actions taken or omitted to be taken
+based on it.

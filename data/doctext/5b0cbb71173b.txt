@@ -1,0 +1,102 @@
+Determinations Committee Decision
+Date: April 20, 2010
+Determinations Committee: Americas
+Meeting Date: April 20, 2010
+DC Issue 2010032501: Has a Bankruptcy Credit Event occurred with
+respect to Ambac Assurance Corporation?
+1st Question for vote: Should ISDA publish a preliminary list of Obligations
+for the Ambac Assurance Corporation auction based
+on the list provided?
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+Citibank Yes
+Credit Suisse Yes
+Deutsche Bank AG Yes
+Elliott Management Corporation Yes
+Goldman Sachs Yes
+JPMorgan Chase Bank, N.A. Yes
+Legal & General Investment Management Limited Yes
+Morgan Stanley Yes
+Pacific Investment Management Company LLC Yes
+Primus Asset Management, Inc. Yes
+Rabobank International Yes
+The Royal Bank of Scotland Yes
+UBS Yes
+2nd Question for vote: Do you agree to postpone the publication of the Initial
+List of Deliverable Obligations until Tuesday May 4,
+2010?
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+Citibank Yes
+Credit Suisse Yes
+Deutsche Bank AG Yes
+Elliott Management Corporation Yes
+Goldman Sachs Yes
+JPMorgan Chase Bank, N.A. Yes
+Legal & General Investment Management Limited Yes
+Morgan Stanley Yes
+Pacific Investment Management Company LLC Yes
+Primus Asset Management, Inc. Yes
+Rabobank International Yes
+The Royal Bank of Scotland Yes
+UBS Yes
+3rd Question for vote: Do you agree to the publication by the DC Secretary
+on its Website of the statement attached on behalf of
+the Convened DC for this DC question? (Please see
+Annex)
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America / Merrill Lynch Yes
+Barclays Yes
+Citibank Yes
+Credit Suisse Yes
+Deutsche Bank AG Yes
+Elliott Management Corporation Yes
+Goldman Sachs Yes
+JPMorgan Chase Bank, N.A. Yes
+Legal & General Investment Management Limited Yes
+Morgan Stanley Yes
+Pacific Investment Management Company LLC Yes
+Primus Asset Management, Inc. Yes
+Rabobank International Yes
+The Royal Bank of Scotland Yes
+UBS Yes
+Annex
+Americas Determinations Committee
+Statement regarding DC question number 2010032501, "Has a Bankruptcy Credit Event occurred with
+respect to Ambac Assurance Corporation?"
+The ISDA Credit Derivatives Determinations Committee for the Americas (the "DC") has resolved to
+publish the following statement regarding DC question number 2010032501, "Has a Bankruptcy Credit
+Event occurred with respect to Ambac Assurance Corporation?" (the "DC Question").
+Any capitalized term used and not defined in this statement shall have the meaning given to such term
+in the 2003 ISDA Credit Derivatives Definitions, as amended by the July 2009 ISDA Credit Derivatives
+Determinations Committees, Auction Settlement and Restructuring Supplement to the 2003 ISDA Credit
+Derivatives Definitions.
+The DC has previously resolved to hold an Auction for Ambac Assurance Corporation (the "Auction").
+This statement is intended to provide further information regarding the next steps and timing for the
+Auction.
+The DC anticipates that there will be a large number of obligations that may qualify as Deliverable
+Obligations for the Auction ("Potentially Deliverable Obligations"), and that preparation of the Initial List
+of Deliverable Obligations will therefore require additional time compared to some other recent
+auctions.
+The timing of publication of the Initial List will be an important factor in determining the Auction Date.
+Whilst a specific Auction Date has not yet been discussed, the DC currently anticipates holding the
+Auction in mid-May.
+As for previous credit event auctions that have involved a large number of Potentially Deliverable
+Obligations, the DC has resolved to publish a non-binding, indicative list of Potentially Deliverable
+Obligations (the "Preliminary List of Obligations"), to provide information to the market on the universe
+of Potentially Deliverable Obligations under consideration by the DC. The DC will review all of the
+obligations on the Preliminary List of Obligations to the extent that the relevant documentation is
+available. If a market participant wishes a particular obligation on the Preliminary List of Obligations to
+be included on the Final List, then it should provide publicly available documentation for such obligation
+(including in particular the relevant Ambac policy documentation as well as the indenture, trust
+agreement and any offering documents). Any publicly available documentation may be sent to
+deliverableobligations@isda.org. Please do NOT submit any private or confidential documents to this
+address.
+Once the Initial List is published, market participants will have at least two days to submit any additional
+obligations for inclusion on the Supplemental List. This procedure is contained in Section 3.3(c) of the
+Determinations Committees Rules, which are available here.

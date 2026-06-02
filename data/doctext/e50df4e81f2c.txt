@@ -1,0 +1,75 @@
+ISDA Uniform Settlement Agreement (USA) FAQ
+The questions below are intended for participants in the CDS market who have questions regarding the purpose
+of, and how to sign, the Uniform CDS Settlement Agreement for the Restructuring Credit Event (the "The
+Hellenic Republic Credit Event") in respect of The Hellenic Republic.
+THIS FREQUENTLY ASKED QUESTIONS DOCUMENT DOES NOT PURPORT TO BE AND SHOULD NOT
+BE CONSIDERED A GUIDE TO OR AN EXPLANATION OF ALL RELEVANT ISSUES OR
+CONSIDERATIONS IN CONNECTION WITH THE HELLENIC REPUBLIC USA. PARTIES SHOULD
+CONSULT WITH THEIR LEGAL ADVISERS AND ANY OTHER ADVISER THEY DEEM APPROPRIATE
+PRIOR TO USING OR SIGNING THE USA. ISDA ASSUMES NO RESPONSIBILITY FOR ANY USE TO
+WHICH ANY OF ITS DOCUMENTATION OR OTHER DOCUMENTATION MAY BE PUT.
+What is a uniform settlement agreement? A uniform settlement agreement (a “USA”) is a contract signed by
+major dealers and the clients with whom they have a large number of transactions, after, in this case, a
+determination by the relevant Credit Derivatives Determinations Committee that a credit event has occurred.
+The parties to a USA agree amongst themselves that a credit event notice is deemed to have been validly
+delivered for all covered credit derivative transactions between them which reference the relevant entity.
+Transactions with counterparties that have not signed up to the USA are not affected.
+Please note that under the terms of the credit derivatives definitions, as amended by the implementation of the
+big bang protocol, credit event notices are not required where the relevant credit event is of a type other than a
+Restructuring. However, in the case of a Restructuring (as for The Hellenic Republic), parties are still required to
+manually trigger their transactions.
+Why is a uniform settlement agreement beneficial? Signing a USA avoids the operational burden of having to
+send or wait to receive notices between the most active participants in the CDS market. This significantly
+reduces the overall number of notices that must be sent or processed internally.
+The feedback received by ISDA is that there is likely to be sufficient demand to trigger transactions and as such,
+sufficient demand for this USA.
+ISDA is liaising with DTCC to ensure the smooth and efficient running of the triggering process.
+Please note, however, that by signing the USA, a party agrees to trigger all covered transactions between it and
+any other institutions that sign the USA. It is not possible to sign the USA in respect of only some but not all
+covered transactions.
+Does my institution have to sign up? No. Market participants may prefer to trigger trades by delivery of a
+credit event notice to the relevant counterparties. Trades which are registered in DTCC’s Trade Information
+Warehouse must, if triggered (whether by actual service of a credit event notice or by adherence to the USA),
+also be processed in accordance with DTCC’s rules.
+To be valid, credit event notices must be delivered before 4pm in the Calculation Agent City on the “Exercise
+Cut-Off Date” (the last day that is a business day in London before the date on which the Auction Final Price is
+determined, i.e. the last such day before the Auction Date). ISDA will publish the Exercise Cut-off Date and the
+date of the Auction on the ISDA website as soon as the DC fixes the Auction Date.
+1
+Which transactions would be triggered by signing up to the USA for The Hellenic Republic? The USA
+covers any Credit Derivative Transaction (i) that specifies The Hellenic Republic as a Reference Entity (ii) that
+is subject to the EMEA Determinations Committee’s determination of The Hellenic Republic Credit Event (iii)
+that does not specify "Restructuring Maturity Limitation and Fully Transferable Obligation" or "Modified
+Restructuring Maturity Limitation and Conditionally Transferable Obligation" as applicable (iv) where "Buyer
+or Seller" is specified in the related Confirmation as Notifying Parties or neither party is specified in the related
+Confirmation as the Notifying Party and (v) for which each of the parties has adhered to the USA.
+Please note that the terms described in (iii) and (iv) in the paragraph immediately above may apply either
+because the Credit Derivatives Physical Settlement Matrix is incorporated or because they are specified in any
+other way (whether in the confirmation itself, by operation of a MCA or otherwise).
+We also note that index trades for which The Hellenic Republic is a constituent of the relevant index will be
+covered, provided that the criteria above are satisfied.
+Is it necessary to sign up to the USA in order for trades to be covered by the forthcoming Auction in
+respect of The Hellenic Republic? No. Transactions will be settled at the Final Price determined pursuant to the
+forthcoming Auction(s) provided that (i) they are subject to the July 2009 Supplement to the 2003 ISDA Credit
+Derivatives Definitions and (ii) they are triggered in accordance with their terms (whether this is done manually
+or by signing up to the USA).
+What is the deadline for signing up to the USA mentioned above? Please note that the deadline for signing
+up to the USA is 14 March 2012.
+From the end of the adherence period, market participants will know which trades have been triggered by this
+USA and the intention is that they will then have time to manually trigger any they wish to trigger that do not fall
+under the USA (up to the Exercise Cut-Off Date).
+As mentioned above, a feature of the Restructuring Credit Event in respect of The Hellenic Republic is that the
+covered transactions specify unmodified Restructuring (rather than Mod R or Mod Mod R) and buyers of
+protection will therefore not be required to evaluate separate maturity buckets. ISDA notes that it is for this
+reason that the EMEA Determinations Committee favoured publication at this time of a USA for The Hellenic
+Republic.
+How do I sign up? Each firm wishing to sign up to the USA for The Hellenic Republic should email a copy of
+the signature page, completed with (i) the full legal name of the entity signing, (ii) the corresponding DTCC
+account number (to assist in identifying counterparties who have signed) and (iii) a signature for such entity.
+Signature pages must be emailed to ***each of*** the following addresses before 4pm, London time, on 14
+March 2012:
+Francesca.Bennetts@AllenOvery.com AND Alex.Barros-Curtis@AllenOvery.com
+Please do not email signature pages to ISDA.
+On each day up to and including the announced deadline, Allen & Overy will provide to each entity that has
+agreed to sign the USA an update setting out the full list of entities which have signed the USA at such time.
+2

@@ -1,0 +1,32 @@
+Final List of Deliverable Obligations For The 2013 Edison Mission Energy Credit Derivatives Auction
+Settlement Terms1 - published January 10, 2013
+Bonds:
+ISIN Issuer Name Coupon Maturity
+US281023AN10 Edison Mission Energy 7.50% 6/15/2013 *Unless subject to
+Lock-Up
+US281023AR24 Edison Mission Energy 7.75% 6/15/2016 *Unless subject to
+Lock-Up
+US281023AU52 Edison Mission Energy 7.00% 5/15/2017 *Unless subject to
+Lock
+US281023AS07 Edison Mission Energy 7.00% 5/15/2017 *Unless subject to
+Lock
+USU27811AE58 Edison Mission Energy 7.00% 5/15/2017 *Unless subject to
+Lock-Up
+US281023AX91 Edison Mission Energy 7.20% 5/15/2019 *Unless subject to
+Lock-Up
+US281023BA89 Edison Mission Energy 7.625% 5/15/2027 *Unless subject to
+Lock-Up
+*If an obligation on the list above is marked "Unless subject to Lock-Up", then such obligation will NOT
+be included on the list of Deliverable Obligations if the party delivering that obligation is subject to the
+provisions of an agreement substantially in the form of the Edison Lock-Up Agreement (defined below)
+with respect to such obligation (a "Locked-Up Obligation"). Obligations with the same ISIN as a Locked-
+Up Obligation that are not subject to the Edison Lock-Up Agreement will be included on the list of
+Deliverable Obligations. For the avoidance of doubt, transferees under a Representative Auction-
+Settled Transaction will not become obliged to adhere to the Edison Lock-Up Agreement by virtue of
+their participation in the Edison Auction.
+"Edison Lock-Up Agreement" means the transaction support agreement dated as of December 16,
+2012 filed by Edison Mission Energy with the United States Bankruptcy Court Northern District of
+Illinois (Eastern Division) (Case No. 12-49219), available online at:
+http://www.edisonmissionrestructuring.com/pdflib/6_49219.pdf
+1
+Published pursuant to Section 3.3 of the Credit Derivatives Determinations Committees Rules

@@ -1,0 +1,137 @@
+EXECUTION VERSION
+2012 THE HELLENIC REPUBLIC
+UNIFORM CDS SETTLEMENT AGREEMENT
+This 2012 The Hellenic Republic Uniform CDS Settlement Agreement (this "Agreement") is entered into
+onthe Notice Date (as defined below)betweenthe entities specified in Schedule 1hereto(each, a "Party").
+WHEREAS, the EMEA Credit Derivatives Determinations Committeedetermined on 9 March, 2012 that
+a Restructuring Credit Event occurred with respect to The Hellenic Republic and that the Credit Event
+Resolution Request Date (as defined in the Definitions) was 9 March, 2012 (the "Relevant Credit Event
+Announcement").
+WHEREAS, the Parties hereto wish to facilitate the orderly settlement of any Covered Transaction (as
+defined below) referencing The Hellenic Republic to which they are respectively a party by agreeing that
+Credit Event Notices in respect of such Covered Transactions will be deemed to have been effectively
+deliveredonthe Notice Datewithoutrequiring the actual delivery of such notices.
+NOW, THEREFORE, for good and valuable consideration, the receipt and sufficiency of which is hereby
+acknowledged, the Parties agree as follows:
+1. DEFINITIONS AND INTERPRETATION
+1.1 Interpretation
+As used in this Agreement, (a) "Confirmation" and "Credit Support Document" each has the respective
+meaning given to that term in the related Governing Master Agreement and (b) each other capitalized term
+used in this Agreement but not defined herein has the meaning given to that term in the 2003 ISDA Credit
+Derivatives Definitions, as supplemented by the 2009 ISDA Credit Derivatives Determinations
+Committees, Auction Settlement and Restructuring Supplement to the 2003 ISDA Credit Derivatives
+Definitions (the "Definitions").
+1.2 Definitions
+"Covered Transaction" means any Credit Derivative Transaction for which The Hellenic Republic is a
+Reference Entity that (a) is subject to the Relevant Credit Event Announcement, (b) does not specify either
+"Restructuring Maturity Limitation and Fully Transferable Obligation" or "Modified Restructuring
+Maturity Limitation and Conditionally Transferable Obligation" as applicable and (c) "Buyer or Seller" is
+specified in the related Confirmation as Notifying Parties or neither party is specified in the related
+Confirmation as the Notifying Party.
+"Documentation" means the Governing Master Agreement and Confirmation (including a master
+confirmation) relating to a Covered Transaction.
+"Governing Master Agreement" means, in respect of a Covered Transaction, the ISDA Master
+Agreement or other form of master agreement governing such Covered Transaction and of which such
+Covered Transaction forms part, whether executed by the parties thereto or incorporated by reference in the
+Confirmation relating to such Covered Transaction.
+0096820-0000032 ICM:14594805.3
+"ISDA Master Agreement" means any of (a) the 2002 ISDA Master Agreement, (b) the 1992 ISDA
+Master Agreement(Multicurrency –Cross Border), (c) the 1992 ISDA Master Agreement (Local Currency
+– Single Jurisdiction), (d) the 1987 ISDA Interest Rate and Currency Exchange Agreement and (e) the
+1987 ISDA Interest Rate SwapAgreement.
+"Notice Date" means, unless otherwise publicly announced by ISDA,14 March2012.
+2. SETTLEMENT AGREEMENTEFFECTIVEDATE
+The Parties hereby agree that the agreements set forth in Section 3 of this Agreementwill be deemed to take
+effect from the NoticeDate.
+3. AGREEMENT
+With respect to each Covered Transactionfor which each of the parties thereto is a Party:
+(a) a Credit Event Notice specifying Restructuringas the Credit Event shall be deemed to be delivered
+and effective on the Notice Date for purposes of each portion of each Covered Transaction
+attributable to The Hellenic Republic;
+(b) any Credit Event Notice (other than a notice deemed to be given pursuant to this Agreement)
+delivered in respect of each portion of each Covered Transaction attributable to The Hellenic
+Republic shall be deemed revoked, and neither Party shall have any obligations with respect to
+such revoked notice; and
+(c) each Party agrees not to deliver any other Credit Event Notice (other than a notice deemed to be
+given pursuant to this Agreement) in respect of each portion of each Covered Transaction
+attributable to The Hellenic Republic, and any such notice delivered shall be void and have no
+effect.
+4. REPRESENTATIONS
+Each Party represents (which representations will each be deemed to be a representation for purposes of
+Section 5(a)(iv) of a Governing Master Agreement that is an ISDA Master Agreement (or, in the case of a
+Governing Master Agreement that is not an ISDA Master Agreement, any analogous provision in such
+Governing Master Agreement)) to each other Party with which it had anyCovered Transaction outstanding
+on the NoticeDate, in respect of each Covered Transaction between them, that:
+4.1 Status. It is, if relevant, duly organized and validly existing under the laws of the jurisdiction of its
+organization or incorporation and, if relevant under such laws, in good standing or, if it otherwise
+represents its status in or pursuant to the Governing Master Agreement, has such status.
+4.2 Powers. It has the power to execute and deliver this Agreement and to perform its obligations
+under this Agreement and each Covered Transaction, in each case as amended by this Agreement,
+and has taken all necessary action to authorize such execution, delivery and performance.
+4.3 No Violation or Conflict. Such execution, delivery and performance do not violate or conflict
+with any law applicable to it, any provision of its constitutional documents, any order or judgment
+of any court or other agency of government applicable to it or any of its assets or any contractual
+restriction binding on or affecting itor any of its assets.
+2
+4.4 Consents. All governmental and other consents that are required to have been obtained by it with
+respect to this Agreement and each Covered Transaction, in each case as amended by this
+Agreement, have been obtained and are in full force and effect and all conditions of any such
+consents have been complied with.
+4.5 Obligations Binding. Its obligations under this Agreement and each Covered Transaction, in each
+case as amended by this Agreement, constitute its legal, valid and binding obligations, enforceable
+in accordance with their respective terms (subject to applicable bankruptcy, reorganization,
+insolvency, moratorium or similar laws affecting creditors' rights generally and subject, as to
+enforceability, to equitable principles of general application (regardless of whether enforcement is
+sought in a proceeding in equity or at law)).
+4.6 Credit Support. This Agreement will not, in and of itself, adversely affect any obligations owed,
+whether by a Party or by any third party, under any Credit Support Document relating to a
+Covered Transaction.
+5. MISCELLANEOUS
+5.1 Entire Agreement. Notwithstanding Section 9(a) (or in the case of an ISDA Master Agreement
+that is a 1992 ISDAMaster Agreement (Local Currency –Single Jurisdiction), Section 8(a)) of the
+Governing Master Agreement (or, in the case of a Governing Master Agreement that is not an
+ISDA Master Agreement, any analogous provision in such Governing Master Agreement), this
+Agreement constitutes the entire agreement and understanding of the Parties with respect to its
+subject matter.
+5.2 Non-reliance. Each Party acknowledges that in agreeing to this Agreement it has not relied on any
+oral or written representation, warranty or other assurance, except as otherwise set forth in this
+Agreement, and waives all rights and remedies which might otherwise be available to it in respect
+thereof, except that nothing in this Agreement will limit or exclude any liability of a Party for
+fraud.
+5.3 No Waiver. Except as explicitly stated in this Agreement, nothing herein shall constitute a waiver
+or release of any rights of any Party under the Documentation for the relevant Covered
+Transaction.
+5.4 Amendments. An amendment, modification or waiver in respect of the matters contemplated by
+this Agreement will only be effective if made in accordance with the terms of the Governing Master
+Agreement and then only with effect between the parties to that Governing Master Agreement (and
+will only be effective to amend or override the provisions contained in Section 3 hereof if it
+expressly refers in writing to this Section 5.4of this Agreement and would otherwise be effective in
+accordance with Section 9(b) (or in the case of an ISDA Master Agreement that is a 1992 ISDA
+Master Agreement (Local Currency – Single Jurisdiction), Section 8(b)) of the Governing Master
+Agreement (or, in the case of a Governing Master Agreement that is not an ISDA Master
+Agreement, any analogous provision in such Governing Master Agreement)).
+5.5 Headings. The headings used in this Agreement are for convenience of reference only and are not
+to affect the construction of or to be taken into consideration in interpreting this Agreement.
+3
+5.6 Governing Law. This Agreement and any non-contractual obligations arising out of or in
+connection with it will be governed by and construed in accordance with English law and, as
+between two Parties and in respect of each Covered Transaction between them, the giving of
+notices deemed to occur under that Covered Transaction pursuant to this Agreement shall be
+governed by and construed in accordance with the law specified to govern that Covered
+Transaction and otherwise in accordance with applicable choice of law doctrine.
+5.7 Counterparts. This Agreement (and each amendment, modification and waiver in respect of it)
+may be executed and delivered in any number of counterparts (including by facsimile transmission)
+and all of such counterparts taken together shall be deemed to constitute one and the same
+instrument.
+4
+IN WITNESS whereof the Parties have executed this Agreement on the Notice Date.
+5
+For and on behalf of:
+[FULL LEGAL NAME OF PARTY]
+DTCC Account #:
+By: ……………………………………………
+6
+SCHEDULE 1
+The following entities are Parties to this Agreement:
+DTCC Account
+Name of Party # (if any)

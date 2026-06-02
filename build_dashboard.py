@@ -1,16 +1,24 @@
 """
-Build a self-contained static dashboard (dashboard.html) from the scraped
-Credit Derivatives Determinations Committees dataset.
+Build a self-contained static dashboard (dashboard.html) for the Credit
+Derivatives Determinations Committees dataset.
 
-The output is a single HTML file with the data embedded and Plotly.js from a
-CDN — no server required. Drop it straight onto gcburton.org. It includes:
-  * KPI cards + charts (per year / region / credit-event type)
-  * an "Ask the data" panel: headline answers + an interactive group-by pivot
-  * download buttons (raw CSV, tidy CSV, analytics JSON) for downstream graphing
+The output is a single HTML file with the data embedded and Plotly.js from a CDN.
+Deterministic presentation (filters, fields, charts, document drawers) runs fully
+client-side, so the file works behind the Caddy basic_auth gate with no backend.
+Two dynamic features call the companion API at ``/cds/api/`` when it is reachable:
+
+  * a free-text **Ask** box (RAG over the document corpus via local Ollama), with a
+    keyword fallback over the embedded document index when the API is offline;
+  * an **Update** button that triggers a live refresh + re-index.
+
+Inputs (built by build_index.py; falls back to the raw tables if absent):
+    data/index/determinations_clean.csv   cleaned + enriched determinations
+    data/index/documents.json             per-document records (kind, flags, …)
+    data/index/index_meta.json            counts + build time
 
 Usage:
     python build_dashboard.py
-    python build_dashboard.py --input data/determinations.csv --output public/index.html
+    python build_dashboard.py --output public/index.html
 """
 
 from __future__ import annotations
@@ -26,13 +34,29 @@ import pandas as pd
 import analytics
 
 DEFAULT_OUTPUT = Path("dashboard.html")
+INDEX_DIR = Path("data") / "index"
 
+# Wider field set than the old dashboard — these populate the sortable table and
+# the per-row filtering.
 ROW_COLS = [
-    "date", "year", "committee", "reference_entity", "credit_event_type",
-    "decision", "days_to_auction", "auction_held", "is_restructuring",
-    "credit_event_occurred", "final_price", "auction_date", "ticker",
-    "currency", "net_open_interest_amount", "match_status", "url",
+    "date", "year", "committee", "reference_entity", "issue_number",
+    "credit_event_type", "decision", "auction_held", "auction_date",
+    "days_to_auction", "final_price", "currency", "transaction_type",
+    "net_open_interest_amount", "net_open_interest_direction", "match_status",
+    "is_restructuring", "credit_event_occurred", "url",
 ]
+
+# Lightweight per-document fields embedded for the drawer + offline search.
+DOC_FIELDS = [
+    "reference_entity", "committee", "doc_kind", "is_proforma", "is_blackline",
+    "meeting_date", "issue_number", "vote_result", "title", "url", "snippet",
+    "flag_list",
+]
+
+
+def _input_path() -> Path:
+    clean = INDEX_DIR / "determinations_clean.csv"
+    return clean if clean.exists() else analytics.default_input()
 
 
 def _source_label(df: pd.DataFrame) -> tuple[str, str]:
@@ -49,15 +73,13 @@ def _source_label(df: pd.DataFrame) -> tuple[str, str]:
 
 
 def _clean_rows(df: pd.DataFrame) -> list[dict]:
-    """JSON-safe records (NaN/NaT -> None) for client-side aggregation."""
     d = analytics.enrich(df)
     for col in ("date", "auction_date"):
         if col in d:
-            d[col] = d[col].dt.strftime("%Y-%m-%d")
+            d[col] = pd.to_datetime(d[col], errors="coerce").dt.strftime("%Y-%m-%d")
     keep = [c for c in ROW_COLS if c in d.columns]
     d = d[keep].astype(object).where(pd.notna(d[keep]), None)
     records = d.to_dict(orient="records")
-    # final guard against stray float NaNs
     for r in records:
         for k, v in r.items():
             if isinstance(v, float) and math.isnan(v):
@@ -65,32 +87,31 @@ def _clean_rows(df: pd.DataFrame) -> list[dict]:
     return records
 
 
+def _load_docs() -> list[dict]:
+    p = INDEX_DIR / "documents.json"
+    if not p.exists():
+        return []
+    docs = json.loads(p.read_text())
+    out = []
+    for d in docs:
+        out.append({k: d.get(k) for k in DOC_FIELDS})
+    return out
+
+
+def _load_meta() -> dict:
+    p = INDEX_DIR / "index_meta.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
 def build(input_path: Path, output_path: Path) -> Path:
     if not input_path.exists():
         raise SystemExit(
-            f"{input_path} not found. Run `python cds_dc_scraper.py` (or --demo) first."
+            f"{input_path} not found. Run `python cds_dc_scraper.py` then `python build_index.py`."
         )
     df = pd.read_csv(input_path)
     metrics = analytics.compute(df)
     answers = analytics.headline_answers(metrics)
     banner_text, banner_class = _source_label(df)
-
-    d = analytics.enrich(df).dropna(subset=["date"]).sort_values("date")
-    by_year = d.groupby(d["date"].dt.year).size()
-    by_region = d["committee"].fillna("Unknown").value_counts()
-    by_event = d["credit_event_type"].fillna("Not specified").value_counts()
-
-    recent_cols = ["date", "committee", "reference_entity", "credit_event_type",
-                   "final_price", "auction_date", "decision", "url"]
-    recent = (
-        d.sort_values("date", ascending=False)
-        .head(25)[[c for c in recent_cols if c in d.columns]]
-        .copy()
-    )
-    recent["date"] = recent["date"].dt.date.astype(str)
-    if "auction_date" in recent:
-        recent["auction_date"] = pd.to_datetime(recent["auction_date"], errors="coerce").dt.date.astype(str)
-    recent = recent.astype(object).where(pd.notna(recent), "—")
 
     payload = {
         "kpis": {
@@ -101,15 +122,9 @@ def build(input_path: Path, output_path: Path) -> Path:
             "date_max": metrics["date_max"],
         },
         "answers": [{"label": l, "value": v} for l, v in answers],
-        "by_year": {"x": [int(y) for y in by_year.index], "y": [int(v) for v in by_year.values]},
-        "by_region": {"labels": list(by_region.index), "values": [int(v) for v in by_region.values]},
-        "by_event": {"x": list(by_event.index), "y": [int(v) for v in by_event.values]},
-        "by_recovery": {
-            "x": list(metrics.get("avg_final_price_by_event", {}).keys()),
-            "y": [round(v, 2) for v in metrics.get("avg_final_price_by_event", {}).values()],
-        },
-        "recent": recent.to_dict(orient="records"),
         "rows": _clean_rows(df),
+        "docs": _load_docs(),
+        "meta": _load_meta(),
         "analytics": metrics,
         "banner": {"text": banner_text, "cls": banner_class},
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
@@ -119,7 +134,7 @@ def build(input_path: Path, output_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
     print(f"Wrote {output_path} ({output_path.stat().st_size // 1024} KB, "
-          f"{metrics['total_determinations']} determinations)")
+          f"{metrics['total_determinations']} determinations, {len(payload['docs'])} docs)")
     return output_path
 
 
@@ -131,189 +146,357 @@ _TEMPLATE = r"""<!DOCTYPE html>
 <title>CDS Determinations Committees — Dashboard</title>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 <style>
-  :root { --bg:#0f1620; --card:#172230; --ink:#e8eef5; --muted:#8aa0b6; --accent:#3aa0ff; }
+  :root { --bg:#0f1620; --card:#172230; --ink:#e8eef5; --muted:#8aa0b6; --accent:#3aa0ff;
+          --green:#37c98b; --amber:#f5a623; --line:#243245; }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--ink);
          font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
-  header { padding:28px 32px 8px; }
-  h1 { margin:0; font-size:24px; }
+  header { padding:24px 32px 4px; }
+  h1 { margin:0; font-size:23px; }
   .sub { color:var(--muted); font-size:13px; margin-top:4px; }
-  .wrap { padding:16px 32px 48px; max-width:1200px; margin:0 auto; }
-  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin:12px 0 20px; }
+  .wrap { padding:14px 32px 56px; max-width:1280px; margin:0 auto; }
+  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin:12px 0 14px; }
   .banner.warn { background:#3a2e12; color:#ffd58a; border:1px solid #6b531f; }
   .banner.ok { background:#143524; color:#8af0b8; border:1px solid #1f6b46; }
-  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:18px; }
-  .kpi { background:var(--card); border-radius:12px; padding:16px 18px; }
-  .kpi .v { font-size:24px; font-weight:650; }
-  .kpi .l { color:var(--muted); font-size:11px; margin-top:4px; text-transform:uppercase; letter-spacing:.5px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  .card { background:var(--card); border-radius:12px; padding:14px 16px 8px; margin-bottom:18px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:16px; }
+  .kpi { background:var(--card); border-radius:12px; padding:14px 16px; }
+  .kpi .v { font-size:22px; font-weight:650; } .kpi .l { color:var(--muted); font-size:11px;
+    margin-top:4px; text-transform:uppercase; letter-spacing:.5px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .card { background:var(--card); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px; }
   .card h3 { margin:4px 6px 10px; font-size:14px; font-weight:600; color:#cdd8e4; }
   .full { grid-column:1 / -1; }
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid #243245; }
-  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  th,td { text-align:left; padding:7px 9px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card);
+       cursor:pointer; user-select:none; }
+  th:hover { color:var(--ink); }
   td a { color:var(--accent); text-decoration:none; }
-  .tablewrap { max-height:420px; overflow:auto; }
-  select,button { background:#0f1620; color:var(--ink); border:1px solid #2c3c50;
-                  border-radius:8px; padding:8px 10px; font-size:13px; }
-  button { cursor:pointer; }
-  button:hover { border-color:var(--accent); }
+  .tablewrap { max-height:560px; overflow:auto; border-radius:8px; }
+  tr.det { cursor:pointer; } tr.det:hover td { background:#1c2a3b; }
+  tr.drawer td { white-space:normal; background:#0f1a26; padding:0; }
+  .drawer-inner { padding:12px 16px; }
+  .docgroup { margin:6px 0 10px; } .docgroup h4 { margin:6px 0 4px; font-size:12px;
+    color:var(--accent); text-transform:uppercase; letter-spacing:.4px; }
+  .docrow { font-size:12.5px; padding:3px 0; border-bottom:1px dotted #223; }
+  .pill { display:inline-block; font-size:10px; padding:1px 7px; border-radius:10px; margin-left:6px;
+          background:#23364a; color:#9fc4ea; } .pill.warn{ background:#4a3a12; color:#ffd58a; }
+  .pill.flag{ background:#2a1f3a; color:#c9a7ff; }
+  select,button,input,textarea { background:#0f1620; color:var(--ink); border:1px solid #2c3c50;
+                  border-radius:8px; padding:8px 10px; font-size:13px; font-family:inherit; }
+  button { cursor:pointer; } button:hover { border-color:var(--accent); }
+  button.primary { background:var(--accent); color:#04243f; border-color:var(--accent); font-weight:600; }
   .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:0 6px 12px; }
-  .answers { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:0 6px 6px; }
-  .ans { background:#0f1a26; border:1px solid #243245; border-radius:10px; padding:12px 14px; }
-  .ans .q { color:var(--muted); font-size:12px; } .ans .a { font-size:18px; font-weight:600; margin-top:4px; }
-  footer { color:var(--muted); font-size:12px; padding:0 32px 32px; max-width:1200px; margin:0 auto; }
-  @media (max-width:760px){ .grid{grid-template-columns:1fr;} }
+  .controls label { color:var(--muted); font-size:12px; margin-right:2px; }
+  .answers { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:0 6px 10px; }
+  .ans { background:#0f1a26; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .ans .q { color:var(--muted); font-size:11.5px; } .ans .a { font-size:16px; font-weight:600; margin-top:3px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin:6px 6px 10px; }
+  .chip { font-size:12px; padding:4px 10px; border-radius:14px; background:#13202e;
+          border:1px solid #2c3c50; cursor:pointer; } .chip:hover{ border-color:var(--accent); }
+  #askBox { width:100%; min-height:56px; resize:vertical; }
+  #answer { white-space:pre-wrap; line-height:1.5; font-size:14px; margin:10px 6px;
+            background:#0f1a26; border:1px solid var(--line); border-radius:10px; padding:14px; min-height:20px; }
+  .cite { font-size:12px; color:var(--muted); margin:4px 6px; }
+  .cite a{ color:var(--accent); }
+  mark { background:#5a4a14; color:#ffe9a8; padding:0 2px; border-radius:3px; }
+  .meta { color:var(--muted); font-size:12px; }
+  footer { color:var(--muted); font-size:12px; padding:0 32px 32px; max-width:1280px; margin:0 auto; }
+  @media (max-width:820px){ .grid{grid-template-columns:1fr;} th,td{white-space:normal;} }
 </style>
 </head>
 <body>
 <header>
   <h1>Credit Derivatives Determinations Committees</h1>
-  <div class="sub">Determinations dashboard · source: cdsdeterminationscommittees.org</div>
+  <div class="sub">Determinations tracker · source: cdsdeterminationscommittees.org · auctions: creditfixings.com</div>
 </header>
 <div class="wrap">
   <div id="banner" class="banner"></div>
   <div class="kpis" id="kpis"></div>
 
+  <!-- ── Ask the data (free-text, unlimited) ─────────────────────────────── -->
   <div class="card full">
-    <h3>Ask the data</h3>
+    <h3>💬 Ask the data</h3>
     <div class="answers" id="answers"></div>
     <div class="controls">
-      <span style="color:#8aa0b6;font-size:13px">Group by</span>
-      <select id="dim">
-        <option value="committee">Committee region</option>
-        <option value="credit_event_type">Credit-event type</option>
-        <option value="year">Year</option>
-        <option value="decision">Decision</option>
-      </select>
-      <span style="color:#8aa0b6;font-size:13px">Measure</span>
-      <select id="measure">
-        <option value="count">Count of determinations</option>
-        <option value="pct">% of total</option>
-        <option value="avg_days_to_auction">Avg days to auction</option>
-        <option value="avg_final_price">Avg final price (recovery)</option>
-        <option value="credit_event_rate">Credit-event rate (%)</option>
-      </select>
-      <button id="dlCsv">⬇ Raw CSV</button>
-      <button id="dlTidy">⬇ Tidy CSV</button>
-      <button id="dlJson">⬇ Analytics JSON</button>
+      <textarea id="askBox" placeholder="Ask anything about the determinations and the underlying documents — e.g. &quot;When did the EMEA DC exercise discretion under the Rules?&quot;, &quot;Which entities involved lock-up agreements?&quot;, &quot;Show external review cases&quot;"></textarea>
     </div>
-    <div id="pivot" style="height:340px"></div>
+    <div class="chips" id="chips"></div>
+    <div class="controls">
+      <button class="primary" id="askBtn">Ask</button>
+      <span class="meta" id="askMeta"></span>
+    </div>
+    <div id="answer"></div>
+    <div id="cites"></div>
   </div>
 
-  <div class="grid">
-    <div class="card"><h3>Determinations per year</h3><div id="byYear" style="height:320px"></div></div>
-    <div class="card"><h3>By committee region</h3><div id="byRegion" style="height:320px"></div></div>
-  </div>
-  <div class="card full"><h3>By credit-event type</h3><div id="byEvent" style="height:320px"></div></div>
-  <div class="card full"><h3>Avg auction final price / recovery (Creditex) by credit-event type</h3><div id="byRecovery" style="height:320px"></div></div>
-
+  <!-- ── Filters ──────────────────────────────────────────────────────────── -->
   <div class="card full">
-    <h3>Most recent determinations (reconciled with Creditex auctions)</h3>
-    <div class="tablewrap"><table id="recent"><thead><tr>
-      <th>Date</th><th>Committee</th><th>Reference entity</th>
-      <th>Credit event</th><th>Final price</th><th>Auction date</th><th>Decision</th><th>Doc</th>
-    </tr></thead><tbody></tbody></table></div>
+    <h3>Filter determinations</h3>
+    <div class="controls">
+      <span><label>Committee</label><select id="fCommittee"></select></span>
+      <span><label>Credit event</label><select id="fEvent"></select></span>
+      <span><label>Decision</label><select id="fDecision"></select></span>
+      <span><label>From year</label><select id="fYearLo"></select></span>
+      <span><label>To year</label><select id="fYearHi"></select></span>
+      <span><label>Entity</label><input id="fEntity" placeholder="name contains…" size="18"></span>
+      <span><label>Notable</label><select id="fFlag"></select></span>
+      <button id="resetBtn">Reset</button>
+      <span class="meta" id="filterCount"></span>
+    </div>
+  </div>
+
+  <!-- ── Charts (react to filters) ────────────────────────────────────────── -->
+  <div class="grid">
+    <div class="card"><h3>Determinations per year</h3><div id="byYear" style="height:300px"></div></div>
+    <div class="card"><h3>By committee region</h3><div id="byRegion" style="height:300px"></div></div>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>By credit-event type</h3><div id="byEvent" style="height:300px"></div></div>
+    <div class="card"><h3>Avg auction final price (recovery) by event</h3><div id="byRecovery" style="height:300px"></div></div>
+  </div>
+
+  <!-- ── Determinations table + document drawers ─────────────────────────── -->
+  <div class="card full">
+    <h3>Determinations <span class="meta">— click a row for its documents (decisions, explanatory statements, pro-forma ASTs, final lists…)</span></h3>
+    <div class="controls"><button id="dlCsv">⬇ Filtered CSV</button><button id="dlJson">⬇ Analytics JSON</button></div>
+    <div class="tablewrap"><table id="tbl"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
   </div>
 </div>
-<footer>Generated <span id="gen"></span> · Static dashboard, no server required.</footer>
+<footer>
+  <span id="status"></span> · Generated <span id="gen"></span> ·
+  <button id="updateBtn">↻ Update data</button> <span class="meta" id="updateMeta"></span>
+</footer>
 
 <script>
 const DATA = /*__DATA__*/;
-const layout = { paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
-  font:{color:'#cdd8e4'}, margin:{t:10,r:14,b:60,l:48}, showlegend:false };
-const conf = { displayModeBar:false, responsive:true };
+const API = "api/";  // served at /cds/api/ behind the same Caddy gate
+const fmtNum = n => (n==null?'—':Number(n).toLocaleString());
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const b = document.getElementById('banner');
-b.textContent = DATA.banner.text; b.classList.add(DATA.banner.cls);
-document.getElementById('gen').textContent = DATA.generated;
+// ── header / KPIs / answers ──────────────────────────────────────────────────
+const b=document.getElementById('banner'); b.textContent=DATA.banner.text; b.classList.add(DATA.banner.cls);
+document.getElementById('gen').textContent=DATA.generated;
+const k=DATA.kpis;
+document.getElementById('kpis').innerHTML=[
+  ['Determinations',fmtNum(k.total)],['Reference entities',fmtNum(k.entities)],
+  ['Credit events',fmtNum(k.credit_events)],['Documents',fmtNum((DATA.meta||{}).n_documents)],
+  ['Earliest',k.date_min||'—'],['Latest',k.date_max||'—'],
+].map(([l,v])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+document.getElementById('answers').innerHTML=DATA.answers.map(a=>
+  `<div class="ans"><div class="q">${esc(a.label)}</div><div class="a">${esc(a.value)}</div></div>`).join('');
 
-const k = DATA.kpis;
-document.getElementById('kpis').innerHTML = [
-  ['Determinations', (k.total||0).toLocaleString()],
-  ['Reference entities', (k.entities||0).toLocaleString()],
-  ['Credit events tagged', (k.credit_events||0).toLocaleString()],
-  ['Earliest', k.date_min||'—'],
-  ['Latest', k.date_max||'—'],
-].map(([l,v]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+// ── filter controls ──────────────────────────────────────────────────────────
+const ROWS=DATA.rows;
+const uniq=(arr)=>[...new Set(arr.filter(v=>v!=null&&v!==''))];
+const years=uniq(ROWS.map(r=>r.year)).map(Number).sort((a,b)=>a-b);
+function fill(sel,vals,all='All'){ const e=document.getElementById(sel);
+  e.innerHTML=`<option value="">${all}</option>`+vals.map(v=>`<option>${esc(v)}</option>`).join(''); }
+fill('fCommittee',uniq(ROWS.map(r=>r.committee)).sort());
+fill('fEvent',uniq(ROWS.map(r=>r.credit_event_type)).sort());
+fill('fDecision',uniq(ROWS.map(r=>r.decision)).sort());
+const FLAG_LABELS={discretion_under_rules:'Discretion under the Rules',external_review:'External review',
+  lock_up:'Lock-up',restructuring:'Restructuring',deliverable_obligations:'Deliverable obligations',
+  collective_action:'Collective action clause',succession:'Succession'};
+fill('fFlag',Object.keys(FLAG_LABELS).map(f=>f));
+document.querySelectorAll('#fFlag option').forEach(o=>{ if(o.value) o.textContent=FLAG_LABELS[o.value]||o.value; });
+const yl=document.getElementById('fYearLo'), yh=document.getElementById('fYearHi');
+yl.innerHTML='<option value="">earliest</option>'+years.map(y=>`<option>${y}</option>`).join('');
+yh.innerHTML='<option value="">latest</option>'+years.map(y=>`<option>${y}</option>`).join('');
 
-document.getElementById('answers').innerHTML = DATA.answers.map(
-  a => `<div class="ans"><div class="q">${a.label}</div><div class="a">${a.value}</div></div>`
-).join('');
+// entities that carry at least one doc with a given flag → for the Notable filter
+const entityFlags={};
+for(const d of DATA.docs){ const e=d.reference_entity; if(!e) continue;
+  (d.flag_list||[]).forEach(f=>{ (entityFlags[f]=entityFlags[f]||new Set()).add(e); }); }
 
-Plotly.newPlot('byYear', [{type:'bar', x:DATA.by_year.x, y:DATA.by_year.y, marker:{color:'#3aa0ff'}}], layout, conf);
-Plotly.newPlot('byRegion', [{type:'pie', labels:DATA.by_region.labels, values:DATA.by_region.values, hole:.55,
-  textinfo:'label+percent', marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}}],
-  {...layout, margin:{t:10,r:10,b:10,l:10}}, conf);
-Plotly.newPlot('byEvent', [{type:'bar', x:DATA.by_event.x, y:DATA.by_event.y, marker:{color:'#37c98b'}}], layout, conf);
-if (DATA.by_recovery.x.length)
-  Plotly.newPlot('byRecovery', [{type:'bar', x:DATA.by_recovery.x, y:DATA.by_recovery.y, marker:{color:'#c86bff'},
-    text:DATA.by_recovery.y.map(v=>v.toFixed(2)), textposition:'auto'}], {...layout, yaxis:{range:[0,100], title:'final price'}}, conf);
-else document.getElementById('byRecovery').innerHTML =
-  '<div style="color:#8aa0b6;padding:24px">No auction final-price data yet — run a live Creditex refresh.</div>';
+function currentFilters(){ return {
+  committee:document.getElementById('fCommittee').value,
+  event:document.getElementById('fEvent').value,
+  decision:document.getElementById('fDecision').value,
+  ylo:document.getElementById('fYearLo').value, yhi:document.getElementById('fYearHi').value,
+  entity:document.getElementById('fEntity').value.trim().toLowerCase(),
+  flag:document.getElementById('fFlag').value };
+}
+function applyFilters(){ const f=currentFilters();
+  return ROWS.filter(r=>{
+    if(f.committee && r.committee!==f.committee) return false;
+    if(f.event && r.credit_event_type!==f.event) return false;
+    if(f.decision && r.decision!==f.decision) return false;
+    if(f.ylo && (r.year==null||r.year<+f.ylo)) return false;
+    if(f.yhi && (r.year==null||r.year>+f.yhi)) return false;
+    if(f.entity && !String(r.reference_entity||'').toLowerCase().includes(f.entity)) return false;
+    if(f.flag){ const set=entityFlags[f.flag]; if(!set||!set.has(r.reference_entity)) return false; }
+    return true; });
+}
 
-// ── interactive pivot ────────────────────────────────────────────────────────
-function aggregate(dim, measure) {
-  const groups = {};
-  for (const r of DATA.rows) {
-    const key = (r[dim] === null || r[dim] === undefined || r[dim] === '') ? 'Unknown' : r[dim];
-    (groups[key] = groups[key] || []).push(r);
+// ── charts ────────────────────────────────────────────────────────────────────
+const layout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'#cdd8e4'},
+  margin:{t:10,r:14,b:50,l:46},showlegend:false};
+const conf={displayModeBar:false,responsive:true};
+function counts(rows,key,fallback){ const m={}; for(const r of rows){ const v=(r[key]==null||r[key]==='')?fallback:r[key];
+  m[v]=(m[v]||0)+1;} return m; }
+function drawCharts(rows){
+  const yc=counts(rows.filter(r=>r.year!=null),'year',''); const yk=Object.keys(yc).map(Number).sort((a,b)=>a-b);
+  Plotly.react('byYear',[{type:'bar',x:yk,y:yk.map(y=>yc[y]),marker:{color:'#3aa0ff'}}],layout,conf);
+  const rc=counts(rows,'committee','Unknown'); const rk=Object.keys(rc);
+  Plotly.react('byRegion',[{type:'pie',labels:rk,values:rk.map(x=>rc[x]),hole:.55,textinfo:'label+percent',
+    marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}}],
+    {...layout,margin:{t:10,r:10,b:10,l:10}},conf);
+  const ec=counts(rows,'credit_event_type','Not specified'); const ek=Object.keys(ec).sort((a,b)=>ec[b]-ec[a]);
+  Plotly.react('byEvent',[{type:'bar',x:ek,y:ek.map(x=>ec[x]),marker:{color:'#37c98b'}}],layout,conf);
+  // avg recovery by event among filtered rows with a final_price
+  const sums={},n={}; for(const r of rows){ if(r.final_price!=null&&r.credit_event_type){
+    sums[r.credit_event_type]=(sums[r.credit_event_type]||0)+Number(r.final_price); n[r.credit_event_type]=(n[r.credit_event_type]||0)+1; } }
+  const pk=Object.keys(sums);
+  if(pk.length) Plotly.react('byRecovery',[{type:'bar',x:pk,y:pk.map(x=>+(sums[x]/n[x]).toFixed(2)),
+    marker:{color:'#c86bff'},text:pk.map(x=>(sums[x]/n[x]).toFixed(2)),textposition:'auto'}],
+    {...layout,yaxis:{range:[0,100]}},conf);
+  else Plotly.react('byRecovery',[{type:'bar',x:[],y:[]}],{...layout,
+    annotations:[{text:'No auction final-price data in this filter',showarrow:false,font:{color:'#8aa0b6'}}]},conf);
+}
+
+// ── table + per-row document drawer ───────────────────────────────────────────
+const COLS=[['date','Date'],['committee','Committee'],['reference_entity','Reference entity'],
+  ['issue_number','Issue #'],['credit_event_type','Credit event'],['decision','Decision'],
+  ['auction_held','Auction'],['auction_date','Auction date'],['days_to_auction','Days→auction'],
+  ['final_price','Final price'],['currency','Ccy'],['transaction_type','Seniority'],
+  ['net_open_interest_amount','Net OI'],['match_status','Match']];
+document.getElementById('thead').innerHTML=COLS.map(([c,l])=>`<th data-c="${c}">${l}</th>`).join('')+'<th>Docs</th>';
+let sortCol='date', sortDir=-1;
+const KINDS=[['decision','Decisions / meeting statements'],['meeting_statement','Decisions / meeting statements'],
+  ['explanatory_statement','Explanatory statements'],['auction_settlement_terms','Auction Settlement Terms'],
+  ['final_list','Final lists / maturity buckets'],['participating_bidders','Participating bidders'],
+  ['notice','Notices'],['auction_results','Auction results'],['auction_market_data','Auction market data'],
+  ['document','Other documents']];
+const GROUP_ORDER=['Decisions / meeting statements','Explanatory statements','Auction Settlement Terms',
+  'Final lists / maturity buckets','Participating bidders','Notices','Auction results','Auction market data','Other documents'];
+const kindGroup={}; KINDS.forEach(([k,g])=>kindGroup[k]=g);
+
+function docsForEntity(entity){ if(!entity) return [];
+  return DATA.docs.filter(d=>d.reference_entity===entity); }
+function drawerHtml(entity){
+  const docs=docsForEntity(entity);
+  if(!docs.length) return `<div class="drawer-inner meta">No source documents linked to this entity in the index.</div>`;
+  const groups={}; for(const d of docs){ const g=kindGroup[d.doc_kind]||'Other documents'; (groups[g]=groups[g]||[]).push(d); }
+  let html='<div class="drawer-inner">';
+  for(const g of GROUP_ORDER){ if(!groups[g]) continue;
+    html+=`<div class="docgroup"><h4>${g}</h4>`;
+    for(const d of groups[g]){
+      const badges=[]; if(d.is_proforma) badges.push('<span class="pill warn">pro-forma</span>');
+      if(d.is_blackline) badges.push('<span class="pill warn">blackline</span>');
+      if(d.meeting_date) badges.push(`<span class="pill">mtg ${esc(d.meeting_date)}</span>`);
+      if(d.issue_number) badges.push(`<span class="pill">issue ${esc(d.issue_number)}</span>`);
+      if(d.vote_result) badges.push(`<span class="pill">vote ${esc(d.vote_result)}</span>`);
+      (d.flag_list||[]).forEach(f=>badges.push(`<span class="pill flag">${esc(FLAG_LABELS[f]||f)}</span>`));
+      const link=d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title||'document')} ↗</a>`:esc(d.title||'document');
+      html+=`<div class="docrow">${link} ${badges.join(' ')}${d.snippet?`<div class="meta">${esc(d.snippet)}</div>`:''}</div>`;
+    }
+    html+='</div>';
   }
-  const keys = Object.keys(groups).sort();
-  const vals = keys.map(key => {
-    const rows = groups[key];
-    if (measure === 'count') return rows.length;
-    if (measure === 'pct') return +(rows.length / DATA.rows.length * 100).toFixed(1);
-    if (measure === 'avg_days_to_auction') {
-      const d = rows.map(r => r.days_to_auction).filter(v => v !== null && v !== undefined);
-      return d.length ? +(d.reduce((a,b)=>a+b,0)/d.length).toFixed(1) : 0;
-    }
-    if (measure === 'avg_final_price') {
-      const d = rows.map(r => r.final_price).filter(v => v !== null && v !== undefined && v !== '');
-      return d.length ? +(d.reduce((a,b)=>a+Number(b),0)/d.length).toFixed(2) : 0;
-    }
-    if (measure === 'credit_event_rate') {
-      const ce = rows.filter(r => r.credit_event_occurred).length;
-      return +(ce / rows.length * 100).toFixed(1);
-    }
-    return rows.length;
+  return html+'</div>';
+}
+function cell(r,c){ if(c==='url') return r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener">↗</a>`:'';
+  if(c==='auction_held') return r.auction_held?'✓':'';
+  if(c==='final_price') return r.final_price==null?'—':Number(r.final_price).toFixed(3);
+  return esc(r[c]==null?'':r[c]); }
+function renderTable(rows){
+  rows=[...rows].sort((a,b)=>{ let x=a[sortCol],y=b[sortCol]; if(x==null)return 1; if(y==null)return -1;
+    if(typeof x==='number'&&typeof y==='number') return (x-y)*sortDir;
+    return String(x).localeCompare(String(y))*sortDir; });
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  rows.forEach((r,i)=>{
+    const tr=document.createElement('tr'); tr.className='det';
+    tr.innerHTML=COLS.map(([c])=>`<td>${cell(r,c)}</td>`).join('')
+      +`<td>${docsForEntity(r.reference_entity).length||''}</td>`;
+    tr.onclick=()=>{ const nx=tr.nextElementSibling;
+      if(nx&&nx.classList.contains('drawer')){ nx.remove(); return; }
+      const dr=document.createElement('tr'); dr.className='drawer';
+      dr.innerHTML=`<td colspan="${COLS.length+1}">${drawerHtml(r.reference_entity)}</td>`;
+      tr.after(dr); };
+    tb.appendChild(tr);
   });
-  return {keys, vals};
 }
-function drawPivot() {
-  const dim = document.getElementById('dim').value;
-  const measure = document.getElementById('measure').value;
-  const {keys, vals} = aggregate(dim, measure);
-  Plotly.react('pivot', [{type:'bar', x:keys, y:vals, marker:{color:'#f5a623'},
-    text:vals.map(String), textposition:'auto'}], layout, conf);
-}
-document.getElementById('dim').onchange = drawPivot;
-document.getElementById('measure').onchange = drawPivot;
-drawPivot();
+document.getElementById('thead').addEventListener('click',e=>{ const c=e.target.dataset.c; if(!c) return;
+  if(sortCol===c) sortDir*=-1; else { sortCol=c; sortDir=1; } refresh(); });
 
-// ── downloads ─────────────────────────────────────────────────────────────────
-function download(name, text, type) {
-  const blob = new Blob([text], {type}); const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = name; a.click();
-  URL.revokeObjectURL(url);
-}
-function toCsv(rows) {
-  if (!rows.length) return '';
-  const cols = Object.keys(rows[0]);
-  const esc = v => (v===null||v===undefined) ? '' :
-    /[",\n]/.test(String(v)) ? '"'+String(v).replace(/"/g,'""')+'"' : String(v);
-  return [cols.join(','), ...rows.map(r => cols.map(c => esc(r[c])).join(','))].join('\n');
-}
-document.getElementById('dlCsv').onclick  = () => download('determinations.csv', toCsv(DATA.recent.length?DATA.rows:[]), 'text/csv');
-document.getElementById('dlTidy').onclick = () => download('determinations_tidy.csv', toCsv(DATA.rows), 'text/csv');
-document.getElementById('dlJson').onclick = () => download('determinations_analytics.json', JSON.stringify(DATA.analytics, null, 2), 'application/json');
+let lastFiltered=ROWS;
+function refresh(){ const rows=applyFilters(); lastFiltered=rows;
+  document.getElementById('filterCount').textContent=`${rows.length} of ${ROWS.length} determinations`;
+  drawCharts(rows); renderTable(rows); }
+['fCommittee','fEvent','fDecision','fYearLo','fYearHi','fFlag'].forEach(id=>
+  document.getElementById(id).addEventListener('change',refresh));
+document.getElementById('fEntity').addEventListener('input',refresh);
+document.getElementById('resetBtn').onclick=()=>{ ['fCommittee','fEvent','fDecision','fYearLo','fYearHi','fFlag'].forEach(id=>
+  document.getElementById(id).value=''); document.getElementById('fEntity').value=''; refresh(); };
 
-// ── recent table ──────────────────────────────────────────────────────────────
-document.querySelector('#recent tbody').innerHTML = DATA.recent.map(r => `<tr>
-  <td>${r.date}</td><td>${r.committee}</td><td>${r.reference_entity}</td>
-  <td>${r.credit_event_type}</td><td>${r.final_price ?? '—'}</td><td>${r.auction_date ?? '—'}</td><td>${r.decision}</td>
-  <td><a href="${r.url}" target="_blank" rel="noopener">PDF ↗</a></td></tr>`).join('');
+// ── downloads ──────────────────────────────────────────────────────────────────
+function download(name,text,type){ const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+function toCsv(rows){ if(!rows.length) return ''; const cols=Object.keys(rows[0]);
+  const e=v=>(v==null)?'':/[",\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':String(v);
+  return [cols.join(','),...rows.map(r=>cols.map(c=>e(r[c])).join(','))].join('\n'); }
+document.getElementById('dlCsv').onclick=()=>download('determinations_filtered.csv',toCsv(lastFiltered),'text/csv');
+document.getElementById('dlJson').onclick=()=>download('determinations_analytics.json',JSON.stringify(DATA.analytics,null,2),'application/json');
+
+// ── Ask box: stream from the API, fall back to keyword search if offline ───────
+const CHIPS=['When did the EMEA DC exercise discretion under the Rules?','Which entities involved lock-up agreements?',
+  'Show any external review cases','How were Restructuring credit events handled?','What did the Hellenic Republic auction settle at?'];
+document.getElementById('chips').innerHTML=CHIPS.map(c=>`<span class="chip">${esc(c)}</span>`).join('');
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ document.getElementById('askBox').value=c.textContent; ask(); });
+
+function keywordFallback(q){
+  const terms=q.toLowerCase().split(/\s+/).filter(t=>t.length>2);
+  const scored=DATA.docs.map(d=>{ const hay=((d.title||'')+' '+(d.snippet||'')+' '+(d.reference_entity||'')+' '+(d.flag_list||[]).join(' ')).toLowerCase();
+    let s=0; terms.forEach(t=>{ if(hay.includes(t)) s++; }); return {d,s}; }).filter(x=>x.s>0)
+    .sort((a,b)=>b.s-a.s).slice(0,8);
+  if(!scored.length) return {answer:'No matching documents found in the local index for that query.',citations:[]};
+  return { answer:'**API offline — showing keyword matches from the embedded index.** The relevant documents are listed below; click through for the full text.',
+    citations:scored.map((x,i)=>({n:i+1,reference_entity:x.d.reference_entity,committee:x.d.committee,
+      doc_kind:x.d.doc_kind,meeting_date:x.d.meeting_date,title:x.d.title,url:x.d.url,excerpt:x.d.snippet})) };
+}
+function renderCites(cites){ document.getElementById('cites').innerHTML=cites.map(c=>
+  `<div class="cite">[${c.n}] ${esc(c.reference_entity||'?')} · ${esc(c.committee||'?')} · ${esc(c.doc_kind||'')}${c.meeting_date?' · '+esc(c.meeting_date):''}
+   ${c.url?`<a href="${esc(c.url)}" target="_blank" rel="noopener">source ↗</a>`:''}<br><span class="meta">${esc(c.excerpt||'')}</span></div>`).join(''); }
+
+async function ask(){
+  const q=document.getElementById('askBox').value.trim(); if(!q) return;
+  const ans=document.getElementById('answer'), meta=document.getElementById('askMeta');
+  document.getElementById('cites').innerHTML=''; ans.textContent=''; meta.textContent='thinking… (local model on the Pi — first answer can take ~30–60s)';
+  try{
+    const r=await fetch(API+'ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+    if(!r.ok||!r.body) throw new Error('api '+r.status);
+    const reader=r.body.getReader(), dec=new TextDecoder(); let buf='';
+    for(;;){ const {value,done}=await reader.read(); if(done) break; buf+=dec.decode(value,{stream:true});
+      let nl; while((nl=buf.indexOf('\n'))>=0){ const line=buf.slice(0,nl); buf=buf.slice(nl+1); if(!line.trim()) continue;
+        const o=JSON.parse(line);
+        if(o.type==='citations') renderCites(o.citations||[]);
+        else if(o.type==='token'){ ans.textContent+=o.t; }
+        else if(o.type==='done'){ meta.textContent=o.model?('answered by '+o.model+' · local RAG'):''; }
+      } }
+  }catch(e){ const fb=keywordFallback(q); ans.innerHTML=fb.answer.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+    renderCites(fb.citations); meta.textContent='offline fallback'; }
+}
+document.getElementById('askBtn').onclick=ask;
+
+// ── status + Update button ─────────────────────────────────────────────────────
+async function loadStatus(){ try{ const r=await fetch(API+'status'); if(!r.ok) throw 0; const s=await r.json();
+  document.getElementById('status').textContent=
+    `Index: ${fmtNum(s.n_documents)} docs · ${fmtNum(s.n_chunks)} chunks · built ${s.index_built_at||'—'}`
+    +(s.last_refresh_finished?` · last refresh ${s.last_refresh_finished}${s.last_refresh_ok===false?' (failed)':''}`:'');
+  document.getElementById('updateBtn').disabled=!!s.busy;
+  if(s.busy) document.getElementById('updateMeta').textContent='refresh running…';
+  return s; }catch(e){ document.getElementById('status').textContent='Index status unavailable (API offline) — static view.';
+  document.getElementById('updateBtn').disabled=true; return null; } }
+let pollTimer=null;
+document.getElementById('updateBtn').onclick=async()=>{ const m=document.getElementById('updateMeta');
+  m.textContent='starting…'; try{ const r=await fetch(API+'refresh',{method:'POST'}); const j=await r.json();
+    m.textContent=j.message||j.status;
+    if(!pollTimer) pollTimer=setInterval(async()=>{ const s=await loadStatus(); if(s&&!s.busy){ clearInterval(pollTimer); pollTimer=null;
+      m.textContent='refresh complete — reload the page to see new data.'; } },15000);
+  }catch(e){ m.textContent='update unavailable (API offline)'; } };
+
+// ── go ──────────────────────────────────────────────────────────────────────────
+refresh(); loadStatus();
 </script>
 </body>
 </html>
@@ -321,8 +504,8 @@ document.querySelector('#recent tbody').innerHTML = DATA.recent.map(r => `<tr>
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(description="Build static DC dashboard")
+    ap = argparse.ArgumentParser(description="Build static CDS dashboard")
     ap.add_argument("--input", type=Path, default=None)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = ap.parse_args()
-    build(args.input or analytics.default_input(), args.output)
+    build(args.input or _input_path(), args.output)

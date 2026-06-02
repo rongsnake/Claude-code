@@ -1,0 +1,21 @@
+Please be advised that, following the announcement on January 17, 2011 of the final list of deliverable
+obligations for the Anglo Irish December restructuring event, by the EMEA (Europe) Determinations
+Committee, Deriv/SERV confirms the following triggering data for the above event as of January 24,
+2011 (the Buyer Exercise Cut-off Date):
+Senior Anglo Irish Obligations
+Maturity Bucket: 2.5Y
+Cumulative Triggered Transactions(1): 38
+Maturity Bucket: 5Y
+Cumulative Triggered Transactions(1): 42
+Maturity Bucket: 7.5Y
+Cumulative Triggered Transactions(1): 34
+Subordinated Anglo Irish Obligations
+Maturity Bucket: 2.5Y
+Cumulative Triggered Transactions(1): 29
+Maturity Bucket: 5Y
+Cumulative Triggered Transactions(1): 0
+Maturity Bucket: 7.5Y
+Cumulative Triggered Transactions(1): 0
+(1) Such triggered transactions represent all Warehouse Transactions, regardless of status, which
+satisfy the conditions for "Triggered Transactions" as set out in the Relevant Transaction and Triggered
+Transaction Date Guidelines

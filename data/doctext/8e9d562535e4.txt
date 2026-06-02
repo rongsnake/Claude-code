@@ -1,0 +1,149 @@
+Plain English Summary of the Auction Methodology in the 2010 Takefuji Corporation Credit
+Derivatives Auction Settlement Terms
+This summary is based on the 2010 Takefuji Corporation Credit Derivatives Auction Settlement Terms, as
+published by ISDA on October, 20 2010 (the ASTs) and summarizes the auction methodology contained in
+such ASTs (the Auction Methodology). This summary is for informational purposes only, is not a
+summary of the entire ASTs and is subject to the ASTs in all respects. Market participants should examine
+the text of the ASTs before deciding whether to take any action with respect thereto. ISDA makes no
+representation or warranty as to the accuracy or completeness of any information contained in this
+summary and accepts no liability for the accuracy or completeness of such information. All times of day
+herein refer to such times in Tokyo. Capitalized terms used but not defined in this summary have the
+meanings specified in the ASTs.
+Important Dates
+• October 27 → Exercise Cut-off Date
+• October 28 → Auction Date
+• October 29 → Deadline for the party determined to be the Buyer under each trade formed in
+the Auction to deliver a Notice of Physical Settlement in respect of such
+trades
+• December 17 → Physical Settlement Date for trades formed in the Auction
+• November 2 → Auction Settlement Date for Auction Covered Transactions
+Auction Covered Transactions
+The Auction covers the following types of Credit Derivative Transaction:
+• Tranched or untranched Credit Derivative Transactions referencing a bespoke portfolio;
+• Single name Credit Derivative Transactions;
+• Constant Maturity Swap Transactions (both portfolio and single name);
+• Principal Only and Interest Only Transactions;
+• First to Default and Nth to Default Transactions;
+• Recovery Lock Transactions; and
+• Swaptions (both single name and portfolio),
+provided (a) Takefuji Corporation is a Reference Entity, (b) Auction Settlement is the applicable Settlement
+Method, (c) the Deliverable Obligation Provisions are identical to one set of the Deliverable Obligation
+Terms determined by the relevant Convened DC to be applicable to the Auction, (d) for covered portfolio
+swaption transactions, the Trade Date is on or prior to October 28, 2010 and the Expiration Date is after
+October 28, 2010; and (e) for covered single name swaption transactions, the Trade Date is on or prior to
+September 29, 2010 and the Expiration Date is on or after September 28, 2010.
+The Auction does not include any Credit Derivative Transaction for which the Deliverable Obligations
+specifically listed in the ASTs would not be considered "Deliverable Obligations" under the terms of the
+relevant Credit Derivative Transaction. This would include, but not be limited to, Reference Obligation
+Only Transactions, Loan Only Transactions and Preferred CDS Transactions. Transactions under which
+payment is not determined by reference to the Auction Final Price (such as Fixed Recovery Transactions)
+are also not included in the Auction.
+Auction Timing
+October 21, 2010
+Before 5:00 p.m. dealers (other than DC Members) who wish to be Participating Bidders submit
+Participating Bidder Letters.
+October 25, 2010
+The Administrators publish a list of the Participating Bidders.
+October 28, 2010 (Auction Date)
+The Auction Methodology described below will be conducted and an Auction Final Price will be
+determined for application in respect of all Auction Covered Transactions.
+The Deliverable Obligations for the Auction are listed as "Deliverable Obligations" in the Final List
+published by the Credit Derivatives Determinations Committee available on the Takefuji Corporation page
+of the Website available at:. http://www.isda.org/companies/takefuji/takefuji.html
+Between 9:45 a.m. and 10:00 a.m., Participating Bidders submit Initial Market Bids, Initial Market Offers,
+and Physical Settlement Requests (taking into account any Customer Physical Settlement Request to the
+extent received from customers).
+• Initial Market Bids and Initial Market Offers are firm quotations, expressed as percentages, to
+enter into (as Seller or Buyer, respectively) Credit Derivative Transactions in respect of Takefuji
+Corporation on terms equivalent to the terms of the Representative Auction-Settled Transaction
+specified in the ASTs. The Representative Auction-Settled Transaction is a deemed standard,
+single name credit default swap referencing Takefuji Corporation and assuming an Event
+Determination Date of September 29, 2010.
+• A Participating Bidder's Initial Market Bid and Initial Market Offer must differ by no more than
+3% of par and must be in the size specified in the ASTs (JPY200,000,000).
+• Dealer Physical Settlement Requests and Customer Physical Settlement Requests are firm
+commitments, submitted by a Participating Bidder to the Administrators or by a customer to a
+Participating Bidder, respectively, to enter into a Representative Auction-Settled Transaction.
+Each Dealer Physical Settlement Request must be, to the best of the relevant Participating Bidder's
+knowledge and belief, in the same direction as, and not in excess of, its Market Position. Each
+Customer Physical Settlement Request must be, to the best of the relevant customer's knowledge
+and belief (when aggregated with all Customer Physical Settlement Requests submitted by such
+customer), in the same direction as, and not in excess of, its Market Position.1
+• If the Administrators do not receive Valid Initial Market Submissions from at least eight
+Participating Bidders, the timeline for holding the Auction will be adjusted according to the
+Auction Methodology, otherwise the Auction will proceed as follows.
+Between 10:00 a.m. and 10:30 a.m., the Administrators calculate the Open Interest, the Initial Market
+Midpoint, and any Adjustment Amounts in respect of the Auction.
+• The Open Interest is the difference between all Physical Settlement Sell Requests and all Physical
+Settlement Buy Requests.
+• To determine the Initial Market Midpoint, the Administrators (1) sort the Initial Market Bids in
+descending order and the Initial Market Offers in ascending order and match each bid with the
+corresponding offer (i.e. the highest bid with the lowest offer and so on) to give "matched
+1
+"Market Position" means, with respect to a Participating Bidder or customer, as applicable, the aggregate amount of Deliverable
+Obligations that the relevant Participating Bidder or customer, as applicable, would have to buy or sell in order to obtain an identical
+risk profile after the Auction Settlement Date compared to its risk profile prior to the Auction Settlement Date with respect to all
+Auction Covered Transactions (excluding those Auction Covered Transactions for which the Trade Date is the Auction Final Price
+Determination Date) and all Auction-Linked Cash Settled Transactions to which such Participating Bidder, or any Affiliate of such
+Participating Bidder, as applicable, or such customer, or any Affiliate of such customer, as applicable, is a party, such risk profile to be
+determined without regard to whether the original transactions were documented as cash settled or physically settled transactions.
+2
+markets", (2) identify "non-tradeable matched markets" (being those for which bids are lower than
+offers), (3) sort non-tradeable matched markets in terms of tightness of spread between Initial
+Market Bid and Initial Market Offer and (4) identify the half of the non-tradeable matched markets
+with the tightest spreads. The Initial Market Midpoint is determined as the arithmetic mean of the
+Initial Market Bids and Initial Market Offers contained in the half of non-tradeable matched
+markets with the tightest spreads.
+• Any Participating Bidder whose Initial Market Bid or Initial Market Offer forms part of a
+tradeable matched market may be required to make a payment to ISDA (an Adjustment
+Amount), calculated in accordance with the Auction Methodology.
+• If for any reason no single Initial Market Midpoint can be determined, the procedure set out above
+may be repeated as set out in the Auction Methodology.
+No later than 10:30 a.m., the Administrators publish the Open Interest, the Initial Market Midpoint and the
+details of any Adjustment Amounts. If the Open Interest is zero, the Auction Final Price is the Initial
+Market Midpoint, otherwise, a subsequent bidding period is conducted as described below.
+Between 10:30 a.m. and 1:00 p.m., Participating Bidders canvass Limit Orders.
+Between 12:45 p.m. and 1:00 p.m., Participating Bidders submit Limit Bids (if the Open Interest is an
+offer to sell Deliverable Obligations) or Limit Offers (if the Open Interest is a bid to purchase Deliverable
+Obligations) on behalf of customers and for their own account in relation to the Auction.
+• If the Open Interest is a bid to purchase Deliverable Obligations, the Administrators will match the
+Open Interest against all Initial Market Offers and Limit Offers as further described in the Auction
+Methodology. If the Open Interest is an offer to sell Deliverable Obligations, the Administrators
+will match the Open Interest against all Initial Market Bids and Limit Bids as further described in
+the Auction Methodology.
+• If, once the Initial Market Bids and Limit Bids or Initial Market Offers and Limit Offers, as
+applicable, have been matched to the Open Interest such that no part of the Open Interest remains,
+the Auction Final Price will be the price associated with the submission that is the highest offer or
+the lowest bid, as applicable, and that results in the Open Interest being fully matched, provided
+that (a) if the Open Interest is an offer to sell and the price associated with the lowest matched bid
+is more than 1.5% of par higher than the Initial Market Midpoint, then the Final Price will be the
+Initial Market Midpoint plus 1.5% of par and (b) if the Open Interest is a bid to purchase and the
+price associated with the highest offer is more than 1.5% of par lower than the Initial Market
+Midpoint, then the Final Price will be the Initial Market Midpoint minus 1.5% of par.
+• If, once all the Initial Market Bids and Limit Bids or Initial Market Offers and Limit Offers, as
+applicable, have been matched to the Open Interest, part of the Open Interest remains, the Final
+Price will be (a) if the Open Interest is a bid to purchase Deliverable Obligations, 100% or (b) if
+the Open Interest is an offer to sell Deliverable Obligations, zero.
+No later than 2:00 p.m., the Administrators will publish on www.creditfixings.com (1) the Auction Final
+Price, (2) the names of the Participating Bidders who submitted bids, offers and Physical Settlement
+Requests, together with the details of all such bids and offers submitted by each and (3) the details and size
+of all matched trades under the Auction.
+Execution of Trades Formed in the Auction
+Each Participating Bidder whose Limit Bid, Initial Market Bid, Limit Offer or Initial Market Offer, as
+applicable, is matched against the Open Interest, and each Participating Bidder that submitted a Physical
+Settlement Request is deemed to have entered into a Representative Auction-Settled Transaction (RAST)
+with the Participating Bidder with whom it is paired, as described above and, more fully, in the ASTs.
+Each customer that submitted such a Limit Bid, Limit Offer or a Customer Physical Settlement Request is
+3
+deemed to have entered into a RAST with the Participating Bidder to whom the customer submitted such
+bid or offer (and the relevant Participating Bidder is also so deemed).
+Accordingly, each such Participating Bidder or customer that is a "seller" of Deliverable Obligations
+pursuant to a trade formed in the Auction must deliver by 4:00 p.m. on October 29, 2010 to the "buyer" of
+Deliverable Obligations with whom such Participating Bidder or customer has been matched a Notice of
+Physical Settlement indicating the Deliverable Obligations that it will deliver, and such Deliverable
+Obligations will be delivered to the "buyer" of Deliverable Obligations in exchange for payment of an
+amount equal to the product of the notional amount of Deliverable Obligations delivered and the Auction
+Final Price determined in the Auction. If the "seller" of Deliverable Obligations fails to deliver the
+Deliverable Obligations specified in the Notice of Physical Settlement, the "buyer" of Deliverable
+Obligations will have the applicable remedies set forth in the 2003 Definitions.
+4

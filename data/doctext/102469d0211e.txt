@@ -1,0 +1,16 @@
+EMEA DC Statement
+March 9, 2012
+In light of today’s EMEA Determinations Committee (the EMEA DC) unanimous decision in respect of the
+potential Credit Event question relating to The Hellenic Republic (DC Issue 2012030901), the EMEA DC
+has agreed to publish the following statement:
+The EMEA DC resolved that a Restructuring Credit Event has occurred under Section 4.7 of the ISDA
+2003 Credit Derivatives Definitions (as amended by the July 2009 Supplement) (the 2003 Definitions)
+following the exercise by The Hellenic Republic of collective action clauses to amend the terms of Greek
+law governed bonds issued by The Hellenic Republic (the Affected Bonds) such that the right of all
+holders of the Affected Bonds to receive payments has been reduced.
+The EMEA DC has resolved to hold an auction with respect to the settlement of standard credit default
+swaps for which The Hellenic Republic is the reference entity. To maximise the range of obligations that
+market participants may deliver in settlement of any such credit default swaps, the EMEA DC has agreed
+to run an expedited auction process such that the auction itself will take place on March 19, 2012. In
+light of this expedited auction process, market participants should submit any obligations that they
+would like to include on the list of deliverable obligations to ISDA as soon as possible.

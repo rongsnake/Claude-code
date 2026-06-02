@@ -1,0 +1,26 @@
+ISDA Uniform Settlement Agreement (USA) FAQ
+The questions below are intended for participants in the European LCDS market who have questions
+regarding the purpose of and how to sign the Uniform Settlement Agreement (USA) for: -
+Financière Gaillon 7.
+What is a uniform settlement agreement?
+A uniform settlement agreement is a contract signed by the major dealers and the clients with whom
+they have a large number of transactions, after the credit event occurs and publicly available
+information is available. The parties to the USA each agree that a credit event notice and notice of
+publicly available information are deemed to have been validly delivered as between signatories to the
+USA for all covered credit derivatives transactions referencing the relevant entity.
+Why is a uniform settlement agreement necessary?
+Signing a USA avoids the operational burden of having to send notices between the most active
+participants in the European LCDS market. This significantly reduces the overall number of notices that
+must be sent.
+What is the deadline for signing up to the USA agreement mentioned above?
+Tuesday, 27 March 2012 at 4 pm London time.
+How do I sign up?
+Each firm wishing to sign up to the USA for Financière Gaillon 7 should email a copy of the signature
+page, completed with the full legal name of each entity signing and a signature for each entity, no later
+than ***4pm London time, Tuesday 27 March 2012.***
+Signature pages must be emailed to ***EACH OF*** the following addresses:
+Rosie.Wild@allenovery.com
+Simon.Dawson@allenovery.com
+Please do not email signature pages to ISDA.
+On the evening of Tuesday 27 March 2012, Allen & Overy will circulate to each entity that has agreed to
+sign the USA the full list of entities that have signed.

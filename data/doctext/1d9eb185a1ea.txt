@@ -1,0 +1,1183 @@
+ELCDS CANCELLABLE AND NON-CANCELLABLE
+AUCTION SETTLEMENT TERMS
+For SEAT Pagine Gialle S.p.A.
+published on 12 January 2012
+by the International Swaps and Derivatives Association, Inc. and International Index Company Ltd.
+Any capitalised term used in these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms but
+not defined herein shall have the meaning given to the relevant capitalised term in the Credit Definitions.
+The International Swaps and Derivatives Association, Inc. ("ISDA") and International Index Company Ltd.
+have published these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms to enable parties
+to Covered Transactions to settle such Covered Transactions based upon a Final Price determined pursuant
+to the terms set forth below (an "Auction").
+(1) On or before the later of (a) the date of publication of these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms and (b) the Business Day prior to the Auction Date, the
+Administrators will publish a list of the Participating Bidders.
+(2) Any customer that wishes to submit a Customer Physical Settlement Request to a Participating
+Bidder must submit a valid Customer Physical Settlement Request Letter to the relevant
+Participating Bidder at or prior to 5:00 p.m. London time on the Business Day prior to the Auction
+Date (provided that a Participating Bidder may elect, in its sole discretion, to accept a Customer
+Physical Settlement Request Letter at any later time prior to the commencement of the Initial
+Bidding Period). Each Customer Physical Settlement Request submitted to a Participating Bidder
+must be, to the best of the relevant customer's knowledge and belief, in the same direction as, and
+(when aggregated with all other Customer Physical Settlement Requests, if any, submitted by such
+customer and/or the Affiliates of such customer to one or more other Participating Bidders) not in
+excess of, such customer's Market Position. Each Participating Bidder must accept Customer
+Physical Settlement Requests from any customer with whom it or its Affiliates has a trading
+relationship, provided that such Customer Physical Settlement Request is no larger than, and is in the
+same direction as, such customer's Dealer-Specific Market Position with respect to that Participating
+Bidder and/or the Affiliates of that Participating Bidder (in aggregate). A Participating Bidder may
+elect, in its sole discretion, to accept a Customer Physical Settlement Request that is larger than (or
+in the opposite direction to) the relevant customer's Dealer-Specific Market Position in respect of
+such Participating Bidder and/or the Affiliates of such Participating Bidder. If a Participating Bidder
+decides not to accept a Customer Physical Settlement Request in accordance with this Section (2),
+such Participating Bidder shall promptly notify such customer of such decision.
+(3) During the Initial Bidding Period, each Participating Bidder shall submit to the Administrators a
+Valid Inside Market Submission and may submit to the Administrators a Physical Settlement
+Request (which Physical Settlement Request will equal the aggregate of the relevant Participating
+ICM:14194410.6ICM:14194410.5
+Bidder's Dealer Physical Settlement Request and all valid Customer Physical Settlement Requests, if
+any, that the relevant Participating Bidder receives and accepts from its customers pursuant to
+Section (2) above). Each Dealer Physical Settlement Request must be, to the best of the relevant
+Participating Bidder's knowledge and belief, in the same direction as, and not in excess of, the
+Market Positionof such Participating Bidder and/or the Affiliates of such Participating Bidder.
+(4) If the Administrators receive at leastthreeValidInside Market Submissions, the Administrators will
+determine the "Inside Market Midpoint" as follows:
+(a) The Administrators will sort the Inside Market Bids and Inside Market Offers in the Valid
+Inside Market Submissions separately, with the Inside Market Bids sorted in descending
+order and the Inside Market Offers sorted in ascending order. Each Inside Market Bid will
+then be matched with the corresponding Inside Market Offer (i.e., the highest Inside Market
+Bid being matched with the lowest Inside Market Offer, the second highest Inside Market
+Bid with the second lowest Inside Market Offer, etc.) (each such Inside Market Bid/Inside
+Market Offer pair constituting a "Matched Market"). For the purposes of sorting the Inside
+Market Bids and Inside Market Offers, where two Inside Market Bids are equal, the one
+received first in time by the Administrators will be considered to be the lower of the two,
+and where two Inside Market Offers are equal, the one received first in time by the
+Administrators will be considered to be the higher of the two.
+(b) The Administrators will then calculate the mean of the Inside Market Bids and Inside
+Market Offers included in the Best Half of the Matched Markets that are Non-Tradeable
+Markets. To identify the Best Half, the Administrators will sort all Non-Tradeable Markets
+in order of the spread between the Inside Market Bid and Inside Market Offer within each
+Non-Tradeable Market, from smallest spread to largest spread (i.e., the Non-Tradeable
+Market with the smallest spread between its Initial Market Bid and its Initial Market Offer
+will be at the top of the list, the Non-Tradeable Market with the second smallest spread
+between its Initial Market Bid and its Initial Market Offer will be next on the list, etc.). .
+The Best Half of the Non-Tradeable Markets are those in the top half of the list of Non-
+Tradeable Markets. In the event that the number of Non-Tradeable Markets is an odd
+number, the Administrators will round up the number of Matched Markets to include in the
+Best Half to the nearest whole number. The Administrators will then calculate the Inside
+Market Midpoint by finding the mean of all the Inside Market Bids and Inside Market Offers
+that form Non-Tradeable Markets included in the Best Half (with the results rounded to the
+nearest one-eighth of one percentage point).
+(c) The steps described in (a) and (b) above are illustrated in the following example (which is
+not intended to reflect indicative prices for the Deliverable Obligations):
+ICM:14194410.6ICM:14194410.5 2
+Step 1 – Sort Inside Market Bids from highest to lowest and Inside Market Offers from
+lowest to highest.
+Contributed Sorted
+IM Bids IM Offers IM Bids IM Offers
+39.500% 41.000% 45.000% 34.000% Tradeable
+Markets
+40.000% 42.000% 41.000% 39.500%
+41.000% 43.000% 41.000% 40.000%
+45.000% 47.000% 40.000% 41.000% Matched
+Markets
+Best Half
+32.000% 34.000% 39.500% 42.000%
+Non-
+38.750% 40.000% 38.750% 42.750% Tradeable
+Markets
+38.000% 39.500% 38.000% 43.000%
+41.000% 42.750% 32.000% 47.000%
+Step 2 –Ignore all Tradeable Markets.
+Step 3 – The Inside Market Midpoint is the mean of the Best Half of the Non-Tradeable
+Markets. If there is an odd number of Non-Tradeable Markets, round up the number of Non-
+Tradeable Markets to include in the Best Halfto the nearest whole number.
+Best Half
+IM Bids IM Offers
+40.000% 41.000%
+39.500% 42.000% Inside MarketMidpoint = Average (40, 41, 39.5, 42, 38.75, 42.75) =
+38.750% 42.750% 40.667%, rounded to the nearest one-eighth of one percent 40.625%
+(5) For each Tradeable Market, one of the Participating Bidders whose Inside Market Bid or Inside
+Market Offer forms part of such Tradeable Market will make a payment to ISDA (the "Adjustment
+Amount") on the third Business Day after the Final Price Determination Date, such payment to be
+calculated by the Administrators as follows:
+(a) The "Adjustment Amount" in respect of a Tradeable Market will be an amount equal to
+(i)the Inside Market Quotation Amount multiplied by (ii) either (A) if the Open Interest is
+an offer to sell Deliverable Obligations, the greater of (I) zero and (II) the Inside Market Bid
+forming part of such Tradeable Market minus the Inside Market Midpoint or (B) if the Open
+Interest is a bid to purchase Deliverable Obligations, the greater of (I)zero and (II) the
+Inside Market Midpoint minus the Inside Market Offer forming part of such Tradeable
+Market. Each Participating Bidder agrees that (1) if the Open Interest is an offer to sell
+Deliverable Obligations, the Participating Bidder whose Inside Market Bid formed part of
+such Tradeable Market will pay the Adjustment Amount to ISDA and (2) if the Open
+Interest is a bid to purchase Deliverable Obligations, the Participating Bidder whose Inside
+Market Offer formed part of such Tradeable Market will pay the Adjustment Amount to
+ISDA. Any payments of Adjustment Amounts shall be used by ISDA to defray any costs
+related to any auction that ISDA has coordinated (including the Auction), or that ISDA will
+in the future coordinate, for purposes of settlement of Credit Derivative Transactions. To
+the extent that ISDA determines at any time that the aggregate of all such payments received
+by ISDA (and not previously applied by ISDA to defray auction-related costs) up to and
+including such time exceeds the costs (including future costs as determined by ISDA) of
+ICM:14194410.6ICM:14194410.5 3
+such auctions, ISDA may in its sole discretion distribute any such excess among all entities
+that have previously acted as participating bidders in any prior auction proportionately,
+based upon participation as a participating bidder in such prior auctions. Payments of
+Adjustment Amounts will not be conducted or effected by, or through, any Administrator.
+(b) The steps described in (a) above are illustrated in the following example (which is not
+intended to reflect indicative prices for the Deliverable Obligations):
+Step 1 –Consider only Tradeable Markets.
+Tradeable Markets
+IM Bids IM Offers
+45.000% 34.000%
+41.000% 39.500%
+41.000% 40.000%
+Step 2 –Calculate the Adjustment Amount for each Tradeable Market by (i)(A) if the Open
+Interest is an offer to sell Deliverable Obligations, determining the greater of (I)zero and
+(II)the Inside Market Bid forming part of such Tradeable Market minus the Inside Market
+Midpoint or (B) if the Open Interest is a bid to purchase Deliverable Obligations,
+determining the greater of (I) zero and (II) the Inside Market Midpoint minus the Inside
+Market Offer forming part of such Tradeable Market and (ii)multiplying the resulting
+amount by the Inside Market Quotation Amount.
+Example calculation of Adjustment Amount if the Open Interest is an offer to sell
+Deliverable Obligations:
+Adjustment Amount
+IM Bids IMM (as a percentage of the Inside Market Quotation Amount)
+45.000% 40.625% 4.375%
+41.000% 40.625% 0.375%
+41.000% 40.625% 0.375%
+Example calculation of Adjustment Amount if the Open Interest is a bid to purchase
+Deliverable Obligations:
+Adjustment Amount
+IMM IM Offers (as a percentage of the Inside Market Quotation Amount)
+40.625% 34.000% 6.625%
+40.625% 39.500% 1.125%
+40.625% 40.000% 0.625%
+(6) If an Inside Market Midpoint has been determined pursuant to Section (4) above, the Administrators
+will match all Physical Settlement Requests with one another in order to determine the Open
+Interest.
+(a) If the sum of all Quotation Amounts stated in each Physical Settlement Sell Request is less
+than the sum of all Quotation Amounts stated in each Physical Settlement Buy Request, all
+Physical Settlement Sell Requests will be matched with Physical Settlement Buy Requests,
+subject to the Rounding Convention, or if the sum of all Quotation Amounts stated in each
+Physical Settlement Buy Request is less than the sum of all Quotation Amounts stated in
+ICM:14194410.6ICM:14194410.5 4
+each Physical Settlement Sell Request, all Physical Settlement Buy Requests will be
+matched with Physical Settlement Sell Requests, subject to the Rounding Convention (each
+such match, a "Market Position Trade"), and each such pair will form a trade at the Final
+Price as described in Section (9) below.
+(b) Within 30 minutes of the successful conclusion of the Initial Bidding Period, the
+Administrators will publish the following information on their respective websites:
+(i) the size and direction of the Open Interest;
+(ii) the Inside Market Midpoint; and
+(iii) the details of any Adjustment Amounts,
+(such information with respect to such successfully concluded Initial Bidding Period, the "Initial
+Bidding Information").
+If (A) for any reason, the Initial Bidding Period lasts longer, or occurs later, than the Originally
+Scheduled Initial Bidding Period, or (B) as of the time on the relevant day at which the
+Administrators would otherwise publish the Initial Bidding Information, (I) a Materiality Event has
+been declared pursuant to Section 10(a) of these ELCDS Cancellable and Non-Cancellable Auction
+Settlement Terms or (II) an event has occurred or exists that is considered by any two or more
+Participating Bidders to be a Potential Materiality Event and it remains to be determined whether
+such Potential Materiality Event will result in the declaration of a Materiality Event, the
+Administrators may delay the Subsequent Bidding Period until, and publish the Initial Bidding
+Information on their respective websites at, such time as they determine (in their sole and absolute
+discretion) in order to preserve the integrity of the Auction(except that in the case of the declaration
+of a Materiality Event under Section 6(B)(I) of these ELCDS Cancellable and Non-Cancellable
+Auction Settlement Terms, the Administrators shall refrain from publishing the Initial Bidding
+Information with respect to such Initial Bidding Period).
+(7) Any Customer Limit Order Submission must be submitted to, and received by, the relevant
+Participating Bidder at any time from and including the publication of the Initial Bidding
+Information to and including the end of the Subsequent Bidding Period (determined, for these
+purposes only, without regard to any extension that may be made by the Administrators). Each
+Customer Limit Order Submission submitted to a Participating Bidder must be in the opposite
+direction of the Open Interest and, to the best of the customer's knowledge and belief (when
+aggregated with all other Customer Limit Order Submissions, if any, submitted by such customer to
+one or more Participating Bidders) not in excess of the size of the Open Interest. The Participating
+Bidder may, but is not obliged to, take into account in its Limit Order Submissions any Customer
+Limit Order Submission submitted to it in accordance with this Section (7), provided that if a
+Participating Bidder, for any reason, decides not to accept a Customer Limit Order Submission from
+a customer, such Participating Bidder shall promptly notify such customer of its decision not to
+accept such customer's Customer Limit Order Submission.
+(8) During the Subsequent Bidding Period, each Participating Bidder may submit Limit Order
+Submissions that are in the opposite direction to the Open Interest. All Inside Market Bids (if the
+Open Interest is an offer to sell Deliverable Obligations) or Inside Market Offers (if the Open
+Interest is a bid to purchase Deliverable Obligations), as applicable, submitted during the Initial
+Bidding Period (regardless of whether or not they form part of a Tradeable Market) will, together
+with all Limit Bids (if the Open Interest is an offer to sell Deliverable Obligations) or Limit Offers
+(if the Open Interest is a bid to purchase Deliverable Obligations), as applicable, be considered
+"Unmatched Limit Orders", however any Inside Market Bid that forms part of a Tradeable Market
+ICM:14194410.6ICM:14194410.5 5
+and is higher than the Inside Market Midpoint and any Inside Market Offer that forms part of a
+Tradeable Market and is lower than the Inside Market Midpoint will, in each case, be deemed to be
+equal to the Inside Market Midpoint for purposes of serving as an Unmatched Limit Order. The sum
+of (a) the excess, if any, of (i) the aggregate Quotation Amount of a Participating Bidder's Limit
+Order Submissions over (ii) the portion of such aggregate Quotation Amount attributable to any
+Customer Limit Order Submissions received by such Participating Bidder that are taken into account
+in the Limit Order Submission received by the Administrators from such Participating Bidder and
+(b) such Participating Bidder's Inside Market Bid or Inside Market Offer, as applicable, that is in the
+same direction as its Limit Order Submissions must be, to the best of such Participating Bidder's
+knowledge and belief, not in excess of the size of the Open Interest. If the Open Interest is an offer
+to sell Deliverable Obligations, then any Limit Bid that would otherwise be at a price above the
+Inside Market Midpoint plus the Cap Amount shall be deemed to be at a price equal to the Inside
+Market Midpoint plus the Cap Amount. If the Open Interest is a bid to purchase Deliverable
+Obligations, then any Limit Offer that would otherwise be at a price below the Inside Market
+Midpoint minus the Cap Amount shall be deemed to be at a price equal to the Inside Market
+Midpoint minus the Cap Amount.
+(9) After the successful conclusion of the Subsequent Bidding Period, the Administrators will then
+match the Open Interest against the corresponding Unmatched Limit Orders.
+(a) If the Open Interest is a bid to purchase Deliverable Obligations, it will be matched against
+the Unmatched Limit Orders that are Offers. If the Open Interest is an offer to sell
+Deliverable Obligations, it will be matched against the Unmatched Limit Orders that are
+Bids.
+(b) The Open Interest will be matched against each applicable Unmatched Limit Order,
+beginning with the Unmatched Limit Order that is the lowest Offer or the highest Bid, as the
+case may be, and moving to the next remaining lowest (in the case of Offers) or next
+remaining highest (in the case of Bids) until:
+(i) the full amount of the Open Interest has been matched against Unmatched Limit
+Orders totalling the same size as the Open Interest; or
+(ii) all of the Unmatched Limit Orders of the relevant direction (i.e., Offers, if the Open
+Interest is a bid to purchase Deliverable Obligations or Bids, if the Open Interest is
+an offer to sell Deliverable Obligations) have been matched to the Open Interest.
+Each Unmatched Limit Order that is matched to the Open Interest under Section (9)(b)(i) or
+(ii) above is a "Matched Limit Order" and each such match between a Matched Limit
+Order and a Physical Settlement Request is a "Matched Limit Order Trade". If, in the
+case of Section (9)(b)(i) above, there are multiple Unmatched Limit Orders stating the same
+price and each could be the final Unmatched Limit Order to be matched to the Open Interest,
+then each such potentially final Unmatched Limit Orders stating the same price will be filled
+Pro Rata against the remaining Open Interest, subject to the Rounding Convention.
+(c) If the final matching of the Open Interest against the applicable Unmatched Limit Orders
+occurs pursuant to Section (9)(b)(i) above, the Final Price will be the price associated with
+the Matched Limit Order that is the highest Offer or the lowest Bid, as the case may be,
+provided that (A) if the Open Interest is an offer to sell Deliverable Obligations and the price
+associated with the lowest Matched Limit Order exceeds the Inside Market Midpoint by
+more than the Cap Amount, then the Final Price will be the Inside Market Midpoint plus the
+ICM:14194410.6ICM:14194410.5 6
+Cap Amount and (B) if the Open Interest is a bid to purchase Deliverable Obligations and
+the Inside Market Midpoint exceeds the price associated with the highest Matched Limit
+Order by more than the Cap Amount, then the Final Price will be the Inside Market
+Midpoint minus the Cap Amount. If the Open Interest is zero, the Final Price will be the
+Inside Market Midpoint.
+(d) If the final matching of the Open Interest against the applicable Unmatched Limit Orders
+occurs pursuant to Section (9)(b)(ii) above, the Final Price shall be (A) if the Open Interest
+is a bid to purchase Deliverable Obligations, the greater of (i) 100% and (ii) the highest
+Limit Offer or Inside Market Offer received or (B) if the Open Interest is an offer to sell
+Deliverable Obligations, zero. In such case, notwithstanding Sections (6)(a) or (9)(b) above,
+all Physical Settlement Requests of the same direction as the Open Interest (e.g., bids to
+purchase or offers to sell) will be matched Pro Rata, subject to the Rounding Convention,
+against the Limit Order Submissions and Physical Settlement Requests on the opposite side
+of the market to form Market Position Trades or Matched Limit Order Trades, as applicable.
+(e) In all cases, if the Final Price determined pursuant to these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms is greater than 100%, then, for the purposes of
+settling the Covered Transactions only, the Final Price shall be deemed to be 100%.
+(f) Each Participating Bidder whose Physical Settlement Request or Matched Limit Order, as
+the case may be, forms part of either a Market Position Trade or a Matched Limit Order
+Trade will be deemed to have entered into a bilateral agreement on terms equivalent to the
+Representative Auction-Settled Transaction for which (I) the Floating Rate Payer
+Calculation Amount is equal to the Quotation Amount in respect of the relevant Market
+Position Trade or Matched Limit Order Trade, as the case may be, and (II) (A) the Seller is
+the Participating Bidder whose Physical Settlement Buy Request forms part of such Market
+Position Trade or whose Physical Settlement Buy Request, Limit Bid or Inside Market Bid,
+as the case may be, forms part of such Matched Limit Order Trade and (B) the Buyer is the
+Participating Bidder whose Physical Settlement Sell Request forms part of such Market
+Position Trade or whose Physical Settlement Sell Request, Limit Offer or Inside Market
+Offer, as the case may be, forms part of such Matched Limit Order Trade; provided that,
+(i)in the case of the Matched Limit Order Trades containing the highest Offer or the lowest
+Bid, as the case may be, the Quotation Amount will, if necessary, be reduced to reflect the
+size of the remaining Open Interest, and (ii) in the event that there are multiple Matched
+Limit Orders stating the highest Offer or lowest Bid, as the case may be, then such Matched
+Limit Orders will be filled Pro Rata against the remaining Open Interest, subject to the
+Rounding Convention. Participating Bidders whose Physical Settlement Request or
+Matched Limit Order, as the case may be, forms part of a Market Position Trade or Matched
+Limit Order Trade will be matched with one another by the Administrators in their sole and
+absolute discretion and to the extent reasonably practicable so as to minimise, first, the
+number of Representative Auction-Settled Transactions for which the Floating Rate Payer
+Calculation Amount will be smaller thanEUR1,000,000or which is not an integral multiple
+of EUR 500,000 thereabove and second, the number of Representative Auction-Settled
+Transactions to be entered into; provided that, prior to such matching, the Quotation
+Amounts in respect of Matched Limit Orders or Physical Settlement Requests, as the case
+may be, submitted by the same Participating Bidder will be matched with each other, to the
+extent possible. Transactions entered into by and between Participating Bidders pursuant to
+Market Position Trades or Matched Limit Order Trades will not be conducted or effected by,
+or through, any Administrator.
+ICM:14194410.6ICM:14194410.5 7
+(10) A Delayed Auction Date or a Materiality Event Delayed Auction Date may occur under the
+following circumstances:
+(a) If at any time on or after the Business Day prior to the Auction Date but before the
+conclusion of the Subsequent Bidding Period on the Final Price Determination Date, an
+event occurs or exists that is considered by any two Participating Bidders to be a Potential
+Materiality Event, then such Participating Bidders shall have a right to require the
+Administrators to call a vote of the Auction Settlement Committee to determine whether
+such Potential Materiality Event is a Materiality Event, which vote will take place, if such
+Potential Materiality Event is identified prior to the commencement of the Initial Bidding
+Period, before the end of such Initial Bidding Period, and otherwise before the end of such
+Subsequent Bidding Period. If a simple majority of the Auction Settlement Committee votes
+that such event is a Materiality Event, then such Initial Bidding Period and, if applicable,
+such Subsequent Bidding Period will be deemed to have been cancelled, annulled or
+postponed, as applicable, and the auction procedure contemplated by these ELCDS
+Cancellable and Non-Cancellable Auction Settlement Terms shall recommence on the next
+Business Day, unless prior to 9:45 a.m., London time on such Business Day, at a vote of the
+Auction Settlement Committee held by the Administrators, a simple majority of the Auction
+Settlement Committee votes that the news of the Materiality Event has not yet been
+sufficiently widely disseminated or another Materiality Event has occurred or exists, in
+which case the auction procedure contemplated by these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms shall recommence on the following Business Day
+(i.e. the second Business Day after the later of the original vote establishing the occurrence
+of a Materiality Event and the Auction Date), or, if (and to the extent) necessary, on each
+Business Day thereafter, but in no event later than the fifth Business Day after the Auction
+Date (any such delayed date on which a new Initial Bidding Period actually occurs following
+a particular Materiality Event, a "Materiality Event Delayed Auction Date"). The
+Administrators will publish the results of any vote of the Auction Settlement Committee
+with respect to the declaration of a Materiality Event on their respective websites.
+In the event of the occurrence of a Materiality Event Delayed Auction Date, each previously
+submitted Customer Physical Settlement Request and Dealer Physical Settlement Request
+shall be deemed to be revoked and must be re-submitted pursuant to Section 2 or 3, as
+applicable, of these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms as
+if the Auction had originally been scheduled to take place on the relevant Materiality Event
+Delayed Auction Date.
+(b) If the auction procedure described in these ELCDS Cancellable and Non-Cancellable
+Auction Settlement Terms does not result in a Final Price for any reason (including, but not
+limited to, the failure to receive the minimum number of Valid Inside Market Submissions
+(as stated in Section 4 above)) other than the reasons described in Section 10(a) above, the
+relevant steps will be repeated on the Auction Date with the auction procedure described in
+these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms recommencing at
+such time(s) specified by the Administrators. If a Final Price cannot be determined on any
+such subsequent attempt(s) on the Auction Date itself for any reason other than the reasons
+described in Section 10(a) abovethe relevant steps will be repeated according to a schedule
+to be determined by the Administrators on the Business Day following the Auction Date,
+and if necessary, the second Business Day following the Auction Date, but in no event later
+than the second Business Day following the Auction Date (such delayed date on which a
+new Initial Bidding Period actually occurs, the "Delayed Auction Date").
+ICM:14194410.6ICM:14194410.5 8
+In the event of the occurrence of a Delayed Auction Date, each previously submitted
+Customer Physical Settlement Request and Dealer Physical Settlement Request shall be
+deemed to be revoked and must be re-submitted pursuant to Section 2 or 3, as applicable, of
+these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms as if the Auction
+had originally been scheduled to take place on the relevant Delayed Auction Date.
+(c) In the event that the Auction must be held on a later date as a result of any combination of
+the events described in Sections 10(a) and/or 10(b) of these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms, (i) the Administrators shall reschedule the date on
+which the Auction will be held in their sole and absolute discretion in order to preserve the
+integrity of the Auction, provided that such rescheduled Auction shall be held no later than
+five Business Days after the Auction Date and (ii) each previously submitted Customer
+Physical Settlement Request and Dealer Physical Settlement Request shall be deemed to be
+revoked and must be re-submitted pursuant to Section 2 or 3, as applicable, of these ELCDS
+Cancellable and Non-Cancellable Auction Settlement Terms as if the Auction had originally
+been scheduled to take place on the relevant date determined by the Administrators to be the
+date on which the rescheduled Auction is to be held.
+(d) If a Final Price has not been determined on or prior to (i) the fifth Business Day following
+the Auction Date, if Section 10(a) or 10(c) of these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms is applicable or (ii) the second Business Day
+following the Auction Date, if Section 10(b) of these ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms is applicable, then the Auction will be deemed to
+have been cancelled (such cancellation an "Auction Cancellation Event" and the date of
+such Auction Cancellation Event, an "Auction Cancellation Date"). The Administrators
+will announce the occurrence of an Auction Cancellation Event on their respective websites.
+(11) Within one hour of the successful conclusion of the Subsequent Bidding Period, the Administrators
+will publish the following information on their respective websites:
+(a) the Final Price;
+(b) the names of the Participating Bidders who submitted Bids, Offers and Physical Settlement
+Requests, together with the details of all such Bids, Offers and Physical Settlement Requests
+submitted by each (e.g., the identity of Participating Bidders and the size of Quotation
+Amounts); and
+(c) the details and size of all Market Position Trades or Matched Limit OrderTrades,
+(such information with respect to such successfully concluded Subsequent Bidding Period, the
+"Subsequent Bidding Information")
+If, for any reason, the Subsequent Bidding Period lasts longer, or occurs later, than the Originally
+Scheduled Subsequent Bidding Period, the Administrators will publish the Subsequent Bidding
+Information on their respective websites at such time as they determine (in their sole and absolute
+discretion) in order to preserve the integrity of the Auction. If, as of the conclusion of the
+Subsequent Bidding Period, it has been determined that the auction procedures contemplated by
+these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms must be repeated
+pursuant to Section 10 of these ELCDS Cancellable and Non-Cancellable Auction Settlement
+Terms, the Administrators will not publish on their respective websites the Subsequent Bidding
+Information with respect to such Subsequent Bidding Period.
+ICM:14194410.6ICM:14194410.5 9
+(12) The following rules will apply to Physical Settlement Requests, Inside Market Submissions and
+Limit Order Submissions submitted by any Participating Bidder:
+(a) Any Inside Market Bid, Inside Market Offer or Limit Order Submission may not be
+amended either by the Participating Bidder or the Administrators after the conclusion of the
+Initial Bidding Period or Subsequent Bidding Period, as applicable, even if the relevant
+Inside Market Bid, Inside Market Offer or Limit Order Submission, as applicable, is a
+mistake, and all Participating Bidders will be required to comply with the terms of any
+Matched Limit Order Trade of which such Inside Market Bid, Inside Market Offer or Limit
+Order Submission, as applicable,forms a part.
+(b) If a Participating Bidder submits a Physical Settlement Request (without regard to the
+Customer Physical Settlement Requests that formed a part of such Physical Settlement
+Request) that is in the same direction as, but less than or equal to, such Participating Bidder's
+Market Position, such Physical Settlement Request may not be amended by either the
+Participating Bidder or the Administrators after the conclusion of the Initial Bidding Period,
+even if such Physical Settlement Request is a mistake, and all Participating Bidders will be
+required to comply with the terms of any Market Position Trade or Matched Limit Order
+Trade, as applicable,of which such Physical Settlement Request forms a part.
+(c) If a Participating Bidder becomes aware that the Physical Settlement Request (without
+regard to the Customer Physical Settlement Requests that formed a part of such Physical
+Settlement Request) it has submitted is in the opposite direction from, or is greater than, its
+Market Position, such Participating Bidder will immediately notify the Administrators and
+will submit its corrected Physical Settlement Request.
+(d) If the Administrators become aware of a corrected Physical Settlement Request, if any, at
+least thirty minutes prior to the beginning of the Subsequent Bidding Period (the
+"Correction Deadline"), the Administrators will determine the Open Interest based on the
+corrected Physical Settlement Request and publish the corrected Initial Bidding Information
+no later than fifteen minutes prior to the beginning of the Subsequent Bidding Period. If the
+Administrators do not become aware of such corrected Physical Settlement Request until
+after the Correction Deadline, the Administrators will not re-calculate the Open Interest or
+the Final Price, all Covered Transactions will settle according to the Final Price published by
+the Administrators, and all Participating Bidders will be required to comply with the terms
+of any Market Position Trade or Matched Limit Order Trade, as applicable, of which the
+relevant Physical Settlement Request forms a part.
+(e) All Bids and Offers will be expressed as a percentage of the commitment (rather than the
+drawn commitment) of Deliverable Obligations.
+(13) Each Auction Party agrees that:
+(a) No Participating Bidder (or any Affiliates thereof) will be liable to any party for any form of
+damages, whether direct, indirect, special or consequential, arising as a result of the
+publication of a Final Price (or any other result of the procedures contemplated by these
+ELCDS Cancellable and Non-Cancellable Auction Settlement Terms), and agrees to waive
+any claim that may arise against any Participating Bidder(or any Affiliates thereof), in each
+case except in the case of fraud or wilful misconduct on the part of such Participating
+Bidder.
+ICM:14194410.6ICM:14194410.5 10
+(b) None of ISDA, its advisers, any Administrator or any Participating Bidder will be liable to
+any party for any form of damages, whether direct, indirect, special or consequential, arising
+in connection with the inclusion or exclusion of any obligation of the Reference Entity in or
+from the list of Deliverable Obligations referenced in the definition thereof in Section (17)
+below and, without limiting any otherwise applicable waivers, each Auction Party agrees to
+waive any claim that may arise against any such party in connection with the development
+of such list of Deliverable Obligations, except in the case of fraud or wilful misconduct on
+the part of such party.
+(14) Each Auction Party that is not a Participating Bidder agrees that neither Administrator will be liable
+to any party for any form of damages, whether direct, indirect, special or consequential, arising in
+connection with the performance of its duties under the auction procedures contemplated by these
+ELCDS Cancellable and Non-Cancellable Auction Settlement Terms, and agrees to waive any claim
+that may arise against either Administrator in connection with the performance of the relevant
+Administrator's duties under these ELCDS Cancellable and Non-Cancellable Auction Settlement
+Terms, except in the case of fraud or wilful misconduct on the part of such Administrator.
+(15) Notwithstanding any provision to the contrary governing any Covered Transaction, the terms of
+Schedule 1 hereto shall apply to all Covered Transactions.
+(16) Each Participating Bidder and each customer that submits either (a) a Customer Physical Settlement
+Request or (b) a Customer Limit Order Submission that is, in each case, accepted by such
+Participating Bidder agrees that any such Customer Physical Settlement Request and any such
+Customer Limit Order Submission will be treated by such customer and Participating Bidder as if
+such customer and Participating Bidder had, on the Final Price Determination Date, entered into a
+bilateral agreement on terms equivalent to the Representative Auction-Settled Transaction (i) which,
+notwithstanding the definition of Representative Auction-Settled Transaction, shall be deemed to be
+governed by a master agreement and any credit support arrangements executed or otherwise in place
+between the customer and the Participating Bidder or, if no such master agreement has been
+executed or is otherwise in place, by a deemed master agreement (including any credit support
+arrangements) between the Participating Bidder and the customer on substantially the same terms as
+the master agreement and credit support arrangements in place between the customer and the
+Affiliate of the Participating Bidder that is such customer's normal trading counterparty, (ii) for
+which the Floating Rate Payer Calculation Amount is equal to the Quotation Amount in respect of
+the relevant Customer Physical Settlement Request or Customer Limit Order Submission, as the case
+may be, and (iii) for which (A) the customer will be the Seller if the relevant Customer Physical
+Settlement Request is a Physical Settlement Buy Request or if the relevant Customer Limit Order
+Submission is a Limit Bid and (B) the customer will be the Buyer if the relevant Customer Physical
+Settlement Request is a Physical Settlement Sell Request or if the relevant Customer Limit Order
+Submission is a Limit Offer; provided that (I) in the case of a Customer Limit Order Submission,
+one or more related Limit Order Submissions of the Participating Bidder are matched in order to
+form a Matched Limit Order Trade and (II) in the event that the Physical Settlement Request or one
+or more Limit Order Submissions, as applicable, of the Participating Bidder are matched in order to
+form a Matched Limit Order Trade that contains the highest Offer or the lowest Bid, as the case may
+be, the Quotation Amount of the Customer Physical Settlement Request or Customer Limit Order
+Submission, as applicable, will, if necessary, be reduced to reflect the size of the remaining Open
+Interest or (III) if the final matching of the Open Interest against the applicable Unmatched Limit
+Orders occurs pursuant to Section 9(b)(ii) of these ELCDS Cancellable and Non-Cancellable
+Auction Settlement Terms, all Physical Settlement Requests on the same side of the market as the
+Open Interest (e.g., bids to purchase or offers to sell) will be matched Pro Rata, subject to the
+Rounding Convention, against the Limit Order Submissions and Physical Settlement Requests on the
+ICM:14194410.6ICM:14194410.5 11
+opposite side of the market to form Market Position Trades or Matched Limit Order Trades, as
+applicable. Transactions entered into by and between customers and Participating Bidders in respect
+of Market Position Trades or Matched Limit Order Trades will not be conducted or effected by, or
+through, any Administrator.
+(17) References in these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms to the
+following terms have the meaning indicated below:
+"AdjustmentAmount" has the meaning set forth in Section (5)(a) above.
+"Administrators" means both Markit Group Limited and Creditex Brokerage LLP acting together.
+"Affiliate"has the meaning given to such term in the Credit Definitions.
+"Auction Cancellation Date" has the meaning set forth in Section (10)(d) above.
+"Auction Cancellation Event" has the meaning set forth in Section (10)(d) above.
+"Auction Date" means 17 January 2012.
+"Auction-Linked Cash Settled Transaction" means, in respect of a Participating Bidder or a
+customer, any ELCDS Transaction or LevX Transaction (in each case, other than a Covered
+Transaction) all or any portion of which is linked to the Reference Obligations, to which such
+Participating Bidder or customer, as the case may be, or its Affiliate is a party and which will be
+cash-settled (by bilateral agreement between the parties thereto) at the Final Price determined
+pursuant to these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms.
+"Auction Party" means any Participating Bidder, party to a Covered Transaction, party to an
+Auction-Linked Cash Settled Transaction or customer whose Customer Physical Settlement Request
+or Customer Limit Order Submission is taken into account in a Participating Bidder's Physical
+Settlement Request or Limit Order Submission.
+"Auction Settlement Committee" means the entities that are Participating Bidders.
+"Best Half" means the groupof Matched Markets determined pursuant to Section (4)(b)above.
+"Bid" means an InsideMarket Bid or a Limit Bid.
+"Bidding Agreement Letter" means a letter agreement, substantially in the form of Exhibit 1 to
+these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms, executed and delivered
+to the Administrators, International Index Company Ltd. and ISDA no later than 5:00 p.m. London
+time on the Cut-off Date.
+"Business Day" means a day on which commercial banks and foreign exchange markets are
+generally open to settle payments in London and on which TARGET (the Trans-European
+Automated Real-time Gross Settlement Express Transfer System) is open.
+"Cancellable ELCDS Covered Transaction" means each Cancellable ELCDS Transaction (i) the
+documentation for which is based on the Cancellable ELCDS Standard Terms or any predecessor or
+successor to such Cancellable ELCDS Standard Terms or amended form thereof that requires that
+such Cancellable ELCDS Transaction be settled by reference to any Final Price determined pursuant
+to these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms, (ii) referencing (with
+ICM:14194410.6ICM:14194410.5 12
+respect to at least part of such transaction) the Reference Obligations, (iii) for which an Event
+Determination Date relating to the Reference Entity or Reference Entities and/or Reference
+Obligations occurs under the documentation governing the relevant Cancellable ELCDS Transaction
+on or prior to the Business Day immediately preceding the Final Price Determination Date, (iv) the
+Scheduled Termination Date for which is on or after, and the Effective Date for which is on or prior
+to, the Default Date and (v) the portion of which attributable to the Reference Obligations is still
+outstanding as of the Business Day immediately prior to the Final Price Determination Date.
+"Cancellable ELCDS Standard Terms" means the version of the Standard Terms Supplement for
+use with Credit Derivative Transactions on Leveraged Loans published on 18 May 2009.
+"Cancellable ELCDS Transaction" means a Credit Derivative Transaction (as defined in the Credit
+Definitions) in respect of which the only Deliverable Obligations are the Reference Obligations and
+Senior Obligations (each as defined in the relevantCredit Derivative Transaction).
+"Cap Amount" means 1% of par.
+"Common Event Determination Date" means 16January 2012.
+"Correction Deadline" has the meaning set forth in Section (12)(d) above.
+"Covered Transaction" means each Cancellable ELCDS Covered Transaction, each ELCDS
+Covered Transaction and each LevX Covered Transaction, in each case, the Trade Date for which is
+prior to the Final Price Determination Date.
+"Credit Definitions" means the 2003 ISDA Credit Derivatives Definitions as supplemented by the
+May 2003 Supplement to the 2003 ISDA Credit Derivatives Definitions, each as published by ISDA.
+"Crossing Market" means any Matched Market for which the Inside Market Bid is higher than the
+Inside Market Offer.
+"Customer Limit Order Submission" means a submission from a customer of a Participating
+Bidder to such Participating Bidder (i) stating a Quotation Amount and (ii) consisting of a firm
+commitment by such customer to enter as Buyer (i.e., the party that would Deliver Deliverable
+Obligations) or Seller (i.e., the party that has an obligation to accept Delivery of Deliverable
+Obligations), as applicable, into an agreement on terms equivalent to a Representative Auction-
+Settled Transaction for which the FloatingRate Payer Calculation Amount is the Quotation Amount
+stated in such Customer Limit Order Submissionand at the Reference Price stated in such Customer
+Limit Order Submission (expressed as a percentage, in increments of one-eighthof one percent (e.g.,
+33.375%),but not less than 0.00%).
+"Customer Physical Settlement Request" means a submission from a customer of a Participating
+Bidder to such Participating Bidder (which is accepted by such Participating Bidder) consisting of a
+firm commitment by such customer to enter, as Buyer (i.e., the party that would Deliver Deliverable
+Obligations) or as Seller (i.e., the party that has an obligation to accept Delivery of Deliverable
+Obligations), as applicable, into an agreement on terms equivalent to the Representative Auction-
+Settled Transaction for which the Floating Rate Payer Calculation Amount is the Quotation Amount
+(expressed as an amount of commitment of Deliverable Obligations) stated in such Customer
+Physical Settlement Request.
+"Customer Physical Settlement Request Letter" means a letter agreement, substantially in the
+form of Exhibit 3 to these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms,
+ICM:14194410.6ICM:14194410.5 13
+executed and delivered to the relevant Participating Bidder no later than 5:00 p.m. London time on
+the Business Day prior to the Final Price Determination Date (or such later time prior to the
+commencement of the Initial Bidding Period as the relevant Participating Bidder may agree in its
+sole discretion).
+"Cut-off Date" means 16January 2012.
+"Dealer Physical Settlement Request" means, in respect of a Participating Bidder, a Physical
+Settlement Buy Request or a Physical Settlement Sell Request which is, to the best of such
+Participating Bidder's knowledge and belief, in the same direction as, and not in excess of, the
+Market Position of it and its Affiliates.
+"Dealer-Specific Market Position" means, with respect to a customer and a Participating Bidder,
+such customer's Market Position with respect to all Covered Transactions and Auction-Linked Cash
+Settled Transactions to which such customer, or any Affiliate of such customer, as applicable, and
+such Participating Bidder, or any Affiliates of such Participating Bidder, as applicable, is a party (in
+aggregate), calculated by such customer in good faith.
+"DefaultDate" means 3 January 2012.
+"Delayed Auction Date" has the meaning set forth in Section (10)(b) above.
+"Deliverable Obligation" means any of the IBLOR Credit Support Obligations in respect of the
+Reference Obligations1.
+"ELCDS Covered Transaction" means each ELCDS Transaction (i) the documentation for which
+is based on the ELCDS Standard Terms or any predecessor or successor to such ELCDS Standard
+Terms that requires that such ELCDS Transaction be settled by reference to any Final Price
+determined pursuant to these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms,
+(ii) referencing (with respect to at least part of such transaction) the Reference Obligations, (iii) for
+which an Event Determination Date relating to the Reference Entity or Reference Entities and/or
+Reference Obligations occurs under the documentation governing the relevant ELCDS Transaction
+on or prior to the Business Day immediately preceding the Final Price Determination Date, (iv) the
+Scheduled Termination Date for which is on or after, and theEffective Date for which is on or prior
+to, the Default Date and (v) the portion of which attributable to the Reference Obligations is still
+outstanding as of the Business Day immediately prior to the Final Price Determination Date.
+"ELCDS Physical Settlement Terms" means the LMA Trade Confirmation (Distressed/Bank Debt)
+or LMA Trade Confirmation (Distressed/Claims) (as applicable) and the Standard Terms and
+Conditions for Distressed Trade Transactions (Bank Debt/Claims), each as published by The Loan
+Market Association (the "LMA") in their most recent form (the "LMA Confirmation") with the
+modifications to such terms as set forth in Annex I to the ELCDS Standard Terms or LevX Standard
+Terms, as the case may be published by ISDA or the International Index Company Ltd. most
+recently prior to the Auction Date.
+"ELCDS Standard Terms" means the version of the ISDA Standard Terms Supplement for use
+with Credit Derivative Transactions on Leveraged Loans published by ISDA most recently prior to
+the Auction Date.
+1Participants are reminded that transferees under a RAST are not obliged to adhere to any Lock-Up Agreement. We draw all parties' attention to the
+representations that aredeemed to be given pursuant to Section 9.2(a) of the 2003 ISDA Credit Derivatives Definitions by a transferor under a RAST
+to a transferee under a RAST with respect to obligations transferred. This means that any Deliverable Obligationswhich are subject to a Lock-Up
+Agreement which requires adherence by a transferee cannot be delivered in settlement of a RAST.
+ICM:14194410.6ICM:14194410.5 14
+"ELCDS Transaction" means a Credit Derivative Transaction (as defined in the Credit Definitions)
+in respect of which the only Deliverable Obligations are the Reference Obligations and Senior Loans
+(each as defined in the relevant Credit Derivative Transaction).
+"Final Price" means the price determined to be the Final Price pursuant to Section (9)(c) or (d)
+above.
+"Final Price Determination Date" meansthe day the Final Price is determined.
+"IBLOR Credit Support Agreement" means a credit support agreement or participation agreement
+(howsoever described) which is contemplated by the relevant credit agreement, between one or more
+lenders under such credit agreement under which providers of credit support or participants
+(howsoever described and excluding, for the avoidance of doubt, affiliates of the relevant borrower)
+(the "IBLOR Credit Support Providers") agree to provide one or more guarantees (howsoever
+described) to or take one or more participations (howsoever described) from those lenders in relation
+to aRelevant Obligation.
+"IBLOR Credit Support Obligations" means any obligation pursuant to which an IBLOR Credit
+Support Provider has rights and obligations under an IBLOR Credit Support Agreement which are
+referable to a Relevant Obligation.
+"Initial Bidding Period" means (a) any time between 9:45 a.m. and 10:00 a.m. London time on the
+Auction Date (the "Originally Scheduled Initial Bidding Period"), or (b) such period that lasts
+longer, or occurs later, than the Originally Scheduled Initial Bidding Period, as the Administrators
+may prescribe if they determine (in their sole and absolute discretion) that such modified period is
+required to preserve the integrity of the Auction or (c), if the process described in Sections (3) and
+(4)(a) and (4)(b) above must be repeated pursuant to Section (10) above, the time period (whether
+less than, equal to or longer than the Originally Scheduled Initial Bidding Period, as the
+Administrators may prescribe, in their sole and absolute discretion, to preserve the integrity of the
+Auction) occurring (i) at such time(s) specified by the Administrators after such Originally
+Scheduled Initial Bidding Period on the Auction Date or (ii) at such times on a subsequent Business
+Day, as applicable, pursuant to Section (10) above, until the earlier of the Final Price Determination
+Date or the occurrence of an Auction Cancellation Date.
+"Inside Market Bid" means a firm commitment by a Participating Bidder, submitted as part of a
+Valid Inside Market Submission, to enter as Seller (i.e., the party that has an obligation to accept
+Delivery of Deliverable Obligations) into an agreement on terms equivalent to the Representative
+Auction-Settled Transaction for which the Floating Rate Payer Calculation Amount is the Inside
+Market Quotation Amount and, subject to Section (8) above, at the Reference Price stated in the
+Valid Inside Market Submission.
+"Inside Market Midpoint" means the price determined to be the Inside Market Midpoint pursuant
+to Section (4)above.
+"Inside Market Offer" means a firm commitment by a Participating Bidder, submitted as part of a
+Valid Inside Market Submission, to enter as Buyer (i.e., the party that would Deliver Deliverable
+Obligations) into an agreement on terms equivalent to the Representative Auction-Settled
+Transaction for which the Floating Rate Payer Calculation Amount is the Inside Market Quotation
+Amount and, subject to Section (8) above, at the Reference Price stated in the Valid Inside Market
+Submission.
+"Inside Market Quotation Amount" meansEUR2,000,000.
+ICM:14194410.6ICM:14194410.5 15
+"LevX Covered Transaction" means each LevX Transaction (i) the documentation for which is
+based on an iTraxx® LevX® Standard Terms Supplement for use with Credit Derivative
+Transactions on Leveraged Loans published by ISDA or any predecessor or successor to such terms
+that requires that such LevX Transaction be settled by reference to any Final Price determined
+pursuant to these ELCDS Auction Settlement Terms, (ii) referencing a LevX index published by
+International Index Company Ltd., (iii) referencing (with respect to at least part of such transaction)
+the Reference Obligations, (iv) for which an Event Determination Date relating to the Reference
+Entity or Reference Entities and/or the Reference Obligations occurs under the documentation
+governing the relevant LevX Transaction on or prior to the Business Day immediately preceding the
+Final Price Determination Date, (v) the Scheduled Termination Date for which is on or after, and the
+Effective Date for which is on or prior to, the Default Date and (vi) the portion of which attributable
+to the Reference Obligations is still outstanding as of the Business Day immediately prior to the
+Final Price Determination Date.
+"LevX Transaction" means a Credit Derivative Transaction (as defined in the Credit Definitions)
+referencing a LevX index published by International Index Company Ltd., in respect of which the
+Deliverable Obligations include the Reference Obligations and Senior Loans (each as defined in the
+relevant Credit Derivative Transaction).
+"Limit Bid" means a firm commitment by a Participating Bidder, submitted as part of a Limit Order
+Submission, to enter as Seller (i.e., the party that has an obligation to accept Delivery of Deliverable
+Obligations) into an agreement on terms equivalent to a Representative Auction-Settled Transaction
+for which the Floating Rate Payer Calculation Amount is the Quotation Amount stated in such Limit
+Order Submission and at the Reference Price stated in such Limit Order Submission.
+"Limit Offer" means a firm commitment by a Participating Bidder, submitted as part of a Limit
+Order Submission, to enter as Buyer (i.e., the party that would Deliver Deliverable Obligations) into
+an agreement on terms equivalent to a Representative Auction-Settled Transaction for which the
+Floating Rate Payer Calculation Amount is the Quotation Amount stated in such Limit Order
+Submission and at the Reference Price stated in such Limit Order Submission.
+"Limit Order Submission" means a submission from a Participating Bidder (which may take into
+account any Customer Limit Order Submissions) received by the Administrators during the
+Subsequent Bidding Period of a Limit Bid or a Limit Offer expressed as a percentage (in increments
+of one-eighth of one percent (e.g., 35.375%) but not less than 0.00%) and for which a Quotation
+Amount is stated.
+"Market Position" means, in respect of a customer or a Participating Bidder, the aggregate amount
+of Deliverable Obligations the relevant Participating Bidder or customer, as applicable, would have
+to buy or sell in order to obtain an identical risk profile after settlement under these ELCDS
+Cancellable and Non-Cancellable Auction Settlement Terms compared to its risk profile before
+settlement under these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms with
+respect to all Covered Transactions and all Auction-Linked Cash Settled Transactions to which such
+Participating Bidder, or any Affiliate of such Participating Bidder, as applicable, or such customer,
+or any Affiliate of such customer, as applicable, is a party, such risk profile to be determined without
+regard to whether the original transactions were documented as cash settled or physically settled
+transactions.
+"Market Position Trade" has the meaning set forth in Section (6)(a) above.
+"Matched Limit Order" has the meaning set forth in Section (9)(b) above.
+ICM:14194410.6ICM:14194410.5 16
+"Matched Limit Order Trade" hasthe meaning set forth in Section (9)(b) above.
+"Matched Market" has the meaningset forth in Section (4)(a)above.
+"Materiality Event" means a Potential Materiality Event that has been determined to be a
+Materiality Event pursuant to Section (10)(a) above.
+"Materiality Event Delayed Auction Date" has the meaning set forth in Section (10)(a) above.
+"Non-Tradeable Market" meansany Matched Market that is not a Tradeable Market.
+"Notice of Physical Settlement Date" means the later to occur of (i) the thirtieth calendar day (as
+adjusted in accordance with the Following Business Day Convention (as defined in the Credit
+Definitions)) after the Common Event Determination Date and (ii) the second Business Day
+following the Final Price Determination Date.
+"Offer" means any Limit Offer or anyInside Market Offer.
+"Open Interest" means the difference between (i) the sum of all Quotation Amounts stated in each
+Physical Settlement Buy Request and (ii) the sum of all Quotation Amounts stated in each Physical
+Settlement Sell Request.
+"Participating Bidder" means any institution that submits a valid Bidding Agreement Letter no
+later than 5:00 p.m. London time on the Cut-off Date.
+"Physical Settlement Buy Request" means a firm commitment by a Participating Bidder (which
+may take into account any Customer Physical Settlement Requests), received by the Administrators
+during the Initial Bidding Period, to enter, as Seller (i.e., the party that has an obligation to accept
+Delivery of Deliverable Obligations), into an agreement on terms equivalent to the Representative
+Auction-Settled Transaction for which the Floating Rate Payer Calculation Amount is the Quotation
+Amount (expressed as an amount of commitment of Deliverable Obligations) stated in the request.
+"Physical Settlement Request" means a Physical Settlement Buy Request or a Physical Settlement
+Sell Request, as applicable, submitted by a Participating Bidder and received by the Administrators
+during the Initial Bidding Period and which will equal the aggregate of the relevant Participating
+Bidder's Dealer Physical Settlement Request and all Customer Physical Settlement Requests, if any,
+that the relevant Participating Bidder receives and accepts from its customers pursuant to Section (2)
+of these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms.
+"Physical Settlement Sell Request" means a firm commitment by a Participating Bidder (which
+may take into account any Customer Physical Settlement Requests), received by the Administrators
+during the Initial Bidding Period, to enter, as Buyer (i.e., the party that would Deliver Deliverable
+Obligations), into an agreement on terms equivalent to the Representative Auction-Settled
+Transaction for which the Floating Rate Payer Calculation Amount is the Quotation Amount
+(expressed as an amount of commitment of Deliverable Obligations) stated in the request.
+"Potential Materiality Event" means an event or news the occurrence of which has or could have a
+significant effect on the price of the Representative Auction-Settled Transaction.
+"Pro Rata" means that Participating Bidders' orders are matched proportionally with respect to the
+Quotation Amount of each such order and the total amount of orders that can be matched in the
+relevant part of the Auction.
+ICM:14194410.6ICM:14194410.5 17
+"Quotation Amount" means the EUR amount stated as the notional amount with respect to a
+particular Limit Bid, Limit Offer, Inside Market Bid, Inside Market Offer or Physical Settlement
+Request in a Participating Bidder's Submission, which amount will be (i) for any Limit Bid or Limit
+Offer, EUR 1,000,000or an integral multiple of EUR 500,000 above such amount, (ii) for any Inside
+Market Bid or Inside Market Offer, equal to the Inside Market Quotation Amount and (iii) for any
+Physical Settlement Request, EUR 1,000,000 or an integral multiple of EUR 500,000 above such
+amount2.
+"Reference Entity" meansSEAT Pagine Gialle S.p.A.
+"Reference Obligations"means the following:
+Credit Credit Agreement Name Example Borrower Lien Ranking RED LCDS 9-Code Facility Name
+SEAT EUR 2,620,100,000 Term and SEAT Pagine Gialle 1stLien ML1000230, Tranche A Facility
+Revolving Facilities Agreement S.p.A. ML1000231 and Tranche B Facility
+dated 25 May 2005 ML1000232 RevolvingFacility
+"Representative Auction-Settled Transaction" means a Credit Derivative Transaction (as defined
+in the Credit Definitions) on the terms as set out in the ELCDS Standard Terms, (i)incorporating the
+definitions and provisions contained in the Credit Definitions and the ELCDS Standard Terms,
+(ii) which shall supplement, form a part of, and be subject to, the master agreement (including any
+credit support arrangements) in place between the parties thereto (and if no such master agreement is
+in place between the parties, an agreement in the form of the ISDA 2002 Master Agreement as if the
+parties had executed an agreement in such form (but without any Schedule except for the election of
+English law as the governing law and EUR as the Termination Currency) on the Auction Date) and
+for which:
+(a) the reference obligations to which the Credit Derivative Transaction relates are the
+Reference Obligations;
+(b) the reference entity or reference entities to which the Credit Derivative Transaction relatesis
+the Reference Entity or are the Reference Entities;
+(c) it shall be deemed that no Market Settlement Mechanism (as defined in the ELCDS Standard
+Terms) that covers the relevant Reference Obligation has been announced pursuant to the
+LCDS Auction Rules (as defined in the ELCDS Standard Terms) before the NOPS Date (as
+defined in the ELCDS Standard Terms);
+(d) Cash Settlement Only shall be Not Applicable;
+(e) the Event Determination Date is the Common Event Determination Date;
+(f) a Credit Event Notice and Notice of Publicly Available Information are deemed to have
+been effectively delivered on a timely basis;
+(g) all Fixed Amounts are deemed to have been paid when due;
+2We understand that, broadly, transfers to an entity that is not (i) anIBLOR Credit Support Provider or (ii) connected to anIBLOR Credit Support
+Provider must hold or have transferred a minimum of€2,000,000. Please refer to the Credit Support Agreement originally dated 25 May 2005 (as
+amended and supplemented from time to time)for exact terms.
+ICM:14194410.6ICM:14194410.5 18
+(h) the only Deliverable Obligations applicable are the obligations specified as Deliverable
+Obligations in these ELCDS Cancellable and Non-Cancellable Auction Settlement Terms;
+(i) the IBLOR Terms will be deemed to apply to the Deliverable Obligations;
+(j) the Reference Price is the Final Price determined pursuant to these ELCDS Cancellable and
+Non-Cancellable Auction Settlement Terms;
+(k) the Calculation Agent is (i) if both parties to the Representative Auction-Settled Transaction
+are Participating Bidders, the Seller under such Representative Auction-Settled Transaction
+and (ii) if only one party to the Representative Auction-SettledTransaction is a Participating
+Bidder, such Participating Bidder;
+(l) the "Trade Date" (as defined in the ELCDS Physical Settlement Terms) with respect to a
+Representative Auction-Settled Transaction shall be deemed to be the Final Price
+Determination Date;
+(m) if Cash Settlement is applicable under the Representative Auction-Settled Transaction, the
+definition of "Cash Settlement Amount" in the ELCDS Standard Terms shall, in respect of
+the portion of the Transaction to which Cash Settlement applies, be amended by the deletion
+of "the greater of: (a) zero; and (b)" in each of sub-paragraphs (i), (ii) and (iii) thereof;
+(n) the following amendments are made to the Credit Definitions (as amended by the ELCDS
+Standard Terms) for purposes of the Representative Auction-Settled Transaction (and such
+amendments shall prevail over the ELCDS Standard Terms if and to the extent of any
+inconsistency between these amendments and the ELCDS Standard Terms):
+(i) Section 3.4 of the Credit Definitions is deleted and the following is inserted in its
+place:
+"'Notice of Physical Settlement' means a notice from Buyer to Seller (which may be
+by telephone and which shall be subject to the requirements regarding notices set
+forth in Section 1.10) that (i) irrevocably confirms that Buyer will settle the Credit
+Derivative Transaction and require performance in accordance with Physical
+Settlement as the Settlement Method and (ii) contains a detailed description of the
+Deliverable Obligations that Buyer will, subject to Section 9.2(c)(ii), Deliver to
+Seller, including the Notified Delivery Amount of each such Deliverable Obligation
+to be Delivered and the information described in the form of Notice of Physical
+Settlement attached as Exhibit 2 to these ELCDS Cancellable and Non-Cancellable
+Auction Settlement Terms, or such other information as is customarily used in the
+loan or loan credit default swap market to identify particular loans. Once the Notice
+of Physical Settlement is effective, Buyer is not entitled to change the contents of
+such Notice of Physical Settlement except that Buyer may correct any errors or
+inconsistencies in the detailed description of the Deliverable Obligations by notice
+to Seller (given as aforesaid) prior to the relevant Delivery Date.
+If Buyer fails to deliver an effective Notice of Physical Settlement on or before the
+Notice of Physical Settlement Date, Buyer will have no right thereafter to deliver a
+Notice of Physical Settlement. If Buyer has not delivered an effective Notice of
+Physical Settlement, Seller will have the right, from but excluding the Notice of
+Physical Settlement Date to and including the fifteenth calendar day after the Notice
+of Physical Settlement Date, to deliver a notice to Buyer, which notice shall contain
+ICM:14194410.6ICM:14194410.5 19
+a detailed description of the Deliverable Obligations that Buyer will be required to
+Deliver to Seller, including the Notified Delivery Amount of each such Deliverable
+Obligation (the aggregate of such Notified Delivery Amounts (or the relevant
+Currency Equivalents) being equal to or less than the Floating Rate Payer
+Calculation Amount).
+If Buyer delivers an effective Notice of Physical Settlement on or before the Notice
+of Physical Settlement Date but such Notice of Physical Settlement specifies
+Deliverable Obligations with an aggregate Notified Delivery Amount (or Currency
+Equivalent) less than the Notional Amount, Seller will have the right, from but
+excluding the Notice of Physical Settlement Date to and including the fifteenth
+calendar day after the Notice of Physical Settlement Date, to deliver a notice to
+Buyer, which notice shall contain a detailed description of the additional Deliverable
+Obligations that Buyer will be required to Deliver to Seller, including the Notified
+Delivery Amount of each such Deliverable Obligation; provided that the aggregate
+specified Notified Delivery Amount (or Currency Equivalent) shall be equal to or
+less than the amount by which the Notional Amount exceeds the Notified Delivery
+Amount of Deliverable Obligations (or Currency Equivalent thereof) specified inthe
+Notice of Physical Settlement delivered by Buyer. In such a case, the Conditions to
+Settlement in respect of the portion of the Credit Derivative Transaction to which
+the Notice of Physical Settlement delivered by Buyer relates shall be satisfied
+separately to the portion of the Credit Derivative Transaction to which the Notice of
+Physical Settlement delivered by Seller relates.
+Any notice delivered by Seller pursuant to this Section 3.4 will include the
+information described in the form of Notice of Physical Settlement attached as
+Exhibit 2 to these ELCDS Cancellable and Non-Cancellable Auction Settlement
+Terms, or such other information as is customarily used in the loan or loan credit
+default swap market to identify particular loans. Delivery of any such notice shall
+be deemed to be effective delivery of a Notice of Physical Settlement or an effective
+amendment to any Notice of Physical Settlement delivered by Buyer, as applicable.
+Buyer may not change any such notice, other than to correct errors or
+inconsistencies.
+If the fifteenth calendar day after the Notice of Physical Settlement Date is not a
+Business Day, the last day on which Seller may deliver a notice described in this
+Section 3.4 shall be adjusted in accordance with the Following Business Day
+Convention.
+If Buyer fails to deliver an effective Notice of Physical Settlement on or prior to the
+Notice of Physical Settlement Date, and Seller fails to deliver the relevant notice to
+Buyer on or prior to the fifteenth calendar day after the Notice of Physical
+Settlement Date (subject to adjustment in accordance with the Following Business
+Day Convention), then such fifteenth calendar day will be the Termination Date.";
+(ii) Section 7.1 of the Credit Definitions shall be amended by the addition of the
+following at the end thereof:
+"provided that, if Cash Settlement is applicable, then in respect of the portion of the
+Transaction to which Cash Settlement applies (a)if the Cash Settlement Amount is a
+positive number, Seller shall, subject to Section 3.1, pay the Cash Settlement
+ICM:14194410.6ICM:14194410.5 20
+Amount to Buyer on the Cash Settlement Date; and (b) if the Cash Settlement
+Amount is a negative number, Buyer shall, subject to Section 3.1, pay the absolute
+value of the Cash Settlement Amount to Seller on the Cash Settlement Date.";
+(iii) Section 8.1 of the Credit Definitions shall be amended by the deletion of the
+following:
+"and no payment will be due in relation to any undrawn commitments under the
+Deliverable Obligations"
+and the replacement thereof by the following:
+". In respect of any undrawn commitments under the Deliverable Obligations,
+Buyer shall pay Seller an amount equal to the product of (a) the undrawn
+commitments under the Deliverable Obligations that Buyer has Delivered and (b)
+100% minus the Reference Price, provided that if such amount is a negative number,
+Seller shall pay the absolute value thereof to Buyer.";
+(o) notwithstanding the fact that the Notice of Physical Settlement may be delivered after the
+Final Price Determination Date, the Notice Of Physical Settlement shall be deemed to have
+been effective (and the NOPS Date (as defined in the ELCDS Standard Terms) shall be
+deemed to have occurred) as of the Final Price Determination Date and the definition of
+Notified Delivery Amount and Currency Rate shall be construed as being by reference to the
+commitment or exchange rate, respectively, of the Deliverable Obligations on such day; and
+(p) Annex I shall be amended by the deletionof item 7 and the replacement thereof by the
+following:
+"The "Purchase Rate"shall be the Reference Price.".
+"Rounding Convention" means that, if a Participating Bidder's order is matched in an amount that
+is not an integral multiple of EUR 100,000, then the amount to be so matched will be rounded down
+to the nearest EUR 100,000. The difference between the total amounts of all orders having been
+filled Pro Rata and the total of all rounded down amounts will be allocated EUR100,000 at a time
+to Participating Bidders in order, beginning with the Participating Bidder with the order stating the
+largest Quotation Amount at the same price. In the event that there are Participating Bidders with
+identical orders of such type, EUR 100,000 amounts will be allocated first to the Participating
+Bidder whose orders were received first by the Administrators. Any residual amounts which are in
+aggregate less than EUR100,000 shallbedisregarded.
+"Senior Loans" means each obligation that would constitute a Senior Loan pursuant to the ELCDS
+Standard Terms.
+"Submission" means, with respect to a Participating Bidder, any Valid Inside Market Submission,
+Limit Order Submission or Physical Settlement Request submitted by such Participating Bidder to
+the Administrators.
+"Subsequent Bidding Period" means (a) any time between 12:45 p.m. and 1:00 p.m. London time
+on the Auction Date (the "Originally Scheduled Subsequent Bidding Period"), or (b) such period
+that lasts longer, or occurs later, than the Originally Scheduled Subsequent Bidding Period, as the
+Administrators may prescribe if they determine (in their sole and absolute discretion) that such
+modified period is required to preserve the integrity of the Auction or (c), if the process described in
+Sections (3) and (4)(a) and (4)(b) above must be repeated pursuant to Section (10) above, the time
+ICM:14194410.6ICM:14194410.5 21
+period (whether less than, equal to or longer than the Originally Scheduled Initial Bidding Period, as
+the Administrators may prescribe, in their sole and absolute discretion, to preserve the integrity of
+the Auction) occurring (i) at such time(s) specified by the Administrators after such Originally
+Scheduled Subsequent Bidding Period on the Auction Date or (ii) at such times on a subsequent
+Business Day, as applicable, under Section (10) above, until the earlier of the Final Price
+Determination Date or the occurrence of an Auction Cancellation Date.
+"Touching Market" means any Matched Market for which the Inside Market Bid and Inside Market
+Offer are equal.
+"Tradeable Market" means any Matched Market that is a Crossing Market or a Touching Market.
+"Unmatched Limit Order" has the meaning set forth in Section (8) above.
+"Valid Inside Market Submission" means a submission from a Participating Bidder consisting of
+both an Inside Market Bid and an Inside Market Offer, each expressed as a percentage (in
+increments of one eighth of one percent (e.g., 35.375%) but not less than 0.00%) which do not differ
+from one another by more than 5%, and for which the Inside Market Bid is not greater than or equal
+to the Inside Market Offer.
+ICM:14194410.6ICM:14194410.5 22
+Exhibit 1 to ELCDS Cancellable and Non-Cancellable Auction Settlement Terms
+Form of Bidding Agreement Letter
+[Letterhead of Participating Bidder]
+[Date]
+Markit Group Limited
+Send to: cea@markit.com
+Creditex Brokerage LLP
+Send to: CEF@creditex.com
+International Swaps and Derivatives Association, Inc.
+Send to: ceba@isda.org
+International Index Company Ltd.
+Send to: itraxx@indexco.com
+Dear Sirs,
+We write to inform you that we wish to be a "Participating Bidder," as defined in the ELCDS Cancellable
+and Non-Cancellable Auction Settlement Terms (the "Auction Terms") in connection with the auction
+under the ELCDS Cancellable and Non-Cancellable Auction Settlement Terms related to transactions with
+respect to SEAT Pagine Gialle S.p.A. (the "Auction"). Capitalised terms used in this letter but not defined
+herein have the meanings specified in the AuctionTerms.
+We hereby notify you that it is our intention that, pursuant to the Auction Terms at the time of submission,
+any Dealer Physical Settlement Request we submit will, to the best of our knowledge and belief, be in the
+same direction as,and will not exceed, our Market Position.
+By signing and returning this Bidding Agreement Letter to you, we represent, as of the date of this Bidding
+Agreement Letter,that:
+(a) from time to time we regularly trade, or one of our Affiliates regularly trades, in one or more
+obligations of the types of obligations listed as Deliverable Obligations in the Auction Terms in the
+secondary loan market or we, or one of our Affiliates regularly trades, regularly trade loan credit
+default swaps with respect to entities like the "Reference Entity" (as such term is defined in the
+Auction Terms);
+(b) we are, or our Affiliate is, an Eligible LevX Market Maker, as defined in the Markit iTraxx LevX
+Index Rules from time to time;
+(c) none of our Affiliates has previously submitted a Bidding Agreement Letter to you; and
+(d) either:
+(i) we are not subject to any requirement that would make it impossible or illegal for us to
+deliver or accept delivery of any of the Deliverable Obligations;
+ICM:14194410.6ICM:14194410.5 23
+(ii) [if we are, as of the Delivery Date, subject to any requirement that would make it impossible
+or illegal for us to Deliver or accept Delivery of any of the Deliverable Obligations, we will
+procure a designee to whom the Participating Bidder with whom we enter into a
+Representative Auction-Settled Transaction (the "non-designating party") consents and for
+whom it is not impossible or illegal to Deliver or accept Delivery of the relevant Deliverable
+Obligations to Deliver or accept such Delivery, provided that we understand that the non-
+designating party will not unreasonably withhold its consent to such designation and
+provided further that we understand that such consent will be deemed given in the case
+where the relevant designee is a Participating Bidder for whom it is not impossible or illegal
+to Deliver or accept Delivery of the relevant DeliverableObligations].
+In addition, we agree that neither Administrator shall be liable to us for any indirect, special or consequential
+damages resulting from our participation in the Auction (including any Adjustment Amounts involving our
+Bid or Offer), and that each Administrator's maximum cumulative liability for direct and any other damages
+arising out of our participation in the Auction (including any Adjustment Amounts)is limited to EUR10,000
+in the aggregate per Administrator, other than damages resulting from gross negligenceor wilful misconduct
+on the part of the relevant Administrator or breach of the representations made to the Participating Bidders in
+Creditex Brokerage LLP's letter to the Participating Bidders dated on or about the date of the Auction.
+We agree to abide by the terms of the Auction set out in the ELCDS Cancellable and Non-Cancellable
+Auction Settlement Terms, including, for the avoidance of doubt, Section 12 of the ELCDS Cancellable and
+Non-Cancellable Auction Settlement Terms.
+We also agree to pay to ISDA (i) to the extent not already paid in advance to ISDA, our share of any fees
+payable by ISDA to the Administrators or to ISDA's legal advisers in connection with the administration of
+the Auction or the development of the relevant lists of Deliverable Obligations and (ii) any Adjustment
+Amounts payable by us pursuant to the terms of the Protocol (any such fees together with any such
+Adjustment Amounts, "Auction Costs"). We agree to pay any Auction costs to ISDA within twenty-one
+calendar days of receipt of a written invoice submitted by ISDA for such Auction Costs.
+Our contact details for purposes of this Bidding Agreement Letter are:
+Name:
+Address:
+Telephone:
+Fax:
+E-mail:
+Our contact details for purposes of receiving any invoices relating to Auction Costs are:
+Name:
+Address:
+Telephone:
+Fax:
+E-mail:
+This letter and any non-contractual obligations arising out of it will be governed by and construed in
+accordance with English law.
+We consent to the publication of the conformed copy of this letter by ISDA and International Index
+Company Ltd. and to the disclosure by ISDA and International Index Company Ltd. of the contents of this
+letter.
+ICM:14194410.6ICM:14194410.5 24
+Yours faithfully,
+[PARTICIPATING BIDDER]3
+By:
+Name:
+Title:
+Signature:
+3 Specify legal name of Participating Bidder.
+ICM:14194410.6ICM:14194410.5 25
+Exhibit 2 to ELCDS Cancellable and Non-Cancellable Auction Settlement Terms
+Form of Notice of Physical Settlement
+Attention: [client contact]
+By Fax: [facsimile]
+By Phone: [telephone]
+[CLIENT]
+Dear Sirs,
+NOTICE OF PHYSICAL SETTLEMENT
+Credit Derivative Transaction Details4: Representative Auction-Settled Transaction, formed
+pursuant to the auction (the "Auction") governed by the
+ELCDS Cancellable and Non-Cancellable Auction
+Settlement Terms published by the International Swaps and
+Derivatives Association, Inc. and International Index
+Company Ltd. on 12 January 2012 in respect of SEAT
+Pagine Gialle S.p.A. (the "ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms") entered into
+between [SELLER], as Seller (i.e., the party identified by the
+Auction Administrators as having an obligation to accept
+Delivery of Deliverable Obligations), and [BUYER] as
+Buyer (i.e., the party identified by the Auction
+Administrators as having the obligation to Deliver
+Deliverable Obligations), and for which the "Floating Rate
+Payer Calculation Amount"is [ ]5.
+Reference is made to the Credit Derivative Transaction described above (the "Transaction").
+(1) Pursuant to Section (17) of the ELCDS Cancellable and Non-CancellableAuction Settlement Terms,
+the Event Determination Date for this Transaction is 16 January 2012, and a Credit Event Notice and
+Notice of Publicly Available Information are deemed to have been effectively delivered on a timely
+basis.
+(2) Any capitalised term not otherwise defined in this letter will have the meaning, if any, assigned to
+such term in the ELCDS Cancellable and Non-Cancellable Auction Settlement Terms or, if no
+meaning is specified therein, in the 2003 ISDA Credit Derivatives Definitions, as published by the
+International Swaps and Derivatives Association, Inc.
+(3) We hereby confirm that we will settle the Transaction and require performance by you in accordance
+with the Physical Settlement Method, as modified by the ELCDS Standard Terms. Subject to the
+4 These Transaction Details will need to be adjusted appropriately where this form is used in respect of a transaction between a customer
+and a Participating Bidder.
+5 The Quotation Amount of the Transaction identified by Auction Administrators or, in the case of a Representative Auction-Settled
+Transaction between a Participating Bidder and a customer, the amount specified by such Participating Bidder.
+ICM:14194410.6ICM:14194410.5 26
+terms of the Transaction, we will deliver to you according to the terms of the ELCDS Physical
+Settlement Terms the following Deliverable Obligations against payment of the amount determined
+pursuant to the ELCDS Standard Terms and the ELCDS Physical Settlement Terms using the Final
+Price of [ ]% as the Reference Price:
+Deliverable Obligations: [ ]
+Notified Delivery Amount: [ ]
+Credit Agreement: [ ]
+Borrower Example: [ ]
+Global Facility Amount: [ ]
+Ranking: [ ]
+(4) This letter shall be governed by and interpreted in accordance with English law.
+Very truly yours,
+[ ]
+By:_______________________________
+Name:
+Title:
+ICM:14194410.6ICM:14194410.5 27
+Exhibit 3 to ELCDS Cancellable and Non-Cancellable Auction Settlement Terms
+Form of Customer Physical Settlement Request Letter
+[Letterhead of Customer]
+[Date]
+Attention: [Participating Bidder]
+By Fax: [facsimile]
+By Phone: [telephone]
+Dear Sirs,
+We write to inform you that we wish to submit a Customer Physical Settlement Request and/or a Customer
+Limit Order Submission, each as defined in the ELCDS Cancellable and Non-Cancellable Auction
+Settlement Terms published by the International Swaps and Derivatives Association, Inc. and International
+Index Company Ltd. on 12 January 2012, in respect of SEAT Pagine Gialle S.p.A. (the "ELCDS
+Cancellable and Non-Cancellable Auction Settlement Terms"). Capitalised terms used in this letter but
+not defined herein have the meanings specified in the ELCDS Cancellable and Non-Cancellable Auction
+Settlement Terms.
+By signing and returning this Customer Physical Settlement Request Letter to you, we represent and agree
+that:
+(a) the Customer Physical Settlement Request set out below is to the best of our knowledge and belief,
+(i) [in the same direction as and not in excess of our Dealer-Specific Market Position, and
+(ii) in the same direction as and (when aggregated with all Customer Physical Settlement
+Requests submitted by us to one or more Participating Bidders) not in excess of our Market
+Position;]6
+and
+(b) [either:
+(i) we are not, as of the date of this letter, subject to any requirement that would make it
+impossible or illegal for us to Deliver or accept Delivery of any of the Deliverable
+Obligations; or
+(ii) if we are, as at the date of this letter, subject to any requirement that would make it
+impossible or illegal for us to Deliver or accept Delivery of any of the Deliverable
+Obligations, we will procure a designee to whom you consent and for whom it is not
+impossible or illegal to Deliver or accept Delivery of the relevant Deliverable Obligations to
+Deliver or accept such Delivery, provided that by your acceptance of our Customer Physical
+Settlement Request, you will be deemed to agree that you will not unreasonably withhold
+your consent to such designation and provided further that such consent will be deemed
+6 Delete as applicable
+ICM:14194410.6ICM:14194410.5 28
+given in the case where the relevant designee is a Participating Bidder for whom it is not
+impossible or illegal to Deliver or accept Delivery of the relevant Deliverable Obligations.]7
+The Customer Physical Settlement Request is a Physical Settlement [Buy][Sell] Request of EUR[l].
+Our contact details for purposes of this Customer Physical Settlement Request Letter are:
+Name:
+Address:
+Telephone:
+Fax:
+E-mail:
+Yours faithfully,
+[CUSTOMER]8
+By:
+Name:
+Title:
+Signature:
+7 Delete as appropriate.
+8 Specify legal name of customer.
+ICM:14194410.6ICM:14194410.5 29
+Schedule 1 to the ELCDS Cancellable and Non-CancellableAuction Settlement Terms
+Notwithstanding any provision to the contrary governing any Covered Transaction, the following shall apply
+to all Covered Transactions with effect from the later of the Common Event Determination Date and the
+Trade Date in respect of the relevant Covered Transaction:
+(a) Effect of Actual Notices.
+Any Credit Event Notice, Notice of Publicly Available Information or Notice of Physical Settlement
+delivered with respect to the Reference Entity or Reference Entities and/or Reference Obligations
+shall be deemed revoked, and neither party shall have any obligations with respect to any such
+notice.
+(b) No Additional Notice Deliveries.
+Each party agrees not to deliver any Credit Event Notice, Notice of Publicly Available Information
+or Notice of Physical Settlement with respect to the Reference Entity and Reference Obligations, and
+any such notice delivered shall be void and have no effect.
+(c) Delivery of Notice of Physical Settlement.
+The Conditions to Settlement in each Covered Transaction are amended by eliminating any
+requirement that Buyer deliver a Notice of Physical Settlement with respect to the Reference Entity
+or Reference Entities and/or Reference Obligations.
+(d) Accruals.
+With respect to any ELCDS Covered Transaction or LevX Covered Transaction, (A) the Fixed
+Amount on such Covered Transaction, or the portion thereof to which the Reference Obligations
+relates, as applicable, shall accrue to and including the Common Event Determination Date, and (B)
+the resulting Fixed Amount in respect of the Reference Obligations shall be paid on the Cash
+Settlement Date.
+(e) Settlement Terms.
+With respect to any Covered Transaction, such Covered Transaction, or the portion thereof to which
+the Reference Obligations relates, as applicable, shall settle as if the Settlement Method specified in
+the documentation governing such Covered Transaction (or portion thereof) were Cash Settlement,
+subject to the following:
+(A) The Final Price will be determined as described in the ELCDS Cancellable and Non-
+Cancellable Auction Settlement Terms, with the Final Price Determination Date as the
+Single Valuation Date. Notwithstanding Section 7.4 of the Credit Definitions, the
+Calculation Agent will not be obligated to provide any notice with respect to Quotations or
+the calculation of such Final Price.
+(B) The Cash Settlement Amount will be an amount equal to the greater of:
+(i) zero; and
+(ii) the product of:
+ICM:14194410.6ICM:14194410.5 30
+(a) Floating Rate Payer Calculation Amount; and
+(b) (A) the Reference Price; minus
+(B) the Final Price.
+(C) The Cash Settlement Date shall be 24 January 2012.
+(f) Auction Cancellation.
+If an Auction Cancellation Event occurs, subsections (b), (c)(ii) and (e) above shall be rescinded and
+have no further effect. For the avoidance of doubt, if an Auction Cancellation Event occurs, a party
+may deliver a Notice of Physical Settlement or any other relevant notice with respect to any Covered
+Transaction in accordance with the relevant documentation and settle any Covered Transaction in
+accordance with the relevant documentation; provided that the reference to "Event Determination
+Date" in Section 3.4 of the Credit Definitions shall be deemed to refer to the relevant Auction
+Cancellation Date.
+(g) Bespoke ELCDS Transactions.
+To the extent the documentation governing any ELCDS Covered Transaction differs from the
+ELCDS Standard Terms, the terms of this Schedule 1 shall be construed in respect of such ELCDS
+Covered Transaction taking into account any such differences to effectuate the parties' intent that,
+other than in the case of an Auction Cancellation Event, the Final Price determined pursuant to the
+ELCDS Cancellable and Non-Cancellable Auction Settlement Terms be used to determine the
+amounts payable and/or other rights and obligations of the parties with respect to the portion of such
+ELCDS Covered Transaction referencing the Reference Obligations.
+ICM:14194410.6ICM:14194410.5 31

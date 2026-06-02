@@ -1,0 +1,97 @@
+Determinations Committee Decision
+Date: May 18, 2012
+Determinations Committee: Americas
+Meeting Date: May 18, 2012
+DC Issue 2012051401: Has a Bankruptcy Credit Event occurred with
+respect to Residential Capital, LLC?
+1st Question for vote: Should ISDA publish an Initial List of Deliverable
+Obligations for the Residential Capital, LLC auction
+based on the list provided? (Please see Annex 1.)
+Vote result: Yes
+Votes: 15 'Yes' votes and 0 'No' votes
+Bank of America N.A. Yes
+Barclays Bank plc Yes
+BlueMountain Capital Yes
+BNP Paribas Yes
+Citadel Yes
+Citibank, N.A. Yes
+Credit Suisse International Yes
+D.E. Shaw Yes
+Deutsche Bank AG Yes
+Elliott Yes
+Goldman Sachs International Yes
+JPMorgan Chase Bank, N.A. Yes
+Morgan Stanley & Co. International plc Yes
+Pacific Investment Management Co., LLC Yes
+UBS AG Yes
+2nd Question for vote: Is the required information for the Credit Derivatives
+Auction Settlement Terms relating to Residential
+Capital, LLC agreed? (Please see Annex 2.)
+Vote result: Yes
+Votes: 10 'Yes' votes and 0 'No' votes
+Bank of America N.A. Yes
+Barclays Bank plc Yes
+BlueMountain Capital *N/A
+BNP Paribas Yes
+Citadel *N/A
+Citibank, N.A. Yes
+Credit Suisse International Yes
+D.E. Shaw *N/A
+Deutsche Bank AG Yes
+Elliott *N/A
+Goldman Sachs International Yes
+JPMorgan Chase Bank, N.A. Yes
+Morgan Stanley & Co. International plc Yes
+Pacific Investment Management Co., LLC *N/A
+UBS AG Yes
+*DC Rules require simple majority of Dealer Voting
+Members only on vote concerning Supplemental
+Auction Terms
+Annex 1
+Initial List of Deliverable Obligations For The 2012 Residential Capital, LLC Credit Derivatives Auction
+Settlement Terms 1 - published May 18, 2012
+Bonds:
+ISIN Issuer Name Coupon Maturity Currency
+XS0254758872 Residential Capital, LLC 7.125% May 17, 2012 EUR
+US76114EAC66 Residential Capital, LLC 8.500% June 1, 2012 USD
+US76113BAR06 Residential Capital, LLC 8.500% April 17, 2013 USD
+XS0254759920 Residential Capital, LLC 8.375% May 17, 2013 GBP
+XS0307841469 Residential Capital, LLC 9.875% July 1, 2014 GBP
+US76114EAH53 Residential Capital, LLC 9.625% May 15, 2015 USD
+US76113BAE92 Residential Capital, LLC 6.875% June 30, 2015 USD
+1
+Published pursuant to Section 3.3 of the Credit Derivatives Determinations Committees Rules
+Annex 2
+CREDIT DERIVATIVES DETERMINATIONS COMMITTEES
+Required Information for Credit Derivatives Auction Settlement Terms
+Reference Entity: Residential Capital, LLC
+Question Terms for Residential Capital, LLC
+1. Cre dit Event (Bankruptcy, Failure to Pay, Restructuring, Obligation Bankruptcy (DC Issue 2012051401)
+Acceleration, Repudiation/Moratorium)
+2. Cre dit Event Resolution Request Date May 14, 2012
+3. Or iginally Scheduled Auction Currency Fixing Date June 5, 2012
+4. Au ction Date June 6, 2012
+5. Au ction types (CDS: Senior, Subordinated; LCDS) Senior
+6. Re ference Auction Obligation Not specified
+7. De liverable Obligation Terms North American Corporate/Standard
+North American Corporate
+8. Mi nimum Number of Valid Initial Market Submissions 8
+9. Ini tial Market Quotation Amount USD2 million
+10. Ma ximum bid/offer spread for a Valid Initial Market Submission 2.00%
+11. Ca p Amount 1.00%
+12. Qu otation Amount Increment USD1,000
+13. RA ST Notional Amount Increment USD1 million
+14. Re levant Pricing Increment One-eighth of one percentage point
+15. Au ction Settlement Date The later of 5 Business Days after the
+Auction Final Price Determination
+Date and June 13, 2012
+16. Or iginally Scheduled Initial Bidding Period Between 9:45 a.m. and 10:00 a.m.
+Relevant City Time
+17. Or iginally Scheduled Subsequent Bidding Period Between 12:45 p.m. and 1:00 p.m.
+Relevant City Time
+18. Ini tial Bidding Information Publication Time 10:30 a.m. Relevant City Time
+19. Su bsequent Bidding Information Publication Time 2:00 p.m. Relevant City Time
+20. Re levant Credit Derivatives Physical Settlement Matrix Physical Settlement Matrix published
+on April 3, 2012 by ISDA
+21. Re levant Currency USD
+22. Ro unding Amount USD1,000

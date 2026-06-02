@@ -1,0 +1,10 @@
+Final List of Deliverable Obligations For The 2010 Ambac Financial Group, Inc. Credit Derivatives
+Auction Settlement Terms 1 - published December 2, 2010
+Bonds:
+ISIN Issuer Name Coupon Maturity Currency
+US023139AA61 Ambac Financial Group, Inc. 9.375% August 1, 2011 USD
+US023139AG32 Ambac Financial Group, Inc. 9.500% February 15, 2021 USD
+US023139AB45 Ambac Financial Group, Inc. 7.500% May 1, 2023 USD
+US023139AE83 Ambac Financial Group, Inc. 5.950% December 5, 2035 USD
+1
+Published pursuant to Section 3.3 of the Credit Derivatives Determinations Committees Rules
