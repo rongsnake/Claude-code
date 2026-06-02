@@ -1,9 +1,0 @@
-Final List of Deliverable Obligations For The 2011 The PMI Group, Inc. Credit Derivatives Auction
-Settlement Terms 1 - published December 9, 2011
-Bonds:
-ISIN Issuer Name Coupon Maturity
-US69344MAH43 The PMI Group, Inc. 6.000% September 15, 2016
-US69344MAK71 The PMI Group, Inc. 4.500% April 15, 2020
-US69344MAJ09 The PMI Group, Inc. 6.625% September 15, 2036
-1
-Published pursuant to Section 3.3 of the Credit Derivatives Determinations Committees Rules

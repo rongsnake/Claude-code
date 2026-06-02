@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -98,6 +99,41 @@ def _load_docs() -> list[dict]:
     return out
 
 
+def _load_runs() -> list[dict]:
+    p = INDEX_DIR / "runs.json"
+    return json.loads(p.read_text()) if p.exists() else []
+
+
+def _run_to_row(r: dict) -> dict:
+    """Map a determination run (runs.json) onto the table-row schema, carrying its
+    extractive summary + per-name download list for the drawer."""
+    date = r.get("meeting_date") or r.get("auction_date")
+    ym = re.search(r"20\d{2}", str(date or ""))
+    flags = r.get("flags") or []
+    return {
+        "date": date,
+        "year": int(ym.group(0)) if ym else None,
+        "committee": r.get("committee"),
+        "reference_entity": r.get("reference_entity"),
+        "issue_number": r.get("issue_number"),
+        "credit_event_type": r.get("credit_event_type"),
+        "decision": r.get("resolution"),
+        "auction_held": bool(r.get("auction_date") or r.get("final_price") is not None),
+        "auction_date": r.get("auction_date"),
+        "final_price": r.get("final_price"),
+        "is_restructuring": "restructuring" in flags,
+        "credit_event_occurred": r.get("resolution") == "Credit event occurred",
+        "url": (r.get("based_on") or {}).get("doc_id") and
+               next((d.get("source_url") for d in r.get("documents", [])
+                     if d.get("doc_id") == r["based_on"]["doc_id"]), None),
+        "summary": r.get("summary"),
+        "question": r.get("question"),
+        "flag_list": flags,
+        "documents": r.get("documents") or [],
+        "n_documents": r.get("n_documents") or len(r.get("documents") or []),
+    }
+
+
 def _load_meta() -> dict:
     p = INDEX_DIR / "index_meta.json"
     return json.loads(p.read_text()) if p.exists() else {}
@@ -113,16 +149,34 @@ def build(input_path: Path, output_path: Path) -> Path:
     answers = analytics.headline_answers(metrics)
     banner_text, banner_class = _source_label(df)
 
-    payload = {
-        "kpis": {
+    # Primary view = determination runs (full archive, grouped, with extractive
+    # summaries + per-name download lists). Fall back to the reconciled rows if
+    # the index hasn't been built yet.
+    runs = _load_runs()
+    if runs:
+        rows = [_run_to_row(r) for r in runs]
+        years = [r["year"] for r in rows if r.get("year")]
+        kpis = {
+            "total": len(runs),
+            "entities": len({r["reference_entity"] for r in rows if r.get("reference_entity")}),
+            "credit_events": sum(1 for r in rows if r.get("credit_event_type")),
+            "date_min": (min(years) if years else None),
+            "date_max": (max(years) if years else None),
+        }
+    else:
+        rows = _clean_rows(df)
+        kpis = {
             "total": metrics["total_determinations"],
             "entities": metrics["distinct_reference_entities"],
             "credit_events": metrics["credit_events_tagged"],
             "date_min": metrics["date_min"],
             "date_max": metrics["date_max"],
-        },
+        }
+
+    payload = {
+        "kpis": kpis,
         "answers": [{"label": l, "value": v} for l, v in answers],
-        "rows": _clean_rows(df),
+        "rows": rows,
         "docs": _load_docs(),
         "meta": _load_meta(),
         "analytics": metrics,
@@ -134,7 +188,8 @@ def build(input_path: Path, output_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
     print(f"Wrote {output_path} ({output_path.stat().st_size // 1024} KB, "
-          f"{metrics['total_determinations']} determinations, {len(payload['docs'])} docs)")
+          f"{kpis['total']} runs/determinations, {len(payload['rows'])} rows, "
+          f"{len(payload['docs'])} docs)")
     return output_path
 
 
@@ -179,6 +234,9 @@ _TEMPLATE = r"""<!DOCTYPE html>
   .docgroup { margin:6px 0 10px; } .docgroup h4 { margin:6px 0 4px; font-size:12px;
     color:var(--accent); text-transform:uppercase; letter-spacing:.4px; }
   .docrow { font-size:12.5px; padding:3px 0; border-bottom:1px dotted #223; }
+  .runsum { background:#0f2a1e; border:1px solid #1f6b46; color:#cdeede; border-radius:8px;
+            padding:10px 12px; font-size:13px; line-height:1.55; margin-bottom:10px; }
+  .dllinks a { margin-left:12px; font-size:12px; }
   .pill { display:inline-block; font-size:10px; padding:1px 7px; border-radius:10px; margin-left:6px;
           background:#23364a; color:#9fc4ea; } .pill.warn{ background:#4a3a12; color:#ffd58a; }
   .pill.flag{ background:#2a1f3a; color:#c9a7ff; }
@@ -357,10 +415,8 @@ function drawCharts(rows){
 
 // ── table + per-row document drawer ───────────────────────────────────────────
 const COLS=[['date','Date'],['committee','Committee'],['reference_entity','Reference entity'],
-  ['issue_number','Issue #'],['credit_event_type','Credit event'],['decision','Decision'],
-  ['auction_held','Auction'],['auction_date','Auction date'],['days_to_auction','Days→auction'],
-  ['final_price','Final price'],['currency','Ccy'],['transaction_type','Seniority'],
-  ['net_open_interest_amount','Net OI'],['match_status','Match']];
+  ['issue_number','Issue #'],['credit_event_type','Credit event'],['decision','Outcome'],
+  ['auction_held','Auction'],['auction_date','Auction date'],['final_price','Final price']];
 document.getElementById('thead').innerHTML=COLS.map(([c,l])=>`<th data-c="${c}">${l}</th>`).join('')+'<th>Docs</th>';
 let sortCol='date', sortDir=-1;
 const KINDS=[['decision','Decisions / meeting statements'],['meeting_statement','Decisions / meeting statements'],
@@ -372,24 +428,24 @@ const GROUP_ORDER=['Decisions / meeting statements','Explanatory statements','Au
   'Final lists / maturity buckets','Participating bidders','Notices','Auction results','Auction market data','Other documents'];
 const kindGroup={}; KINDS.forEach(([k,g])=>kindGroup[k]=g);
 
-function docsForEntity(entity){ if(!entity) return [];
-  return DATA.docs.filter(d=>d.reference_entity===entity); }
-function drawerHtml(entity){
-  const docs=docsForEntity(entity);
-  if(!docs.length) return `<div class="drawer-inner meta">No source documents linked to this entity in the index.</div>`;
-  const groups={}; for(const d of docs){ const g=kindGroup[d.doc_kind]||'Other documents'; (groups[g]=groups[g]||[]).push(d); }
+function drawerHtml(r){
+  const docs=r.documents||[];
   let html='<div class="drawer-inner">';
+  if(r.summary){ html+=`<div class="runsum">📝 ${esc(r.summary)}</div>`; }
+  if(r.question){ html+=`<div class="meta" style="margin:0 0 8px">DC question: ${esc(r.question)}</div>`; }
+  (r.flag_list||[]).forEach(()=>{});
+  if(!docs.length) return html+'<div class="meta">No source documents linked to this determination.</div></div>';
+  const groups={}; for(const d of docs){ const g=kindGroup[d.doc_kind]||'Other documents'; (groups[g]=groups[g]||[]).push(d); }
+  html+='<div class="meta" style="margin:2px 0 6px">Documents (download behind login):</div>';
   for(const g of GROUP_ORDER){ if(!groups[g]) continue;
     html+=`<div class="docgroup"><h4>${g}</h4>`;
     for(const d of groups[g]){
       const badges=[]; if(d.is_proforma) badges.push('<span class="pill warn">pro-forma</span>');
       if(d.is_blackline) badges.push('<span class="pill warn">blackline</span>');
-      if(d.meeting_date) badges.push(`<span class="pill">mtg ${esc(d.meeting_date)}</span>`);
-      if(d.issue_number) badges.push(`<span class="pill">issue ${esc(d.issue_number)}</span>`);
-      if(d.vote_result) badges.push(`<span class="pill">vote ${esc(d.vote_result)}</span>`);
-      (d.flag_list||[]).forEach(f=>badges.push(`<span class="pill flag">${esc(FLAG_LABELS[f]||f)}</span>`));
-      const link=d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title||'document')} ↗</a>`:esc(d.title||'document');
-      html+=`<div class="docrow">${link} ${badges.join(' ')}${d.snippet?`<div class="meta">${esc(d.snippet)}</div>`:''}</div>`;
+      const dl=d.download?`<a href="${esc(d.download)}" download>⬇ download</a>`:'<span class="meta">not cached</span>';
+      const src=d.source_url?`<a href="${esc(d.source_url)}" target="_blank" rel="noopener">source ↗</a>`:'';
+      html+=`<div class="docrow">${esc(d.title||'document')} ${badges.join(' ')}`
+           +`<span class="dllinks">${dl} ${src}</span></div>`;
     }
     html+='</div>';
   }
@@ -407,11 +463,11 @@ function renderTable(rows){
   rows.forEach((r,i)=>{
     const tr=document.createElement('tr'); tr.className='det';
     tr.innerHTML=COLS.map(([c])=>`<td>${cell(r,c)}</td>`).join('')
-      +`<td>${docsForEntity(r.reference_entity).length||''}</td>`;
+      +`<td>${r.n_documents||''}</td>`;
     tr.onclick=()=>{ const nx=tr.nextElementSibling;
       if(nx&&nx.classList.contains('drawer')){ nx.remove(); return; }
       const dr=document.createElement('tr'); dr.className='drawer';
-      dr.innerHTML=`<td colspan="${COLS.length+1}">${drawerHtml(r.reference_entity)}</td>`;
+      dr.innerHTML=`<td colspan="${COLS.length+1}">${drawerHtml(r)}</td>`;
       tr.after(dr); };
     tb.appendChild(tr);
   });

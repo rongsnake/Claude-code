@@ -36,6 +36,7 @@ import hashlib
 import json
 import logging
 import re
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -57,8 +58,10 @@ MANIFEST_JSON = DATA_DIR / "documents.json"
 DETERMINATIONS_CSV = DATA_DIR / "determinations.csv"
 AUCTIONS_CSV = DATA_DIR / "auctions.csv"
 
-# File extensions we treat as downloadable source documents.
-DOC_EXT_RE = re.compile(r"\.(pdf|xls|xlsx|csv|docx?|txt)(?:[?#].*)?$", re.I)
+# File extensions we treat as downloadable source documents. The trailing-slash
+# form matches WP Document Revisions permalinks (…/name.pdf/), which stream the
+# file directly — so we can download them without scraping an HTML page.
+DOC_EXT_RE = re.compile(r"\.(pdf|xls|xlsx|csv|docx?|txt)(?:/|[?#].*)?$", re.I)
 
 # Classify a document by its URL / link text into a stable "kind".
 def classify_kind(url: str, link_text: str) -> str:
@@ -79,7 +82,7 @@ def classify_kind(url: str, link_text: str) -> str:
 
 
 def _safe_name(url: str) -> str:
-    name = urlparse(url).path.rsplit("/", 1)[-1] or "document"
+    name = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1] or "document"
     name = re.sub(r"[^A-Za-z0-9._-]", "_", name)
     return name[:120] or "document"
 
@@ -245,6 +248,7 @@ def main() -> None:
                         tp.write_text(text)
                         text_chars, text_path = len(text), str(tp)
                 log.info("  ✓ %s (%d bytes, sha %s…)", Path(local_path).name, size, sha[:8])
+                time.sleep(0.25)  # polite pacing across the full-archive download
 
             manifest.append({
                 "reference_entity": ctx["reference_entity"],

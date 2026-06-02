@@ -42,6 +42,7 @@ from pathlib import Path
 import pandas as pd
 
 import analytics
+import summaries
 from fetch_docs import classify_kind  # reuse the proven URL/text kind classifier
 
 DATA_DIR = Path("data")
@@ -54,6 +55,10 @@ OLLAMA_URL = "http://localhost:11434"
 EMBED_MODEL = "nomic-embed-text"
 CHUNK_CHARS = 900
 CHUNK_OVERLAP = 150
+# The full archive is thousands of docs; embedding every chunk on a Pi takes hours.
+# Summaries are extractive (no embeddings), so cap RAG embedding by default — the
+# Ask box still works over the most recent subset. Override with --limit-embed.
+MAX_EMBED_CHUNKS = 6000
 DC_DOCS_BASE = "https://www.cdsdeterminationscommittees.org/docs/"
 
 # Committee canonicalisation — the raw table has a few header-artefact rows
@@ -345,9 +350,18 @@ def main() -> None:
         })
     (INDEX_DIR / "entity_docs.json").write_text(json.dumps(by_entity, indent=2, default=str))
 
+    # group documents into determination runs + extractive (no-LLM) summaries
+    runs = summaries.build_runs(docs, det)
+    (INDEX_DIR / "runs.json").write_text(json.dumps(runs, indent=2, default=str))
+    print(f"  built {len(runs)} determination runs with extractive summaries")
+
     n_chunks = 0
     if not args.no_embed:
-        chunks, mat = embed_chunks(docs, limit=args.limit_embed)
+        embed_limit = args.limit_embed or MAX_EMBED_CHUNKS
+        chunks, mat = embed_chunks(docs, limit=embed_limit)
+        if len(chunks) >= embed_limit:
+            print(f"  (RAG embedding capped at {embed_limit} chunks; summaries are "
+                  f"extractive and unaffected)")
         n_chunks = len(chunks)
         if n_chunks:
             import numpy as np
@@ -362,6 +376,7 @@ def main() -> None:
     meta = {
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_determinations": int(len(det)),
+        "n_runs": len(runs),
         "n_documents": len(docs),
         "n_chunks": n_chunks,
         "n_entities_with_docs": len([k for k in by_entity if k != "Unattributed"]),

@@ -221,18 +221,47 @@ def _parse_date(text: str) -> str | None:
     return None
 
 
+# Document-kind / boilerplate phrases stripped from a slug to recover the entity.
+# Longest phrases first so multi-word kinds are removed before their fragments.
+_ENTITY_STRIP_PHRASES = [
+    "final list of deliverable obligations", "list of deliverable obligations",
+    "deliverable obligations", "list of participating bidders", "participating bidders",
+    "auction settlement terms", "settlement terms", "auction results", "final prices",
+    "final price", "pro forma", "proforma", "redline of auction", "redline", "blackline",
+    "explanatory statement", "meeting statement", "dc decision", "dc statement",
+    "determinations committee", "determination", "resolution", "announcement", "notice",
+    "asia ex japan", "australia new zealand", "all dcs", "americas", "emea", "japan",
+    "committee", "issue number", "statement", "decision", "results",
+]
+# Date fragments in slugs: "20-may-2025", "4-30-26", "5/8/26", "2025-10-21".
+_SLUG_DATE_RE = re.compile(
+    r"\b(\d{1,2}[-/\s](?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]\d{2,4}"
+    r"|\d{1,2}[-/]\d{1,2}[-/]\d{2,4}"
+    r"|\d{4}[-/]\d{1,2}[-/]\d{1,2})\b", re.I)
+
+
 def _slug_to_entity(slug: str) -> str | None:
-    """Best-effort reference-entity name from a document slug."""
-    s = re.sub(r"\.(pdf|html?)/?$", "", slug, flags=re.I)
-    s = re.sub(r"\d{2}[-_]\d{2}[-_]\d{4}|\d{4}[-_]\d{2}[-_]\d{2}", "", s)
-    for token in ("dc-decision", "dc-statement", "determinations-committee",
-                  "determination", "meeting-statement", "americas", "emea",
-                  "asia-ex-japan", "japan", "issue-number", "statement",
-                  "decision"):
-        s = s.replace(token, " ")
-    s = re.sub(r"[-_]+", " ", s).strip()
-    s = re.sub(r"\s+", " ", s)
+    """Best-effort reference-entity name from a document slug or title."""
+    s = re.sub(r"\.(pdf|html?|xlsx?|docx?|csv)/?$", "", slug, flags=re.I)
+    s = s.replace("-", " ").replace("_", " ").lower()
+    s = _SLUG_DATE_RE.sub(" ", s)
+    for phrase in _ENTITY_STRIP_PHRASES:
+        s = re.sub(rf"\b{re.escape(phrase)}\b", " ", s)
+    s = re.sub(r"\b\d[\d.,]*\b", " ", s)        # stray numbers (issue ids, dates)
+    s = re.sub(r"\s+", " ", s).strip()
     return s.title() if s and len(s) > 2 else None
+
+
+def _date_from_text(s: str) -> str | None:
+    """Parse a plausible ISO date from a slug/title: numeric or text-month forms.
+    Rejects out-of-range years (issue-number fragments parse as bogus dates)."""
+    iso = _parse_date(s)
+    if not iso:
+        m = _MONTH_DATE_RE.search(s.replace("-", " "))
+        iso = _to_iso(m.group(1)) if m else None
+    if iso and not (2008 <= int(iso[:4]) <= date.today().year + 1):
+        return None
+    return iso
 
 
 def _record_from_url(url: str, source: str) -> Determination:
@@ -520,6 +549,113 @@ def fetch_via_sitemap(session) -> list[Determination]:
     return out
 
 
+# ── full-depth document enumeration via the WP Document Revisions feed ──────────
+# The DC site's determinations are WP Document Revisions posts at
+# /documents/YYYY/MM/<slug>/. The REST API and sitemaps are locked down by
+# Wordfence, but the document RSS feed paginates cleanly (10 items/page) and is
+# the most reliable way to enumerate the *entire* archive. Each <item> carries a
+# clean, human-readable permalink + title + pubDate + categories — enough to
+# build a determination row without fetching each page (fetch_docs.py later
+# visits the permalink to download the actual file).
+SEEN_CACHE = DATA_DIR / "seen_documents.json"
+
+_RSS_ITEM_RE = re.compile(r"<item>(.*?)</item>", re.S | re.I)
+
+
+def _rss_field(item: str, tag: str) -> str | None:
+    m = re.search(rf"<{tag}[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", item, re.S | re.I)
+    return m.group(1).strip() if m else None
+
+
+def _rss_categories(item: str) -> list[str]:
+    return [c.strip() for c in re.findall(
+        r"<category[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</category>", item, re.S | re.I) if c.strip()]
+
+
+def _record_from_feed_item(item: str) -> Determination | None:
+    link = _rss_field(item, "link")
+    if not link or "/documents/" not in link:
+        return None
+    title = _rss_field(item, "title") or ""
+    cats = _rss_categories(item)
+    hay = f"{link} {title} {' '.join(cats)}"
+    # date: prefer an explicit date in the slug/title (authoritative), else pubDate
+    iso = _date_from_text(link) or _date_from_text(title)
+    if not iso:
+        pub = _rss_field(item, "pubDate")
+        if pub:
+            try:
+                from email.utils import parsedate_to_datetime
+                iso = parsedate_to_datetime(pub).date().isoformat()
+            except Exception:
+                iso = None
+    slug = link.rstrip("/").split("/")[-1]
+    entity = _slug_to_entity(slug) or _slug_to_entity(title.replace(" ", "-"))
+    iss = (re.search(r"issue[-_ ]?number[-_ ]?(\d{6,})", hay, re.I)
+           or re.search(r"\b(\d{8,})\b", slug))
+    doc_type = "statement" if "statement" in hay.lower() else "decision"
+    return Determination(
+        date=iso,
+        committee=_classify(hay, REGIONS),
+        reference_entity=None if _is_garbage_entity(entity) else entity,
+        issue_number=iss.group(1) if iss else None,
+        credit_event_type=_classify(hay, CREDIT_EVENTS),
+        decision=None,
+        doc_type=doc_type,
+        url=link,
+        source="document-feed",
+        title=title or slug,
+        tags=cats[:6],
+    )
+
+
+def fetch_via_document_feed(session, *, max_pages: int = 4000) -> list[Determination]:
+    """Walk the paginated WP Document Revisions RSS feed and return one record per
+    document across the whole archive. Stops when a page is empty or only repeats
+    links already collected this run (the feed wraps past the last real page)."""
+    out: list[Determination] = []
+    seen_links: set[str] = set()
+    dup_pages = 0
+    for page in range(1, max_pages + 1):
+        url = f"{BASE_URL}/feed/rss2/?post_type=document&paged={page}"
+        status, body = fetch_text(session, url, accept="application/rss+xml")
+        if not body:
+            log.info("Document feed: stop at page %d (no body, status=%s)", page, status)
+            break
+        items = _RSS_ITEM_RE.findall(body)
+        if not items:
+            log.info("Document feed: stop at page %d (no items)", page)
+            break
+        page_links: list[str] = []
+        new_here = 0
+        for it in items:
+            rec = _record_from_feed_item(it)
+            if not rec:
+                continue
+            page_links.append(rec.url)
+            if rec.url in seen_links:
+                continue
+            seen_links.add(rec.url)
+            out.append(rec)
+            new_here += 1
+        if page_links and new_here == 0:
+            dup_pages += 1
+            if dup_pages >= 2:
+                log.info("Document feed: stop at page %d (only duplicates)", page)
+                break
+        else:
+            dup_pages = 0
+        if page % 20 == 0:
+            log.info("Document feed: page %d, %d documents so far", page, len(out))
+        time.sleep(POLITE_DELAY)
+    log.info("Document feed: %d unique documents across the archive", len(out))
+    try:
+        SEEN_CACHE.write_text(json.dumps(sorted(seen_links), indent=0))
+    except Exception:
+        pass
+    return out
+
+
 def enrich_with_pdf(session, rec: Determination) -> Determination:
     """Download a decision PDF and extract region / credit-event / outcome."""
     try:
@@ -589,15 +725,41 @@ def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
 
     records: dict[str, Determination] = {}
 
-    # 1) primary: official auction index → real, cleanly-named determinations
+    # 1) primary: the full WP Document Revisions archive via the document feed.
+    #    One row per document across all regions/years (the true full-depth set).
     try:
-        for rec in fetch_via_isda_index(session):
+        for rec in fetch_via_document_feed(session):
             if rec.url:
                 records.setdefault(rec.url, rec)
     except Exception as exc:
+        log.warning("fetch_via_document_feed failed: %s", exc)
+
+    # 2) cross-reference: the official auction index adds auction linkage
+    #    (auction_date/held) and clean legal entity names to the determinations
+    #    that proceeded to a settlement auction.
+    try:
+        for rec in fetch_via_isda_index(session):
+            if not rec.url:
+                continue
+            existing = records.get(rec.url)
+            if existing is None:
+                records[rec.url] = rec
+                continue
+            # fold auction facts + better names onto the feed-derived record
+            existing.auction_date = existing.auction_date or rec.auction_date
+            existing.auction_held = existing.auction_held or rec.auction_held
+            if rec.reference_entity and (not existing.reference_entity
+                                         or _is_garbage_entity(existing.reference_entity)):
+                existing.reference_entity = rec.reference_entity
+            existing.committee = existing.committee or rec.committee
+            existing.credit_event_type = existing.credit_event_type or rec.credit_event_type
+            for t in rec.tags:
+                if t not in existing.tags:
+                    existing.tags.append(t)
+    except Exception as exc:
         log.warning("fetch_via_isda_index failed: %s", exc)
 
-    # 2) supplementary: DC WordPress REST/sitemap. The DC site stores its decision
+    # 3) supplementary: DC WordPress REST/sitemap. The DC site stores some decision
     #    PDFs under MD5-hashed filenames, so only keep rows that carry a real,
     #    human-readable entity name (clean slugs); never emit a hash as data.
     for fetcher in (fetch_via_rest, fetch_via_sitemap):
@@ -694,8 +856,19 @@ def make_demo(n: int = 140) -> list[Determination]:
 
 
 # ── persistence ──────────────────────────────────────────────────────────────────
+def _valid_iso(v) -> str | None:
+    """Keep only plausible determination dates (issue-number fragments otherwise
+    parse into bogus years like 0201 or 9559)."""
+    if not isinstance(v, str):
+        return None
+    m = re.match(r"(\d{4})-\d{2}-\d{2}$", v)
+    return v if m and 2008 <= int(m.group(1)) <= date.today().year + 1 else None
+
+
 def save(records: Iterable[Determination]) -> pd.DataFrame:
     rows = [asdict(r) for r in records]
+    for r in rows:
+        r["date"] = _valid_iso(r.get("date"))
     df = pd.DataFrame(rows)
     if not df.empty:
         df["tags"] = df["tags"].apply(lambda t: ",".join(t) if isinstance(t, list) else "")
