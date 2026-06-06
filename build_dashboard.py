@@ -139,6 +139,46 @@ def _load_meta() -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
 
 
+# Columns exported in the "all Credit Events" download, in a sensible reading order.
+_CE_EXPORT_COLS = [
+    "date", "reference_entity", "committee", "credit_event_type",
+    "credit_event_occurred", "decision", "issue_number", "auction_date",
+    "auction_held", "final_price", "currency", "days_to_auction",
+    "transaction_type", "ticker", "source", "url", "auction_url",
+]
+
+
+def _write_credit_events_export(df: pd.DataFrame, output_path: Path) -> int:
+    """Write credit_events.csv (+ .xlsx) next to the dashboard, covering every row
+    where a credit event was determined to have occurred OR a credit-event type was
+    classified (the union — 404 rows on the full archive). Returns the row count."""
+    d = analytics.enrich(df)
+    occurred = d.get("credit_event_occurred")
+    has_type = d.get("credit_event_type")
+    mask = pd.Series(False, index=d.index)
+    if occurred is not None:
+        mask = mask | occurred.fillna(False).astype(bool)
+    if has_type is not None:
+        mask = mask | has_type.fillna("").astype(str).str.strip().ne("")
+    ce = d[mask].copy()
+    for col in ("date", "auction_date"):
+        if col in ce:
+            ce[col] = pd.to_datetime(ce[col], errors="coerce").dt.strftime("%Y-%m-%d")
+    if "date" in ce:
+        ce = ce.sort_values("date", ascending=False, na_position="last")
+    cols = [c for c in _CE_EXPORT_COLS if c in ce.columns]
+    ce = ce[cols]
+
+    csv_path = output_path.parent / "credit_events.csv"
+    ce.to_csv(csv_path, index=False)
+    try:
+        ce.to_excel(output_path.parent / "credit_events.xlsx", index=False, sheet_name="Credit Events")
+    except Exception as e:  # openpyxl missing or write failure — CSV still produced
+        print(f"  (xlsx export skipped: {e})")
+    print(f"Wrote {csv_path} ({len(ce)} credit events)")
+    return len(ce)
+
+
 def build(input_path: Path, output_path: Path) -> Path:
     if not input_path.exists():
         raise SystemExit(
@@ -173,8 +213,11 @@ def build(input_path: Path, output_path: Path) -> Path:
             "date_max": metrics["date_max"],
         }
 
+    ce_count = _write_credit_events_export(df, output_path)
+
     payload = {
         "kpis": kpis,
+        "credit_events_count": ce_count,
         "answers": [{"label": l, "value": v} for l, v in answers],
         "rows": rows,
         "docs": _load_docs(),
@@ -243,6 +286,10 @@ _TEMPLATE = r"""<!DOCTYPE html>
   select,button,input,textarea { background:#0f1620; color:var(--ink); border:1px solid #2c3c50;
                   border-radius:8px; padding:8px 10px; font-size:13px; font-family:inherit; }
   button { cursor:pointer; } button:hover { border-color:var(--accent); }
+  a.btn { display:inline-block; background:#0f1620; color:var(--ink); border:1px solid #2c3c50;
+          border-radius:8px; padding:8px 10px; font-size:13px; text-decoration:none; cursor:pointer; }
+  a.btn:hover { border-color:var(--accent); }
+  a.btn#dlCredit { background:var(--accent); color:#04243f; border-color:var(--accent); font-weight:600; }
   button.primary { background:var(--accent); color:#04243f; border-color:var(--accent); font-weight:600; }
   .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:0 6px 12px; }
   .controls label { color:var(--muted); font-size:12px; margin-right:2px; }
@@ -317,7 +364,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <!-- ── Determinations table + document drawers ─────────────────────────── -->
   <div class="card full">
     <h3>Determinations <span class="meta">— click a row for its documents (decisions, explanatory statements, pro-forma ASTs, final lists…)</span></h3>
-    <div class="controls"><button id="dlCsv">⬇ Filtered CSV</button><button id="dlJson">⬇ Analytics JSON</button></div>
+    <div class="controls"><a id="dlCredit" class="btn" href="credit_events.csv" download>⬇ All Credit Events (CSV)</a><a id="dlCreditX" class="btn" href="credit_events.xlsx" download>⬇ All Credit Events (XLSX)</a><button id="dlCsv">⬇ Filtered CSV</button><button id="dlJson">⬇ Analytics JSON</button></div>
     <div class="tablewrap"><table id="tbl"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
   </div>
 </div>

@@ -25,3 +25,6 @@ data/index/refresh.log
 # Pi-side generated/local files (created by pi_autopilot.sh; not for the repo)
 cds_refresh.sh
 deploy.sh
+
+# Full-depth run log (regenerated each run; noise in git)
+finish_fulldepth.log
