@@ -3,7 +3,7 @@
   "n_determinations": 130,
   "n_runs": 236,
   "n_documents": 479,
-  "n_chunks": 0,
+  "n_chunks": 8839,
   "n_entities_with_docs": 34,
   "doc_kind_counts": {
     "decision": 216,

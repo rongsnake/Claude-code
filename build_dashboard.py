@@ -33,6 +33,7 @@ from pathlib import Path
 import pandas as pd
 
 import analytics
+import credit_events
 
 DEFAULT_OUTPUT = Path("dashboard.html")
 INDEX_DIR = Path("data") / "index"
@@ -142,16 +143,17 @@ def _load_meta() -> dict:
 # Columns exported in the "all Credit Events" download, in a sensible reading order.
 _CE_EXPORT_COLS = [
     "date", "reference_entity", "committee", "credit_event_type",
-    "credit_event_occurred", "decision", "issue_number", "auction_date",
+    "credit_event_occurred", "decision", "issue_number", "credit_event_ref",
+    "n_requests", "n_documents", "auction_date",
     "auction_held", "final_price", "currency", "days_to_auction",
     "transaction_type", "ticker", "source", "url", "auction_url",
 ]
 
 
-def _write_credit_events_export(df: pd.DataFrame, output_path: Path) -> int:
-    """Write credit_events.csv (+ .xlsx) next to the dashboard, covering every row
-    where a credit event was determined to have occurred OR a credit-event type was
-    classified (the union — 404 rows on the full archive). Returns the row count."""
+def _credit_events_rowlevel(df: pd.DataFrame) -> pd.DataFrame:
+    """Fallback (pre-grouping) export: every document-level row where a credit event
+    occurred OR a credit-event type was classified. Kept for when the reconciled
+    table or the per-event grouping is unavailable."""
     d = analytics.enrich(df)
     occurred = d.get("credit_event_occurred")
     has_type = d.get("credit_event_type")
@@ -160,7 +162,20 @@ def _write_credit_events_export(df: pd.DataFrame, output_path: Path) -> int:
         mask = mask | occurred.fillna(False).astype(bool)
     if has_type is not None:
         mask = mask | has_type.fillna("").astype(str).str.strip().ne("")
-    ce = d[mask].copy()
+    return d[mask].copy()
+
+
+def _write_credit_events_export(df: pd.DataFrame, output_path: Path) -> int:
+    """Write credit_events.csv (+ .xlsx) next to the dashboard: one row per real
+    credit event, collapsed from the document-level reconciled table by DC reference
+    number (see credit_events.py). Returns the row count. Falls back to the
+    document-level union if the reconciled table or grouping is unavailable."""
+    try:
+        rec = pd.read_csv(analytics.default_input())
+        ce, _drawer = credit_events.build_credit_events(rec)
+    except Exception as e:
+        print(f"  (credit-event grouping failed, falling back to row-level: {e})")
+        ce = _credit_events_rowlevel(df)
     for col in ("date", "auction_date"):
         if col in ce:
             ce[col] = pd.to_datetime(ce[col], errors="coerce").dt.strftime("%Y-%m-%d")

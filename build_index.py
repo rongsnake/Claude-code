@@ -367,6 +367,16 @@ def main() -> None:
             import numpy as np
             np.save(INDEX_DIR / "embeddings.npy", mat)
             (INDEX_DIR / "chunks.json").write_text(json.dumps(chunks, default=str))
+    else:
+        # Skipping embedding: keep the existing chunks/embeddings on disk and report
+        # their real count, so a --no-embed rebuild doesn't falsely zero out n_chunks
+        # (the served RAG index is still those chunks).
+        chunks_p = INDEX_DIR / "chunks.json"
+        if chunks_p.exists():
+            try:
+                n_chunks = len(json.loads(chunks_p.read_text()))
+            except (ValueError, OSError):
+                n_chunks = 0
 
     flag_totals: dict[str, int] = {}
     for d in docs:

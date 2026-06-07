@@ -28,3 +28,8 @@ deploy.sh
 
 # Full-depth run log (regenerated each run; noise in git)
 finish_fulldepth.log
+
+# Stray credit-event exports written next to the default dashboard.html output;
+# only the public/ copies (served under /cds/) are tracked.
+/credit_events.csv
+/credit_events.xlsx
