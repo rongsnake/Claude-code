@@ -1,0 +1,4 @@
+# Virtual Me uses only the standard library plus `requests` to talk to a local
+# Ollama instance. Everything else (embeddings, retrieval) is hand-rolled so the
+# corpus stays small, local, and dependency-light.
+requests>=2.28
