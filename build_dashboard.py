@@ -262,6 +262,8 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
         }
         rec["auction_held"] = rec["final_price"] is not None or rec["auction_date"] is not None
         rec["match_status"] = "matched" if rec["final_price"] is not None else "determination_only"
+        ad = pd.to_datetime(rec["auction_date"], errors="coerce")
+        rec["days_to_auction"] = int((ad - date).days) if pd.notna(ad) and pd.notna(date) else None
         rows.append(rec)
 
     _attach_run_details(rows, runs)
@@ -502,8 +504,35 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <div class="card"><h3>By committee region</h3><div id="byRegion" style="height:300px"></div></div>
   </div>
   <div class="grid">
-    <div class="card"><h3>By credit-event type</h3><div id="byEvent" style="height:300px"></div></div>
-    <div class="card"><h3>Avg auction final price (recovery) by event</h3><div id="byRecovery" style="height:300px"></div></div>
+    <div class="card"><h3>Credit events per year by type</h3><div id="byEvent" style="height:300px"></div></div>
+    <div class="card">
+      <h3>Custom chart <span class="meta" style="font-weight:400">— set below, or ask in the box above</span></h3>
+      <div class="controls" style="margin:0 6px 8px">
+        <span><label>Metric</label><select id="cMetric">
+          <option value="count">Determinations (count)</option>
+          <option value="recovery" selected>Avg recovery (final price)</option>
+          <option value="days">Avg days to auction</option>
+          <option value="recrate">Reconciled to auction (%)</option>
+        </select></span>
+        <span><label>By</label><select id="cBy">
+          <option value="year">Year</option>
+          <option value="committee">Committee</option>
+          <option value="credit_event_type" selected>Credit-event type</option>
+          <option value="decision">Outcome</option>
+        </select></span>
+        <span><label>Split</label><select id="cSplit">
+          <option value="" selected>None</option>
+          <option value="committee">Committee</option>
+          <option value="credit_event_type">Credit-event type</option>
+        </select></span>
+        <span><label>Type</label><select id="cType">
+          <option value="line">Line</option>
+          <option value="bar" selected>Bar</option>
+          <option value="pie">Pie</option>
+        </select></span>
+      </div>
+      <div id="customChart" style="height:248px"></div>
+    </div>
   </div>
 
   <!-- ── Determinations table + document drawers ─────────────────────────── -->
@@ -594,18 +623,82 @@ function drawCharts(rows){
   Plotly.react('byRegion',[{type:'pie',labels:rk,values:rk.map(x=>rc[x]),hole:.55,textinfo:'label+percent',
     marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}}],
     {...layout,margin:{t:10,r:10,b:10,l:10}},conf);
-  // Credit-event type only applies to determinations where a credit event occurred.
-  const ec=counts(rows.filter(r=>r.credit_event_type),'credit_event_type',''); const ek=Object.keys(ec).sort((a,b)=>ec[b]-ec[a]);
-  Plotly.react('byEvent',[{type:'bar',x:ek,y:ek.map(x=>ec[x]),marker:{color:'#37c98b'}}],layout,conf);
-  // avg recovery by event among filtered rows with a final_price
-  const sums={},n={}; for(const r of rows){ if(r.final_price!=null&&r.credit_event_type){
-    sums[r.credit_event_type]=(sums[r.credit_event_type]||0)+Number(r.final_price); n[r.credit_event_type]=(n[r.credit_event_type]||0)+1; } }
-  const pk=Object.keys(sums);
-  if(pk.length) Plotly.react('byRecovery',[{type:'bar',x:pk,y:pk.map(x=>+(sums[x]/n[x]).toFixed(2)),
-    marker:{color:'#c86bff'},text:pk.map(x=>(sums[x]/n[x]).toFixed(2)),textposition:'auto'}],
-    {...layout,yaxis:{range:[0,100]}},conf);
-  else Plotly.react('byRecovery',[{type:'bar',x:[],y:[]}],{...layout,
-    annotations:[{text:'No auction final-price data in this filter',showarrow:false,font:{color:'#8aa0b6'}}]},conf);
+  // Credit events per year as three lines — the dominant types (Failure to Pay,
+  // Bankruptcy, Restructuring). Counts only determinations with a classified event.
+  const ETYPES=[['Failure to Pay','#f5a623'],['Bankruptcy','#3aa0ff'],['Restructuring','#37c98b']];
+  const eyrs=uniq(rows.filter(r=>r.credit_event_type&&r.year!=null).map(r=>r.year)).map(Number).sort((a,b)=>a-b);
+  const etraces=ETYPES.map(([t,c])=>({type:'scatter',mode:'lines+markers',name:t,connectgaps:true,line:{color:c,width:2},
+    x:eyrs,y:eyrs.map(y=>rows.filter(r=>r.year==y&&r.credit_event_type===t).length)}));
+  Plotly.react('byEvent',etraces,{...layout,showlegend:true,legend:{orientation:'h',y:-0.18},
+    margin:{t:10,r:14,b:54,l:40},yaxis:{title:'Determinations',rangemode:'tozero'}},conf);
+  drawCustom(rows);
+}
+
+// ── Custom chart: a small pivot over the determination set, driven by the four
+// dropdowns and (optionally) populated from the Ask box (see queryToChart). ──────
+const CHART_COLORS=['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#7fd1ff','#ffce6b','#9aa0a6'];
+const METRIC_LABEL={count:'Determinations',recovery:'Avg recovery',days:'Avg days to auction',recrate:'% reconciled'};
+function _v(id){ const e=document.getElementById(id); return e?e.value:''; }
+function metricVal(rs,metric){
+  if(metric==='count') return rs.length;
+  if(metric==='recovery'){ const v=rs.filter(r=>r.final_price!=null); return v.length?+(v.reduce((s,r)=>s+Number(r.final_price),0)/v.length).toFixed(2):null; }
+  if(metric==='days'){ const v=rs.filter(r=>r.days_to_auction!=null); return v.length?+(v.reduce((s,r)=>s+Number(r.days_to_auction),0)/v.length).toFixed(1):null; }
+  if(metric==='recrate'){ return rs.length?+(100*rs.filter(r=>r.match_status==='matched').length/rs.length).toFixed(1):null; }
+  return null;
+}
+function dimKeys(rows,dim){
+  let ks=uniq(rows.map(r=>dim==='year'?r.year:r[dim]).filter(v=>v!=null&&v!==''));
+  return dim==='year'?ks.map(Number).sort((a,b)=>a-b):ks.sort();
+}
+function aggBy(rows,by,metric){ const g={}; for(const r of rows){ let k=by==='year'?r.year:r[by];
+  if(k==null||k==='') continue; (g[k]=g[k]||[]).push(r); } const o={}; for(const k in g) o[k]=metricVal(g[k],metric); return o; }
+function seriesTrace(type,x,y,name,color){
+  return type==='bar' ? {type:'bar',x,y,name,marker:{color}}
+                      : {type:'scatter',mode:'lines+markers',connectgaps:true,x,y,name,line:{color,width:2}}; }
+function drawCustom(rows){
+  const metric=_v('cMetric'), by=_v('cBy'), split=_v('cSplit'), type=_v('cType');
+  const xs=dimKeys(rows,by); let traces=[];
+  if(type==='pie' || (!split)){
+    if(type==='pie'){ const agg=aggBy(rows,by,metric);
+      traces=[{type:'pie',labels:xs,values:xs.map(x=>agg[x]??0),hole:.55,textinfo:'label+percent',marker:{colors:CHART_COLORS}}];
+    } else { const agg=aggBy(rows,by,metric);
+      traces=[seriesTrace(type,xs,xs.map(x=>agg[x]??null),METRIC_LABEL[metric],CHART_COLORS[0])]; }
+  } else {
+    dimKeys(rows,split).forEach((sv,i)=>{ const sub=rows.filter(r=>String(r[split])===String(sv));
+      const agg=aggBy(sub,by,metric);
+      traces.push(seriesTrace(type,xs,xs.map(x=>agg[x]??null),String(sv),CHART_COLORS[i%CHART_COLORS.length])); });
+  }
+  const showLeg = type==='pie' || !!split;
+  const lay = type==='pie'
+    ? {...layout,showlegend:true,margin:{t:6,r:6,b:6,l:6}}
+    : {...layout,showlegend:showLeg,legend:{orientation:'h',y:-0.2},margin:{t:8,r:14,b:64,l:52},
+       yaxis:{title:METRIC_LABEL[metric],rangemode:'tozero'}};
+  Plotly.react('customChart',traces,lay,conf);
+}
+// Map a free-text Ask-box query onto the custom-chart dropdowns. Deterministic and
+// offline — the heavy lifting stays in reliable keyword rules, not the local LLM.
+function queryToChart(q){
+  q=(q||'').toLowerCase(); let hit=false;
+  const set=(id,v)=>{ const e=document.getElementById(id); if(e&&v!=null&&e.value!==v){ e.value=v; hit=true; } };
+  if(/recover|final price|recovery rate/.test(q)) set('cMetric','recovery');
+  else if(/days to auction|how long|time to auction|lag/.test(q)) set('cMetric','days');
+  else if(/reconcil|what (share|%|percent).*auction|rate .*auction/.test(q)) set('cMetric','recrate');
+  else if(/count|how many|number of|trend|frequency/.test(q)) set('cMetric','count');
+  if(/per year|by year|over time|each year|annual|trend|timeline/.test(q)) set('cBy','year');
+  else if(/committee|region|emea|americas|asia|japan|australia/.test(q)) set('cBy','committee');
+  else if(/event type|by type|bankruptc|restructur|failure to pay|repudiation|moratorium/.test(q)) set('cBy','credit_event_type');
+  else if(/outcome|decision/.test(q)) set('cBy','decision');
+  // Split when the question compares categories ("X vs Y", "by committee", or it
+  // names two+ event types) — but never split by the same dimension as the x-axis.
+  const nTypes=(q.match(/bankruptc|restructur|failure to pay|repudiation|moratorium/g)||[]).length;
+  const cmp=/\bvs\b|versus|compare|compared|against|each (committee|region|type)/.test(q);
+  if(_v('cBy')!=='committee' && (/by committee|per committee|across committee|by region|per region/.test(q) || (cmp&&/committee|region/.test(q)))) set('cSplit','committee');
+  else if(_v('cBy')!=='credit_event_type' && (/by type|per type|by credit event|by event type/.test(q) || nTypes>=2 || (cmp&&/type|event/.test(q)))) set('cSplit','credit_event_type');
+  else set('cSplit','');
+  if(/\bpie\b|share|proportion|breakdown|split of|distribution/.test(q)) set('cType','pie');
+  else if(/\bbar\b|compare|ranking|by committee|by type/.test(q)) set('cType','bar');
+  else if(/\bline\b|trend|over time|per year|timeline/.test(q)) set('cType','line');
+  return hit;
 }
 
 // ── table + per-row document drawer ───────────────────────────────────────────
@@ -677,6 +770,9 @@ function refresh(){ const rows=applyFilters(); lastFiltered=rows;
 ['fCommittee','fEvent','fDecision','fYearLo','fYearHi','fFlag'].forEach(id=>
   document.getElementById(id).addEventListener('change',refresh));
 document.getElementById('fEntity').addEventListener('input',refresh);
+// Custom-chart controls redraw only that chart, over the currently-filtered rows.
+['cMetric','cBy','cSplit','cType'].forEach(id=>
+  document.getElementById(id).addEventListener('change',()=>drawCustom(lastFiltered)));
 document.getElementById('resetBtn').onclick=()=>{ ['fCommittee','fEvent','fDecision','fYearLo','fYearHi','fFlag'].forEach(id=>
   document.getElementById(id).value=''); document.getElementById('fEntity').value=''; refresh(); };
 
@@ -711,6 +807,10 @@ function renderCites(cites){ document.getElementById('cites').innerHTML=cites.ma
 
 async function ask(){
   const q=document.getElementById('askBox').value.trim(); if(!q) return;
+  // Populate the custom chart from the query (deterministic, no API needed), then
+  // continue with the RAG answer below.
+  if(queryToChart(q)){ drawCustom(lastFiltered);
+    const cc=document.getElementById('customChart'); if(cc&&cc.scrollIntoView) cc.scrollIntoView({behavior:'smooth',block:'nearest'}); }
   const ans=document.getElementById('answer'), meta=document.getElementById('askMeta');
   document.getElementById('cites').innerHTML=''; ans.textContent=''; meta.textContent='thinking… (local model on the Pi — first answer can take ~30–60s)';
   try{
