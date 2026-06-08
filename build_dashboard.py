@@ -146,17 +146,127 @@ def _run_corpus_by_entity(runs: list[dict]) -> tuple[dict, dict]:
 
 
 def _attach_run_details(rows: list[dict], runs: list[dict]) -> None:
-    """Graft per-entity documents + summaries from `runs` onto the reconciled rows."""
+    """Graft per-entity documents + summaries from `runs` onto the determination rows."""
     docs_by_entity, detail_by_entity = _run_corpus_by_entity(runs)
     for row in rows:
         ent = _norm_entity(row.get("reference_entity"))
         docs = list(docs_by_entity.get(ent, {}).values())
         row["documents"] = docs
-        row["n_documents"] = len(docs)
+        row["n_documents"] = max(len(docs), int(row.get("n_documents") or 0))
         det = detail_by_entity.get(ent)
         if det:
             row["summary"] = det.get("summary")
             row["question"] = det.get("question")
+
+
+# Every DC determination is made by one of the five regional committees (or the
+# joint "All DCs"), a structure that has existed since the 2009 Big Bang Protocol —
+# so a real determination is always attributable to a region. The raw scrape only
+# tags ~40% directly, so we also recover the committee from the document URL/title
+# and then propagate it across all rows of the same reference entity.
+_COMMITTEE_PATTERNS = [
+    ("All DCs", re.compile(r"all[\s_-]?dcs|alldcs|all determinations", re.I)),
+    ("Asia ex-Japan", re.compile(r"asia.?ex.?japan|asia ex japan|asia-ex|\baej\b", re.I)),
+    ("Australia-New Zealand", re.compile(r"australia|new[\s_-]?zealand|\banz\b", re.I)),
+    ("Japan", re.compile(r"\bjapan\b", re.I)),
+    ("EMEA", re.compile(r"\bemea\b", re.I)),
+    ("Americas", re.compile(r"\bamericas?\b", re.I)),
+]
+
+
+def _parse_committee(url, title) -> "str | None":
+    hay = f"{url or ''} {title or ''}"
+    for name, pat in _COMMITTEE_PATTERNS:
+        if pat.search(hay):
+            return name
+    return None
+
+
+def _committee_series(df: pd.DataFrame) -> pd.Series:
+    """Best-effort committee for every row: the scraped value, else parsed from the
+    URL/title, else propagated from other rows of the same reference entity."""
+    cc = df["committee"].where(df["committee"].notna(), None)
+    parsed = [
+        _parse_committee(u, t)
+        for u, t in zip(df.get("url", ""), df.get("title", ""))
+    ]
+    cc = cc.fillna(pd.Series(parsed, index=df.index))
+    ek = df["reference_entity"].map(_norm_entity)
+    known = pd.DataFrame({"ek": ek, "cc": cc})
+    by_entity = (known[known.cc.notna() & known.ek.ne("")]
+                 .groupby("ek")["cc"].agg(lambda s: s.mode().iloc[0]))
+    fill = ek.map(by_entity)
+    return cc.fillna(fill)
+
+
+def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
+    """Collapse the reconciled, document-level table into one row per DC
+    determination, with a committee on every row.
+
+    The full-depth scrape mixes genuine DC decisions with supporting documents
+    (offering memoranda, transcripts, bidder lists) whose 'reference entity' is
+    really a document title — those have no committee and are not determinations.
+    We keep only rows that (a) resolve to a committee and (b) carry a determination
+    signal (structured source, credit-event type, decision, issue number, or a
+    decision/determination/statement title), then group them by DC issue number
+    (falling back to entity+year) so the table and charts count determinations, not
+    documents. Supporting documents still reach the per-entity drawer via
+    _attach_run_details."""
+    df = df.copy()
+    df["committee"] = _committee_series(df)
+    title = df.get("title", pd.Series("", index=df.index)).fillna("")
+    looks_like_decision = title.str.contains(r"decision|determination|statement", case=False)
+    is_det = df["committee"].notna() & (
+        df.get("source", pd.Series(index=df.index)).isin(["dc-isda", "rest-api", "reference"])
+        | df["credit_event_type"].notna()
+        | df["decision"].notna()
+        | df["issue_number"].notna()
+        | looks_like_decision
+    )
+    sub = df[is_det].copy()
+    sub["_d"] = pd.to_datetime(sub["date"], errors="coerce")
+    sub["_year"] = sub["_d"].dt.year
+    ek = sub["reference_entity"].map(_norm_entity)
+    issue = sub["issue_number"].astype("string").str.replace(r"\.0$", "", regex=True)
+    gk = issue.where(sub["issue_number"].notna(), ek + "|" + sub["_year"].astype("string"))
+    sub["_gk"] = gk.fillna(ek)
+
+    def _first(grp, col):
+        if col not in grp:
+            return None
+        s = grp[col].dropna()
+        return s.iloc[0] if not s.empty else None
+
+    rows: list[dict] = []
+    for _, grp in sub.groupby("_gk", sort=False):
+        # Prefer the richest row (one that carries a credit-event type / final price).
+        grp = grp.sort_values(["credit_event_type", "final_price"], na_position="last")
+        date = grp["_d"].min()
+        year = int(date.year) if pd.notna(date) else None
+        rec = {
+            "date": date.strftime("%Y-%m-%d") if pd.notna(date) else None,
+            "year": year,
+            "committee": _first(grp, "committee"),
+            "reference_entity": _first(grp, "reference_entity"),
+            "issue_number": _first(grp, "issue_number"),
+            "credit_event_type": _first(grp, "credit_event_type"),
+            "decision": _first(grp, "decision"),
+            "credit_event_occurred": bool(grp.get("credit_event_occurred", pd.Series(dtype=bool)).fillna(False).any()),
+            "auction_date": _first(grp, "auction_date"),
+            "final_price": _first(grp, "final_price"),
+            "currency": _first(grp, "currency"),
+            "transaction_type": _first(grp, "transaction_type"),
+            "is_restructuring": str(_first(grp, "credit_event_type") or "").lower() == "restructuring",
+            "url": _first(grp, "url"),
+            "n_documents": int(len(grp)),
+        }
+        rec["auction_held"] = rec["final_price"] is not None or rec["auction_date"] is not None
+        rec["match_status"] = "matched" if rec["final_price"] is not None else "determination_only"
+        rows.append(rec)
+
+    _attach_run_details(rows, runs)
+    rows.sort(key=lambda r: (r.get("date") or ""), reverse=True)
+    return rows
 
 
 def _load_meta() -> dict:
@@ -224,25 +334,28 @@ def build(input_path: Path, output_path: Path) -> Path:
             f"{input_path} not found. Run `python cds_dc_scraper.py` then `python build_index.py`."
         )
     df = pd.read_csv(input_path)
-    metrics = analytics.compute(df)
-    answers = analytics.headline_answers(metrics)
-    banner_text, banner_class = _source_label(df)
+    _, banner_class = _source_label(df)
 
-    # The reconciled table is the authoritative, current view: every row carries a
-    # correct `date`/`year` (through the latest determination). We build the table
-    # from it, then graft the determination runs' extractive summaries + per-entity
-    # download lists onto each row. The earlier "runs as primary view" approach
-    # capped the table at ~2014 and injected ~100 entity-less rows, because run
-    # grouping derives dates from document text/URLs via regex, which fails for most
-    # recent docs. Sourcing rows from the reconciled table avoids that entirely.
-    rows = _clean_rows(df)
-    _attach_run_details(rows, _load_runs())
+    # Collapse the document-level reconciled table into one row per DC determination,
+    # with a committee on every row (see _build_determinations). This is what makes
+    # the charts meaningful: counting determinations rather than the supporting
+    # documents that otherwise swamp them and leave committee/event/recovery blank.
+    rows = _build_determinations(df, _load_runs())
+    # Metrics + headline cards are computed over the determination set (not the raw
+    # document table) so the KPIs, charts, and answer cards all agree.
+    metrics = analytics.compute(pd.DataFrame(rows))
+    answers = analytics.headline_answers(metrics)
+    banner_text = (f"Live scrape of cdsdeterminationscommittees.org — {len(rows):,} DC "
+                   f"determinations across {len(df):,} indexed documents."
+                   if banner_class == "ok" else _source_label(df)[0])
+    years = [r["year"] for r in rows if r.get("year")]
+    typed = [r for r in rows if r.get("credit_event_type")]
     kpis = {
-        "total": metrics["total_determinations"],
-        "entities": metrics["distinct_reference_entities"],
-        "credit_events": metrics["credit_events_tagged"],
-        "date_min": metrics["date_min"],
-        "date_max": metrics["date_max"],
+        "total": len(rows),
+        "entities": len({r["reference_entity"] for r in rows if r.get("reference_entity")}),
+        "credit_events": len(typed),
+        "date_min": (min(years) if years else None),
+        "date_max": (max(years) if years else None),
     }
 
     ce_count = _write_credit_events_export(df, output_path)
@@ -475,11 +588,14 @@ function counts(rows,key,fallback){ const m={}; for(const r of rows){ const v=(r
 function drawCharts(rows){
   const yc=counts(rows.filter(r=>r.year!=null),'year',''); const yk=Object.keys(yc).map(Number).sort((a,b)=>a-b);
   Plotly.react('byYear',[{type:'bar',x:yk,y:yk.map(y=>yc[y]),marker:{color:'#3aa0ff'}}],layout,conf);
-  const rc=counts(rows,'committee','Unknown'); const rk=Object.keys(rc);
+  // Committee: every real determination is made by a regional DC, so count only
+  // attributed rows rather than showing a meaningless "Unknown" slice.
+  const rc=counts(rows.filter(r=>r.committee),'committee','Unknown'); const rk=Object.keys(rc);
   Plotly.react('byRegion',[{type:'pie',labels:rk,values:rk.map(x=>rc[x]),hole:.55,textinfo:'label+percent',
     marker:{colors:['#3aa0ff','#37c98b','#f5a623','#c86bff','#ff6b6b','#888']}}],
     {...layout,margin:{t:10,r:10,b:10,l:10}},conf);
-  const ec=counts(rows,'credit_event_type','Not specified'); const ek=Object.keys(ec).sort((a,b)=>ec[b]-ec[a]);
+  // Credit-event type only applies to determinations where a credit event occurred.
+  const ec=counts(rows.filter(r=>r.credit_event_type),'credit_event_type',''); const ek=Object.keys(ec).sort((a,b)=>ec[b]-ec[a]);
   Plotly.react('byEvent',[{type:'bar',x:ek,y:ek.map(x=>ec[x]),marker:{color:'#37c98b'}}],layout,conf);
   // avg recovery by event among filtered rows with a final_price
   const sums={},n={}; for(const r of rows){ if(r.final_price!=null&&r.credit_event_type){

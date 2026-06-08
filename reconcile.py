@@ -39,6 +39,17 @@ OUT_JSON = DATA_DIR / "reconciled.json"
 # auction must occur on/after the determination, within this many days
 MAX_GAP_DAYS = 540
 
+# The regional DCs and auction-hardwiring framework began with the 2009 ISDA
+# "Big Bang" Protocol (effective 2009-04-08). Before that there were no DC
+# determinations, so any earlier auction cannot be mapped to one — we floor the
+# determination↔auction reconciliation at this date.
+DC_START = pd.Timestamp("2009-04-08")
+
+# Phrases in a determination's decision text that mean NO auction will be held,
+# so the determination must never be matched to an auction.
+_NO_AUCTION = re.compile(
+    r"no credit event|not occur|did not occur|no auction|auction.*not.*held", re.I)
+
 AUCTION_COLS = [
     "ticker", "currency", "final_price", "initial_market_midpoint",
     "net_open_interest_amount", "net_open_interest_direction",
@@ -60,6 +71,23 @@ def norm_entity(name) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+def _is_positive(d: dict) -> bool:
+    """A determination is 'positive' — i.e. an auction is expected — only when a
+    credit event occurred and an auction will be held. No auction is ever run for a
+    'no credit event' or 'no auction' decision, so those must not match an auction.
+    Signals: the auction tag, an 'auction held' decision, or a classified credit
+    event type without a no-auction phrase in the decision text."""
+    decision = str(d.get("decision") or "")
+    if _NO_AUCTION.search(decision):
+        return False
+    if str(d.get("tags") or "").strip().lower() == "auction":
+        return True
+    if re.search(r"auction held", decision, re.I):
+        return True
+    cet = d.get("credit_event_type")
+    return isinstance(cet, str) and cet.strip() != ""
+
+
 def reconcile(det: pd.DataFrame, auc: pd.DataFrame) -> pd.DataFrame:
     det = det.copy()
     auc = auc.copy()
@@ -68,13 +96,19 @@ def reconcile(det: pd.DataFrame, auc: pd.DataFrame) -> pd.DataFrame:
     det["_d"] = pd.to_datetime(det.get("date"), errors="coerce")
     auc["_a"] = pd.to_datetime(auc.get("auction_date"), errors="coerce")
     auc = auc.rename(columns={"url": "auction_url"})
+    # Floor at the DC era: auctions before the framework existed cannot map to a
+    # determination, so they take no part in matching and are not emitted.
+    auc = auc[auc["_a"] >= DC_START].copy()
 
     used_auctions: set[int] = set()
     rows: list[dict] = []
 
     for _, d in det.iterrows():
         row = d.to_dict()
-        cand = auc[(auc["_key"] == d["_key"]) & (d["_key"] != "")]
+        # Only positive determinations (credit event + auction to be held), dated in
+        # the DC era, are eligible to match an auction.
+        eligible = _is_positive(row) and (pd.isna(d["_d"]) or d["_d"] >= DC_START)
+        cand = auc[(auc["_key"] == d["_key"]) & (d["_key"] != "")] if eligible else auc.iloc[0:0]
         if not cand.empty:
             # prefer an auction on/after the determination within the window,
             # otherwise the nearest by absolute date gap
