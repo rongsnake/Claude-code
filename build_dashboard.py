@@ -105,34 +105,58 @@ def _load_runs() -> list[dict]:
     return json.loads(p.read_text()) if p.exists() else []
 
 
-def _run_to_row(r: dict) -> dict:
-    """Map a determination run (runs.json) onto the table-row schema, carrying its
-    extractive summary + per-name download list for the drawer."""
-    date = r.get("meeting_date") or r.get("auction_date")
-    ym = re.search(r"20\d{2}", str(date or ""))
-    flags = r.get("flags") or []
-    return {
-        "date": date,
-        "year": int(ym.group(0)) if ym else None,
-        "committee": r.get("committee"),
-        "reference_entity": r.get("reference_entity"),
-        "issue_number": r.get("issue_number"),
-        "credit_event_type": r.get("credit_event_type"),
-        "decision": r.get("resolution"),
-        "auction_held": bool(r.get("auction_date") or r.get("final_price") is not None),
-        "auction_date": r.get("auction_date"),
-        "final_price": r.get("final_price"),
-        "is_restructuring": "restructuring" in flags,
-        "credit_event_occurred": r.get("resolution") == "Credit event occurred",
-        "url": (r.get("based_on") or {}).get("doc_id") and
-               next((d.get("source_url") for d in r.get("documents", [])
-                     if d.get("doc_id") == r["based_on"]["doc_id"]), None),
-        "summary": r.get("summary"),
-        "question": r.get("question"),
-        "flag_list": flags,
-        "documents": r.get("documents") or [],
-        "n_documents": r.get("n_documents") or len(r.get("documents") or []),
-    }
+_ENTITY_SUFFIXES = re.compile(
+    r"\b(inc|incorporated|ltd|limited|corp|corporation|co|company|plc|llc|lp|llp|"
+    r"nv|n\.v|sa|s\.a|ag|spa|s\.p\.a|holdings?|group|the)\b", re.I)
+
+
+def _norm_entity(name) -> str:
+    """Normalise a reference-entity name so the reconciled table and the document/run
+    corpus join despite punctuation, casing, and legal-suffix noise."""
+    if not name:
+        return ""
+    s = re.sub(r"[^a-z0-9 ]", " ", str(name).lower())
+    s = _ENTITY_SUFFIXES.sub(" ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _run_corpus_by_entity(runs: list[dict]) -> tuple[dict, dict]:
+    """From the (possibly fragile/stale) determination runs, build two lookups keyed
+    by normalised reference entity: deduped source documents (carrying the real
+    download/source_url links the drawer needs) and the best extractive summary +
+    DC question. Used to enrich the authoritative reconciled rows — which always
+    carry correct dates — so the table stays current even when run grouping lags."""
+    docs_by_entity: dict[str, dict] = {}
+    detail_by_entity: dict[str, dict] = {}
+    for r in runs:
+        ent = _norm_entity(r.get("reference_entity"))
+        if not ent:
+            continue
+        bucket = docs_by_entity.setdefault(ent, {})
+        for d in (r.get("documents") or []):
+            key = d.get("doc_id") or d.get("source_url") or d.get("title")
+            if key and key not in bucket:
+                bucket[key] = d
+        det = detail_by_entity.setdefault(ent, {"summary": None, "question": None})
+        if r.get("summary") and not det["summary"]:
+            det["summary"] = r["summary"]
+        if r.get("question") and not det["question"]:
+            det["question"] = r["question"]
+    return docs_by_entity, detail_by_entity
+
+
+def _attach_run_details(rows: list[dict], runs: list[dict]) -> None:
+    """Graft per-entity documents + summaries from `runs` onto the reconciled rows."""
+    docs_by_entity, detail_by_entity = _run_corpus_by_entity(runs)
+    for row in rows:
+        ent = _norm_entity(row.get("reference_entity"))
+        docs = list(docs_by_entity.get(ent, {}).values())
+        row["documents"] = docs
+        row["n_documents"] = len(docs)
+        det = detail_by_entity.get(ent)
+        if det:
+            row["summary"] = det.get("summary")
+            row["question"] = det.get("question")
 
 
 def _load_meta() -> dict:
@@ -204,29 +228,22 @@ def build(input_path: Path, output_path: Path) -> Path:
     answers = analytics.headline_answers(metrics)
     banner_text, banner_class = _source_label(df)
 
-    # Primary view = determination runs (full archive, grouped, with extractive
-    # summaries + per-name download lists). Fall back to the reconciled rows if
-    # the index hasn't been built yet.
-    runs = _load_runs()
-    if runs:
-        rows = [_run_to_row(r) for r in runs]
-        years = [r["year"] for r in rows if r.get("year")]
-        kpis = {
-            "total": len(runs),
-            "entities": len({r["reference_entity"] for r in rows if r.get("reference_entity")}),
-            "credit_events": sum(1 for r in rows if r.get("credit_event_type")),
-            "date_min": (min(years) if years else None),
-            "date_max": (max(years) if years else None),
-        }
-    else:
-        rows = _clean_rows(df)
-        kpis = {
-            "total": metrics["total_determinations"],
-            "entities": metrics["distinct_reference_entities"],
-            "credit_events": metrics["credit_events_tagged"],
-            "date_min": metrics["date_min"],
-            "date_max": metrics["date_max"],
-        }
+    # The reconciled table is the authoritative, current view: every row carries a
+    # correct `date`/`year` (through the latest determination). We build the table
+    # from it, then graft the determination runs' extractive summaries + per-entity
+    # download lists onto each row. The earlier "runs as primary view" approach
+    # capped the table at ~2014 and injected ~100 entity-less rows, because run
+    # grouping derives dates from document text/URLs via regex, which fails for most
+    # recent docs. Sourcing rows from the reconciled table avoids that entirely.
+    rows = _clean_rows(df)
+    _attach_run_details(rows, _load_runs())
+    kpis = {
+        "total": metrics["total_determinations"],
+        "entities": metrics["distinct_reference_entities"],
+        "credit_events": metrics["credit_events_tagged"],
+        "date_min": metrics["date_min"],
+        "date_max": metrics["date_max"],
+    }
 
     ce_count = _write_credit_events_export(df, output_path)
 
