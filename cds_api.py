@@ -270,3 +270,27 @@ def reload_index() -> dict:
     """Reload the on-disk index without a full refresh (used after a refresh finishes)."""
     load_index()
     return {"status": "reloaded", "n_chunks": (_INDEX["meta"] or {}).get("n_chunks")}
+
+
+class NotesRequest(BaseModel):
+    entity: str | None = None
+
+
+NOTES_REQUESTS = INDEX_DIR / "notes_requests.jsonl"
+
+
+@app.post("/cds/api/notes-request")
+def notes_request(body: NotesRequest) -> dict:
+    """Log an on-demand request to refresh the curated market-commentary Notes.
+    The Notes themselves are produced by a web-research pass (run by Claude Code),
+    not the local model — so this just records the ask for the next pass to pick up."""
+    entity = (body.entity or "").strip()
+    INDEX_DIR.mkdir(parents=True, exist_ok=True)
+    with NOTES_REQUESTS.open("a") as f:
+        f.write(json.dumps({
+            "ts": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "entity": entity,
+        }) + "\n")
+    where = f' for "{entity}"' if entity else ""
+    return {"status": "logged",
+            "message": f"Notes-refresh request logged{where}. New events are researched on the next pass."}

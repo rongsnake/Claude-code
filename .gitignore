@@ -33,3 +33,6 @@ finish_fulldepth.log
 # only the public/ copies (served under /cds/) are tracked.
 /credit_events.csv
 /credit_events.xlsx
+
+# runtime: on-demand notes-refresh requests
+data/index/notes_requests.jsonl

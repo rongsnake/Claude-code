@@ -271,6 +271,59 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
     return rows
 
 
+def _load_notes() -> list[dict]:
+    """Curated market-commentary notes (data/notes.json) — see notes.json header.
+    Each entry has key/entity/note/source_label/source_url; `key` is matched
+    word-boundary against a determination's normalised reference entity."""
+    p = Path("data") / "notes.json"
+    if not p.exists():
+        return []
+    try:
+        return json.loads(p.read_text()).get("notes", [])
+    except Exception:
+        return []
+
+
+def _attach_notes(rows: list[dict], notes: list[dict]) -> int:
+    """Attach the best-matching note to each determination row. Longer (more
+    specific) keys win. Returns the number of rows annotated."""
+    pats = _note_patterns(notes)
+    n_hit = 0
+    for row in rows:
+        note = _match_note(row.get("reference_entity"), row.get("year"), pats)
+        if note:
+            row["notes"] = note.get("note")
+            row["notes_source"] = note.get("source_url")
+            row["notes_source_label"] = note.get("source_label")
+            n_hit += 1
+    return n_hit
+
+
+# A note may carry an optional `year`: when present the note only attaches to rows
+# within ±2 years, so e.g. the 2014 Argentina note doesn't bleed onto Argentina's
+# separate 2020 default. Notes without a year attach to all matching-entity rows
+# (used for multi-year sagas like Novo Banco / BES).
+_NOTE_YEAR_WINDOW = 2
+
+
+def _note_patterns(notes: list[dict]):
+    ordered = sorted(notes, key=lambda n: len(n.get("key", "")), reverse=True)
+    return [(re.compile(r"\b" + re.escape((n.get("key") or "").strip().lower())), n)
+            for n in ordered if (n.get("key") or "").strip()]
+
+
+def _match_note(entity, year, pats):
+    ent = _norm_entity(entity)
+    for pat, note in pats:
+        if not pat.search(ent):
+            continue
+        ny = note.get("year")
+        if ny is not None and year is not None and abs(int(year) - int(ny)) > _NOTE_YEAR_WINDOW:
+            continue
+        return note
+    return None
+
+
 def _load_meta() -> dict:
     p = INDEX_DIR / "index_meta.json"
     return json.loads(p.read_text()) if p.exists() else {}
@@ -282,8 +335,27 @@ _CE_EXPORT_COLS = [
     "credit_event_occurred", "decision", "issue_number", "credit_event_ref",
     "n_requests", "n_documents", "auction_date",
     "auction_held", "final_price", "currency", "days_to_auction",
-    "transaction_type", "ticker", "source", "url", "auction_url",
+    "transaction_type", "ticker", "source", "url", "auction_url", "notes", "notes_source",
 ]
+
+
+def _notes_columns(ce: pd.DataFrame, notes: list[dict]) -> pd.DataFrame:
+    """Add `notes` / `notes_source` columns to a credit-events frame by matching each
+    row's reference entity against the curated notes (same rule as _attach_notes)."""
+    pats = _note_patterns(notes)
+    years = pd.to_datetime(ce.get("date"), errors="coerce").dt.year if "date" in ce.columns else None
+
+    def _match(i, entity):
+        yr = years.iloc[i] if years is not None and pd.notna(years.iloc[i]) else None
+        note = _match_note(entity, yr, pats)
+        return pd.Series([note.get("note"), note.get("source_url")]) if note else pd.Series([None, None])
+
+    if "reference_entity" in ce.columns and pats:
+        ce = ce.reset_index(drop=True)
+        years = pd.to_datetime(ce.get("date"), errors="coerce").dt.year if "date" in ce.columns else None
+        ce[["notes", "notes_source"]] = pd.DataFrame(
+            [_match(i, e).tolist() for i, e in enumerate(ce["reference_entity"])], index=ce.index)
+    return ce
 
 
 def _credit_events_rowlevel(df: pd.DataFrame) -> pd.DataFrame:
@@ -317,6 +389,7 @@ def _write_credit_events_export(df: pd.DataFrame, output_path: Path) -> int:
             ce[col] = pd.to_datetime(ce[col], errors="coerce").dt.strftime("%Y-%m-%d")
     if "date" in ce:
         ce = ce.sort_values("date", ascending=False, na_position="last")
+    ce = _notes_columns(ce, _load_notes())
     cols = [c for c in _CE_EXPORT_COLS if c in ce.columns]
     ce = ce[cols]
 
@@ -343,6 +416,8 @@ def build(input_path: Path, output_path: Path) -> Path:
     # the charts meaningful: counting determinations rather than the supporting
     # documents that otherwise swamp them and leave committee/event/recovery blank.
     rows = _build_determinations(df, _load_runs())
+    n_noted = _attach_notes(rows, _load_notes())
+    print(f"  attached market-commentary notes to {n_noted} determination rows")
     # Metrics + headline cards are computed over the determination set (not the raw
     # document table) so the KPIs, charts, and answer cards all agree.
     metrics = analytics.compute(pd.DataFrame(rows))
@@ -545,6 +620,16 @@ _TEMPLATE = r"""<!DOCTYPE html>
 <footer>
   <span id="status"></span> · Generated <span id="gen"></span> ·
   <button id="updateBtn">↻ Update data</button> <span class="meta" id="updateMeta"></span>
+  <div class="meta" style="margin-top:10px;max-width:780px;line-height:1.5">
+    📝 <b>Notes</b> cover credit-event determinations from the last 5 years plus notable
+    earlier ones, sourced from freely-available commentary (law-firm alerts, ISDA, news).
+    To extend coverage to a new credit event, request a refresh:
+    <div style="margin-top:6px">
+      <input id="notesEntity" placeholder="entity or event (optional), e.g. Ardagh" size="28">
+      <button id="notesBtn">✎ Request Notes update</button>
+      <span class="meta" id="notesMeta"></span>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -704,7 +789,8 @@ function queryToChart(q){
 // ── table + per-row document drawer ───────────────────────────────────────────
 const COLS=[['date','Date'],['committee','Committee'],['reference_entity','Reference entity'],
   ['issue_number','Issue #'],['credit_event_type','Credit event'],['decision','Outcome'],
-  ['auction_held','Auction'],['auction_date','Auction date'],['final_price','Final price']];
+  ['auction_held','Auction'],['auction_date','Auction date'],['final_price','Final price'],
+  ['notes','Notes']];
 document.getElementById('thead').innerHTML=COLS.map(([c,l])=>`<th data-c="${c}">${l}</th>`).join('')+'<th>Docs</th>';
 let sortCol='date', sortDir=-1;
 const KINDS=[['decision','Decisions / meeting statements'],['meeting_statement','Decisions / meeting statements'],
@@ -719,7 +805,9 @@ const kindGroup={}; KINDS.forEach(([k,g])=>kindGroup[k]=g);
 function drawerHtml(r){
   const docs=r.documents||[];
   let html='<div class="drawer-inner">';
-  if(r.summary){ html+=`<div class="runsum">📝 ${esc(r.summary)}</div>`; }
+  if(r.notes){ const src=r.notes_source?` <a href="${esc(r.notes_source)}" target="_blank" rel="noopener">${esc(r.notes_source_label||'source')} ↗</a>`:'';
+    html+=`<div class="runsum" style="background:#2a2412;border-color:#6b531f;color:#ffe7b0">📝 <b>Notes:</b> ${esc(r.notes)}${src}</div>`; }
+  if(r.summary){ html+=`<div class="runsum">${esc(r.summary)}</div>`; }
   if(r.question){ html+=`<div class="meta" style="margin:0 0 8px">DC question: ${esc(r.question)}</div>`; }
   (r.flag_list||[]).forEach(()=>{});
   if(!docs.length) return html+'<div class="meta">No source documents linked to this determination.</div></div>';
@@ -742,6 +830,9 @@ function drawerHtml(r){
 function cell(r,c){ if(c==='url') return r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener">↗</a>`:'';
   if(c==='auction_held') return r.auction_held?'✓':'';
   if(c==='final_price') return r.final_price==null?'—':Number(r.final_price).toFixed(3);
+  if(c==='notes'){ if(!r.notes) return ''; const t=esc(r.notes);
+    const short=r.notes.length>70?esc(r.notes.slice(0,68))+'…':t;
+    return `<span title="${t}" style="white-space:normal">📝 ${short}</span>`; }
   return esc(r[c]==null?'':r[c]); }
 function renderTable(rows){
   rows=[...rows].sort((a,b)=>{ let x=a[sortCol],y=b[sortCol]; if(x==null)return 1; if(y==null)return -1;
@@ -845,6 +936,15 @@ document.getElementById('updateBtn').onclick=async()=>{ const m=document.getElem
     if(!pollTimer) pollTimer=setInterval(async()=>{ const s=await loadStatus(); if(s&&!s.busy){ clearInterval(pollTimer); pollTimer=null;
       m.textContent='refresh complete — reload the page to see new data.'; } },15000);
   }catch(e){ m.textContent='update unavailable (API offline)'; } };
+
+document.getElementById('notesBtn').onclick=async()=>{ const m=document.getElementById('notesMeta');
+  const ent=document.getElementById('notesEntity').value.trim();
+  m.textContent='logging…';
+  try{ const r=await fetch(API+'notes-request',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({entity:ent})}); if(!r.ok) throw 0; const j=await r.json();
+    m.textContent=j.message||'request logged — Notes are refreshed by Claude on request.';
+    document.getElementById('notesEntity').value='';
+  }catch(e){ m.textContent='request logged locally — ask Claude to run a Notes refresh'+(ent?(' for "'+ent+'"'):'')+'.'; } };
 
 // ── go ──────────────────────────────────────────────────────────────────────────
 refresh(); loadStatus();
