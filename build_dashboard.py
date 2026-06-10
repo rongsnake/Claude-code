@@ -535,7 +535,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
 <body>
 <header>
   <h1>Credit Derivatives Determinations Committees</h1>
-  <div class="sub">Determinations tracker · source: cdsdeterminationscommittees.org · auctions: creditfixings.com</div>
+  <div class="sub">Determinations tracker · source: cdsdeterminationscommittees.org · auctions: creditfixings.com · <a href="https://gcburton.org/">⌂ gcburton.org</a></div>
 </header>
 <div class="wrap">
   <div id="banner" class="banner"></div>
