@@ -64,21 +64,34 @@ as an instruction bus is **GitHub**, which both sides already share:
   answers (`llama3.2:1b` — chosen because CPU prompt-eval dominates on the Pi; 1B evals
   ~3.6× faster than 3B) with citations, plus `/refresh` and `/status`. **Zero API cost.**
 - systemd user units `cds-api.service` + `cds-refresh.timer` (Mon 06:00) installed; linger on.
-- **Action still needed:** the Caddy reverse-proxy block for `/cds/api/*` (see the prepared
-  `/tmp/Caddyfile.new`) must be applied with sudo + `systemctl reload caddy` — this was
-  deliberately left for explicit approval as it edits the live production Caddyfile.
+- The Caddy reverse-proxy block for `/cds/api/*` → `localhost:5055` is **applied and live**.
 
-## Current state
+## Current state (updated 2026-06-14, on the Pi)
 
-- ✅ DC scraper, **Creditex auction scraper**, **reconciliation**, analytics, and
-  static + Streamlit dashboards built and tested (recovery / days-to-auction).
-- ⚠️ **Live data not refreshed here**: both `cdsdeterminationscommittees.org` and
-  `creditfixings.com` return 403 (bot protection) and this sandbox's egress is
-  allowlisted, so neither is reachable. Committed data is the verified seed
-  (6 determinations + 3 auctions; Hertz & Ardagh reconciled with real recoveries).
-- ⚠️ **Not deployed to gcburton.org**: no hosting creds in this session.
-- 📌 **Requirement (Gareth):** the dashboard must be **accessible behind a login
-  at gcburton.org** — not public. Deploy gated, not to an open `/var/www/html`.
+- ✅ **Live refresh done on the Pi.** Both `cdsdeterminationscommittees.org` and
+  `creditfixings.com` are reachable from this host (HTTP 200; the earlier 403s
+  were the cloud sandbox's allowlisted egress, not the sites). Full pipeline ran:
+  DC document-feed crawl → ISDA-index enrichment → Creditex auctions → reconcile →
+  analytics → dashboard rebuild.
+- ✅ **Data is genuinely live, not seed:** 2,574 determinations
+  (2009-12-09 → 2026-05-08) + 245 auctions. Sources: `document-feed` (2447),
+  `dc-isda` (122), verified `reference` seed (4), `rest-api` (1). **0 `synthetic-demo`
+  rows.** Reconciliation 4.7%.
+- ✅ **Data-honesty fix:** `enrich_from_dc_page()` previously stamped 6 historical
+  LCDS determinations (TOYS, Avaya, Mediannuaire, Yell, Boston Generating, Truvo)
+  with *today's* date when their DC page only exposed a post-auction footer date —
+  giving determination dates years after their own auctions. Now it never assigns a
+  post-auction/future date (leaves it blank). 0 determination-after-auction rows remain.
+- ✅ **Deployed behind the login** at `https://gcburton.org/cds/`. The whole
+  gcburton.org site is gated by Caddy `basic_auth` (user `Gareth`); `/cds/` returns
+  HTTP 401 without credentials. Published files live at
+  `/home/test/www/gcburton.org/cds/{index.html,credit_events.csv,credit_events.xlsx}`
+  (prior index backed up as `index.html.bak-20260614-predeploy`).
+- ✅ **Infra live:** `cds-api.service` running (uvicorn :5055), `cds-refresh.timer`
+  next Mon 06:00, linger on; Caddy `/cds/api/*` proxy applied.
+- ℹ️ **nginx vs Caddy:** this host serves gcburton.org with **Caddy**, so the
+  nginx-based `deploy_gcburton_gated.sh` is not used here — deploy is a file copy
+  into the already-gated Caddy docroot (above).
 
 ## Next steps (run on the Pi / gcburton.org host — it can reach the DC site)
 
