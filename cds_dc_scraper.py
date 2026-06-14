@@ -411,6 +411,7 @@ def enrich_from_dc_page(session, rec: Determination) -> Determination:
             parsed.append(iso)
     if parsed:
         auc = rec.auction_date
+        today = _date.today().isoformat()
         if auc:
             # the credit-event determination precedes its auction, but not by
             # years — older dates on the page are stale references. Take the
@@ -422,10 +423,20 @@ def enrich_from_dc_page(session, rec: Determination) -> Determination:
             if window:
                 rec.date = window[0]
             else:
+                # only accept a date that actually precedes the auction; a page
+                # whose only dates are post-auction (e.g. a "last updated"/footer
+                # stamp, or today's date) must NOT fabricate a determination date —
+                # leave it None rather than invent one after the auction.
                 before = sorted(d for d in parsed if d <= auc)
-                rec.date = before[-1] if before else min(parsed)
+                if before:
+                    rec.date = before[-1]
         else:
-            rec.date = min(parsed)
+            # no auction to bound against — take the earliest plausible date, but
+            # never a future one (today's date off a page footer is not a
+            # determination date).
+            past = sorted(d for d in parsed if d <= today)
+            if past:
+                rec.date = past[0]
     time.sleep(POLITE_DELAY)
     return rec
 
