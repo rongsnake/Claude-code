@@ -36,3 +36,6 @@ finish_fulldepth.log
 
 # runtime: on-demand notes-refresh requests
 data/index/notes_requests.jsonl
+
+# Ad-hoc data snapshots/backups (e.g. *.bak-pre-fulldepth); transient, not for git
+*.bak-*
