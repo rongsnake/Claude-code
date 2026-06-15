@@ -30,7 +30,11 @@ bash run_dashboard.sh              # add --demo for synthetic data, --static for
 | `creditex_scraper.py` | Scrapes Creditex/Markit auction results from creditfixings.com (`results.jsp?ticker=…`): final price, initial market midpoint, net open interest |
 | `reconcile.py` | Joins auctions to determinations by normalised entity + date window → `data/reconciled.csv` (`match_status`: matched / determination_only / auction_only) |
 | `analytics.py` | Derives columns (days-to-auction, recovery, is-restructuring, …) and computes the metrics that answer the common questions |
-| `build_dashboard.py` | Renders a self-contained static `dashboard.html` (Plotly.js via CDN) with charts, an "ask the data" pivot, and downloads |
+| `build_dashboard.py` | Renders a self-contained static `dashboard.html` (Plotly.js via CDN) with charts, an "ask the data" pivot, filters, document drawers, and downloads |
+| `fetch_docs.py` | Downloads source docs (ASTs, statements, decisions) → `data/docs/`, extracts text → `data/doctext/`, writes the `data/documents.csv` manifest |
+| `build_index.py` | Offline builder → `data/index/`: cleaned determinations, a `documents.json` manifest (doc kind, vote, qualitative flags), and RAG `chunks.json` + `embeddings.npy` (local Ollama embeddings) |
+| `cds_api.py` | FastAPI (uvicorn :5055, behind Caddy `/cds/api/`): streams local-LLM RAG answers + citations, plus `/refresh`, `/status`, `/reload`. No external API cost |
+| `credit_events.py` / `summaries.py` | Build the curated credit-events table/exports and per-event commentary used by the dashboard |
 | `dashboard.py` | Interactive Streamlit dashboard incl. a DuckDB SQL "ask the data" box |
 | `setup.sh` / `run_dashboard.sh` | venv setup and one-command refresh+build |
 | `data/determinations.csv` / `.json` | Raw DC scraper output |
@@ -104,50 +108,69 @@ back to a small set of verified seed references and tells you no live data was
 pulled. The dashboard shows a banner indicating whether it is displaying live,
 seed, or demo data.
 
-## Deploying to gcburton.org
+## Deploying to gcburton.org (login-gated, via Caddy)
+
+> **Reverse proxy:** gcburton.org is served by **Caddy**, not nginx. The whole
+> site (including `/cds/`) sits behind Caddy `basic_auth`, so the static
+> dashboard needs no auth of its own — deployment is just copying the built file
+> into the already-gated Caddy docroot. (The older `deploy_gcburton_gated.sh`
+> assumes nginx and is **not** used on this host; see its header note.)
 
 `dashboard.html` is fully self-contained (data embedded, Plotly.js from CDN), so
-deployment is just copying one file, e.g.:
+deployment is just copying one file into the Caddy webroot under `/cds/`:
 
 ```bash
 python build_dashboard.py --output public/index.html
-# then upload public/index.html via your normal gcburton.org deploy (scp/rsync/CI)
+# publish into the Caddy-gated docroot (this is exactly what deploy.sh does):
+install -d /home/test/www/gcburton.org/cds
+install -m 644 public/index.html /home/test/www/gcburton.org/cds/index.html
+# served (after login) at https://gcburton.org/cds/
 ```
+
+On the Pi, the weekly refresh runs `./deploy.sh` automatically, which copies
+`public/index.html` (plus the Credit Events CSV/XLSX and a symlink to
+`data/docs/`) into `/home/test/www/gcburton.org/cds/`. The local Q&A API
+(`cds_api.py`, uvicorn :5055) is reverse-proxied by Caddy at `/cds/api/*` behind
+the same gate.
 
 ## Hands-off autopilot (set up once, never touch again)
 
-The full loop links the Pi (which can reach the sites) to publishing:
+The live loop runs entirely on the Pi (which can reach the bot-protected sites)
+and publishes into the Caddy-gated docroot — no third-party hosting involved:
 
 ```
 Pi systemd timer (weekly)
-  → git pull → live scrape → reconcile → analytics → build → git push
-      → push triggers the GitHub Action → publishes to GitHub Pages
+  → git pull → live scrape → reconcile → analytics → fetch_docs → build_index
+      → build dashboard → ./deploy.sh → copy into Caddy docroot (/cds/)
+      → (optional) git commit/push
 ```
 
 **One-time, on the Pi:**
 
 ```bash
-git clone https://github.com/rongsnake/claude-code.git cds-dashboard
-cd cds-dashboard && git checkout claude/setup-cds-scraper-dashboard-i0TxS
-bash pi_autopilot.sh            # installs venv + a weekly systemd timer (uses sudo)
+cd /home/test/cds-dashboard           # the working copy on the Pi
+bash pi_autopilot.sh                  # installs venv + a weekly systemd timer (uses sudo)
 ```
 
-That's it — the Pi now refreshes and pushes on its own (`--daily` or
-`--on-calendar "…"` to change the schedule). Useful commands it prints:
+That's it — the Pi now refreshes on its own (`--daily` or `--on-calendar "…"` to
+change the schedule). Useful commands it prints:
 `sudo systemctl start cds-refresh.service` (run now),
 `journalctl -u cds-refresh.service -n 50` (logs),
 `systemctl list-timers cds-refresh.timer` (next run).
 
-**One-time, on GitHub:** repo **Settings → Pages → Source: "GitHub Actions"**.
-After that every push publishes `public/index.html` to a stable Pages URL — no
-hosting credentials, no manual deploy. `.github/workflows/refresh-dashboard.yml`
-handles it (and runs a weekly fallback rebuild; hosted runners are 403'd by the
-sites, so the Pi is what pulls fresh data).
+Publishing happens via `./deploy.sh`, which the refresh script invokes after each
+build — it copies `public/index.html` into `/home/test/www/gcburton.org/cds/`,
+where Caddy already serves it behind the site-wide `basic_auth` gate.
 
-**Point gcburton.org at it (optional, one-time):** add a `CNAME` DNS record for
-`gcburton.org` → `rongsnake.github.io`, then set the custom domain under
-Settings → Pages. Until then the dashboard lives at the Pages URL.
+**Optional — GitHub Pages mirror.** `.github/workflows/refresh-dashboard.yml`
+can also publish `public/index.html` to GitHub Pages on push (repo
+**Settings → Pages → Source: "GitHub Actions"**). This is a *public* mirror and
+is **not** the gated gcburton.org deployment; do not point the gcburton.org DNS
+at a Pages site if you want the dashboard to stay behind the login. Hosted
+runners are 403'd by the source sites, so a Pages build only rebuilds from
+already-committed data — the Pi is what pulls fresh data.
 
-**Deploy somewhere other than Pages?** Copy `deploy.sh.example` → `deploy.sh`,
-fill in your one line (local copy / rsync / Netlify), `chmod +x deploy.sh`, and
-the Pi's weekly refresh will publish there too.
+**Deploy somewhere else too?** Copy `deploy.sh.example` → `deploy.sh` and edit
+the target (local copy / rsync / Netlify). Note that on this host `deploy.sh`
+already exists and copies into the Caddy docroot, so it is **gitignored** to
+avoid clobbering the live one.

@@ -107,29 +107,29 @@ streamlit run dashboard.py                      # optional: interactive + SQL bo
 # (all of the above except deploy: `bash run_dashboard.sh`)
 ```
 
-## Gated access at gcburton.org (required)
+## Gated access at gcburton.org (DECIDED — Caddy, live)
 
-Gareth wants this reachable **only after a login** at gcburton.org. The static
-`dashboard.html` has no auth of its own, so put the gate in front of it. Pick one:
+Gareth wants this reachable **only after a login** at gcburton.org, and that is
+already in place. **The host serves gcburton.org with Caddy** (not nginx), and
+the whole site — including `/cds/` and `/cds/api/*` — sits behind a single Caddy
+`basic_auth` block (user `Gareth`). The static `dashboard.html` therefore needs
+no auth of its own; deployment is just a file copy into the gated docroot:
 
-- **nginx HTTP Basic auth (simplest):** serve `public/` from an auth-protected
-  location and rsync the build to it:
-  ```nginx
-  location /cds/ {
-      auth_basic           "CDS dashboard";
-      auth_basic_user_file /etc/nginx/.htpasswd;   # htpasswd -c … <user>
-      root /var/www/gated;                          # file at /var/www/gated/cds/index.html
-  }
-  ```
-  `rsync -av public/index.html gcburton.org:/var/www/gated/cds/index.html`
-- **Cloudflare Access (SSO, no server config):** front gcburton.org with
-  Cloudflare, add an Access policy on `/cds/*` (email OTP or Google). Best if the
-  site is already on Cloudflare.
-- **Streamlit instead of static:** run `dashboard.py` behind the same nginx
-  Basic-auth `location` (reverse-proxy to the Streamlit port) for the live SQL box.
+```bash
+install -d /home/test/www/gcburton.org/cds
+install -m 644 public/index.html /home/test/www/gcburton.org/cds/index.html
+# served (after login) at https://gcburton.org/cds/
+```
 
-Deploy creds live on the Pi / host, not in this session — run the chosen option there.
+`./deploy.sh` does exactly this (plus the Credit Events exports and a `data/docs/`
+symlink) and is invoked automatically by the Pi's weekly `cds_refresh.sh`.
 
-If the live scrape still 403s from the Pi, the site may require a residential IP
-/ real browser — fall back to `--pdf` from a desktop browser network, or wire a
-`playwright`-based fetch (TODO).
+> **Do not use `deploy_gcburton_gated.sh` on this host** — it is the older
+> *nginx* recipe (writes `/etc/nginx/...`, runs `nginx -t`/`systemctl reload
+> nginx`). It is kept only as a reference for an nginx host; this Pi runs Caddy.
+> Cloudflare Access and a Streamlit-behind-proxy variant were also considered but
+> are **not** what's deployed.
+
+If the live scrape ever 403s from the Pi, the site may require a residential IP
+/ real browser — fall back to `--pdf` from a desktop browser network, or use the
+existing `playwright`-based `browser_fetch` path in `cds_dc_scraper.py`.

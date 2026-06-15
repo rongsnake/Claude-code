@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 #
+# ⚠️  NOT USED ON THE LIVE HOST. The Pi serving gcburton.org runs **Caddy**, not
+#     nginx, and the whole site is already behind one Caddy basic_auth block.
+#     There, deployment is a plain file copy into the Caddy docroot — see
+#     ./deploy.sh (the live hook) and the README "Deploying to gcburton.org"
+#     section. This script is retained only as a reference recipe for an
+#     **nginx** host; running it on the Caddy host does nothing useful (it would
+#     write /etc/nginx config that is not served).
+#
 # Deploy the CDS dashboard to gcburton.org BEHIND A LOGIN (nginx HTTP Basic auth).
 # Run this ON THE HOST that serves gcburton.org (your Pi or web server).
 #
