@@ -120,9 +120,12 @@ def refine_kind(url: str, title: str, text: str) -> tuple[str, bool, bool]:
     return base, is_proforma, is_blackline
 
 
-def _read_text_for(sha: str, text_path: str | None) -> str:
-    if text_path and Path(text_path).exists():
-        return Path(text_path).read_text(errors="replace")
+def _read_text_for(sha: str, text_path: object = None) -> str:
+    # text_path comes from a CSV cell, so an empty value arrives as NaN (a float),
+    # not None/"". Coerce to a real path string before touching the filesystem.
+    tp_str = str(text_path).strip() if isinstance(text_path, str) else ""
+    if tp_str and Path(tp_str).exists():
+        return Path(tp_str).read_text(errors="replace")
     tp = TEXT_DIR / f"{sha[:12]}.txt"
     return tp.read_text(errors="replace") if tp.exists() else ""
 
