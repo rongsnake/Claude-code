@@ -1,80 +1,74 @@
 {
-  "total_determinations": 2574,
-  "total_auctions": 207,
+  "total_determinations": 2452,
+  "total_auctions": 3,
   "date_min": "2009-12-09",
   "date_max": "2026-05-08",
-  "distinct_reference_entities": 1634,
-  "credit_events_tagged": 131,
-  "pct_restructuring_of_events": 18.3,
-  "credit_event_occurred_count": 124,
-  "auctions_count": 117,
+  "distinct_reference_entities": 1533,
+  "credit_events_tagged": 33,
+  "pct_restructuring_of_events": 18.2,
+  "credit_event_occurred_count": 0,
+  "auctions_count": 0,
   "days_to_auction": {
-    "count": 117,
-    "mean": 61.6,
-    "median": 31.0,
-    "min": 5,
-    "max": 414
+    "count": 0,
+    "mean": null,
+    "median": null,
+    "min": null,
+    "max": null
   },
   "credit_event_type_counts": {
-    "Bankruptcy": 58,
-    "Failure to Pay": 45,
-    "Restructuring": 24,
-    "Repudiation/Moratorium": 3,
+    "Failure to Pay": 14,
+    "Bankruptcy": 10,
+    "Restructuring": 6,
+    "Repudiation/Moratorium": 2,
     "Governmental Intervention": 1
   },
   "credit_event_type_pct": {
-    "Bankruptcy": 44.3,
-    "Failure to Pay": 34.4,
-    "Restructuring": 18.3,
-    "Repudiation/Moratorium": 2.3,
-    "Governmental Intervention": 0.8
+    "Failure to Pay": 42.4,
+    "Bankruptcy": 30.3,
+    "Restructuring": 18.2,
+    "Repudiation/Moratorium": 6.1,
+    "Governmental Intervention": 3.0
   },
   "by_region_counts": {
-    "Unknown": 1559,
-    "EMEA": 643,
-    "Americas": 300,
-    "Asia ex-Japan": 35,
-    "Japan": 32,
+    "Unknown": 1560,
+    "EMEA": 591,
+    "Americas": 234,
+    "Asia ex-Japan": 33,
+    "Japan": 29,
     "Australia-New Zealand": 4,
     "All DCs": 1
   },
   "by_year_counts": {
     "2009": 1,
-    "2010": 6,
-    "2011": 13,
-    "2012": 116,
-    "2013": 184,
-    "2014": 211,
-    "2015": 191,
-    "2016": 223,
-    "2017": 277,
-    "2018": 240,
-    "2019": 245,
-    "2020": 313,
+    "2010": 1,
+    "2011": 2,
+    "2012": 103,
+    "2013": 176,
+    "2014": 205,
+    "2015": 184,
+    "2016": 215,
+    "2017": 269,
+    "2018": 234,
+    "2019": 232,
+    "2020": 297,
     "2021": 26,
-    "2022": 107,
-    "2023": 119,
-    "2024": 83,
-    "2025": 131,
-    "2026": 81
+    "2022": 103,
+    "2023": 116,
+    "2024": 79,
+    "2025": 129,
+    "2026": 80
   },
   "auction_final_price": {
-    "count": 206,
-    "mean": 43.81,
-    "median": 35.5,
-    "min": 0.0,
-    "max": 105.75
+    "count": 2,
+    "mean": 30.14,
+    "median": 30.14,
+    "min": 26.38,
+    "max": 33.9
   },
-  "avg_final_price_by_event": {
-    "Bankruptcy": 36.18,
-    "Failure to Pay": 36.55,
-    "Repudiation/Moratorium": 80.62,
-    "Restructuring": 63.38
-  },
+  "avg_final_price_by_event": {},
   "match_status_counts": {
-    "determination_only": 2454,
-    "matched": 120,
-    "auction_only": 87
+    "determination_only": 2452,
+    "auction_only": 3
   },
-  "reconciliation_rate_pct": 4.7
+  "reconciliation_rate_pct": 0.0
 }
