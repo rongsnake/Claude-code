@@ -73,10 +73,35 @@ as an instruction bus is **GitHub**, which both sides already share:
   were the cloud sandbox's allowlisted egress, not the sites). Full pipeline ran:
   DC document-feed crawl → ISDA-index enrichment → Creditex auctions → reconcile →
   analytics → dashboard rebuild.
-- ✅ **Data is genuinely live, not seed:** 2,574 determinations
-  (2009-12-09 → 2026-05-08) + 245 auctions. Sources: `document-feed` (2447),
-  `dc-isda` (122), verified `reference` seed (4), `rest-api` (1). **0 `synthetic-demo`
-  rows.** Reconciliation 4.7%.
+- ✅ **Data is genuinely live, not seed** (last good run, 2026-06-20): 2,574
+  determinations (2009-12-09 → 2026-05-08) + 245 auctions. Sources:
+  `document-feed` (2447), `dc-isda` (122), verified `reference` seed (4),
+  `rest-api` (1). **0 `synthetic-demo` rows.** Reconciliation 4.7%.
+- ⚠️ **OPEN — silent data regression on 2026-06-22 (and repeated 06-29).** The
+  weekly refresh committed a *partial* scrape over the good data and deployed it:
+
+  | | 06-20 (good) | 06-22 → now |
+  |---|---|---|
+  | determinations | 2,574 | 2,452 (all 122 `dc-isda` rows gone) |
+  | auctions | 245 | 15 (`creditfixings` 245 → 12) |
+  | matched | 120 | **0** (reconciliation 4.7% → 0.0%) |
+
+  Cause: the scrapers are best-effort (`|| true` in `cds_refresh.sh`), so a 403 /
+  changed selector yields partial data instead of a failure, and nothing checked
+  the result before deploy + commit + push. The live `/cds/` dashboard has been
+  serving a dataset with **zero reconciled auctions** since 06-22 — no recovery
+  or days-to-auction analysis. Both scrapes need re-running on the Pi (with the
+  new gate below); if the fresh scrape is good the numbers return on their own.
+  To restore the last known-good data immediately instead:
+  `git checkout 0ec12a4 -- data` (then rebuild + redeploy).
+- ✅ **Gate added (`check_refresh.py`)** so this cannot recur silently. It runs
+  after `analytics.py` and before build/deploy/commit, compares the run against
+  the last commit, and rejects a collapsed table, a vanished source, or stray
+  `synthetic-demo` rows — restoring the previous data and exiting non-zero.
+  Verified against the real 06-22 data: it flags all three failures above.
+  **It only takes effect on the Pi once `bash pi_autopilot.sh` is re-run** (that
+  regenerates `cds_refresh.sh`), or the gate is pasted into the existing
+  `cds_refresh.sh` by hand.
 - ✅ **Data-honesty fix:** `enrich_from_dc_page()` previously stamped 6 historical
   LCDS determinations (TOYS, Avaya, Mediannuaire, Yell, Boston Generating, Truvo)
   with *today's* date when their DC page only exposed a post-auction footer date —
@@ -91,7 +116,8 @@ as an instruction bus is **GitHub**, which both sides already share:
   next Mon 06:00, linger on; Caddy `/cds/api/*` proxy applied.
 - ℹ️ **nginx vs Caddy:** this host serves gcburton.org with **Caddy**, so the
   nginx-based `deploy_gcburton_gated.sh` is not used here — deploy is a file copy
-  into the already-gated Caddy docroot (above).
+  into the already-gated Caddy docroot (above). The script now refuses to run when
+  Caddy is present (`FORCE_NGINX=1` overrides).
 
 ## Next steps (run on the Pi / gcburton.org host — it can reach the DC site)
 
@@ -101,6 +127,7 @@ python cds_dc_scraper.py --pdf                  # FULL live DC refresh (+ parse 
 python creditex_scraper.py                      # live Creditex auction scrape
 python reconcile.py                             # join auctions ↔ determinations
 python analytics.py                             # refresh metrics + tidy export
+python check_refresh.py                         # GATE: reject a collapsed scrape
 python build_dashboard.py --output public/index.html
 # deploy behind a login (see "Gated access" below — do NOT deploy public)
 streamlit run dashboard.py                      # optional: interactive + SQL box
