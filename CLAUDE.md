@@ -15,6 +15,11 @@ Committees** (CDS = credit default swaps; source
   (`match_status`: matched / determination_only / auction_only).
 - `analytics.py` — derived columns + metrics over the reconciled table →
   `determinations_tidy.csv`, `determinations_analytics.json`.
+- `check_refresh.py` — **data gate**: compares a fresh scrape against the last
+  commit and exits non-zero on a collapsed table, a vanished `source`, or stray
+  `synthetic-demo` rows. Stdlib-only (works without the venv). Runs after
+  `analytics.py`, before build/deploy/commit — added after a partial scrape
+  silently replaced good data on the `refine/2026-06-15` branch (see HANDOFF.md).
 - `build_dashboard.py` — static `dashboard.html` (deploy target: **gcburton.org**).
   Now a filterable app: committee/event/year/entity/notable dropdowns, a wide
   sortable determinations table, per-row **document drawers** (decisions, explanatory
@@ -63,5 +68,8 @@ Committees** (CDS = credit default swaps; source
 ## Workflow
 - Branch: `claude/setup-cds-scraper-dashboard-i0TxS`; PR **#1**.
 - Pipeline: `cds_dc_scraper.py` → `creditex_scraper.py` → `reconcile.py` →
-  `analytics.py` → `build_dashboard.py` (or just `bash run_dashboard.sh`).
+  `analytics.py` → **`check_refresh.py`** → `build_dashboard.py`
+  (or just `bash run_dashboard.sh`).
+- Never publish or commit a scrape that `check_refresh.py` rejects — a partial
+  scrape overwriting good data is a demonstrated failure mode, not a theoretical one.
 - After changes regenerate artifacts, then commit.
