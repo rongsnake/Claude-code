@@ -11,6 +11,7 @@ numpy>=1.26.0
 plotly>=5.20.0              # used by the interactive Streamlit app
 streamlit>=1.32.0          # optional interactive dashboard (run locally)
 duckdb>=0.10.0             # SQL "ask the data" box in the Streamlit dashboard
+openpyxl>=3.1.0            # credit_events.xlsx export (dashboard download button)
 
 # Headless-browser fallback for bot-protected / JS-rendered sources
 playwright>=1.40

@@ -69,6 +69,109 @@ def _int_keys(series_dict: dict) -> dict:
     return {(int(k) if pd.notna(k) else "Unknown"): int(v) for k, v in series_dict.items()}
 
 
+# Columns that only exist on an already-aggregated frame (one row per
+# determination run / credit event) rather than the document-level table.
+_AGGREGATED_MARKERS = ("n_documents", "credit_event_ref")
+
+
+def collapse_source(df: pd.DataFrame) -> pd.DataFrame:
+    """The document-level table to collapse into credit events.
+
+    Callers may hand us a frame that is already one row per determination run
+    (``build_dashboard``'s row set). Collapsing that a second time miscounts the
+    events, so fall back to the canonical reconciled table — which is also what
+    the ``credit_events.csv``/``.xlsx`` export reads, keeping every figure in
+    agreement. A document-level frame (including a filtered one, as the Streamlit
+    app passes) is used as given so filters are respected.
+    """
+    if any(c in df.columns for c in _AGGREGATED_MARKERS):
+        canonical = default_input()
+        if canonical.exists():
+            return pd.read_csv(canonical)
+    return df
+
+
+def credit_event_view(df: pd.DataFrame) -> pd.DataFrame | None:
+    """Collapse the document-level table to **one row per credit event**.
+
+    The scraper emits one row per source document, so a single credit event is
+    spread over many rows (decision, AST, bidder list, redlines…). Counting those
+    rows as "determinations" overstates the dataset several-fold. ``credit_events``
+    groups them on the DC reference number; this is the honest analytical unit.
+
+    Returns ``None`` when the collapse is unavailable (e.g. the raw, unreconciled
+    table), in which case callers fall back to document-level figures.
+    """
+    try:
+        import credit_events
+        ce, _drawer = credit_events.build_credit_events(collapse_source(df))
+    except Exception:  # missing deps / columns — degrade to document level
+        return None
+    return ce if ce is not None and len(ce) else None
+
+
+def _event_metrics(ce: pd.DataFrame) -> dict:
+    """Metrics computed over the one-row-per-credit-event table."""
+    ce = ce.copy()
+    ce["date"] = pd.to_datetime(ce.get("date"), errors="coerce")
+    fp = pd.to_numeric(ce.get("final_price"), errors="coerce").dropna()
+    dta = pd.to_numeric(ce.get("days_to_auction"), errors="coerce").dropna()
+    typed = ce["credit_event_type"].dropna() if "credit_event_type" in ce else pd.Series(dtype=object)
+    n_typed = int(len(typed))
+    held = ce.get("auction_held")
+    n_auctions = int(held.fillna(False).astype(bool).sum()) if held is not None else int(len(fp))
+
+    out = {
+        "total_credit_events": int(len(ce)),
+        "distinct_reference_entities": int(ce["reference_entity"].dropna().nunique()),
+        "date_min": ce["date"].min().date().isoformat() if ce["date"].notna().any() else None,
+        "date_max": ce["date"].max().date().isoformat() if ce["date"].notna().any() else None,
+        "credit_events_typed": n_typed,
+        "credit_events_untyped": int(len(ce) - n_typed),
+        "auctions_held": n_auctions,
+        "credit_event_type_counts": {str(k): int(v) for k, v in typed.value_counts().to_dict().items()},
+        "credit_event_type_pct": {
+            str(k): round(float(v) / n_typed * 100, 1)
+            for k, v in typed.value_counts().to_dict().items()
+        } if n_typed else {},
+        "pct_restructuring_of_events": (
+            round(float((typed == RESTRUCTURING).sum()) / n_typed * 100, 1) if n_typed else None
+        ),
+        "by_region_counts": {
+            str(k): int(v)
+            for k, v in ce["committee"].fillna("Unknown").value_counts().to_dict().items()
+        },
+        "by_year_counts": _int_keys(
+            ce.groupby(ce["date"].dt.year.astype("Int64"), dropna=True).size().to_dict()
+        ),
+        "days_to_auction": {
+            "count": int(dta.count()),
+            "mean": round(float(dta.mean()), 1) if dta.count() else None,
+            "median": float(dta.median()) if dta.count() else None,
+            "min": int(dta.min()) if dta.count() else None,
+            "max": int(dta.max()) if dta.count() else None,
+        },
+    }
+    if len(fp):
+        out["auction_final_price"] = {
+            "count": int(fp.count()),
+            "mean": round(float(fp.mean()), 2),
+            "median": round(float(fp.median()), 2),
+            "min": round(float(fp.min()), 2),
+            "max": round(float(fp.max()), 2),
+        }
+        by_ev = (ce.assign(_fp=pd.to_numeric(ce.get("final_price"), errors="coerce"))
+                   .dropna(subset=["_fp"]).groupby("credit_event_type")["_fp"].mean().round(2))
+        out["avg_final_price_by_event"] = {str(k): float(v) for k, v in by_ev.to_dict().items()}
+    # Honest reconciliation rate: of credit events that reached an auction, how
+    # many carry a final price from Creditex. (The document-level rate divides by
+    # every supporting document and is therefore meaningless.)
+    out["reconciliation_rate_pct"] = (
+        round(100 * int(fp.count()) / n_auctions, 1) if n_auctions else None
+    )
+    return out
+
+
 def compute(df: pd.DataFrame) -> dict:
     """Return a JSON-serialisable metrics dict answering the common questions."""
     d = enrich(df)
@@ -130,9 +233,30 @@ def compute(df: pd.DataFrame) -> dict:
         ms = d["match_status"].value_counts().to_dict()
         metrics["match_status_counts"] = {str(k): int(v) for k, v in ms.items()}
         dets = int(ms.get("matched", 0)) + int(ms.get("determination_only", 0))
-        metrics["reconciliation_rate_pct"] = (
+        metrics["doc_level_match_rate_pct"] = (
             round(100 * ms.get("matched", 0) / dets, 1) if dets else None
         )
+
+    # ── credit-event layer (the honest analytical unit) ──────────────────────
+    # One scraped row = one source document, so document counts overstate the
+    # number of determinations several-fold. Where the collapse is available,
+    # credit-event figures take precedence for every headline metric.
+    src = collapse_source(df)
+    metrics["total_documents"] = int(len(src))
+    ce = credit_event_view(src)
+    if ce is not None:
+        metrics.update(_event_metrics(ce))
+        metrics["unit"] = "credit_event"
+    else:
+        metrics.setdefault("total_credit_events", None)
+        metrics["unit"] = "document"
+        metrics["reconciliation_rate_pct"] = metrics.get("doc_level_match_rate_pct")
+    metrics["schema_note"] = (
+        "total_documents counts source documents (decisions, ASTs, bidder lists, "
+        "redlines…). total_credit_events counts distinct credit events — the "
+        "honest unit for rates and averages. total_determinations is retained as "
+        "a document-level alias for backwards compatibility."
+    )
 
     return metrics
 
@@ -140,8 +264,15 @@ def compute(df: pd.DataFrame) -> dict:
 def headline_answers(metrics: dict) -> list[tuple[str, str]]:
     """Human-readable answers to the example questions, for dashboards."""
     dta = metrics["days_to_auction"]
-    out = [
-        ("Total determinations", f"{metrics['total_determinations']:,}"),
+    n_ce = metrics.get("total_credit_events")
+    out = []
+    if n_ce:
+        out.append(("Credit events", f"{n_ce:,}"))
+        out.append(("Source documents behind them",
+                    f"{metrics.get('total_documents', metrics['total_determinations']):,}"))
+    else:
+        out.append(("Source documents", f"{metrics['total_determinations']:,}"))
+    out += [
         ("% of credit events that are Restructuring",
          "n/a" if metrics["pct_restructuring_of_events"] is None
          else f"{metrics['pct_restructuring_of_events']}%"),
@@ -154,7 +285,7 @@ def headline_answers(metrics: dict) -> list[tuple[str, str]]:
         out.append(("Avg auction final price (recovery)",
                     f"{fp['mean']:.2f}  (median {fp['median']:.2f}, n={fp['count']})"))
     if metrics.get("reconciliation_rate_pct") is not None:
-        out.append(("Determinations reconciled to an auction",
+        out.append(("Auctions with a Creditex final price",
                     f"{metrics['reconciliation_rate_pct']}%"))
     return out
 
