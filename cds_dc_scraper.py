@@ -690,13 +690,18 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
     rec.committee = rec.committee or _classify(text, REGIONS)
     rec.credit_event_type = rec.credit_event_type or _classify(text, CREDIT_EVENTS)
     rec.date = rec.date or _parse_date(text)
-    if re.search(r"\bauction\b", text, re.I):
+    # Decide the negative case FIRST and with the full range of DC phrasing. The
+    # committees write "a Bankruptcy Credit Event has not occurred", which the old
+    # positive pattern ("credit event" … "occurred") matched straight through the
+    # "has not" — recording a negative determination as a positive one.
+    negative = _NO_EVENT_RE.search(text) is not None
+    if re.search(r"\bauction\b", text, re.I) and not _NO_AUCTION_RE.search(text):
         rec.tags.append("auction")
         rec.auction_held = True
         m = re.search(r"auction.{0,40}?(\d{1,2}[-/ ]\w+[-/ ]\d{4}|\d{4}-\d{2}-\d{2})", text, re.I)
         if m:
             rec.auction_date = _parse_date(m.group(1)) or rec.auction_date
-    if re.search(r"\bno\b.{0,20}credit event", text, re.I):
+    if negative:
         rec.decision = rec.decision or "No credit event"
     elif re.search(r"credit event.{0,20}(occurred|has occurred)", text, re.I):
         rec.decision = rec.decision or "Credit event occurred"
@@ -705,6 +710,22 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
 
 
 _HASH_RE = re.compile(r"^[0-9a-f]{16,}$", re.I)
+
+# A determination that a credit event did NOT occur. "not"/"has not"/"did not" must
+# be caught as well as a bare "No Credit Event" heading, otherwise the negation is
+# read as a positive finding. Kept alongside _NO_AUCTION_RE, which recognises the
+# separate statement that no auction will be run.
+_NO_EVENT_RE = re.compile(
+    r"\bno\b[^.]{0,30}credit event"                       # "No Credit Event has …"
+    r"|credit event[^.]{0,40}\bnot\b[^.]{0,20}occur"      # "…has/did not occur(red)"
+    r"|\bnot\b[^.]{0,20}occur[^.]{0,40}credit event",
+    re.I,
+)
+_NO_AUCTION_RE = re.compile(
+    r"no auction|auction[^.]{0,30}\bnot\b[^.]{0,20}(?:be )?held|"
+    r"\bnot\b[^.]{0,20}(?:be )?held[^.]{0,30}auction",
+    re.I,
+)
 
 
 def _is_garbage_entity(name: str | None) -> bool:
@@ -876,6 +897,16 @@ def _valid_iso(v) -> str | None:
     return v if m and 2008 <= int(m.group(1)) <= date.today().year + 1 else None
 
 
+def _existing_rows(path: Path) -> int:
+    """Row count of an existing CSV (0 when absent/unreadable). Used to refuse
+    clobbering a good dataset with the small seed fallback after a failed scrape."""
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            return max(0, sum(1 for _ in fh) - 1)
+    except OSError:
+        return 0
+
+
 def save(records: Iterable[Determination]) -> pd.DataFrame:
     rows = [asdict(r) for r in records]
     for r in rows:
@@ -908,12 +939,22 @@ def run(mode: str = "live", parse_pdfs: bool = False) -> pd.DataFrame:
         return save(recs)
     except RuntimeError as exc:
         log.error("LIVE REFRESH FAILED: %s", exc)
+        # The DC site 403s from many networks, so this path is the *normal* outcome
+        # off the Pi. Overwriting a good corpus with a handful of seed references
+        # would destroy the dataset — and the weekly refresh commits and pushes
+        # whatever it finds. Keep what we have and fail loudly instead.
+        kept = _existing_rows(OUT_CSV)
+        if kept > len(SEED_REFERENCES):
+            log.error(
+                "Refusing to overwrite %s: it holds %d rows and the seed fallback has "
+                "only %d. Existing data left untouched — re-run from a network that "
+                "can reach the DC site.", OUT_CSV, kept, len(SEED_REFERENCES))
+            raise SystemExit(2)
         log.error(
-            "Falling back to %d verified seed references. "
-            "No live data was refreshed in this environment.",
-            len(SEED_REFERENCES),
-        )
-        return save(SEED_REFERENCES)
+            "Falling back to %d verified seed references (no larger dataset on disk "
+            "to protect). No live data was refreshed.", len(SEED_REFERENCES))
+        save(SEED_REFERENCES)
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

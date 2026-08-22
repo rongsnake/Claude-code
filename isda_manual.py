@@ -252,7 +252,11 @@ def dedupe_by_content(rows: list[dict]) -> list[dict]:
         grp.sort(key=lambda r: (r["file_url"].endswith("/"), len(r["file_url"])))
         keep, alts = grp[0], [g["file_url"] for g in grp[1:]]
         note = "same file as: " + "; ".join(alts)
-        keep["notes"] = (keep["notes"] + " | " + note).strip(" |") if keep.get("notes") else note
+        # Drop any note this function added on a previous run before re-adding it,
+        # so repeated `derive` calls stay idempotent instead of accreting copies.
+        kept_notes = [n for n in (keep.get("notes") or "").split(" | ")
+                      if n and not n.startswith("same file as:")]
+        keep["notes"] = " | ".join(kept_notes + [note])
         out.append(keep)
     return out
 

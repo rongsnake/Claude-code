@@ -1,6 +1,6 @@
 {
   "total_determinations": 2574,
-  "total_auctions": 207,
+  "total_auctions": 251,
   "date_min": "2009-12-09",
   "date_max": "2026-05-08",
   "distinct_reference_entities": 1634,
@@ -59,22 +59,22 @@
     "2026": 81
   },
   "auction_final_price": {
-    "count": 206,
-    "mean": 43.81,
-    "median": 35.5,
+    "count": 250,
+    "mean": 41.36,
+    "median": 31.75,
     "min": 0.0,
     "max": 105.75
   },
   "avg_final_price_by_event": {
-    "Bankruptcy": 36.18,
-    "Failure to Pay": 36.55,
+    "Bankruptcy": 33.1,
+    "Failure to Pay": 33.47,
     "Repudiation/Moratorium": 80.62,
-    "Restructuring": 63.38
+    "Restructuring": 71.38
   },
   "match_status_counts": {
     "determination_only": 2454,
-    "matched": 120,
-    "auction_only": 87
+    "auction_only": 131,
+    "matched": 120
   },
   "reconciliation_rate_pct": 4.7
 }
