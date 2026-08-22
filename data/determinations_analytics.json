@@ -3,7 +3,7 @@
   "total_auctions": 251,
   "date_min": "2009-12-09",
   "date_max": "2026-05-08",
-  "distinct_reference_entities": 1634,
+  "distinct_reference_entities": 1200,
   "credit_events_tagged": 131,
   "pct_restructuring_of_events": 18.3,
   "credit_event_occurred_count": 124,

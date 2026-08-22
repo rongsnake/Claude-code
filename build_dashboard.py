@@ -246,8 +246,13 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
     sub["_year"] = sub["_d"].dt.year
     ek = sub["reference_entity"].map(_norm_entity)
     issue = sub["issue_number"].astype("string").str.replace(r"\.0$", "", regex=True)
-    gk = issue.where(sub["issue_number"].notna(), ek + "|" + sub["_year"].astype("string"))
-    sub["_gk"] = gk.fillna(ek)
+    # Documents that name no reference entity (dated committee decisions) must not
+    # collapse into a single "|<year>" bucket with every other entity-less document
+    # of that year — key those by their own URL so each stays its own row.
+    by_entity_year = ek + "|" + sub["_year"].astype("string")
+    fallback = by_entity_year.where(ek.astype("string").fillna("").ne(""), sub["url"])
+    gk = issue.where(sub["issue_number"].notna(), fallback)
+    sub["_gk"] = gk.fillna(fallback)
 
     def _first(grp, col):
         if col not in grp:
@@ -258,7 +263,11 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
     rows: list[dict] = []
     for _, grp in sub.groupby("_gk", sort=False):
         # Prefer the richest row (one that carries a credit-event type / final price).
-        grp = grp.sort_values(["credit_event_type", "final_price"], na_position="last")
+        # Sort only by columns this frame actually has: the documented determination
+        # schema carries no final_price, so an unguarded sort crashes on it.
+        _by = [c for c in ("credit_event_type", "final_price") if c in grp.columns]
+        if _by:
+            grp = grp.sort_values(_by, na_position="last")
         date = grp["_d"].min()
         year = int(date.year) if pd.notna(date) else None
         rec = {

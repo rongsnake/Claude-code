@@ -33,6 +33,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import logging
 import re
@@ -41,6 +42,7 @@ from dataclasses import dataclass, asdict, field
 from datetime import datetime, date, timedelta
 from pathlib import Path
 from typing import Iterable
+from urllib.parse import unquote
 
 import pandas as pd
 
@@ -226,13 +228,29 @@ def _parse_date(text: str) -> str | None:
 _ENTITY_STRIP_PHRASES = [
     "final list of deliverable obligations", "list of deliverable obligations",
     "deliverable obligations", "list of participating bidders", "participating bidders",
+    # bare document-type names ("Initial List") are not reference entities
+    "final list", "initial list", "supplemental list", "preliminary list",
+    "clarificatory", "clarification",
+    # "AST" = Auction Settlement Terms, a document type. WordPress slugifies
+    # "Final AST+Final List" to "...astfinal-list", so catch the glued form too.
+    "astfinal list", "astfinal", "final ast", "ast",
+    "compare", "compared", "comparison", "change pages",
     "auction settlement terms", "settlement terms", "auction results", "final prices",
     "final price", "pro forma", "proforma", "redline of auction", "redline", "blackline",
     "explanatory statement", "meeting statement", "dc decision", "dc statement",
-    "determinations committee", "determination", "resolution", "announcement", "notice",
+    "determinations committee", "determination", "standing resolution", "resolution",
+    "announcement", "notice",
     "asia ex japan", "australia new zealand", "all dcs", "americas", "emea", "japan",
     "committee", "issue number", "statement", "decision", "results",
+    "latest revision", "revision",   # WP Document Revisions permalink suffix
 ]
+# Month-name dates that survive slug normalisation: "april 1, 2019", "1 april 2019".
+_TEXT_DATE_RE = re.compile(
+    r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{1,2}\s*,?\s*\d{4}\b"
+    r"|\b\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{2,4}\b"
+    r"|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}\b",
+    re.I,
+)
 # Date fragments in slugs: "20-may-2025", "4-30-26", "5/8/26", "2025-10-21".
 _SLUG_DATE_RE = re.compile(
     r"\b(\d{1,2}[-/\s](?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]\d{2,4}"
@@ -243,13 +261,36 @@ _SLUG_DATE_RE = re.compile(
 def _slug_to_entity(slug: str) -> str | None:
     """Best-effort reference-entity name from a document slug or title."""
     s = re.sub(r"\.(pdf|html?|xlsx?|docx?|csv)/?$", "", slug, flags=re.I)
+    # Percent-decode first: a UTF-8 BOM in the source filename arrives as
+    # "%ef%bb%bf" in the slug and as a literal \ufeff in the title. Decoding turns
+    # the former into the latter, and both are then stripped. ("ef bb bf" below
+    # catches the case where it has already been rendered as hex tokens.)
+    s = unquote(s).replace("\ufeff", " ")
     s = s.replace("-", " ").replace("_", " ").lower()
+    s = re.sub(r"\bef bb bf", " ", s)   # no trailing \b: it glues to the next word
     s = _SLUG_DATE_RE.sub(" ", s)
     for phrase in _ENTITY_STRIP_PHRASES:
         s = re.sub(rf"\b{re.escape(phrase)}\b", " ", s)
+    # Blackline/pro-forma documents are titled "<subject> against <precedent>" and
+    # name two entities. The document is about the first one, so drop everything
+    # from the comparison marker onwards. (Bare "v" is deliberately not a marker —
+    # it would corrupt the Dutch legal suffixes "B.V." and "N.V.".)
+    s = re.split(r"\b(?:against|versus|vs)\b", s, maxsplit=1)[0]
+    s = _TEXT_DATE_RE.sub(" ", s)               # "april 1, 2019" / "1 april 2019"
     s = re.sub(r"\b\d[\d.,]*\b", " ", s)        # stray numbers (issue ids, dates)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s.title() if s and len(s) > 2 else None
+    s = re.sub(r"[^a-z0-9&.'()\s-]", " ", s)     # en-dashes and other separators
+    s = re.sub(r"\(\s*\)", " ", s)              # parens emptied by date removal
+    # Leading committee/product tokens are labels, not part of the entity name
+    # ("Americas DC - Diamond Sports Group"). "the" is deliberately not stripped.
+    s = re.sub(r"^(?:\s*\b(?:dc|aej|anz|emea|issue)\b)+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip(" -.,&()'")
+    # After stripping boilerplate, dates and numbers, many DC decision documents
+    # ("EMEA_Determinations_Committee_Decision_09072012") name no entity at all.
+    # Require a real word so leftovers like "( )" or a bare "v2" are reported as
+    # "no entity" rather than shipped as an invented reference-entity name.
+    if not re.search(r"[a-z]{3}", s):
+        return None
+    return s.title() if len(s) > 2 else None
 
 
 def _date_from_text(s: str) -> str | None:
@@ -574,13 +615,36 @@ _RSS_ITEM_RE = re.compile(r"<item>(.*?)</item>", re.S | re.I)
 
 
 def _rss_field(item: str, tag: str) -> str | None:
+    """One field from an RSS <item>, HTML-unescaped.
+
+    The feed escapes its text, so "Entity &#8211; Latest Revision" arrived raw and
+    the later strip of stray digits reduced "&#8211;" to the literal "&# ;" —
+    which then shipped as a reference-entity name. Unescape at the source so every
+    downstream consumer (entity, title, categories) sees real characters."""
     m = re.search(rf"<{tag}[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", item, re.S | re.I)
-    return m.group(1).strip() if m else None
+    return html.unescape(m.group(1)).strip() if m else None
 
 
 def _rss_categories(item: str) -> list[str]:
-    return [c.strip() for c in re.findall(
+    return [html.unescape(c).strip() for c in re.findall(
         r"<category[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</category>", item, re.S | re.I) if c.strip()]
+
+
+def _is_date_number(s: str) -> bool:
+    """True when an all-digit run is really a date rather than a DC issue number.
+
+    The document feed embeds meeting dates in filenames (…_Decision_09072012), and
+    accepting those as issue numbers merged unrelated determinations into a single
+    dashboard row. Genuine issue numbers are 10-11 digits (e.g. 0325201001)."""
+    if len(s) != 8 or not s.isdigit():
+        return False
+    for fmt in ("%Y%m%d", "%d%m%Y", "%m%d%Y"):
+        try:
+            if 2005 <= datetime.strptime(s, fmt).year <= date.today().year + 1:
+                return True
+        except ValueError:
+            pass
+    return False
 
 
 def _record_from_feed_item(item: str) -> Determination | None:
@@ -602,8 +666,12 @@ def _record_from_feed_item(item: str) -> Determination | None:
                 iso = None
     slug = link.rstrip("/").split("/")[-1]
     entity = _slug_to_entity(slug) or _slug_to_entity(title.replace(" ", "-"))
-    iss = (re.search(r"issue[-_ ]?number[-_ ]?(\d{6,})", hay, re.I)
-           or re.search(r"\b(\d{8,})\b", slug))
+    iss = re.search(r"issue[-_ ]?number[-_ ]?(\d{6,})", hay, re.I)
+    if not iss:
+        # Bare digit runs in a filename are usually the meeting date, not an issue
+        # number. Treating them as one grouped unrelated determinations together.
+        m = re.search(r"\b(\d{8,})\b", slug)
+        iss = m if m and not _is_date_number(m.group(1)) else None
     doc_type = "statement" if "statement" in hay.lower() else "decision"
     return Determination(
         date=iso,
