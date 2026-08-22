@@ -66,6 +66,32 @@ as an instruction bus is **GitHub**, which both sides already share:
 - systemd user units `cds-api.service` + `cds-refresh.timer` (Mon 06:00) installed; linger on.
 - The Caddy reverse-proxy block for `/cds/api/*` → `localhost:5055` is **applied and live**.
 
+## ISDA manual-click documents (`isda_manual.py`)
+
+A handful of historical DC source files are hosted on ISDA's own servers
+(`isda.org` / `www2.isda.org` / `assets.isda.org`), whose edge returns **403** to
+the scraper — so `fetch_docs.py` can never retrieve them and the weekly retry
+keeps failing on them. `isda_manual.py` tracks these as manual-click candidates so
+each hand-download is recorded, hashed, and fed back into the provenance trail:
+
+```bash
+python isda_manual.py derive   # (re)build data/isda_manual_files.{csv,md} from the manifest
+python isda_manual.py list     # the click-list of what's still pending
+# open each link in a browser, then register the downloaded file:
+python isda_manual.py ingest <downloaded-file> --url "<file_url>"
+python build_index.py          # surface the new text in search / RAG
+```
+
+`derive` reads candidates straight from `data/documents.csv` (every ISDA-hosted
+`file_url`) — **13** unique documents today (Hellenic Republic, ERC Ireland,
+Sino-Forest, Caesars, Novo Banco, Noble Group). URLs that 403'd and so never
+reached the manifest can't be auto-derived; add those still-blocked links to
+`data/isda_manual_seed.txt` (one per line) and re-run `derive` to fold them in —
+that's how you reconcile to the full set if your count is higher. `ingest`
+verifies the file against the last-known sha256, copies it into `data/docs/`,
+extracts text, flips the row to `downloaded`, and appends a provenance row to
+`data/documents.csv`. Re-runs are idempotent; existing `downloaded` rows are kept.
+
 ## Current state (updated 2026-06-14, on the Pi)
 
 - ✅ **Live refresh done on the Pi.** Both `cdsdeterminationscommittees.org` and

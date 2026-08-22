@@ -44,9 +44,15 @@ Committees** (CDS = credit default swaps; source
 - Determination schema: `date, committee, reference_entity, issue_number,
   credit_event_type, decision, doc_type, url, source, auction_date, auction_held`.
 - Committees: Americas / EMEA / Asia ex-Japan / Japan / Australia-New Zealand / All DCs.
-- Keep data **honest**: `source` ∈ {`rest-api`, `sitemap`, `reference`,
-  `synthetic-demo`}; dashboards must banner demo/seed vs live. Never present
+- Keep data **honest**: determination `source` ∈ {`document-feed`, `dc-isda`,
+  `rest-api`, `sitemap`, `reference`, `synthetic-demo`} (the full-depth crawl adds
+  `document-feed`/`dc-isda`); auction `source` ∈ {`creditfixings`,
+  `synthetic-demo`}. Dashboards must banner demo/seed vs live. Never present
   synthetic rows as real determinations.
+- Auction provenance travels separately as `auction_source` on a reconciled row:
+  a live determination can carry a `--demo` price, and the banner must say so.
+- A **failed** live scrape must never overwrite a good corpus with the seed
+  fallback — the scrapers refuse and exit 2 (the weekly refresh commits + pushes).
 
 ## Known constraints
 - The DC site blocks bots (403) and some networks; the live refresh needs a

@@ -16,9 +16,18 @@ Used by both dashboards and exportable to JSON/CSV for downstream graphing.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
+
+# A DC finding that a credit event did NOT occur / no auction will be held. Mirrors
+# reconcile._NO_AUCTION so the two stages agree on what counts as a negative.
+_NO_EVENT_RE = re.compile(
+    r"no credit event|did not occur|has not occurred|not occurred|no auction"
+    r"|auction[^.]{0,30}\bnot\b[^.]{0,20}(?:be )?held",
+    re.I,
+)
 
 DATA_DIR = Path("data")
 RAW_CSV = DATA_DIR / "determinations.csv"
@@ -50,18 +59,29 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
         pd.to_numeric(df["final_price"], errors="coerce")
         if "final_price" in df.columns else float("nan")
     )
-    df["is_restructuring"] = df.get("credit_event_type").eq(RESTRUCTURING)
-    df["is_credit_event"] = df.get("credit_event_type").notna()
+    # df.get() returns None for a missing column, so build an empty series instead:
+    # an empty//column-less frame reaches here whenever a scrape or filter yields no
+    # rows, and it must produce empty metrics rather than an opaque AttributeError.
+    cet = df["credit_event_type"] if "credit_event_type" in df.columns else pd.Series(
+        pd.NA, index=df.index, dtype="object")
+    df["credit_event_type"] = cet
+    df["is_restructuring"] = cet.eq(RESTRUCTURING)
+    df["is_credit_event"] = cet.notna()
 
     decision = df.get("decision")
     if decision is None:
         decision = pd.Series("", index=df.index)
     decision = decision.fillna("").astype(str)
-    df["credit_event_occurred"] = (
+    # Both positive clauses fire on their own negation — "no Credit Event occurred
+    # and no auction will be held" contains "credit event occurred" AND "auction".
+    # Subtract the explicit negatives so a DC finding of *no* credit event is never
+    # counted as one (this flag also selects rows for the credit-events export).
+    positive = (
         decision.str.contains("credit event occurred", case=False)
         | decision.str.contains("auction", case=False)
         | df.get("auction_held", pd.Series(False, index=df.index)).fillna(False).astype(bool)
     )
+    df["credit_event_occurred"] = positive & ~decision.str.contains(_NO_EVENT_RE)
     return df
 
 

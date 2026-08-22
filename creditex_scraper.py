@@ -327,6 +327,16 @@ def make_demo() -> list[Auction]:
 
 
 # ── persistence ──────────────────────────────────────────────────────────────────
+def _existing_rows(path: Path) -> int:
+    """Row count of an existing CSV (0 when absent/unreadable) — guards the seed
+    fallback from clobbering a good dataset after a failed scrape."""
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            return max(0, sum(1 for _ in fh) - 1)
+    except OSError:
+        return 0
+
+
 def save(auctions: list[Auction]) -> pd.DataFrame:
     df = pd.DataFrame([asdict(a) for a in auctions])
     if not df.empty:
@@ -353,9 +363,18 @@ def run(mode: str = "live") -> pd.DataFrame:
         return save(aucs)
     except RuntimeError as exc:
         log.error("LIVE AUCTION SCRAPE FAILED: %s", exc)
-        log.error("Falling back to %d verified seed auctions. No live data refreshed.",
-                  len(SEED_AUCTIONS))
-        return save(SEED_AUCTIONS)
+        # See cds_dc_scraper.run: never trade a good corpus for the seed fallback,
+        # because the weekly refresh commits and pushes whatever ends up on disk.
+        kept = _existing_rows(OUT_CSV)
+        if kept > len(SEED_AUCTIONS):
+            log.error(
+                "Refusing to overwrite %s: it holds %d rows and the seed fallback has "
+                "only %d. Existing data left untouched.", OUT_CSV, kept, len(SEED_AUCTIONS))
+            raise SystemExit(2)
+        log.error("Falling back to %d verified seed auctions (no larger dataset on disk "
+                  "to protect). No live data refreshed.", len(SEED_AUCTIONS))
+        save(SEED_AUCTIONS)
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

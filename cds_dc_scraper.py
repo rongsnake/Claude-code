@@ -33,6 +33,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import logging
 import re
@@ -41,6 +42,7 @@ from dataclasses import dataclass, asdict, field
 from datetime import datetime, date, timedelta
 from pathlib import Path
 from typing import Iterable
+from urllib.parse import unquote
 
 import pandas as pd
 
@@ -226,13 +228,29 @@ def _parse_date(text: str) -> str | None:
 _ENTITY_STRIP_PHRASES = [
     "final list of deliverable obligations", "list of deliverable obligations",
     "deliverable obligations", "list of participating bidders", "participating bidders",
+    # bare document-type names ("Initial List") are not reference entities
+    "final list", "initial list", "supplemental list", "preliminary list",
+    "clarificatory", "clarification",
+    # "AST" = Auction Settlement Terms, a document type. WordPress slugifies
+    # "Final AST+Final List" to "...astfinal-list", so catch the glued form too.
+    "astfinal list", "astfinal", "final ast", "ast",
+    "compare", "compared", "comparison", "change pages",
     "auction settlement terms", "settlement terms", "auction results", "final prices",
     "final price", "pro forma", "proforma", "redline of auction", "redline", "blackline",
     "explanatory statement", "meeting statement", "dc decision", "dc statement",
-    "determinations committee", "determination", "resolution", "announcement", "notice",
+    "determinations committee", "determination", "standing resolution", "resolution",
+    "announcement", "notice",
     "asia ex japan", "australia new zealand", "all dcs", "americas", "emea", "japan",
     "committee", "issue number", "statement", "decision", "results",
+    "latest revision", "revision",   # WP Document Revisions permalink suffix
 ]
+# Month-name dates that survive slug normalisation: "april 1, 2019", "1 april 2019".
+_TEXT_DATE_RE = re.compile(
+    r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{1,2}\s*,?\s*\d{4}\b"
+    r"|\b\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{2,4}\b"
+    r"|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}\b",
+    re.I,
+)
 # Date fragments in slugs: "20-may-2025", "4-30-26", "5/8/26", "2025-10-21".
 _SLUG_DATE_RE = re.compile(
     r"\b(\d{1,2}[-/\s](?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]\d{2,4}"
@@ -243,13 +261,36 @@ _SLUG_DATE_RE = re.compile(
 def _slug_to_entity(slug: str) -> str | None:
     """Best-effort reference-entity name from a document slug or title."""
     s = re.sub(r"\.(pdf|html?|xlsx?|docx?|csv)/?$", "", slug, flags=re.I)
+    # Percent-decode first: a UTF-8 BOM in the source filename arrives as
+    # "%ef%bb%bf" in the slug and as a literal \ufeff in the title. Decoding turns
+    # the former into the latter, and both are then stripped. ("ef bb bf" below
+    # catches the case where it has already been rendered as hex tokens.)
+    s = unquote(s).replace("\ufeff", " ")
     s = s.replace("-", " ").replace("_", " ").lower()
+    s = re.sub(r"\bef bb bf", " ", s)   # no trailing \b: it glues to the next word
     s = _SLUG_DATE_RE.sub(" ", s)
     for phrase in _ENTITY_STRIP_PHRASES:
         s = re.sub(rf"\b{re.escape(phrase)}\b", " ", s)
+    # Blackline/pro-forma documents are titled "<subject> against <precedent>" and
+    # name two entities. The document is about the first one, so drop everything
+    # from the comparison marker onwards. (Bare "v" is deliberately not a marker —
+    # it would corrupt the Dutch legal suffixes "B.V." and "N.V.".)
+    s = _COMPARE_CUT_RE.split(s, maxsplit=1)[0]
+    s = _TEXT_DATE_RE.sub(" ", s)               # "april 1, 2019" / "1 april 2019"
     s = re.sub(r"\b\d[\d.,]*\b", " ", s)        # stray numbers (issue ids, dates)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s.title() if s and len(s) > 2 else None
+    s = re.sub(r"[^a-z0-9&.'()\s-]", " ", s)     # en-dashes and other separators
+    s = re.sub(r"\(\s*\)", " ", s)              # parens emptied by date removal
+    # Leading committee/product tokens are labels, not part of the entity name
+    # ("Americas DC - Diamond Sports Group"). "the" is deliberately not stripped.
+    s = re.sub(r"^(?:\s*\b(?:dc|aej|anz|emea|issue)\b)+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip(" -.,&()'")
+    # After stripping boilerplate, dates and numbers, many DC decision documents
+    # ("EMEA_Determinations_Committee_Decision_09072012") name no entity at all.
+    # Require a real word so leftovers like "( )" or a bare "v2" are reported as
+    # "no entity" rather than shipped as an invented reference-entity name.
+    if not re.search(r"[a-z]{3}", s):
+        return None
+    return s.title() if len(s) > 2 else None
 
 
 def _date_from_text(s: str) -> str | None:
@@ -574,13 +615,36 @@ _RSS_ITEM_RE = re.compile(r"<item>(.*?)</item>", re.S | re.I)
 
 
 def _rss_field(item: str, tag: str) -> str | None:
+    """One field from an RSS <item>, HTML-unescaped.
+
+    The feed escapes its text, so "Entity &#8211; Latest Revision" arrived raw and
+    the later strip of stray digits reduced "&#8211;" to the literal "&# ;" —
+    which then shipped as a reference-entity name. Unescape at the source so every
+    downstream consumer (entity, title, categories) sees real characters."""
     m = re.search(rf"<{tag}[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", item, re.S | re.I)
-    return m.group(1).strip() if m else None
+    return html.unescape(m.group(1)).strip() if m else None
 
 
 def _rss_categories(item: str) -> list[str]:
-    return [c.strip() for c in re.findall(
+    return [html.unescape(c).strip() for c in re.findall(
         r"<category[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</category>", item, re.S | re.I) if c.strip()]
+
+
+def _is_date_number(s: str) -> bool:
+    """True when an all-digit run is really a date rather than a DC issue number.
+
+    The document feed embeds meeting dates in filenames (…_Decision_09072012), and
+    accepting those as issue numbers merged unrelated determinations into a single
+    dashboard row. Genuine issue numbers are 10-11 digits (e.g. 0325201001)."""
+    if len(s) != 8 or not s.isdigit():
+        return False
+    for fmt in ("%Y%m%d", "%d%m%Y", "%m%d%Y"):
+        try:
+            if 2005 <= datetime.strptime(s, fmt).year <= date.today().year + 1:
+                return True
+        except ValueError:
+            pass
+    return False
 
 
 def _record_from_feed_item(item: str) -> Determination | None:
@@ -602,8 +666,12 @@ def _record_from_feed_item(item: str) -> Determination | None:
                 iso = None
     slug = link.rstrip("/").split("/")[-1]
     entity = _slug_to_entity(slug) or _slug_to_entity(title.replace(" ", "-"))
-    iss = (re.search(r"issue[-_ ]?number[-_ ]?(\d{6,})", hay, re.I)
-           or re.search(r"\b(\d{8,})\b", slug))
+    iss = re.search(r"issue[-_ ]?number[-_ ]?(\d{6,})", hay, re.I)
+    if not iss:
+        # Bare digit runs in a filename are usually the meeting date, not an issue
+        # number. Treating them as one grouped unrelated determinations together.
+        m = re.search(r"\b(\d{8,})\b", slug)
+        iss = m if m and not _is_date_number(m.group(1)) else None
     doc_type = "statement" if "statement" in hay.lower() else "decision"
     return Determination(
         date=iso,
@@ -690,13 +758,18 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
     rec.committee = rec.committee or _classify(text, REGIONS)
     rec.credit_event_type = rec.credit_event_type or _classify(text, CREDIT_EVENTS)
     rec.date = rec.date or _parse_date(text)
-    if re.search(r"\bauction\b", text, re.I):
+    # Decide the negative case FIRST and with the full range of DC phrasing. The
+    # committees write "a Bankruptcy Credit Event has not occurred", which the old
+    # positive pattern ("credit event" … "occurred") matched straight through the
+    # "has not" — recording a negative determination as a positive one.
+    negative = _NO_EVENT_RE.search(text) is not None
+    if re.search(r"\bauction\b", text, re.I) and not _NO_AUCTION_RE.search(text):
         rec.tags.append("auction")
         rec.auction_held = True
         m = re.search(r"auction.{0,40}?(\d{1,2}[-/ ]\w+[-/ ]\d{4}|\d{4}-\d{2}-\d{2})", text, re.I)
         if m:
             rec.auction_date = _parse_date(m.group(1)) or rec.auction_date
-    if re.search(r"\bno\b.{0,20}credit event", text, re.I):
+    if negative:
         rec.decision = rec.decision or "No credit event"
     elif re.search(r"credit event.{0,20}(occurred|has occurred)", text, re.I):
         rec.decision = rec.decision or "Credit event occurred"
@@ -705,6 +778,22 @@ def enrich_with_pdf(session, rec: Determination) -> Determination:
 
 
 _HASH_RE = re.compile(r"^[0-9a-f]{16,}$", re.I)
+
+# A determination that a credit event did NOT occur. "not"/"has not"/"did not" must
+# be caught as well as a bare "No Credit Event" heading, otherwise the negation is
+# read as a positive finding. Kept alongside _NO_AUCTION_RE, which recognises the
+# separate statement that no auction will be run.
+_NO_EVENT_RE = re.compile(
+    r"\bno\b[^.]{0,30}credit event"                       # "No Credit Event has …"
+    r"|credit event[^.]{0,40}\bnot\b[^.]{0,20}occur"      # "…has/did not occur(red)"
+    r"|\bnot\b[^.]{0,20}occur[^.]{0,40}credit event",
+    re.I,
+)
+_NO_AUCTION_RE = re.compile(
+    r"no auction|auction[^.]{0,30}\bnot\b[^.]{0,20}(?:be )?held|"
+    r"\bnot\b[^.]{0,20}(?:be )?held[^.]{0,30}auction",
+    re.I,
+)
 
 
 def _is_garbage_entity(name: str | None) -> bool:
@@ -715,6 +804,101 @@ def _is_garbage_entity(name: str | None) -> bool:
     return bool(_HASH_RE.match(compact)) or (
         sum(c.isdigit() for c in compact) > len(compact) * 0.5 and len(compact) > 12
     )
+
+
+# ── canonical reference-entity registry ───────────────────────────────────────
+# Entity names taken from a document title are best-effort, so one entity arrives
+# as "Atos Se", "Atos SE" and "Administrative Atos Se", and some documents (meeting
+# minutes, offering memoranda, participation letters) name no entity at all and
+# yield a fragment of their own title. The ISDA auction index, the verified seeds
+# and the auction table carry authoritative spellings, so once a run has them we
+# snap the title-derived names onto the authoritative one and drop the leftovers
+# that are really document titles. Parsing titles harder cannot fix this; matching
+# against known entities can.
+_COMPARE_CUT_RE = re.compile(r"\b(?:against|versus|vs)\b", re.I)
+
+_ENTITY_NOISE_RE = re.compile(
+    r"\b(inc|incorporated|ltd|limited|corp|corporation|co|company|plc|llc|lp|llp|"
+    r"nv|sa|ag|spa|holdings?|group|the|of|and)\b", re.I)
+
+# Words that only ever describe a document. A "name" made solely of these is a
+# document title, not a reference entity.
+_DOC_ONLY_WORDS = frozenset("""
+offering memorandum memoranda transcript call conference report reporting relating
+bondholder meetings meeting minutes agenda submission potential challenges challenge
+response form customer physical settlement request letter continuing non dealer
+participation dc cds gc administrative notice notices order hearing scheduling
+amended application annex appendix presentation press release summary proposal
+opinion rules rule template templates nops composite package dated to of and a the
+for with vs draft version corrected changes pages maturity buckets list lists
+general counsel
+""".split())
+
+# Very short keys ("toys") match far too eagerly inside unrelated titles.
+_MIN_ENTITY_KEY = 5
+
+
+def _entity_key(name) -> str:
+    """Comparison key for an entity name: lowercase, punctuation and legal-suffix
+    free, so "Atos SE" and "Atos Se" collapse to the same token run."""
+    if not name:
+        return ""
+    s = re.sub(r"[^a-z0-9 ]", " ", str(name).lower())
+    s = _ENTITY_NOISE_RE.sub(" ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _is_document_title(name) -> bool:
+    toks = re.sub(r"[^a-z0-9 ]", " ", str(name or "").lower()).split()
+    return bool(toks) and all(t in _DOC_ONLY_WORDS for t in toks)
+
+
+def _known_entities(records: Iterable[Determination]) -> dict[str, str]:
+    """Authoritative entity spellings: the ISDA auction index rows scraped this run,
+    the verified seeds, and the auction table when a previous run left one."""
+    canon: dict[str, str] = {}
+    for r in list(records) + SEED_REFERENCES:
+        if r.reference_entity and r.source in ("dc-isda", "rest-api", "reference"):
+            canon.setdefault(_entity_key(r.reference_entity), r.reference_entity)
+    try:
+        auc = DATA_DIR / "auctions.csv"
+        if auc.exists():
+            for name in pd.read_csv(auc)["reference_entity"].dropna().unique():
+                canon.setdefault(_entity_key(name), str(name))
+    except Exception as exc:            # a malformed/missing table must not break a scrape
+        log.debug("auction entity list unavailable: %s", exc)
+    return {k: v for k, v in canon.items() if len(k) >= _MIN_ENTITY_KEY}
+
+
+def canonicalise_entities(records: list[Determination]) -> tuple[int, int]:
+    """Rewrite title-derived entity names to their authoritative spelling and drop
+    the ones that are really document titles. Returns (renamed, dropped)."""
+    canon = _known_entities(records)
+    if not canon:
+        return (0, 0)
+    renamed = dropped = 0
+    for rec in records:
+        if rec.source != "document-feed":
+            continue
+        # Blacklines are titled "<subject> against <precedent>"; only the subject
+        # side may supply the entity, or every comparison would be filed under the
+        # precedent it was compared to.
+        subject = _entity_key(_COMPARE_CUT_RE.split(html.unescape(rec.title or ""), 1)[0])
+        best = None
+        for key, name in canon.items():
+            m = re.search(rf"\b{re.escape(key)}\b", subject)
+            # earliest mention wins (the subject leads the title), then the longest
+            if m and (best is None or m.start() < best[0]
+                      or (m.start() == best[0] and len(key) > best[1])):
+                best = (m.start(), len(key), name)
+        if best:
+            if rec.reference_entity != best[2]:
+                rec.reference_entity = best[2]
+                renamed += 1
+        elif _is_document_title(rec.reference_entity):
+            rec.reference_entity = None
+            dropped += 1
+    return renamed, dropped
 
 
 def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
@@ -813,6 +997,11 @@ def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
         for rec in decisions:
             enrich_with_pdf(session, rec)
 
+    renamed, dropped = canonicalise_entities(recs)
+    if renamed or dropped:
+        log.info("Entity names: %d snapped to an authoritative spelling, %d dropped "
+                 "as document titles", renamed, dropped)
+
     return recs
 
 
@@ -876,6 +1065,16 @@ def _valid_iso(v) -> str | None:
     return v if m and 2008 <= int(m.group(1)) <= date.today().year + 1 else None
 
 
+def _existing_rows(path: Path) -> int:
+    """Row count of an existing CSV (0 when absent/unreadable). Used to refuse
+    clobbering a good dataset with the small seed fallback after a failed scrape."""
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            return max(0, sum(1 for _ in fh) - 1)
+    except OSError:
+        return 0
+
+
 def save(records: Iterable[Determination]) -> pd.DataFrame:
     rows = [asdict(r) for r in records]
     for r in rows:
@@ -908,12 +1107,22 @@ def run(mode: str = "live", parse_pdfs: bool = False) -> pd.DataFrame:
         return save(recs)
     except RuntimeError as exc:
         log.error("LIVE REFRESH FAILED: %s", exc)
+        # The DC site 403s from many networks, so this path is the *normal* outcome
+        # off the Pi. Overwriting a good corpus with a handful of seed references
+        # would destroy the dataset — and the weekly refresh commits and pushes
+        # whatever it finds. Keep what we have and fail loudly instead.
+        kept = _existing_rows(OUT_CSV)
+        if kept > len(SEED_REFERENCES):
+            log.error(
+                "Refusing to overwrite %s: it holds %d rows and the seed fallback has "
+                "only %d. Existing data left untouched — re-run from a network that "
+                "can reach the DC site.", OUT_CSV, kept, len(SEED_REFERENCES))
+            raise SystemExit(2)
         log.error(
-            "Falling back to %d verified seed references. "
-            "No live data was refreshed in this environment.",
-            len(SEED_REFERENCES),
-        )
-        return save(SEED_REFERENCES)
+            "Falling back to %d verified seed references (no larger dataset on disk "
+            "to protect). No live data was refreshed.", len(SEED_REFERENCES))
+        save(SEED_REFERENCES)
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

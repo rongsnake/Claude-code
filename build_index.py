@@ -121,7 +121,10 @@ def refine_kind(url: str, title: str, text: str) -> tuple[str, bool, bool]:
 
 
 def _read_text_for(sha: str, text_path: str | None) -> str:
-    if text_path and Path(text_path).exists():
+    # A missing text_path arrives from pandas as NaN — a float, and truthy — so
+    # test the type, not just truthiness (spreadsheets and .doc files in
+    # documents.csv have no extracted text and would otherwise crash Path()).
+    if isinstance(text_path, str) and text_path and Path(text_path).exists():
         return Path(text_path).read_text(errors="replace")
     tp = TEXT_DIR / f"{sha[:12]}.txt"
     return tp.read_text(errors="replace") if tp.exists() else ""
@@ -148,9 +151,14 @@ def load_determinations() -> pd.DataFrame:
         c = df["committee"].astype(str).str.strip()
         df["committee"] = c.str.lower().map(VALID_COMMITTEES).fillna(
             c.where(c.str.lower().isin(VALID_COMMITTEES), other=pd.NA))
-        # drop rows whose committee is the literal header word or empty noise
-        bad = c.str.lower().isin({"committee", "", "nan"})
-        df = df[~bad].copy()
+        # Drop only the literal "committee" header artefact. A missing committee
+        # means *unknown*, not noise — ~1,600 rows (incl. every auction-only row)
+        # have none and must survive. Use the nullable "string" dtype so NA stays
+        # NA: plain astype(str) renders NaN as "nan" on pandas 2.x but preserves it
+        # on 3.x, so the old {"committee","","nan"} test deleted those rows on one
+        # version and kept them on the other.
+        norm = df["committee"].astype("string").str.strip().str.lower()
+        df = df[norm.ne("committee") | norm.isna()].copy()
     return df
 
 

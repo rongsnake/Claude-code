@@ -1,0 +1,16 @@
+# ISDA manual-click seed list
+# ---------------------------------------------------------------------------
+# `isda_manual.py derive` reads ISDA-hosted documents straight out of the
+# provenance manifest (data/documents.csv). But the fetcher records ONLY
+# successful downloads, so any ISDA URL that 403'd and was never retrieved
+# leaves no trace in the manifest — and therefore can't be auto-derived.
+#
+# Put those still-blocked URLs here (the ones a scheduled retry keeps failing
+# on) so they show up in the tracker and on the checklist. One URL per line.
+# Lines starting with '#' are ignored.
+#
+# Optional context after the URL, pipe-delimited, improves the checklist:
+#   <url> | <entity> | <YYYY-MM-DD> | <committee> | <doc_kind> | <doc_title>
+#
+# Example (delete the leading '#' and edit, or add your own):
+# http://www.isda.org/companies/Example/docs/Example-Final-List.pdf | Example Entity | 2013-05-01 | EMEA | auction_results | Final List of Deliverable Obligations

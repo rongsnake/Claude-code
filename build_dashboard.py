@@ -46,6 +46,9 @@ ROW_COLS = [
     "days_to_auction", "final_price", "currency", "transaction_type",
     "net_open_interest_amount", "net_open_interest_direction", "match_status",
     "is_restructuring", "credit_event_occurred", "url",
+    # when several tranches settled the same day, `final_price` is the senior one —
+    # these carry the full set so the table can disclose it rather than hide it.
+    "auction_tranche_count", "auction_tranches",
 ]
 
 # Lightweight per-document fields embedded for the drawer + offline search.
@@ -71,6 +74,13 @@ def _source_label(df: pd.DataFrame) -> tuple[str, str]:
                 "A full live refresh was not run in this environment.", "warn")
     if "synthetic-demo" in sources:
         return ("MIXED DATA — synthetic demo rows alongside scraped/seed rows.", "warn")
+    # Auction provenance is tracked separately: determinations can be genuinely
+    # scraped while the recovery/final-price columns came from a `--demo` auction
+    # run. Those prices drive the recovery KPI and chart, so never call that live.
+    auction_sources = set(df.get("auction_source", pd.Series(dtype=str)).dropna().unique())
+    if "synthetic-demo" in auction_sources:
+        return ("MIXED DATA — determinations are scraped, but the auction prices "
+                "(recovery / final price) are synthetic demo values.", "warn")
     return (f"Live scrape of cdsdeterminationscommittees.org ({len(df):,} determinations).", "ok")
 
 
@@ -151,7 +161,11 @@ def _attach_run_details(rows: list[dict], runs: list[dict]) -> None:
     for row in rows:
         ent = _norm_entity(row.get("reference_entity"))
         docs = list(docs_by_entity.get(ent, {}).values())
-        row["documents"] = docs
+        # Reference the shared per-entity corpus instead of embedding a copy of it
+        # on every row: an entity's documents are identical across its rows, so
+        # inlining them duplicated ~8 MB into the page once the full document
+        # index was restored. The drawer resolves `_ent` against DATA.docs_by_entity.
+        row["_ent"] = ent
         row["n_documents"] = max(len(docs), int(row.get("n_documents") or 0))
         det = detail_by_entity.get(ent)
         if det:
@@ -186,9 +200,13 @@ def _committee_series(df: pd.DataFrame) -> pd.Series:
     """Best-effort committee for every row: the scraped value, else parsed from the
     URL/title, else propagated from other rows of the same reference entity."""
     cc = df["committee"].where(df["committee"].notna(), None)
+    # Default to a same-length Series, not "": df.get(col, "") yields a bare string
+    # for a missing column and zip() then produces zero pairs, so a frame following
+    # the documented schema (which has no `title`) crashed on a length mismatch.
+    _blank = pd.Series("", index=df.index)
     parsed = [
         _parse_committee(u, t)
-        for u, t in zip(df.get("url", ""), df.get("title", ""))
+        for u, t in zip(df.get("url", _blank), df.get("title", _blank))
     ]
     cc = cc.fillna(pd.Series(parsed, index=df.index))
     ek = df["reference_entity"].map(_norm_entity)
@@ -228,8 +246,13 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
     sub["_year"] = sub["_d"].dt.year
     ek = sub["reference_entity"].map(_norm_entity)
     issue = sub["issue_number"].astype("string").str.replace(r"\.0$", "", regex=True)
-    gk = issue.where(sub["issue_number"].notna(), ek + "|" + sub["_year"].astype("string"))
-    sub["_gk"] = gk.fillna(ek)
+    # Documents that name no reference entity (dated committee decisions) must not
+    # collapse into a single "|<year>" bucket with every other entity-less document
+    # of that year — key those by their own URL so each stays its own row.
+    by_entity_year = ek + "|" + sub["_year"].astype("string")
+    fallback = by_entity_year.where(ek.astype("string").fillna("").ne(""), sub["url"])
+    gk = issue.where(sub["issue_number"].notna(), fallback)
+    sub["_gk"] = gk.fillna(fallback)
 
     def _first(grp, col):
         if col not in grp:
@@ -240,7 +263,11 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
     rows: list[dict] = []
     for _, grp in sub.groupby("_gk", sort=False):
         # Prefer the richest row (one that carries a credit-event type / final price).
-        grp = grp.sort_values(["credit_event_type", "final_price"], na_position="last")
+        # Sort only by columns this frame actually has: the documented determination
+        # schema carries no final_price, so an unguarded sort crashes on it.
+        _by = [c for c in ("credit_event_type", "final_price") if c in grp.columns]
+        if _by:
+            grp = grp.sort_values(_by, na_position="last")
         date = grp["_d"].min()
         year = int(date.year) if pd.notna(date) else None
         rec = {
@@ -256,6 +283,8 @@ def _build_determinations(df: pd.DataFrame, runs: list[dict]) -> list[dict]:
             "final_price": _first(grp, "final_price"),
             "currency": _first(grp, "currency"),
             "transaction_type": _first(grp, "transaction_type"),
+            "auction_tranche_count": _first(grp, "auction_tranche_count"),
+            "auction_tranches": _first(grp, "auction_tranches"),
             "is_restructuring": str(_first(grp, "credit_event_type") or "").lower() == "restructuring",
             "url": _first(grp, "url"),
             "n_documents": int(len(grp)),
@@ -335,7 +364,8 @@ _CE_EXPORT_COLS = [
     "credit_event_occurred", "decision", "issue_number", "credit_event_ref",
     "n_requests", "n_documents", "auction_date",
     "auction_held", "final_price", "currency", "days_to_auction",
-    "transaction_type", "ticker", "source", "url", "auction_url", "notes", "notes_source",
+    "transaction_type", "auction_tranches", "ticker", "source", "url", "auction_url",
+    "notes", "notes_source",
 ]
 
 
@@ -415,7 +445,8 @@ def build(input_path: Path, output_path: Path) -> Path:
     # with a committee on every row (see _build_determinations). This is what makes
     # the charts meaningful: counting determinations rather than the supporting
     # documents that otherwise swamp them and leave committee/event/recovery blank.
-    rows = _build_determinations(df, _load_runs())
+    runs = _load_runs()
+    rows = _build_determinations(df, runs)
     n_noted = _attach_notes(rows, _load_notes())
     print(f"  attached market-commentary notes to {n_noted} determination rows")
     # Metrics + headline cards are computed over the determination set (not the raw
@@ -442,6 +473,10 @@ def build(input_path: Path, output_path: Path) -> Path:
         "credit_events_count": ce_count,
         "answers": [{"label": l, "value": v} for l, v in answers],
         "rows": rows,
+        # Per-entity document corpus, emitted once and shared by every row of that
+        # entity (see _attach_run_details).
+        "docs_by_entity": {e: list(v.values())
+                           for e, v in _run_corpus_by_entity(runs)[0].items()},
         "docs": _load_docs(),
         "meta": _load_meta(),
         "analytics": metrics,
@@ -803,7 +838,7 @@ const GROUP_ORDER=['Decisions / meeting statements','Explanatory statements','Au
 const kindGroup={}; KINDS.forEach(([k,g])=>kindGroup[k]=g);
 
 function drawerHtml(r){
-  const docs=r.documents||[];
+  const docs=r.documents||(DATA.docs_by_entity||{})[r._ent]||[];
   let html='<div class="drawer-inner">';
   if(r.notes){ const src=r.notes_source?` <a href="${esc(r.notes_source)}" target="_blank" rel="noopener">${esc(r.notes_source_label||'source')} ↗</a>`:'';
     html+=`<div class="runsum" style="background:#2a2412;border-color:#6b531f;color:#ffe7b0">📝 <b>Notes:</b> ${esc(r.notes)}${src}</div>`; }
@@ -829,7 +864,15 @@ function drawerHtml(r){
 }
 function cell(r,c){ if(c==='url') return r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener">↗</a>`:'';
   if(c==='auction_held') return r.auction_held?'✓':'';
-  if(c==='final_price') return r.final_price==null?'—':Number(r.final_price).toFixed(3);
+  if(c==='final_price'){ if(r.final_price==null) return '—';
+    const v=Number(r.final_price).toFixed(3);
+    // Several tranches (senior / subordinated / lien / maturity buckets) can settle
+    // the same day at very different prices. We show the senior one and flag the
+    // rest on hover rather than presenting one price as if it were the only one.
+    if(r.auction_tranche_count>1&&r.auction_tranches)
+      return `<span title="${esc(r.auction_tranches)}" style="cursor:help">${v}`
+            +`<sup style="opacity:.65"> ${r.auction_tranche_count}⧉</sup></span>`;
+    return v; }
   if(c==='notes'){ if(!r.notes) return ''; const t=esc(r.notes);
     const short=r.notes.length>70?esc(r.notes.slice(0,68))+'…':t;
     return `<span title="${t}" style="white-space:normal">📝 ${short}</span>`; }
