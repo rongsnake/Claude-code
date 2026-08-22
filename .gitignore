@@ -1,0 +1,38 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+.DS_Store
+
+# downloaded source PDFs + extracted text (large, re-fetchable from the DC site).
+# Served locally via the /cds/docs symlink; the committed index JSON carries the
+# snippets/summaries the dashboard + RAG need, so neither is committed.
+data/pdfs/
+data/*.pdf
+data/docs/
+data/doctext/
+data/seen_documents.json
+
+# RAG index: keep the JSON (documents/chunks/meta + clean CSV), drop the large
+# rebuildable embedding matrix and the transient refresh lock/state/log
+data/index/embeddings.npy
+data/index/refresh.lock
+data/index/refresh_state.json
+data/index/refresh.log
+
+# Pi-side generated/local files (created by pi_autopilot.sh; not for the repo)
+cds_refresh.sh
+deploy.sh
+
+# Full-depth run log (regenerated each run; noise in git)
+finish_fulldepth.log
+
+# Stray credit-event exports written next to the default dashboard.html output;
+# only the public/ copies (served under /cds/) are tracked.
+/credit_events.csv
+/credit_events.xlsx
+
+# runtime: on-demand notes-refresh requests
+data/index/notes_requests.jsonl

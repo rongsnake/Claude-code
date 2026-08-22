@@ -1,0 +1,29 @@
+{
+  "built_at": "2026-06-02T16:36:51+00:00",
+  "n_determinations": 130,
+  "n_runs": 236,
+  "n_documents": 479,
+  "n_chunks": 8839,
+  "n_entities_with_docs": 34,
+  "doc_kind_counts": {
+    "decision": 216,
+    "document": 144,
+    "auction_settlement_terms": 55,
+    "final_list": 22,
+    "auction_market_data": 16,
+    "meeting_statement": 11,
+    "participating_bidders": 6,
+    "auction_results": 6,
+    "notice": 3
+  },
+  "flag_totals": {
+    "restructuring": 162,
+    "succession": 106,
+    "deliverable_obligations": 177,
+    "discretion_under_rules": 69,
+    "collective_action": 2,
+    "lock_up": 17,
+    "external_review": 1
+  },
+  "manifest_source": "local-scan"
+}
