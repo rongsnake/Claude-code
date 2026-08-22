@@ -1,0 +1,799 @@
+<title>Coco's Rulebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#E9F0F1;
+    --surface:#FFFFFF;
+    --surface-2:#F2F7F7;
+    --ink:#0B242C;
+    --ink-2:#3B5560;
+    --ink-3:#6C838C;
+    --line:#CBDADD;
+    --line-soft:#DEE8EA;
+    --accent:#0E7C6B;
+    --accent-ink:#0A5C50;
+    --accent-wash:#DCECE8;
+    --on-accent:#FFFFFF;
+    --gold:#9A7212;
+    --gold-wash:#F3E9CE;
+    --ghost:#6A5D97;
+    --ghost-wash:#E7E3F2;
+    --shadow:0 1px 2px rgba(11,36,44,.06), 0 8px 24px -12px rgba(11,36,44,.22);
+
+    --r-wood:#5E7F4B;
+    --r-goat:#8A8F73;
+    --r-molasses:#9C4A2F;
+    --r-cutlass:#52748F;
+    --r-gold:#C79A26;
+
+    --step--1:.8125rem;
+    --step-0:1rem;
+    --step-1:1.1875rem;
+    --step-2:1.5rem;
+    --step-3:2rem;
+    --step-4:2.75rem;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#071820;
+      --surface:#0E2831;
+      --surface-2:#12313B;
+      --ink:#E2EEF0;
+      --ink-2:#A8C0C6;
+      --ink-3:#77949C;
+      --line:#1E4653;
+      --line-soft:#173845;
+      --accent:#4FBFA9;
+      --accent-ink:#7FD6C4;
+      --accent-wash:#0F3A36;
+      --on-accent:#04191A;
+      --gold:#DCB253;
+      --gold-wash:#3A3016;
+      --ghost:#A79BD3;
+      --ghost-wash:#2A2542;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+      --r-wood:#8FB47B;
+      --r-goat:#B4B899;
+      --r-molasses:#D07E5F;
+      --r-cutlass:#89AEC7;
+      --r-gold:#E2BC5A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#071820;
+    --surface:#0E2831;
+    --surface-2:#12313B;
+    --ink:#E2EEF0;
+    --ink-2:#A8C0C6;
+    --ink-3:#77949C;
+    --line:#1E4653;
+    --line-soft:#173845;
+    --accent:#4FBFA9;
+    --accent-ink:#7FD6C4;
+    --accent-wash:#0F3A36;
+    --on-accent:#04191A;
+    --gold:#DCB253;
+    --gold-wash:#3A3016;
+    --ghost:#A79BD3;
+    --ghost-wash:#2A2542;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+    --r-wood:#8FB47B;
+    --r-goat:#B4B899;
+    --r-molasses:#D07E5F;
+    --r-cutlass:#89AEC7;
+    --r-gold:#E2BC5A;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:var(--step-0);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:56rem;margin:0 auto;padding:clamp(1rem,3vw,2.5rem) clamp(1rem,4vw,2rem) 4rem;display:flex;flex-direction:column;gap:1.75rem}
+
+  .masthead{display:flex;align-items:center;gap:.9rem}
+  .mark{
+    flex:none;width:3rem;height:3rem;display:grid;place-items:center;
+    font-size:1.6rem;border-radius:50%;
+    background:var(--accent-wash);border:1px solid var(--line);
+  }
+  h1{
+    font-family:Fraunces,Georgia,"Times New Roman",serif;
+    font-optical-sizing:auto;
+    font-size:var(--step-3);font-weight:700;line-height:1.05;margin:0;
+    letter-spacing:-.015em;text-wrap:balance;
+  }
+  .tagline{margin:.15rem 0 0;color:var(--ink-2);font-size:var(--step--1)}
+
+  .console{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:1.1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.85rem;
+    position:sticky;top:0;z-index:5;
+  }
+  .askrow{display:flex;gap:.5rem}
+  #q{
+    flex:1;min-width:0;font:inherit;color:var(--ink);
+    background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+    padding:.7rem .85rem;
+  }
+  #q::placeholder{color:var(--ink-3)}
+  #q:focus-visible,button:focus-visible,.chip:focus-visible,.rel:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+  #go{
+    font:inherit;font-weight:600;cursor:pointer;flex:none;
+    background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);
+    border-radius:9px;padding:.7rem 1.15rem;
+  }
+  #go:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem}
+  .chip{
+    font:inherit;font-size:var(--step--1);cursor:pointer;
+    background:transparent;color:var(--ink-2);
+    border:1px solid var(--line);border-radius:100px;padding:.28rem .7rem;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-wash)}
+
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:1.25rem;box-shadow:var(--shadow);
+  }
+  .answer .card + .card{margin-top:.75rem}
+  .a-head{display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem}
+  h2{font-family:Fraunces,Georgia,serif;font-size:var(--step-2);font-weight:600;line-height:1.15;margin:0;letter-spacing:-.01em;text-wrap:balance;flex:1;min-width:14rem}
+  h3{font-family:Fraunces,Georgia,serif;font-size:var(--step-1);font-weight:600;margin:0 0 .5rem;letter-spacing:-.005em}
+  .card p{margin:0 0 .7rem}
+  .card p:last-child{margin-bottom:0}
+  .card ul{margin:0 0 .7rem;padding-left:1.15rem}
+  .card li{margin-bottom:.3rem}
+  strong{font-weight:600}
+  em.term{font-style:normal;color:var(--accent-ink);font-weight:600}
+
+  .tag{
+    flex:none;font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.22rem .5rem;border-radius:5px;border:1px solid transparent;white-space:nowrap;
+  }
+  .tag.official{background:var(--accent-wash);color:var(--accent-ink);border-color:var(--accent)}
+  .tag.clarified{background:var(--gold-wash);color:var(--gold);border-color:var(--gold)}
+  .tag.open{background:var(--ghost-wash);color:var(--ghost);border-color:var(--ghost)}
+
+  .src{
+    margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--line-soft);
+    font-size:var(--step--1);color:var(--ink-3);
+  }
+
+  .callout{
+    background:var(--surface-2);border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:.7rem .9rem;margin:0 0 .7rem;
+    font-size:var(--step--1);color:var(--ink-2);
+  }
+  .callout.ghosty{border-left-color:var(--ghost)}
+
+  .related{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
+  .rel{
+    font:inherit;font-size:var(--step--1);cursor:pointer;text-align:left;
+    background:var(--surface-2);color:var(--ink-2);
+    border:1px solid var(--line-soft);border-radius:8px;padding:.35rem .65rem;
+  }
+  .rel:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .rel-label{
+    font-family:"IBM Plex Mono",monospace;font-size:.6875rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3);width:100%;margin-bottom:.1rem;
+  }
+
+  .res{
+    display:inline-flex;align-items:center;gap:.35rem;
+    font-family:"IBM Plex Mono",monospace;font-size:var(--step--1);
+    background:var(--surface-2);border:1px solid var(--line-soft);
+    border-radius:100px;padding:.15rem .6rem .15rem .35rem;white-space:nowrap;
+  }
+  .dot{width:.6rem;height:.6rem;border-radius:50%;flex:none}
+  .d-wood{background:var(--r-wood)}
+  .d-goat{background:var(--r-goat)}
+  .d-molasses{background:var(--r-molasses)}
+  .d-cutlass{background:var(--r-cutlass)}
+  .d-gold{background:var(--r-gold)}
+  .costline{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-top:.3rem}
+
+  .ref h2{margin-bottom:.9rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem}
+  .grid .card{padding:1.1rem}
+  .steps{list-style:none;padding:0;margin:0;counter-reset:s}
+  .steps li{
+    counter-increment:s;position:relative;padding-left:1.9rem;margin-bottom:.55rem;
+    font-size:var(--step--1);color:var(--ink-2);
+  }
+  .steps li::before{
+    content:counter(s);position:absolute;left:0;top:.05rem;
+    width:1.35rem;height:1.35rem;border-radius:50%;display:grid;place-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+    background:var(--accent-wash);color:var(--accent-ink);border:1px solid var(--accent);
+  }
+  .kv{font-size:var(--step--1);color:var(--ink-2);margin:0}
+  .kv + .kv{margin-top:.6rem}
+
+  footer{font-size:var(--step--1);color:var(--ink-3);text-align:center;line-height:1.7}
+  footer a{color:var(--accent-ink)}
+  .legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:.7rem}
+
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  @media (prefers-reduced-motion:no-preference){
+    .answer .card{animation:rise .22s ease-out}
+    @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <span class="mark" aria-hidden="true">🦜</span>
+    <div>
+      <h1>Coco's Rulebook</h1>
+      <p class="tagline">Catan Junior rules, settled at the table.</p>
+    </div>
+  </header>
+
+  <section class="console">
+    <label class="sr-only" for="q">Ask a Catan Junior rules question</label>
+    <div class="askrow">
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Ask a rules question…">
+      <button id="go" type="button">Ask</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <section class="answer" id="answer" aria-live="polite"></section>
+
+  <section class="ref">
+    <h2>Quick reference</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Build costs</h3>
+        <p class="kv"><strong>Ship</strong></p>
+        <div class="costline">
+          <span class="res"><span class="dot d-wood"></span>wood</span>
+          <span class="res"><span class="dot d-goat"></span>goat</span>
+        </div>
+        <p class="kv" style="margin-top:.7rem"><strong>Pirates' lair</strong></p>
+        <div class="costline">
+          <span class="res"><span class="dot d-wood"></span>wood</span>
+          <span class="res"><span class="dot d-goat"></span>goat</span>
+          <span class="res"><span class="dot d-molasses"></span>molasses</span>
+          <span class="res"><span class="dot d-cutlass"></span>cutlass</span>
+        </div>
+        <p class="kv" style="margin-top:.7rem"><strong>Coco tile</strong></p>
+        <div class="costline">
+          <span class="res"><span class="dot d-molasses"></span>molasses</span>
+          <span class="res"><span class="dot d-cutlass"></span>cutlass</span>
+          <span class="res"><span class="dot d-gold"></span>gold</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>A turn, in order</h3>
+        <ol class="steps">
+          <li>Roll the die. <strong>Every</strong> player collects from the stockpile for their lairs touching a matching island.</li>
+          <li>Trade at the market: 2 identical tiles → 1 tile of your choice, as often as you like.</li>
+          <li>Build ships, lairs and Coco tiles — as many as you can pay for.</li>
+        </ol>
+      </article>
+
+      <article class="card">
+        <h3>The Ghost Captain</h3>
+        <p class="kv">Roll a <strong>6</strong> and nobody collects. Instead you move him to any <em>other</em> island, then take <strong>2</strong> tiles of that island's resource from the stockpile.</p>
+        <p class="kv">While he sits on an island it produces nothing, for anyone. He never steals from a player.</p>
+      </article>
+
+      <article class="card">
+        <h3>Winning</h3>
+        <p class="kv">First player with <strong>7 pirates' lairs</strong> on the board wins — you start with 2, so that's 5 more.</p>
+        <p class="kv">Hold the most Coco tiles and you park a lair on <strong>Spooky Island</strong>. It counts toward your 7 — but you lose it the moment someone matches or beats your Coco count.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <div class="legend">
+      <span class="tag official">In the rulebook</span>
+      <span class="tag clarified">Widely agreed</span>
+      <span class="tag open">Genuinely ambiguous</span>
+    </div>
+    <p>Built from the official CATAN Junior rules (Klaus Teuber, Catan Studio) plus published rules summaries.<br>
+    Where sources disagree, this bot says so rather than picking for you.<br>
+    The official PDF lives at <a href="https://www.catan.com/junior">catan.com/junior</a>.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SYN = {
+    molasses:["molasses","molasse","rum","syrup","sugar","sugarcane","treacle","cane"],
+    cutlass:["cutlass","cutlasses","cutlas","sword","swords","sabre","saber","blade","blades","knife"],
+    wood:["wood","woods","log","logs","timber","lumber","tree","trees","palm"],
+    goat:["goat","goats","sheep","animal","animals","livestock"],
+    gold:["gold","coin","coins","money","treasure","doubloon","doubloons"],
+    lair:["lair","lairs","hideout","hideouts","den","dens","settlement","settlements","base","camp","hut","huts"],
+    ship:["ship","ships","boat","boats","road","roads","route","routes"],
+    coco:["coco","cocoa","parrot","tile","tiles","development","dev","card","cards"],
+    ghost:["ghost","captain","robber","ghosts","skull","thief"],
+    spooky:["spooky","island","islands"],
+    roll:["roll","rolled","rolls","rolling","die","dice","number","numbers","six","6"],
+    pay:["pay","pays","paid","give","gives","given","giving","hand","hands","handing","disburse","disburses","disbursing","disbursement","distribute","distributes","distributing","distribution","owe","owes","transfer","dish","dole"],
+    stockpile:["stockpile","supply","bank","pile","stack","pool"],
+    build:["build","builds","building","built","place","places","placing","placement","put","construct","where"],
+    cost:["cost","costs","price","need","needs","needed","require","requires","required","buy","buys","buying","purchase","afford"],
+    win:["win","wins","winning","won","victory","end","ends","ending","over","finish","finishes","goal","target"],
+    trade:["trade","trades","trading","swap","swaps","exchange","exchanges","market","marketplace"],
+    setup:["setup","starting","begins","beginning","initial","setup"],
+    everyone:["everyone","everybody","other","others","opponent","opponents","player","players","white","red","orange","blue","yellow","green","whose","active","turn","turns"],
+    multi:["two","both","2","same","share","shares","shared","multiple","several","twice","double"],
+    steal:["steal","steals","stealing","stole","take","takes","taking","rob","robs"],
+    limit:["limit","limits","discard","discards","max","maximum","hand","hold","holding","keep","many"],
+    resource:["resource","resources","tile","tiles","commodity","goods"],
+    adjacent:["adjacent","touching","touch","touches","next","beside","corner","corners","around","near"],
+    difference:["difference","different","differs","versus","vs","compare","compared","normal","regular","adult","original","standard","big"],
+    play:["play","plays","playing","players","age","ages","old","long","time","minutes"]
+  };
+
+  var T2C = {};
+  Object.keys(SYN).forEach(function(canon){
+    SYN[canon].forEach(function(tok){
+      (T2C[tok] = T2C[tok] || []).push(canon);
+    });
+  });
+
+  var KB = [
+  {
+    id:"who-pays",
+    title:"Nobody hands resources to anybody — the stockpile pays everyone",
+    conf:"official",
+    strong:["pay","stockpile","everyone"],
+    k:["resource","roll","lair","molasses","cutlass","wood","goat","gold"],
+    phrases:["disburse","hand out","who gives","do i have to give","from the bank","who pays"],
+    body:'<p>This is the single biggest difference from grown-up Catan, and it trips up almost every new table: <strong>resources always come out of the shared stockpile in the middle, never out of another player’s hand.</strong></p>'+
+         '<p>So if white rolls and the result produces molasses for red and cutlasses for orange, <strong>white gives away nothing</strong>. Red reaches into the stockpile and takes a molasses tile. Orange reaches into the stockpile and takes a cutlass tile. White just rolled the die.</p>'+
+         '<div class="callout">Think of the roll as the islands producing, not as a payment. The active player is the one who <em class="term">rolls</em>, not the one who <em class="term">pays</em>.</div>'+
+         '<p>The only time a tile moves between two players in the whole game is… never. Even the Ghost Captain doesn’t steal.</p>',
+    src:"Official CATAN Junior rules — resource production."
+  },
+  {
+    id:"two-islands",
+    title:"Yes, one roll can produce two different resources",
+    conf:"official",
+    strong:["multi","roll","resource"],
+    k:["molasses","cutlass","everyone","lair","adjacent"],
+    phrases:["same number","two islands","both resources","molasses and cutlass","cutlasses and molasses"],
+    body:'<p><strong>Island numbers repeat on the board.</strong> More than one island can carry the same number, and those islands don’t have to produce the same thing.</p>'+
+         '<p>Published examples of the standard board show exactly this: roll a <strong>4</strong> and the treasure caves produce <span class="res"><span class="dot d-cutlass"></span>cutlasses</span> while the sugar cane island produces <span class="res"><span class="dot d-molasses"></span>molasses</span> — on the same roll.</p>'+
+         '<p>So both islands pay out at once, each to whichever players have lairs touching it, all from the stockpile. That is almost certainly what you were looking at.</p>'+
+         '<div class="callout">Check your own board: each island shows its number, and you’ll find the duplicates straight away.</div>',
+    src:"Official rules plus published board walkthroughs. Island layout is fixed, but confirm against your edition’s board."
+  },
+  {
+    id:"everyone-collects",
+    title:"Everyone collects on every roll, not just the active player",
+    conf:"official",
+    strong:["everyone","roll"],
+    k:["resource","lair","adjacent","stockpile"],
+    phrases:["not my turn","whose turn","only the player who rolled","do i get resources"],
+    body:'<p>When the die is rolled, <strong>every player</strong> with a lair touching a matching island collects — whether or not it’s their turn.</p>'+
+         '<p>Kids pick this up fast and it keeps everyone watching every roll. It also means a good lair site is one touching busy numbers, exactly as in the full game.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"per-lair",
+    title:"One tile per lair — two lairs on the same island means two tiles",
+    conf:"official",
+    strong:["multi","lair"],
+    k:["resource","roll","adjacent","stockpile"],
+    phrases:["two lairs","per lair","how many resources","more than one lair"],
+    body:'<p>You collect <strong>one resource tile for each of your lairs</strong> touching the producing island.</p>'+
+         '<p>Two lairs on the molasses island, molasses is rolled, you take two molasses tiles. Three lairs, three tiles.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"ghost-six",
+    title:"Rolling a 6: move the Ghost Captain, take 2 tiles",
+    conf:"official",
+    strong:["ghost","roll"],
+    k:["spooky","resource","stockpile","steal"],
+    phrases:["roll a 6","rolled a six","what happens on 6","move the ghost"],
+    body:'<p>Roll a <strong>6</strong> and no island produces. Instead the active player:</p>'+
+         '<ul><li>moves the Ghost Captain onto any <strong>other</strong> island of their choice, then</li>'+
+         '<li>takes <strong>2 resource tiles</strong> of that island’s type from the stockpile.</li></ul>'+
+         '<p>Note the reward: the Ghost Captain is not purely defensive here. Blocking your opponent’s best island also pays you two of that island’s resource.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"ghost-blocks",
+    title:"The Ghost Captain blocks an island but never steals",
+    conf:"official",
+    strong:["ghost","steal"],
+    k:["spooky","resource","roll","stockpile","everyone"],
+    phrases:["steal","robber","block","blocked island","what does the ghost captain do"],
+    body:'<p>While the Ghost Captain sits on an island, <strong>that island produces nothing for anyone</strong>, even when its number is rolled — including for the player who put him there.</p>'+
+         '<p>Unlike the robber in the full game, he <strong>does not steal a card</strong> from anyone, and there is no discarding. That is deliberate: it keeps the game from feeling mean to six-year-olds.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"no-discard",
+    title:"No hand limit and no discarding",
+    conf:"clarified",
+    strong:["limit","resource"],
+    k:["ghost","roll","stockpile"],
+    phrases:["hand limit","discard","too many cards","seven cards"],
+    body:'<p>There is <strong>no seven-card rule</strong> in Catan Junior. You may hold as many resource tiles as you like, and nothing ever forces you to discard.</p>'+
+         '<p>The one practical limit is the stockpile itself — if a resource has run out, nobody can take it until tiles come back.</p>',
+    src:"Follows from the rules as written; no discard rule exists anywhere in the rulebook."
+  },
+  {
+    id:"cost-ship",
+    title:"A ship costs 1 wood + 1 goat",
+    conf:"official",
+    strong:["cost","ship"],
+    k:["build","wood","goat","resource"],
+    phrases:["ship cost","cost of a ship","build a ship","how much is a ship"],
+    body:'<div class="costline"><span class="res"><span class="dot d-wood"></span>1 wood</span><span class="res"><span class="dot d-goat"></span>1 goat</span></div>'+
+         '<p style="margin-top:.7rem">Ships are your cheap expansion move — they open up the lair sites you actually want.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"cost-lair",
+    title:"A pirates' lair costs 1 wood + 1 goat + 1 molasses + 1 cutlass",
+    conf:"official",
+    strong:["cost","lair"],
+    k:["build","wood","goat","molasses","cutlass","resource"],
+    phrases:["lair cost","cost of a lair","how much is a lair","how much does a lair cost","hideout cost"],
+    body:'<div class="costline">'+
+         '<span class="res"><span class="dot d-wood"></span>1 wood</span>'+
+         '<span class="res"><span class="dot d-goat"></span>1 goat</span>'+
+         '<span class="res"><span class="dot d-molasses"></span>1 molasses</span>'+
+         '<span class="res"><span class="dot d-cutlass"></span>1 cutlass</span></div>'+
+         '<p style="margin-top:.7rem">All four different resources — a lair is the expensive build, and it is also the thing that wins the game.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"cost-coco",
+    title:"A Coco tile costs 1 molasses + 1 cutlass + 1 gold",
+    conf:"official",
+    strong:["cost","coco"],
+    k:["build","molasses","cutlass","gold","resource"],
+    phrases:["coco tile cost","cost of a coco","buy a coco","gold for"],
+    body:'<div class="costline">'+
+         '<span class="res"><span class="dot d-molasses"></span>1 molasses</span>'+
+         '<span class="res"><span class="dot d-cutlass"></span>1 cutlass</span>'+
+         '<span class="res"><span class="dot d-gold"></span>1 gold</span></div>'+
+         '<p style="margin-top:.7rem">Gold is only useful here (or traded away at the market), so a gold tile is effectively a down payment on a Coco tile.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"placement",
+    title:"Where you may build: ships off lairs, lairs off ships",
+    conf:"official",
+    strong:["build","adjacent"],
+    k:["ship","lair","cost"],
+    phrases:["where can i build","where do i build","build a lair","build a ship","placement","build anywhere"],
+    body:'<ul>'+
+         '<li>A <strong>ship</strong> goes on any empty ship-site next to one of <strong>your lairs</strong> (or, in practice, extending your own chain).</li>'+
+         '<li>A <strong>lair</strong> goes on any empty lair-site next to one of <strong>your ships</strong>.</li>'+
+         '</ul>'+
+         '<p>So you grow outward in an alternating chain, and you can never drop a lair somewhere your network hasn’t reached. Sites already occupied by anyone are closed.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"market",
+    title:"The market: 2 identical tiles for any 1 tile",
+    conf:"official",
+    strong:["trade","stockpile"],
+    k:["resource","cost","gold"],
+    phrases:["market","exchange rate","trade in","2 for 1","two for one","swap"],
+    body:'<p>On your turn you may trade with the stockpile as often as you like: <strong>hand back 2 tiles of the same kind and take any 1 tile you want.</strong></p>'+
+         '<p>Two goats in, one gold out. Two golds in, one cutlass out. It has to be a matched pair — you can’t combine two different tiles.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"player-trading",
+    title:"Trading with other players is not in the base rules",
+    conf:"open",
+    strong:["trade","everyone"],
+    k:["resource","stockpile"],
+    phrases:["trade with other players","trade with each other","player trading","can we trade"],
+    body:'<p>The core game is deliberately trade-free: children swap with the <strong>market</strong> at 2:1, not with each other. That avoids the negotiation and table-talk that makes full Catan hard for young players.</p>'+
+         '<p>Plenty of published summaries do describe player-to-player trading, usually as an <strong>optional or advanced rule</strong> once kids have the basics. Sources genuinely disagree on whether it is official.</p>'+
+         '<div class="callout ghosty">Practical answer: decide before you start. Allowing it speeds the game up and suits older kids; leaving it out keeps things calm.</div>',
+    src:"Sources conflict. Base rules describe market trading only; several rules summaries present player trading as an advanced option."
+  },
+  {
+    id:"coco-what",
+    title:"What Coco tiles do",
+    conf:"official",
+    strong:["coco"],
+    k:["cost","ghost","ship","lair","resource","build"],
+    phrases:["coco tile","what does coco do","development card","parrot"],
+    body:'<p>Coco tiles are the junior version of development cards. Buy one and you take the top tile from the stack, <strong>turn it face up and use it immediately</strong>. It then stays in front of you for the rest of the game.</p>'+
+         '<p>The effects are a mix of:</p>'+
+         '<ul><li>move the Ghost Captain, as if you had rolled a 6;</li>'+
+         '<li>a free ship or a free lair;</li>'+
+         '<li>extra resource tiles.</li></ul>'+
+         '<p>Because they stay face up in front of you, they also count toward the Spooky Island bonus.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"coco-ghost-two",
+    title:"Does a Ghost Captain Coco tile also give you 2 resources?",
+    conf:"open",
+    strong:["coco","ghost"],
+    k:["resource","roll","stockpile"],
+    phrases:["coco ghost captain","move the ghost with a tile","as if you rolled"],
+    body:'<p>The tile says you move the Ghost Captain <em>as if you had rolled a 6</em>. Tables split on whether "as if you rolled a 6" carries the <strong>2 free resource tiles</strong> along with it.</p>'+
+         '<ul><li><strong>Literal reading:</strong> yes — a 6 gives you the move <em>and</em> the 2 tiles, so the tile does too.</li>'+
+         '<li><strong>Conservative reading:</strong> no — the tile buys you the disruption only, and you already paid three resources for it.</li></ul>'+
+         '<div class="callout ghosty">The literal reading is the more common one. Either way, agree it out loud before the first Coco tile is bought.</div>',
+    src:"Acknowledged ambiguity, debated on BoardGameGeek. No definitive clarification found."
+  },
+  {
+    id:"spooky",
+    title:"Spooky Island goes to whoever has the most Coco tiles",
+    conf:"official",
+    strong:["spooky","coco"],
+    k:["lair","win","ghost","build"],
+    phrases:["spooky island","most coco","ghost captain home","extra lair"],
+    body:'<p>The moment you hold <strong>more Coco tiles than anyone else</strong>, place one of your unused lairs on Spooky Island. Buy the first Coco tile of the game and it is immediately yours.</p>'+
+         '<p>It is a loan, not a gift: if another player <strong>matches or overtakes</strong> your Coco count, you take your lair back off Spooky Island and they place theirs.</p>'+
+         '<p>While you hold it, it counts as one of your 7 lairs — so it can win you the game, and losing it can un-win it.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"win",
+    title:"First to 7 pirates' lairs wins",
+    conf:"official",
+    strong:["win","lair"],
+    k:["spooky","coco","build"],
+    phrases:["how do you win","who wins","end the game","victory","how many lairs"],
+    body:'<p>The game ends the instant a player has <strong>7 lairs on the board</strong>. You start with 2, so you need to build 5 more.</p>'+
+         '<p>A lair sitting on Spooky Island counts toward the 7 — which is why the Coco tile race matters right up to the last turn.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"setup",
+    title:"Setup and what you start with",
+    conf:"official",
+    strong:["setup"],
+    k:["lair","ship","build","play","spooky","ghost"],
+    phrases:["how do you set up","starting position","what do i start with","set up the board"],
+    body:'<p>Each player begins with <strong>2 pirates’ lairs already on the board</strong>, on the marked starting sites, with ships alongside. Your remaining lairs and ships sit in front of you as your personal supply.</p>'+
+         '<p>The <strong>Ghost Captain starts on Spooky Island</strong> in the middle. Resource tiles go in the stockpile beside the board, and the Coco tiles are shuffled into a face-down stack with the parrot showing.</p>',
+    src:"Official CATAN Junior rules. Exact piece counts vary by edition — check the components list in your box."
+  },
+  {
+    id:"resources",
+    title:"The five resources",
+    conf:"official",
+    strong:["resource"],
+    k:["wood","goat","molasses","cutlass","gold","cost"],
+    phrases:["what resources","five resources","types of tiles"],
+    body:'<div class="costline">'+
+         '<span class="res"><span class="dot d-wood"></span>wood</span>'+
+         '<span class="res"><span class="dot d-goat"></span>goats</span>'+
+         '<span class="res"><span class="dot d-molasses"></span>molasses</span>'+
+         '<span class="res"><span class="dot d-cutlass"></span>cutlasses</span>'+
+         '<span class="res"><span class="dot d-gold"></span>gold</span></div>'+
+         '<p style="margin-top:.7rem">Wood and goats build ships. Add molasses and a cutlass for a lair. Gold exists almost solely to buy Coco tiles.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"build-many",
+    title:"You can build as many times as you can afford",
+    conf:"official",
+    strong:["build","multi"],
+    k:["cost","ship","lair","coco","trade"],
+    phrases:["how many can i build","build twice","more than one build"],
+    body:'<p>There is no limit. On your turn, after the roll, you may trade and build in any order and as many times as your tiles allow — three ships and a lair in one turn is perfectly legal if you can pay.</p>'+
+         '<p>You can also interleave: trade at the market to complete a lair, build it, then trade again.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"gold-use",
+    title:"What gold is actually for",
+    conf:"official",
+    strong:["gold"],
+    k:["coco","cost","trade","resource"],
+    phrases:["what is gold for","use gold","gold useless"],
+    body:'<p>Gold buys nothing on its own. Its two uses are:</p>'+
+         '<ul><li>the third ingredient of a <strong>Coco tile</strong> (with molasses and a cutlass);</li>'+
+         '<li>market fodder — two golds trade for any single tile you need.</li></ul>'+
+         '<p>Don’t let it pile up: gold sitting in your hand is doing nothing.</p>',
+    src:"Official CATAN Junior rules."
+  },
+  {
+    id:"vs-catan",
+    title:"How it differs from full Catan",
+    conf:"clarified",
+    strong:["difference"],
+    k:["ghost","trade","roll","win","coco","limit"],
+    phrases:["different from catan","compared to catan","normal catan","real catan"],
+    body:'<ul>'+
+         '<li><strong>One die, not two.</strong> Islands carry single numbers, so production is flat, not a bell curve.</li>'+
+         '<li><strong>The robber doesn’t steal.</strong> The Ghost Captain blocks an island and pays the mover 2 tiles.</li>'+
+         '<li><strong>No discarding, no hand limit, no cards to hide.</strong></li>'+
+         '<li><strong>No player trading in the base game</strong> — the market handles it at 2:1.</li>'+
+         '<li><strong>Win by building</strong> 7 lairs, not by accumulating victory points.</li>'+
+         '</ul>',
+    src:"Comparison drawn from both rulebooks."
+  },
+  {
+    id:"players",
+    title:"Players, age and length",
+    conf:"official",
+    strong:["play"],
+    k:["setup","win"],
+    phrases:["how many players","what age","how long","playing time"],
+    body:'<p><strong>2–4 players, ages 6 and up, roughly 30 minutes.</strong></p>'+
+         '<p>At two players the game is faster and the Ghost Captain hurts more, since there are fewer islands worth blocking and the block lands squarely on your one opponent.</p>',
+    src:"Official CATAN Junior box and rules."
+  },
+  {
+    id:"stockpile-empty",
+    title:"If the stockpile runs out of a resource",
+    conf:"open",
+    strong:["stockpile","limit"],
+    k:["resource","roll","trade"],
+    phrases:["run out","runs out","no tiles left","empty stockpile"],
+    body:'<p>The rulebook doesn’t give this a clear ruling, and in practice it rarely comes up.</p>'+
+         '<p>The usual handling, borrowed from full Catan: if there aren’t enough tiles of a type to satisfy everyone who earned them, <strong>nobody gets that resource this roll</strong> — unless exactly one player is owed, in which case they take whatever remains.</p>'+
+         '<div class="callout ghosty">Flagged as a house call, not a quotable rule. With children, taking whatever is left and moving on is usually the better game.</div>',
+    src:"Not addressed clearly in the rulebook. Suggested handling only."
+  }
+  ];
+
+  function norm(s){ return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim(); }
+
+  function canonSet(q){
+    var out = {};
+    norm(q).split(" ").forEach(function(tok){
+      if(!tok) return;
+      var cs = T2C[tok];
+      if(cs) cs.forEach(function(c){ out[c] = true; });
+    });
+    return Object.keys(out);
+  }
+
+  function score(entry, cans, nq){
+    var s = 0;
+    cans.forEach(function(c){
+      if(entry.strong.indexOf(c) !== -1) s += 3;
+      else if(entry.k.indexOf(c) !== -1) s += 1;
+    });
+    (entry.phrases||[]).forEach(function(p){ if(nq.indexOf(p) !== -1) s += 5; });
+    return s;
+  }
+
+  var CONF = {
+    official:{cls:"official", label:"In the rulebook"},
+    clarified:{cls:"clarified", label:"Widely agreed"},
+    open:{cls:"open", label:"Genuinely ambiguous"}
+  };
+
+  var answerEl = document.getElementById("answer");
+  var input = document.getElementById("q");
+
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function cardFor(entry, related){
+    var c = CONF[entry.conf];
+    var html = '<article class="card">'+
+      '<div class="a-head"><h2>'+esc(entry.title)+'</h2>'+
+      '<span class="tag '+c.cls+'">'+c.label+'</span></div>'+
+      entry.body+
+      '<p class="src">'+esc(entry.src)+'</p>';
+    if(related && related.length){
+      html += '<div class="related"><span class="rel-label">Related</span>';
+      related.forEach(function(r){
+        html += '<button class="rel" type="button" data-id="'+r.id+'">'+esc(r.title)+'</button>';
+      });
+      html += '</div>';
+    }
+    html += '</article>';
+    return html;
+  }
+
+  function showById(id){
+    var e = KB.filter(function(x){ return x.id === id; })[0];
+    if(!e) return;
+    render(e);
+    answerEl.scrollIntoView({block:"nearest", behavior:"smooth"});
+  }
+
+  function pickRelated(entry){
+    var pool = KB.filter(function(x){ return x.id !== entry.id; });
+    var scored = pool.map(function(x){
+      var s = 0;
+      entry.strong.concat(entry.k).forEach(function(c){
+        if(x.strong.indexOf(c) !== -1) s += 2;
+        else if(x.k.indexOf(c) !== -1) s += 1;
+      });
+      return {e:x, s:s};
+    }).sort(function(a,b){ return b.s - a.s; });
+    return scored.slice(0,3).map(function(o){ return o.e; });
+  }
+
+  function render(entry){
+    answerEl.innerHTML = cardFor(entry, pickRelated(entry));
+    wire();
+  }
+
+  function renderUnsure(q, top){
+    var html = '<article class="card">'+
+      '<div class="a-head"><h2>I don’t have a confident answer for that</h2>'+
+      '<span class="tag open">No match</span></div>'+
+      '<p>Nothing in this rulebook clearly covers “'+esc(q)+'”. Rather than invent a ruling, here are the closest topics I do hold:</p>'+
+      '<div class="related"><span class="rel-label">Closest topics</span>';
+    top.forEach(function(e){
+      html += '<button class="rel" type="button" data-id="'+e.id+'">'+esc(e.title)+'</button>';
+    });
+    html += '</div>'+
+      '<p class="src">If none of these fit, the official PDF is the place to look — catan.com/junior.</p>'+
+      '</article>';
+    answerEl.innerHTML = html;
+    wire();
+  }
+
+  function wire(){
+    Array.prototype.forEach.call(answerEl.querySelectorAll(".rel"), function(b){
+      b.addEventListener("click", function(){ showById(b.getAttribute("data-id")); });
+    });
+  }
+
+  function ask(q){
+    var nq = norm(q);
+    if(!nq){ return; }
+    var cans = canonSet(q);
+    var ranked = KB.map(function(e){ return {e:e, s:score(e, cans, nq)}; })
+                   .sort(function(a,b){ return b.s - a.s; });
+    if(ranked[0].s >= 3){
+      render(ranked[0].e);
+    } else {
+      renderUnsure(q, ranked.slice(0,4).map(function(o){ return o.e; }));
+    }
+    answerEl.scrollIntoView({block:"nearest", behavior:"smooth"});
+  }
+
+  var EXAMPLES = [
+    "Does the player who rolled have to give resources to everyone else?",
+    "Can one roll produce molasses and cutlasses at the same time?",
+    "What does a pirates' lair cost?",
+    "What happens when you roll a 6?",
+    "Can we trade with each other?",
+    "How do you win?",
+    "How does Spooky Island work?",
+    "Is there a hand limit?"
+  ];
+
+  var chipsEl = document.getElementById("chips");
+  EXAMPLES.forEach(function(t){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.textContent = t;
+    b.addEventListener("click", function(){ input.value = t; ask(t); });
+    chipsEl.appendChild(b);
+  });
+
+  document.getElementById("go").addEventListener("click", function(){ ask(input.value); });
+  input.addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ask(input.value); } });
+
+  render(KB[0]);
+})();
+</script>
