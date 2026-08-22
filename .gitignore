@@ -28,3 +28,7 @@ deploy.sh
 
 # Full-depth run log (regenerated each run; noise in git)
 finish_fulldepth.log
+
+# Virtual Me note embeddings: rebuildable from knowledge/*.md, machine-local,
+# and keyed to whichever embedding model that machine runs.
+virtual_me/.cache/
