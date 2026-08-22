@@ -58,6 +58,19 @@ python cds_dc_scraper.py --pdf || python cds_dc_scraper.py || true
 python creditex_scraper.py     || true
 python reconcile.py
 python analytics.py
+
+# Gate the scrape before anything leaves this box. The scrapers above are
+# best-effort (`|| true`), so a 403 or a changed selector yields a *partial*
+# dataset rather than a failure. That already produced a collapsed dataset on
+# the refine/2026-06-15 branch (auctions 245 -> 15, matched 120 -> 0) which was
+# committed and deployed without complaint. check_refresh.py compares this run
+# against the last commit and rejects a collapsed table or a vanished source.
+if ! python check_refresh.py; then
+  echo "== refresh REJECTED: restoring last good data, nothing built or deployed =="
+  git checkout -- data
+  exit 1
+fi
+
 python build_dashboard.py
 mkdir -p public
 python build_dashboard.py --output public/index.html
