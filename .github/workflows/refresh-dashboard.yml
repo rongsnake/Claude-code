@@ -16,7 +16,11 @@ name: Publish CDS dashboard
 on:
   push:
     branches: [main, claude/setup-cds-scraper-dashboard-i0TxS]
-    paths: ["public/**", "data/**", "build_dashboard.py", ".github/workflows/**"]
+    # No paths filter on purpose. The job rebuilds the dashboard from committed
+    # data, so anything that changes the build output must republish — that
+    # includes analytics.py, credit_events.py, summaries.py and requirements.txt.
+    # A paths list silently went stale once already: a metrics fix in analytics.py
+    # did not match it, so the corrected numbers were never published.
   schedule:
     - cron: "0 7 * * 1"
   workflow_dispatch:
