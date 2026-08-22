@@ -275,7 +275,7 @@ def _slug_to_entity(slug: str) -> str | None:
     # name two entities. The document is about the first one, so drop everything
     # from the comparison marker onwards. (Bare "v" is deliberately not a marker —
     # it would corrupt the Dutch legal suffixes "B.V." and "N.V.".)
-    s = re.split(r"\b(?:against|versus|vs)\b", s, maxsplit=1)[0]
+    s = _COMPARE_CUT_RE.split(s, maxsplit=1)[0]
     s = _TEXT_DATE_RE.sub(" ", s)               # "april 1, 2019" / "1 april 2019"
     s = re.sub(r"\b\d[\d.,]*\b", " ", s)        # stray numbers (issue ids, dates)
     s = re.sub(r"[^a-z0-9&.'()\s-]", " ", s)     # en-dashes and other separators
@@ -806,6 +806,101 @@ def _is_garbage_entity(name: str | None) -> bool:
     )
 
 
+# ── canonical reference-entity registry ───────────────────────────────────────
+# Entity names taken from a document title are best-effort, so one entity arrives
+# as "Atos Se", "Atos SE" and "Administrative Atos Se", and some documents (meeting
+# minutes, offering memoranda, participation letters) name no entity at all and
+# yield a fragment of their own title. The ISDA auction index, the verified seeds
+# and the auction table carry authoritative spellings, so once a run has them we
+# snap the title-derived names onto the authoritative one and drop the leftovers
+# that are really document titles. Parsing titles harder cannot fix this; matching
+# against known entities can.
+_COMPARE_CUT_RE = re.compile(r"\b(?:against|versus|vs)\b", re.I)
+
+_ENTITY_NOISE_RE = re.compile(
+    r"\b(inc|incorporated|ltd|limited|corp|corporation|co|company|plc|llc|lp|llp|"
+    r"nv|sa|ag|spa|holdings?|group|the|of|and)\b", re.I)
+
+# Words that only ever describe a document. A "name" made solely of these is a
+# document title, not a reference entity.
+_DOC_ONLY_WORDS = frozenset("""
+offering memorandum memoranda transcript call conference report reporting relating
+bondholder meetings meeting minutes agenda submission potential challenges challenge
+response form customer physical settlement request letter continuing non dealer
+participation dc cds gc administrative notice notices order hearing scheduling
+amended application annex appendix presentation press release summary proposal
+opinion rules rule template templates nops composite package dated to of and a the
+for with vs draft version corrected changes pages maturity buckets list lists
+general counsel
+""".split())
+
+# Very short keys ("toys") match far too eagerly inside unrelated titles.
+_MIN_ENTITY_KEY = 5
+
+
+def _entity_key(name) -> str:
+    """Comparison key for an entity name: lowercase, punctuation and legal-suffix
+    free, so "Atos SE" and "Atos Se" collapse to the same token run."""
+    if not name:
+        return ""
+    s = re.sub(r"[^a-z0-9 ]", " ", str(name).lower())
+    s = _ENTITY_NOISE_RE.sub(" ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _is_document_title(name) -> bool:
+    toks = re.sub(r"[^a-z0-9 ]", " ", str(name or "").lower()).split()
+    return bool(toks) and all(t in _DOC_ONLY_WORDS for t in toks)
+
+
+def _known_entities(records: Iterable[Determination]) -> dict[str, str]:
+    """Authoritative entity spellings: the ISDA auction index rows scraped this run,
+    the verified seeds, and the auction table when a previous run left one."""
+    canon: dict[str, str] = {}
+    for r in list(records) + SEED_REFERENCES:
+        if r.reference_entity and r.source in ("dc-isda", "rest-api", "reference"):
+            canon.setdefault(_entity_key(r.reference_entity), r.reference_entity)
+    try:
+        auc = DATA_DIR / "auctions.csv"
+        if auc.exists():
+            for name in pd.read_csv(auc)["reference_entity"].dropna().unique():
+                canon.setdefault(_entity_key(name), str(name))
+    except Exception as exc:            # a malformed/missing table must not break a scrape
+        log.debug("auction entity list unavailable: %s", exc)
+    return {k: v for k, v in canon.items() if len(k) >= _MIN_ENTITY_KEY}
+
+
+def canonicalise_entities(records: list[Determination]) -> tuple[int, int]:
+    """Rewrite title-derived entity names to their authoritative spelling and drop
+    the ones that are really document titles. Returns (renamed, dropped)."""
+    canon = _known_entities(records)
+    if not canon:
+        return (0, 0)
+    renamed = dropped = 0
+    for rec in records:
+        if rec.source != "document-feed":
+            continue
+        # Blacklines are titled "<subject> against <precedent>"; only the subject
+        # side may supply the entity, or every comparison would be filed under the
+        # precedent it was compared to.
+        subject = _entity_key(_COMPARE_CUT_RE.split(html.unescape(rec.title or ""), 1)[0])
+        best = None
+        for key, name in canon.items():
+            m = re.search(rf"\b{re.escape(key)}\b", subject)
+            # earliest mention wins (the subject leads the title), then the longest
+            if m and (best is None or m.start() < best[0]
+                      or (m.start() == best[0] and len(key) > best[1])):
+                best = (m.start(), len(key), name)
+        if best:
+            if rec.reference_entity != best[2]:
+                rec.reference_entity = best[2]
+                renamed += 1
+        elif _is_document_title(rec.reference_entity):
+            rec.reference_entity = None
+            dropped += 1
+    return renamed, dropped
+
+
 def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
     """Run the full live scrape. Raises RuntimeError if no source is reachable.
 
@@ -901,6 +996,11 @@ def scrape_live(parse_pdfs: bool = False) -> list[Determination]:
         log.info("Parsing %d decision PDFs…", len(decisions))
         for rec in decisions:
             enrich_with_pdf(session, rec)
+
+    renamed, dropped = canonicalise_entities(recs)
+    if renamed or dropped:
+        log.info("Entity names: %d snapped to an authoritative spelling, %d dropped "
+                 "as document titles", renamed, dropped)
 
     return recs
 
