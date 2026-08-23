@@ -5,230 +5,180 @@
 
 <style>
   :root{
-    --ground:#E9F0F1;
-    --surface:#FFFFFF;
-    --surface-2:#F2F7F7;
-    --ink:#0B242C;
-    --ink-2:#3B5560;
-    --ink-3:#6C838C;
-    --line:#CBDADD;
-    --line-soft:#DEE8EA;
-    --accent:#0E7C6B;
-    --accent-ink:#0A5C50;
-    --accent-wash:#DCECE8;
-    --on-accent:#FFFFFF;
-    --gold:#9A7212;
-    --gold-wash:#F3E9CE;
-    --ghost:#6A5D97;
-    --ghost-wash:#E7E3F2;
+    --ground:#E9F0F1; --surface:#FFFFFF; --surface-2:#F2F7F7;
+    --ink:#0B242C; --ink-2:#3B5560; --ink-3:#6C838C;
+    --line:#CBDADD; --line-soft:#DEE8EA;
+    --accent:#0E7C6B; --accent-ink:#0A5C50; --accent-wash:#DCECE8; --on-accent:#FFFFFF;
+    --gold:#9A7212; --gold-wash:#F3E9CE;
+    --ghost:#6A5D97; --ghost-wash:#E7E3F2;
     --shadow:0 1px 2px rgba(11,36,44,.06), 0 8px 24px -12px rgba(11,36,44,.22);
-
-    --r-wood:#5E7F4B;
-    --r-goat:#8A8F73;
-    --r-molasses:#9C4A2F;
-    --r-cutlass:#52748F;
-    --r-gold:#C79A26;
-
-    --step--1:.8125rem;
-    --step-0:1rem;
-    --step-1:1.1875rem;
-    --step-2:1.5rem;
-    --step-3:2rem;
-    --step-4:2.75rem;
+    --r-wood:#5E7F4B; --r-goat:#8A8F73; --r-molasses:#9C4A2F; --r-cutlass:#52748F; --r-gold:#C79A26;
+    --p-white:#B9C2C0; --p-red:#B93E30; --p-orange:#C97518; --p-blue:#2E6DA4;
+    --step--1:.8125rem; --step-0:1rem; --step-1:1.1875rem; --step-2:1.5rem; --step-3:2rem;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --ground:#071820;
-      --surface:#0E2831;
-      --surface-2:#12313B;
-      --ink:#E2EEF0;
-      --ink-2:#A8C0C6;
-      --ink-3:#77949C;
-      --line:#1E4653;
-      --line-soft:#173845;
-      --accent:#4FBFA9;
-      --accent-ink:#7FD6C4;
-      --accent-wash:#0F3A36;
-      --on-accent:#04191A;
-      --gold:#DCB253;
-      --gold-wash:#3A3016;
-      --ghost:#A79BD3;
-      --ghost-wash:#2A2542;
+      --ground:#071820; --surface:#0E2831; --surface-2:#12313B;
+      --ink:#E2EEF0; --ink-2:#A8C0C6; --ink-3:#77949C;
+      --line:#1E4653; --line-soft:#173845;
+      --accent:#4FBFA9; --accent-ink:#7FD6C4; --accent-wash:#0F3A36; --on-accent:#04191A;
+      --gold:#DCB253; --gold-wash:#3A3016;
+      --ghost:#A79BD3; --ghost-wash:#2A2542;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
-      --r-wood:#8FB47B;
-      --r-goat:#B4B899;
-      --r-molasses:#D07E5F;
-      --r-cutlass:#89AEC7;
-      --r-gold:#E2BC5A;
+      --r-wood:#8FB47B; --r-goat:#B4B899; --r-molasses:#D07E5F; --r-cutlass:#89AEC7; --r-gold:#E2BC5A;
+      --p-white:#D6DEDC; --p-red:#E0685A; --p-orange:#E39B48; --p-blue:#6FA3D0;
     }
   }
   :root[data-theme="dark"]{
-    --ground:#071820;
-    --surface:#0E2831;
-    --surface-2:#12313B;
-    --ink:#E2EEF0;
-    --ink-2:#A8C0C6;
-    --ink-3:#77949C;
-    --line:#1E4653;
-    --line-soft:#173845;
-    --accent:#4FBFA9;
-    --accent-ink:#7FD6C4;
-    --accent-wash:#0F3A36;
-    --on-accent:#04191A;
-    --gold:#DCB253;
-    --gold-wash:#3A3016;
-    --ghost:#A79BD3;
-    --ghost-wash:#2A2542;
+    --ground:#071820; --surface:#0E2831; --surface-2:#12313B;
+    --ink:#E2EEF0; --ink-2:#A8C0C6; --ink-3:#77949C;
+    --line:#1E4653; --line-soft:#173845;
+    --accent:#4FBFA9; --accent-ink:#7FD6C4; --accent-wash:#0F3A36; --on-accent:#04191A;
+    --gold:#DCB253; --gold-wash:#3A3016;
+    --ghost:#A79BD3; --ghost-wash:#2A2542;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
-    --r-wood:#8FB47B;
-    --r-goat:#B4B899;
-    --r-molasses:#D07E5F;
-    --r-cutlass:#89AEC7;
-    --r-gold:#E2BC5A;
+    --r-wood:#8FB47B; --r-goat:#B4B899; --r-molasses:#D07E5F; --r-cutlass:#89AEC7; --r-gold:#E2BC5A;
+    --p-white:#D6DEDC; --p-red:#E0685A; --p-orange:#E39B48; --p-blue:#6FA3D0;
   }
 
   *{box-sizing:border-box}
-  body{
-    margin:0;
-    background:var(--ground);
-    color:var(--ink);
+  body{margin:0;background:var(--ground);color:var(--ink);
     font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    font-size:var(--step-0);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:56rem;margin:0 auto;padding:clamp(1rem,3vw,2.5rem) clamp(1rem,4vw,2rem) 4rem;display:flex;flex-direction:column;gap:1.75rem}
+    font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:56rem;margin:0 auto;padding:clamp(1rem,3vw,2.25rem) clamp(1rem,4vw,2rem) 4rem;
+    display:flex;flex-direction:column;gap:1.25rem}
 
   .masthead{display:flex;align-items:center;gap:.9rem}
-  .mark{
-    flex:none;width:3rem;height:3rem;display:grid;place-items:center;
-    font-size:1.6rem;border-radius:50%;
-    background:var(--accent-wash);border:1px solid var(--line);
-  }
-  h1{
-    font-family:Fraunces,Georgia,"Times New Roman",serif;
-    font-optical-sizing:auto;
-    font-size:var(--step-3);font-weight:700;line-height:1.05;margin:0;
-    letter-spacing:-.015em;text-wrap:balance;
-  }
+  .mark{flex:none;width:3rem;height:3rem;display:grid;place-items:center;font-size:1.6rem;
+    border-radius:50%;background:var(--accent-wash);border:1px solid var(--line)}
+  h1{font-family:Fraunces,Georgia,serif;font-optical-sizing:auto;font-size:var(--step-3);
+    font-weight:700;line-height:1.05;margin:0;letter-spacing:-.015em;text-wrap:balance}
   .tagline{margin:.15rem 0 0;color:var(--ink-2);font-size:var(--step--1)}
 
-  .console{
-    background:var(--surface);border:1px solid var(--line);border-radius:14px;
-    padding:1.1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.85rem;
-    position:sticky;top:0;z-index:5;
-  }
+  .tabs{display:flex;gap:.3rem;border-bottom:1px solid var(--line);padding-bottom:0}
+  .tab{font:inherit;font-weight:600;cursor:pointer;background:none;border:none;
+    color:var(--ink-3);padding:.55rem .9rem;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab[aria-selected="true"]{color:var(--accent-ink);border-bottom-color:var(--accent)}
+  .tab:hover{color:var(--ink)}
+  [hidden]{display:none !important}
+
+  .composer{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.75rem;
+    position:sticky;top:0;z-index:5}
   .askrow{display:flex;gap:.5rem}
-  #q{
-    flex:1;min-width:0;font:inherit;color:var(--ink);
-    background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
-    padding:.7rem .85rem;
-  }
+  #q{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem}
   #q::placeholder{color:var(--ink-3)}
-  #q:focus-visible,button:focus-visible,.chip:focus-visible,.rel:focus-visible{
-    outline:2px solid var(--accent);outline-offset:2px;
-  }
-  #go{
-    font:inherit;font-weight:600;cursor:pointer;flex:none;
-    background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);
-    border-radius:9px;padding:.7rem 1.15rem;
-  }
-  #go:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .btn{font:inherit;font-weight:600;cursor:pointer;flex:none;background:var(--accent);
+    color:var(--on-accent);border:1px solid var(--accent);border-radius:9px;padding:.7rem 1.15rem}
+  .btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+  .btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--line);font-weight:500}
+  .btn.ghost:hover{background:var(--surface-2);color:var(--ink)}
 
   .chips{display:flex;flex-wrap:wrap;gap:.4rem}
-  .chip{
-    font:inherit;font-size:var(--step--1);cursor:pointer;
-    background:transparent;color:var(--ink-2);
-    border:1px solid var(--line);border-radius:100px;padding:.28rem .7rem;
-  }
+  .chip{font:inherit;font-size:var(--step--1);cursor:pointer;background:transparent;
+    color:var(--ink-2);border:1px solid var(--line);border-radius:100px;padding:.28rem .7rem}
   .chip:hover{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-wash)}
 
-  .card{
-    background:var(--surface);border:1px solid var(--line);border-radius:14px;
-    padding:1.25rem;box-shadow:var(--shadow);
-  }
-  .answer .card + .card{margin-top:.75rem}
+  .thread{display:flex;flex-direction:column;gap:1rem}
+  .exchange{display:flex;flex-direction:column;gap:.5rem}
+  .asked{align-self:flex-end;max-width:min(90%,34rem);background:var(--accent-wash);
+    color:var(--accent-ink);border:1px solid var(--accent);border-radius:14px 14px 4px 14px;
+    padding:.55rem .9rem;font-size:var(--step--1);font-weight:500}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:1.2rem;box-shadow:var(--shadow)}
   .a-head{display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem}
-  h2{font-family:Fraunces,Georgia,serif;font-size:var(--step-2);font-weight:600;line-height:1.15;margin:0;letter-spacing:-.01em;text-wrap:balance;flex:1;min-width:14rem}
-  h3{font-family:Fraunces,Georgia,serif;font-size:var(--step-1);font-weight:600;margin:0 0 .5rem;letter-spacing:-.005em}
-  .card p{margin:0 0 .7rem}
-  .card p:last-child{margin-bottom:0}
-  .card ul{margin:0 0 .7rem;padding-left:1.15rem}
-  .card li{margin-bottom:.3rem}
+  h2{font-family:Fraunces,Georgia,serif;font-size:var(--step-2);font-weight:600;line-height:1.15;
+    margin:0;letter-spacing:-.01em;text-wrap:balance;flex:1;min-width:13rem}
+  h3{font-family:Fraunces,Georgia,serif;font-size:var(--step-1);font-weight:600;margin:0 0 .5rem}
+  .card p{margin:0 0 .7rem} .card p:last-child{margin-bottom:0}
+  .card ul{margin:0 0 .7rem;padding-left:1.15rem} .card li{margin-bottom:.3rem}
   strong{font-weight:600}
   em.term{font-style:normal;color:var(--accent-ink);font-weight:600}
 
-  .tag{
-    flex:none;font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;
-    padding:.22rem .5rem;border-radius:5px;border:1px solid transparent;white-space:nowrap;
-  }
+  .verdict{font-family:Fraunces,Georgia,serif;font-size:var(--step-1);font-weight:600;
+    margin:0 0 .6rem;padding:.55rem .8rem;border-radius:9px;line-height:1.3}
+  .verdict.ok{background:var(--accent-wash);color:var(--accent-ink)}
+  .verdict.no{background:var(--gold-wash);color:var(--gold)}
+
+  .tag{flex:none;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.6875rem;
+    letter-spacing:.06em;text-transform:uppercase;padding:.22rem .5rem;border-radius:5px;
+    border:1px solid transparent;white-space:nowrap}
   .tag.official{background:var(--accent-wash);color:var(--accent-ink);border-color:var(--accent)}
   .tag.clarified{background:var(--gold-wash);color:var(--gold);border-color:var(--gold)}
   .tag.open{background:var(--ghost-wash);color:var(--ghost);border-color:var(--ghost)}
 
-  .src{
-    margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--line-soft);
-    font-size:var(--step--1);color:var(--ink-3);
-  }
-
-  .callout{
-    background:var(--surface-2);border-left:3px solid var(--accent);
-    border-radius:0 8px 8px 0;padding:.7rem .9rem;margin:0 0 .7rem;
-    font-size:var(--step--1);color:var(--ink-2);
-  }
+  .src{margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--line-soft);
+    font-size:var(--step--1);color:var(--ink-3)}
+  .callout{background:var(--surface-2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+    padding:.7rem .9rem;margin:0 0 .7rem;font-size:var(--step--1);color:var(--ink-2)}
   .callout.ghosty{border-left-color:var(--ghost)}
 
   .related{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
-  .rel{
-    font:inherit;font-size:var(--step--1);cursor:pointer;text-align:left;
-    background:var(--surface-2);color:var(--ink-2);
-    border:1px solid var(--line-soft);border-radius:8px;padding:.35rem .65rem;
-  }
+  .rel{font:inherit;font-size:var(--step--1);cursor:pointer;text-align:left;background:var(--surface-2);
+    color:var(--ink-2);border:1px solid var(--line-soft);border-radius:8px;padding:.35rem .65rem}
   .rel:hover{border-color:var(--accent);color:var(--accent-ink)}
-  .rel-label{
-    font-family:"IBM Plex Mono",monospace;font-size:.6875rem;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--ink-3);width:100%;margin-bottom:.1rem;
-  }
+  .rel-label{font-family:"IBM Plex Mono",monospace;font-size:.6875rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3);width:100%;margin-bottom:.1rem}
 
-  .res{
-    display:inline-flex;align-items:center;gap:.35rem;
-    font-family:"IBM Plex Mono",monospace;font-size:var(--step--1);
-    background:var(--surface-2);border:1px solid var(--line-soft);
-    border-radius:100px;padding:.15rem .6rem .15rem .35rem;white-space:nowrap;
-  }
+  .res{display:inline-flex;align-items:center;gap:.35rem;font-family:"IBM Plex Mono",monospace;
+    font-size:var(--step--1);background:var(--surface-2);border:1px solid var(--line-soft);
+    border-radius:100px;padding:.15rem .6rem .15rem .35rem;white-space:nowrap}
   .dot{width:.6rem;height:.6rem;border-radius:50%;flex:none}
-  .d-wood{background:var(--r-wood)}
-  .d-goat{background:var(--r-goat)}
-  .d-molasses{background:var(--r-molasses)}
-  .d-cutlass{background:var(--r-cutlass)}
+  .d-wood{background:var(--r-wood)} .d-goat{background:var(--r-goat)}
+  .d-molasses{background:var(--r-molasses)} .d-cutlass{background:var(--r-cutlass)}
   .d-gold{background:var(--r-gold)}
   .costline{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-top:.3rem}
 
-  .ref h2{margin-bottom:.9rem}
+  fieldset{border:none;margin:0;padding:0}
+  legend{font-family:"IBM Plex Mono",monospace;font-size:.6875rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3);padding:0;margin-bottom:.5rem}
+  .step{margin-bottom:1.25rem}
+  .opts{display:flex;flex-wrap:wrap;gap:.4rem}
+  .opt{position:relative}
+  .opt input{position:absolute;opacity:0;width:0;height:0}
+  .opt span{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;font-size:var(--step--1);
+    border:1px solid var(--line);border-radius:100px;padding:.35rem .8rem;background:var(--surface-2);
+    color:var(--ink-2);user-select:none}
+  .opt input:checked + span{border-color:var(--accent);background:var(--accent-wash);
+    color:var(--accent-ink);font-weight:600}
+  .opt input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+  .swatch{width:.7rem;height:.7rem;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15)}
+
+  .gridwrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:var(--step--1)}
+  th,td{padding:.45rem .5rem;text-align:left;border-bottom:1px solid var(--line-soft)}
+  th{font-family:"IBM Plex Mono",monospace;font-size:.6875rem;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--ink-3);font-weight:400;white-space:nowrap}
+  td input[type="number"]{width:3.4rem;font:inherit;font-variant-numeric:tabular-nums;color:var(--ink);
+    background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:.3rem .4rem}
+  .pname{display:inline-flex;align-items:center;gap:.45rem;font-weight:600;white-space:nowrap}
+
+  .payout{list-style:none;padding:0;margin:0 0 .7rem}
+  .payout li{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.4rem 0;
+    border-bottom:1px solid var(--line-soft)}
+  .payout li:last-child{border-bottom:none}
+  .arrow{color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+
+  .ref h2{margin-bottom:.9rem;font-size:var(--step-2)}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem}
   .grid .card{padding:1.1rem}
   .steps{list-style:none;padding:0;margin:0;counter-reset:s}
-  .steps li{
-    counter-increment:s;position:relative;padding-left:1.9rem;margin-bottom:.55rem;
-    font-size:var(--step--1);color:var(--ink-2);
-  }
-  .steps li::before{
-    content:counter(s);position:absolute;left:0;top:.05rem;
-    width:1.35rem;height:1.35rem;border-radius:50%;display:grid;place-items:center;
-    font-family:"IBM Plex Mono",monospace;font-size:.7rem;
-    background:var(--accent-wash);color:var(--accent-ink);border:1px solid var(--accent);
-  }
-  .kv{font-size:var(--step--1);color:var(--ink-2);margin:0}
-  .kv + .kv{margin-top:.6rem}
+  .steps li{counter-increment:s;position:relative;padding-left:1.9rem;margin-bottom:.55rem;
+    font-size:var(--step--1);color:var(--ink-2)}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.35rem;height:1.35rem;
+    border-radius:50%;display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;
+    font-size:.7rem;background:var(--accent-wash);color:var(--accent-ink);border:1px solid var(--accent)}
+  .kv{font-size:var(--step--1);color:var(--ink-2);margin:0} .kv + .kv{margin-top:.6rem}
 
   footer{font-size:var(--step--1);color:var(--ink-3);text-align:center;line-height:1.7}
-  footer a{color:var(--accent-ink)}
   .legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:.7rem}
-
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  footer a{color:var(--accent-ink)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0}
   @media (prefers-reduced-motion:no-preference){
-    .answer .card{animation:rise .22s ease-out}
+    .exchange{animation:rise .22s ease-out}
     @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
   }
 </style>
@@ -242,20 +192,69 @@
     </div>
   </header>
 
-  <section class="console">
-    <label class="sr-only" for="q">Ask a Catan Junior rules question</label>
-    <div class="askrow">
-      <input id="q" type="search" autocomplete="off" spellcheck="false"
-             placeholder="Ask a rules question…">
-      <button id="go" type="button">Ask</button>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-ask" aria-controls="panel-ask" aria-selected="true" type="button">Ask</button>
+    <button class="tab" role="tab" id="tab-turn" aria-controls="panel-turn" aria-selected="false" type="button">Check a turn</button>
+    <button class="tab" role="tab" id="tab-ref" aria-controls="panel-ref" aria-selected="false" type="button">Reference</button>
+  </div>
+
+  <section id="panel-ask" role="tabpanel" aria-labelledby="tab-ask">
+    <div class="composer">
+      <label class="sr-only" for="q">Ask a Catan Junior rules question</label>
+      <div class="askrow">
+        <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Ask anything — or describe what happened…">
+        <button id="go" class="btn" type="button">Ask</button>
+      </div>
+      <div class="chips" id="chips"></div>
     </div>
-    <div class="chips" id="chips"></div>
+    <div class="thread" id="thread" aria-live="polite" style="margin-top:1.25rem"></div>
   </section>
 
-  <section class="answer" id="answer" aria-live="polite"></section>
+  <section id="panel-turn" role="tabpanel" aria-labelledby="tab-turn" hidden>
+    <div class="card">
+      <h3>Check a turn</h3>
+      <p class="kv" style="margin-bottom:1.25rem">Describe what happened and this works out exactly who should have taken what. Useful when a roll has already been argued about.</p>
 
-  <section class="ref">
-    <h2>Quick reference</h2>
+      <fieldset class="step">
+        <legend>1 · What did you roll?</legend>
+        <div class="opts" id="rollOpts"></div>
+      </fieldset>
+
+      <fieldset class="step" id="prodStep">
+        <legend>2 · Which islands on your board show that number?</legend>
+        <p class="kv" style="margin-bottom:.5rem">Tick every resource those islands produce — more than one island can carry the same number.</p>
+        <div class="opts" id="prodOpts"></div>
+      </fieldset>
+
+      <fieldset class="step" id="blockStep">
+        <legend>3 · Is the Ghost Captain sitting on any of them?</legend>
+        <div class="opts" id="blockOpts"></div>
+      </fieldset>
+
+      <fieldset class="step" id="ghostStep" hidden>
+        <legend>2 · Which island are you moving the Ghost Captain to?</legend>
+        <div class="opts" id="ghostOpts"></div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend id="playersLegend">4 · Who's playing?</legend>
+        <div class="opts" id="playerOpts"></div>
+      </fieldset>
+
+      <fieldset class="step" id="lairStep">
+        <legend>5 · How many lairs does each player have touching each island?</legend>
+        <div class="gridwrap"><table id="lairGrid"></table></div>
+      </fieldset>
+
+      <div class="askrow">
+        <button id="resolve" class="btn" type="button">Work it out</button>
+        <button id="resetTurn" class="btn ghost" type="button">Reset</button>
+      </div>
+    </div>
+    <div id="verdict" aria-live="polite" style="margin-top:1rem"></div>
+  </section>
+
+  <section id="panel-ref" role="tabpanel" aria-labelledby="tab-ref" hidden class="ref">
     <div class="grid">
       <article class="card">
         <h3>Build costs</h3>
@@ -278,7 +277,6 @@
           <span class="res"><span class="dot d-gold"></span>gold</span>
         </div>
       </article>
-
       <article class="card">
         <h3>A turn, in order</h3>
         <ol class="steps">
@@ -287,13 +285,11 @@
           <li>Build ships, lairs and Coco tiles — as many as you can pay for.</li>
         </ol>
       </article>
-
       <article class="card">
         <h3>The Ghost Captain</h3>
         <p class="kv">Roll a <strong>6</strong> and nobody collects. Instead you move him to any <em>other</em> island, then take <strong>2</strong> tiles of that island's resource from the stockpile.</p>
         <p class="kv">While he sits on an island it produces nothing, for anyone. He never steals from a player.</p>
       </article>
-
       <article class="card">
         <h3>Winning</h3>
         <p class="kv">First player with <strong>7 pirates' lairs</strong> on the board wins — you start with 2, so that's 5 more.</p>
@@ -318,6 +314,30 @@
 (function(){
   "use strict";
 
+  /* ---------- shared vocabulary ---------- */
+
+  var RES = [
+    {id:"wood",     one:"wood",     many:"wood"},
+    {id:"goat",     one:"goat",     many:"goats"},
+    {id:"molasses", one:"molasses", many:"molasses"},
+    {id:"cutlass",  one:"cutlass",  many:"cutlasses"},
+    {id:"gold",     one:"gold",     many:"gold"}
+  ];
+  var PLAYERS = [
+    {id:"white",  label:"White"},
+    {id:"red",    label:"Red"},
+    {id:"orange", label:"Orange"},
+    {id:"blue",   label:"Blue"}
+  ];
+  function resById(id){ return RES.filter(function(r){return r.id===id;})[0]; }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function pill(id,n){
+    var r=resById(id);
+    return '<span class="res"><span class="dot d-'+id+'"></span>'+(n!=null?n+" ":"")+(n===1?r.one:r.many)+'</span>';
+  }
+
+  /* ---------- knowledge base ---------- */
+
   var SYN = {
     molasses:["molasses","molasse","rum","syrup","sugar","sugarcane","treacle","cane"],
     cutlass:["cutlass","cutlasses","cutlas","sword","swords","sabre","saber","blade","blades","knife"],
@@ -330,28 +350,32 @@
     ghost:["ghost","captain","robber","ghosts","skull","thief"],
     spooky:["spooky","island","islands"],
     roll:["roll","rolled","rolls","rolling","die","dice","number","numbers","six","6"],
-    pay:["pay","pays","paid","give","gives","given","giving","hand","hands","handing","disburse","disburses","disbursing","disbursement","distribute","distributes","distributing","distribution","owe","owes","transfer","dish","dole"],
-    stockpile:["stockpile","supply","bank","pile","stack","pool"],
+    pay:["pay","pays","paid","give","gives","given","giving","gave","hand","hands","handing","handed",
+         "disburse","disburses","disbursing","disbursement","distribute","distributes","distributing",
+         "distribution","owe","owes","transfer","dish","dole","share","shared","sharing"],
+    stockpile:["stockpile","supply","bank","pile","stack","pool","middle","centre","center","central"],
     build:["build","builds","building","built","place","places","placing","placement","put","construct","where"],
     cost:["cost","costs","price","need","needs","needed","require","requires","required","buy","buys","buying","purchase","afford"],
     win:["win","wins","winning","won","victory","end","ends","ending","over","finish","finishes","goal","target"],
     trade:["trade","trades","trading","swap","swaps","exchange","exchanges","market","marketplace"],
-    setup:["setup","starting","begins","beginning","initial","setup"],
-    everyone:["everyone","everybody","other","others","opponent","opponents","player","players","white","red","orange","blue","yellow","green","whose","active","turn","turns"],
+    setup:["setup","starting","begins","beginning","initial"],
+    everyone:["everyone","everybody","other","others","opponent","opponents","player","players",
+              "white","red","orange","blue","yellow","green","whose","active","turn","turns"],
     multi:["two","both","2","same","share","shares","shared","multiple","several","twice","double"],
-    steal:["steal","steals","stealing","stole","take","takes","taking","rob","robs"],
-    limit:["limit","limits","discard","discards","max","maximum","hand","hold","holding","keep","many"],
+    steal:["steal","steals","stealing","stole","rob","robs"],
+    limit:["limit","limits","discard","discards","max","maximum","hold","keep"],
     resource:["resource","resources","tile","tiles","commodity","goods"],
     adjacent:["adjacent","touching","touch","touches","next","beside","corner","corners","around","near"],
-    difference:["difference","different","differs","versus","vs","compare","compared","normal","regular","adult","original","standard","big"],
-    play:["play","plays","playing","players","age","ages","old","long","time","minutes"]
+    difference:["difference","different","differs","versus","vs","compare","compared","normal","regular","adult","original","standard"],
+    play:["play","plays","playing","age","ages","old","long","minutes"],
+    check:["wrong","right","correct","correctly","incorrect","mistake","mistakes","misplayed","legal",
+           "allowed","supposed","should","meant","ok","okay","valid","cheating","error"],
+    board:["board","layout","map","printed","marked","shows","showing","numbered"]
   };
 
   var T2C = {};
-  Object.keys(SYN).forEach(function(canon){
-    SYN[canon].forEach(function(tok){
-      (T2C[tok] = T2C[tok] || []).push(canon);
-    });
+  Object.keys(SYN).forEach(function(c){
+    SYN[c].forEach(function(t){ (T2C[t]=T2C[t]||[]).push(c); });
   });
 
   var KB = [
@@ -360,37 +384,54 @@
     title:"Nobody hands resources to anybody — the stockpile pays everyone",
     conf:"official",
     strong:["pay","stockpile","everyone"],
-    k:["resource","roll","lair","molasses","cutlass","wood","goat","gold"],
-    phrases:["disburse","hand out","who gives","do i have to give","from the bank","who pays"],
-    body:'<p>This is the single biggest difference from grown-up Catan, and it trips up almost every new table: <strong>resources always come out of the shared stockpile in the middle, never out of another player’s hand.</strong></p>'+
-         '<p>So if white rolls and the result produces molasses for red and cutlasses for orange, <strong>white gives away nothing</strong>. Red reaches into the stockpile and takes a molasses tile. Orange reaches into the stockpile and takes a cutlass tile. White just rolled the die.</p>'+
-         '<div class="callout">Think of the roll as the islands producing, not as a payment. The active player is the one who <em class="term">rolls</em>, not the one who <em class="term">pays</em>.</div>'+
-         '<p>The only time a tile moves between two players in the whole game is… never. Even the Ghost Captain doesn’t steal.</p>',
+    k:["resource","roll","lair","molasses","cutlass","wood","goat","gold","check"],
+    phrases:["disburse","hand out","who gives","from the bank","who pays","into a stockpile","central stockpile","in the middle"],
+    body:'<p>Resources move in exactly one direction in this game: <strong>out of the shared stockpile, into a player’s hand.</strong> Nothing is ever paid from one player to another, and nothing is ever put <em>into</em> a central pile on a roll.</p>'+
+         '<p>So the stockpile is the <strong>source</strong>, not a destination. On a roll, each qualifying player just reaches in and takes what they earned.</p>'+
+         '<div class="callout">The active player is the one who <em class="term">rolls</em>, not the one who <em class="term">pays</em>. They give up nothing.</div>',
     src:"Official CATAN Junior rules — resource production."
   },
   {
-    id:"two-islands",
-    title:"Yes, one roll can produce two different resources",
-    conf:"official",
-    strong:["multi","roll","resource"],
-    k:["molasses","cutlass","everyone","lair","adjacent"],
-    phrases:["same number","two islands","both resources","molasses and cutlass","cutlasses and molasses"],
-    body:'<p><strong>Island numbers repeat on the board.</strong> More than one island can carry the same number, and those islands don’t have to produce the same thing.</p>'+
-         '<p>Published examples of the standard board show exactly this: roll a <strong>4</strong> and the treasure caves produce <span class="res"><span class="dot d-cutlass"></span>cutlasses</span> while the sugar cane island produces <span class="res"><span class="dot d-molasses"></span>molasses</span> — on the same roll.</p>'+
-         '<p>So both islands pay out at once, each to whichever players have lairs touching it, all from the stockpile. That is almost certainly what you were looking at.</p>'+
-         '<div class="callout">Check your own board: each island shows its number, and you’ll find the duplicates straight away.</div>',
-    src:"Official rules plus published board walkthroughs. Island layout is fixed, but confirm against your edition’s board."
-  },
-  {
     id:"everyone-collects",
-    title:"Everyone collects on every roll, not just the active player",
+    title:"Everyone collects — but only if their lairs touch a producing island",
     conf:"official",
     strong:["everyone","roll"],
-    k:["resource","lair","adjacent","stockpile"],
-    phrases:["not my turn","whose turn","only the player who rolled","do i get resources"],
-    body:'<p>When the die is rolled, <strong>every player</strong> with a lair touching a matching island collects — whether or not it’s their turn.</p>'+
-         '<p>Kids pick this up fast and it keeps everyone watching every roll. It also means a good lair site is one touching busy numbers, exactly as in the full game.</p>',
+    k:["resource","lair","adjacent","stockpile","check","pay"],
+    phrases:["not my turn","whose turn","only the player who rolled","do i get resources","give everyone","everyone gets","all players"],
+    body:'<p>Two halves to this, and the second is where tables go wrong.</p>'+
+         '<ul>'+
+         '<li><strong>Yes, it’s not just the roller.</strong> Every player collects on every roll, whether or not it’s their turn.</li>'+
+         '<li><strong>No, not every player automatically gets something.</strong> You collect only for lairs <em>touching an island showing the rolled number</em>. A player whose lairs touch nothing that produced takes nothing that roll.</li>'+
+         '</ul>'+
+         '<p>So "everyone gets a resource" is right if it means "everyone who has earned one". If a tile went to a player whose lairs weren’t touching a producing island, that part was wrong.</p>'+
+         '<div class="callout">Use <strong>Check a turn</strong> above to work out a specific roll player by player.</div>',
     src:"Official CATAN Junior rules."
+  },
+  {
+    id:"two-islands",
+    title:"One roll can produce two different resources",
+    conf:"official",
+    strong:["multi","roll","resource"],
+    k:["molasses","cutlass","everyone","lair","adjacent","board"],
+    phrases:["same number","two islands","both resources","molasses and cutlass","cutlasses and molasses"],
+    body:'<p><strong>Island numbers repeat on the board</strong>, and islands sharing a number don’t have to produce the same thing.</p>'+
+         '<p>Published walkthroughs of the standard board show exactly this: roll a <strong>4</strong> and the treasure caves produce '+
+         '<span class="res"><span class="dot d-cutlass"></span>cutlasses</span> while the sugar cane island produces '+
+         '<span class="res"><span class="dot d-molasses"></span>molasses</span> — on the same roll.</p>'+
+         '<p>Both pay out at once, each to whoever has lairs touching it, all from the stockpile.</p>',
+    src:"Official rules plus published board walkthroughs."
+  },
+  {
+    id:"board-numbers",
+    title:"Which numbers are on your board",
+    conf:"open",
+    strong:["board","roll"],
+    k:["resource","multi","adjacent","spooky"],
+    phrases:["numbered 1","number 1","is there a 1","which numbers","what numbers","island numbers","rolled a 1","rolled a 2","rolled a 3","rolled a 5"],
+    body:'<p>Each island carries a printed die number, and <strong>6 always belongs to the Ghost Captain</strong> rather than to an island.</p>'+
+         '<p>Beyond that I won’t assert the exact layout: editions and printings differ, some show die-face pips rather than digits, and I could not reach the official rulebook to confirm the arrangement. <strong>Your board is the authority</strong> — the numbers are printed right on the islands.</p>'+
+         '<div class="callout ghosty">Whatever the number, the rule is unchanged: islands showing it produce, and every player with lairs touching one of them takes tiles from the stockpile.</div>',
+    src:"Deliberately not asserted — could not verify the board layout against the official rulebook."
   },
   {
     id:"per-lair",
@@ -408,12 +449,12 @@
     title:"Rolling a 6: move the Ghost Captain, take 2 tiles",
     conf:"official",
     strong:["ghost","roll"],
-    k:["spooky","resource","stockpile","steal"],
+    k:["spooky","resource","stockpile","steal","check"],
     phrases:["roll a 6","rolled a six","what happens on 6","move the ghost"],
     body:'<p>Roll a <strong>6</strong> and no island produces. Instead the active player:</p>'+
          '<ul><li>moves the Ghost Captain onto any <strong>other</strong> island of their choice, then</li>'+
          '<li>takes <strong>2 resource tiles</strong> of that island’s type from the stockpile.</li></ul>'+
-         '<p>Note the reward: the Ghost Captain is not purely defensive here. Blocking your opponent’s best island also pays you two of that island’s resource.</p>',
+         '<p>He is not purely defensive: blocking your opponent’s best island also pays you two of that island’s resource.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -424,7 +465,7 @@
     k:["spooky","resource","roll","stockpile","everyone"],
     phrases:["steal","robber","block","blocked island","what does the ghost captain do"],
     body:'<p>While the Ghost Captain sits on an island, <strong>that island produces nothing for anyone</strong>, even when its number is rolled — including for the player who put him there.</p>'+
-         '<p>Unlike the robber in the full game, he <strong>does not steal a card</strong> from anyone, and there is no discarding. That is deliberate: it keeps the game from feeling mean to six-year-olds.</p>',
+         '<p>Unlike the robber in the full game he <strong>does not steal a card</strong> from anyone, and there is no discarding. That is deliberate: it keeps the game from feeling mean to six-year-olds.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -436,7 +477,7 @@
     phrases:["hand limit","discard","too many cards","seven cards"],
     body:'<p>There is <strong>no seven-card rule</strong> in Catan Junior. You may hold as many resource tiles as you like, and nothing ever forces you to discard.</p>'+
          '<p>The one practical limit is the stockpile itself — if a resource has run out, nobody can take it until tiles come back.</p>',
-    src:"Follows from the rules as written; no discard rule exists anywhere in the rulebook."
+    src:"Follows from the rules as written; no discard rule exists in the rulebook."
   },
   {
     id:"cost-ship",
@@ -444,7 +485,7 @@
     conf:"official",
     strong:["cost","ship"],
     k:["build","wood","goat","resource"],
-    phrases:["ship cost","cost of a ship","build a ship","how much is a ship"],
+    phrases:["ship cost","cost of a ship","how much is a ship"],
     body:'<div class="costline"><span class="res"><span class="dot d-wood"></span>1 wood</span><span class="res"><span class="dot d-goat"></span>1 goat</span></div>'+
          '<p style="margin-top:.7rem">Ships are your cheap expansion move — they open up the lair sites you actually want.</p>',
     src:"Official CATAN Junior rules."
@@ -461,7 +502,7 @@
          '<span class="res"><span class="dot d-goat"></span>1 goat</span>'+
          '<span class="res"><span class="dot d-molasses"></span>1 molasses</span>'+
          '<span class="res"><span class="dot d-cutlass"></span>1 cutlass</span></div>'+
-         '<p style="margin-top:.7rem">All four different resources — a lair is the expensive build, and it is also the thing that wins the game.</p>',
+         '<p style="margin-top:.7rem">All four different resources — the expensive build, and the one that wins the game.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -470,12 +511,12 @@
     conf:"official",
     strong:["cost","coco"],
     k:["build","molasses","cutlass","gold","resource"],
-    phrases:["coco tile cost","cost of a coco","buy a coco","gold for"],
+    phrases:["coco tile cost","cost of a coco","buy a coco"],
     body:'<div class="costline">'+
          '<span class="res"><span class="dot d-molasses"></span>1 molasses</span>'+
          '<span class="res"><span class="dot d-cutlass"></span>1 cutlass</span>'+
          '<span class="res"><span class="dot d-gold"></span>1 gold</span></div>'+
-         '<p style="margin-top:.7rem">Gold is only useful here (or traded away at the market), so a gold tile is effectively a down payment on a Coco tile.</p>',
+         '<p style="margin-top:.7rem">Gold is only useful here (or traded away), so a gold tile is effectively a down payment on a Coco tile.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -486,10 +527,10 @@
     k:["ship","lair","cost"],
     phrases:["where can i build","where do i build","build a lair","build a ship","placement","build anywhere"],
     body:'<ul>'+
-         '<li>A <strong>ship</strong> goes on any empty ship-site next to one of <strong>your lairs</strong> (or, in practice, extending your own chain).</li>'+
+         '<li>A <strong>ship</strong> goes on any empty ship-site next to one of <strong>your lairs</strong>, extending your own chain.</li>'+
          '<li>A <strong>lair</strong> goes on any empty lair-site next to one of <strong>your ships</strong>.</li>'+
          '</ul>'+
-         '<p>So you grow outward in an alternating chain, and you can never drop a lair somewhere your network hasn’t reached. Sites already occupied by anyone are closed.</p>',
+         '<p>You grow outward in an alternating chain, and can never drop a lair somewhere your network hasn’t reached. Occupied sites are closed.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -498,9 +539,9 @@
     conf:"official",
     strong:["trade","stockpile"],
     k:["resource","cost","gold"],
-    phrases:["market","exchange rate","trade in","2 for 1","two for one","swap"],
+    phrases:["market","exchange rate","trade in","2 for 1","two for one"],
     body:'<p>On your turn you may trade with the stockpile as often as you like: <strong>hand back 2 tiles of the same kind and take any 1 tile you want.</strong></p>'+
-         '<p>Two goats in, one gold out. Two golds in, one cutlass out. It has to be a matched pair — you can’t combine two different tiles.</p>',
+         '<p>It has to be a matched pair — you can’t combine two different tiles.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -508,12 +549,12 @@
     title:"Trading with other players is not in the base rules",
     conf:"open",
     strong:["trade","everyone"],
-    k:["resource","stockpile"],
+    k:["resource","stockpile","check"],
     phrases:["trade with other players","trade with each other","player trading","can we trade"],
-    body:'<p>The core game is deliberately trade-free: children swap with the <strong>market</strong> at 2:1, not with each other. That avoids the negotiation and table-talk that makes full Catan hard for young players.</p>'+
-         '<p>Plenty of published summaries do describe player-to-player trading, usually as an <strong>optional or advanced rule</strong> once kids have the basics. Sources genuinely disagree on whether it is official.</p>'+
-         '<div class="callout ghosty">Practical answer: decide before you start. Allowing it speeds the game up and suits older kids; leaving it out keeps things calm.</div>',
-    src:"Sources conflict. Base rules describe market trading only; several rules summaries present player trading as an advanced option."
+    body:'<p>The core game is deliberately trade-free: children swap with the <strong>market</strong> at 2:1, not with each other. That avoids the negotiation that makes full Catan hard for young players.</p>'+
+         '<p>Plenty of published summaries do describe player-to-player trading, usually as an <strong>optional or advanced rule</strong>. Sources genuinely disagree on whether it is official.</p>'+
+         '<div class="callout ghosty">Decide before you start. Allowing it speeds the game up; leaving it out keeps things calm.</div>',
+    src:"Sources conflict. Base rules describe market trading only."
   },
   {
     id:"coco-what",
@@ -522,12 +563,11 @@
     strong:["coco"],
     k:["cost","ghost","ship","lair","resource","build"],
     phrases:["coco tile","what does coco do","development card","parrot"],
-    body:'<p>Coco tiles are the junior version of development cards. Buy one and you take the top tile from the stack, <strong>turn it face up and use it immediately</strong>. It then stays in front of you for the rest of the game.</p>'+
-         '<p>The effects are a mix of:</p>'+
+    body:'<p>Coco tiles are the junior version of development cards. Buy one, take the top tile, <strong>turn it face up and use it immediately</strong>. It then stays in front of you for the rest of the game.</p>'+
          '<ul><li>move the Ghost Captain, as if you had rolled a 6;</li>'+
          '<li>a free ship or a free lair;</li>'+
          '<li>extra resource tiles.</li></ul>'+
-         '<p>Because they stay face up in front of you, they also count toward the Spooky Island bonus.</p>',
+         '<p>Because they stay face up, they also count toward the Spooky Island bonus.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -535,12 +575,12 @@
     title:"Does a Ghost Captain Coco tile also give you 2 resources?",
     conf:"open",
     strong:["coco","ghost"],
-    k:["resource","roll","stockpile"],
+    k:["resource","roll","stockpile","check"],
     phrases:["coco ghost captain","move the ghost with a tile","as if you rolled"],
-    body:'<p>The tile says you move the Ghost Captain <em>as if you had rolled a 6</em>. Tables split on whether "as if you rolled a 6" carries the <strong>2 free resource tiles</strong> along with it.</p>'+
-         '<ul><li><strong>Literal reading:</strong> yes — a 6 gives you the move <em>and</em> the 2 tiles, so the tile does too.</li>'+
-         '<li><strong>Conservative reading:</strong> no — the tile buys you the disruption only, and you already paid three resources for it.</li></ul>'+
-         '<div class="callout ghosty">The literal reading is the more common one. Either way, agree it out loud before the first Coco tile is bought.</div>',
+    body:'<p>The tile says you move the Ghost Captain <em>as if you had rolled a 6</em>. Tables split on whether that carries the <strong>2 free resource tiles</strong> with it.</p>'+
+         '<ul><li><strong>Literal reading:</strong> yes — a 6 gives the move <em>and</em> the tiles, so the Coco tile does too.</li>'+
+         '<li><strong>Conservative reading:</strong> no — you already paid three resources for the tile.</li></ul>'+
+         '<div class="callout ghosty">The literal reading is more common. Agree it out loud before the first Coco tile is bought.</div>',
     src:"Acknowledged ambiguity, debated on BoardGameGeek. No definitive clarification found."
   },
   {
@@ -549,10 +589,10 @@
     conf:"official",
     strong:["spooky","coco"],
     k:["lair","win","ghost","build"],
-    phrases:["spooky island","most coco","ghost captain home","extra lair"],
-    body:'<p>The moment you hold <strong>more Coco tiles than anyone else</strong>, place one of your unused lairs on Spooky Island. Buy the first Coco tile of the game and it is immediately yours.</p>'+
-         '<p>It is a loan, not a gift: if another player <strong>matches or overtakes</strong> your Coco count, you take your lair back off Spooky Island and they place theirs.</p>'+
-         '<p>While you hold it, it counts as one of your 7 lairs — so it can win you the game, and losing it can un-win it.</p>',
+    phrases:["spooky island","most coco","extra lair"],
+    body:'<p>The moment you hold <strong>more Coco tiles than anyone else</strong>, place one of your unused lairs on Spooky Island. Buy the game’s first Coco tile and it is immediately yours.</p>'+
+         '<p>It is a loan: if another player <strong>matches or overtakes</strong> your Coco count, you take your lair back and they place theirs.</p>'+
+         '<p>While you hold it, it counts as one of your 7 lairs — so it can win the game, and losing it can un-win it.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -561,9 +601,9 @@
     conf:"official",
     strong:["win","lair"],
     k:["spooky","coco","build"],
-    phrases:["how do you win","who wins","end the game","victory","how many lairs"],
-    body:'<p>The game ends the instant a player has <strong>7 lairs on the board</strong>. You start with 2, so you need to build 5 more.</p>'+
-         '<p>A lair sitting on Spooky Island counts toward the 7 — which is why the Coco tile race matters right up to the last turn.</p>',
+    phrases:["how do you win","who wins","end the game","how many lairs"],
+    body:'<p>The game ends the instant a player has <strong>7 lairs on the board</strong>. You start with 2, so you build 5 more.</p>'+
+         '<p>A lair on Spooky Island counts toward the 7 — which is why the Coco race matters to the last turn.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -572,10 +612,11 @@
     conf:"official",
     strong:["setup"],
     k:["lair","ship","build","play","spooky","ghost"],
-    phrases:["how do you set up","starting position","what do i start with","set up the board"],
-    body:'<p>Each player begins with <strong>2 pirates’ lairs already on the board</strong>, on the marked starting sites, with ships alongside. Your remaining lairs and ships sit in front of you as your personal supply.</p>'+
-         '<p>The <strong>Ghost Captain starts on Spooky Island</strong> in the middle. Resource tiles go in the stockpile beside the board, and the Coco tiles are shuffled into a face-down stack with the parrot showing.</p>',
-    src:"Official CATAN Junior rules. Exact piece counts vary by edition — check the components list in your box."
+    phrases:["how do you set up","starting position","what do i start with","set up the board","first roll"],
+    body:'<p>Each player begins with <strong>2 pirates’ lairs already on the board</strong> at the marked starting sites, with ships alongside. Remaining lairs and ships sit in front of you as your personal supply.</p>'+
+         '<p>The <strong>Ghost Captain starts on Spooky Island</strong>. Resource tiles go in the stockpile beside the board; Coco tiles are shuffled into a face-down stack.</p>'+
+         '<div class="callout">The very first roll is an ordinary roll — there is no special opening rule. Everyone with lairs touching a producing island collects, exactly as on any other turn.</div>',
+    src:"Official CATAN Junior rules. Piece counts vary by edition — check your box."
   },
   {
     id:"resources",
@@ -600,8 +641,7 @@
     strong:["build","multi"],
     k:["cost","ship","lair","coco","trade"],
     phrases:["how many can i build","build twice","more than one build"],
-    body:'<p>There is no limit. On your turn, after the roll, you may trade and build in any order and as many times as your tiles allow — three ships and a lair in one turn is perfectly legal if you can pay.</p>'+
-         '<p>You can also interleave: trade at the market to complete a lair, build it, then trade again.</p>',
+    body:'<p>No limit. After the roll you may trade and build in any order, as many times as your tiles allow — three ships and a lair in one turn is legal if you can pay.</p>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -612,9 +652,8 @@
     k:["coco","cost","trade","resource"],
     phrases:["what is gold for","use gold","gold useless"],
     body:'<p>Gold buys nothing on its own. Its two uses are:</p>'+
-         '<ul><li>the third ingredient of a <strong>Coco tile</strong> (with molasses and a cutlass);</li>'+
-         '<li>market fodder — two golds trade for any single tile you need.</li></ul>'+
-         '<p>Don’t let it pile up: gold sitting in your hand is doing nothing.</p>',
+         '<ul><li>the third ingredient of a <strong>Coco tile</strong>;</li>'+
+         '<li>market fodder — two golds trade for any single tile.</li></ul>',
     src:"Official CATAN Junior rules."
   },
   {
@@ -625,11 +664,11 @@
     k:["ghost","trade","roll","win","coco","limit"],
     phrases:["different from catan","compared to catan","normal catan","real catan"],
     body:'<ul>'+
-         '<li><strong>One die, not two.</strong> Islands carry single numbers, so production is flat, not a bell curve.</li>'+
+         '<li><strong>One die, not two.</strong> Islands carry single numbers, so production is flat.</li>'+
          '<li><strong>The robber doesn’t steal.</strong> The Ghost Captain blocks an island and pays the mover 2 tiles.</li>'+
-         '<li><strong>No discarding, no hand limit, no cards to hide.</strong></li>'+
+         '<li><strong>No discarding, no hand limit, nothing hidden.</strong></li>'+
          '<li><strong>No player trading in the base game</strong> — the market handles it at 2:1.</li>'+
-         '<li><strong>Win by building</strong> 7 lairs, not by accumulating victory points.</li>'+
+         '<li><strong>Win by building</strong> 7 lairs, not by accumulating points.</li>'+
          '</ul>',
     src:"Comparison drawn from both rulebooks."
   },
@@ -641,7 +680,7 @@
     k:["setup","win"],
     phrases:["how many players","what age","how long","playing time"],
     body:'<p><strong>2–4 players, ages 6 and up, roughly 30 minutes.</strong></p>'+
-         '<p>At two players the game is faster and the Ghost Captain hurts more, since there are fewer islands worth blocking and the block lands squarely on your one opponent.</p>',
+         '<p>At two players it is faster and the Ghost Captain bites harder — the block lands squarely on your one opponent.</p>',
     src:"Official CATAN Junior box and rules."
   },
   {
@@ -651,149 +690,408 @@
     strong:["stockpile","limit"],
     k:["resource","roll","trade"],
     phrases:["run out","runs out","no tiles left","empty stockpile"],
-    body:'<p>The rulebook doesn’t give this a clear ruling, and in practice it rarely comes up.</p>'+
-         '<p>The usual handling, borrowed from full Catan: if there aren’t enough tiles of a type to satisfy everyone who earned them, <strong>nobody gets that resource this roll</strong> — unless exactly one player is owed, in which case they take whatever remains.</p>'+
-         '<div class="callout ghosty">Flagged as a house call, not a quotable rule. With children, taking whatever is left and moving on is usually the better game.</div>',
+    body:'<p>The rulebook doesn’t give this a clear ruling, and it rarely comes up.</p>'+
+         '<p>The usual handling, borrowed from full Catan: if there aren’t enough tiles to satisfy everyone who earned them, <strong>nobody gets that resource this roll</strong> — unless exactly one player is owed, who takes what remains.</p>'+
+         '<div class="callout ghosty">A house call, not a quotable rule. With children, take what’s left and move on.</div>',
     src:"Not addressed clearly in the rulebook. Suggested handling only."
   }
   ];
 
+  /* ---------- matching ---------- */
+
   function norm(s){ return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim(); }
 
   function canonSet(q){
-    var out = {};
+    var out={};
     norm(q).split(" ").forEach(function(tok){
       if(!tok) return;
-      var cs = T2C[tok];
-      if(cs) cs.forEach(function(c){ out[c] = true; });
+      var cs=T2C[tok];
+      if(cs) cs.forEach(function(c){ out[c]=true; });
     });
     return Object.keys(out);
   }
 
-  function score(entry, cans, nq){
-    var s = 0;
+  function score(entry,cans,nq){
+    var s=0;
     cans.forEach(function(c){
-      if(entry.strong.indexOf(c) !== -1) s += 3;
-      else if(entry.k.indexOf(c) !== -1) s += 1;
+      if(entry.strong.indexOf(c)!==-1) s+=3;
+      else if(entry.k.indexOf(c)!==-1) s+=1;
     });
-    (entry.phrases||[]).forEach(function(p){ if(nq.indexOf(p) !== -1) s += 5; });
+    (entry.phrases||[]).forEach(function(p){ if(nq.indexOf(p)!==-1) s+=5; });
     return s;
   }
 
-  var CONF = {
-    official:{cls:"official", label:"In the rulebook"},
-    clarified:{cls:"clarified", label:"Widely agreed"},
-    open:{cls:"open", label:"Genuinely ambiguous"}
+  /* is the question "did we play this right?" rather than "what is the rule?" */
+  var CHECK_RE = /\b(was|is|were) (it|that|this|we|they|i) (wrong|right|correct|ok|okay|legal|allowed|supposed)|\bdid (we|i|they) .*(right|correctly|wrong)|\bshould (we|i|they) (have|of)\b|\bwere we (supposed|meant)\b|\bis that (allowed|legal|right|correct|ok)\b|\bdid .* correctly\b|\bplayed? (it|that|this) (right|wrong)\b/;
+
+  function isCheck(nq){ return CHECK_RE.test(nq); }
+
+  var CONF={
+    official:{cls:"official",label:"In the rulebook"},
+    clarified:{cls:"clarified",label:"Widely agreed"},
+    open:{cls:"open",label:"Genuinely ambiguous"}
   };
 
-  var answerEl = document.getElementById("answer");
-  var input = document.getElementById("q");
-
-  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-  function cardFor(entry, related){
-    var c = CONF[entry.conf];
-    var html = '<article class="card">'+
-      '<div class="a-head"><h2>'+esc(entry.title)+'</h2>'+
-      '<span class="tag '+c.cls+'">'+c.label+'</span></div>'+
-      entry.body+
-      '<p class="src">'+esc(entry.src)+'</p>';
-    if(related && related.length){
-      html += '<div class="related"><span class="rel-label">Related</span>';
-      related.forEach(function(r){
-        html += '<button class="rel" type="button" data-id="'+r.id+'">'+esc(r.title)+'</button>';
-      });
-      html += '</div>';
-    }
-    html += '</article>';
-    return html;
-  }
-
-  function showById(id){
-    var e = KB.filter(function(x){ return x.id === id; })[0];
-    if(!e) return;
-    render(e);
-    answerEl.scrollIntoView({block:"nearest", behavior:"smooth"});
-  }
-
-  function pickRelated(entry){
-    var pool = KB.filter(function(x){ return x.id !== entry.id; });
-    var scored = pool.map(function(x){
-      var s = 0;
+  function pickRelated(entry,limit){
+    var pool=KB.filter(function(x){return x.id!==entry.id;});
+    return pool.map(function(x){
+      var s=0;
       entry.strong.concat(entry.k).forEach(function(c){
-        if(x.strong.indexOf(c) !== -1) s += 2;
-        else if(x.k.indexOf(c) !== -1) s += 1;
+        if(x.strong.indexOf(c)!==-1) s+=2;
+        else if(x.k.indexOf(c)!==-1) s+=1;
       });
-      return {e:x, s:s};
-    }).sort(function(a,b){ return b.s - a.s; });
-    return scored.slice(0,3).map(function(o){ return o.e; });
+      return {e:x,s:s};
+    }).sort(function(a,b){return b.s-a.s;}).slice(0,limit||3).map(function(o){return o.e;});
   }
 
-  function render(entry){
-    answerEl.innerHTML = cardFor(entry, pickRelated(entry));
-    wire();
+  function cardHTML(entry,opts){
+    opts=opts||{};
+    var c=CONF[entry.conf];
+    var h='<article class="card">';
+    if(opts.verdict) h+='<p class="verdict '+opts.verdictKind+'">'+opts.verdict+'</p>';
+    h+='<div class="a-head"><h2>'+esc(entry.title)+'</h2><span class="tag '+c.cls+'">'+c.label+'</span></div>';
+    h+=entry.body;
+    h+='<p class="src">'+esc(entry.src)+'</p>';
+    var rel=opts.related||pickRelated(entry,3);
+    if(rel.length){
+      h+='<div class="related"><span class="rel-label">Ask next</span>';
+      rel.forEach(function(r){ h+='<button class="rel" type="button" data-id="'+r.id+'">'+esc(r.title)+'</button>'; });
+      h+='</div>';
+    }
+    h+='</article>';
+    return h;
   }
 
-  function renderUnsure(q, top){
-    var html = '<article class="card">'+
-      '<div class="a-head"><h2>I don’t have a confident answer for that</h2>'+
-      '<span class="tag open">No match</span></div>'+
-      '<p>Nothing in this rulebook clearly covers “'+esc(q)+'”. Rather than invent a ruling, here are the closest topics I do hold:</p>'+
+  /* ---------- thread ---------- */
+
+  var threadEl=document.getElementById("thread");
+  var input=document.getElementById("q");
+  var history=[];
+
+  function saveHistory(){
+    try{ localStorage.setItem("coco.history",JSON.stringify(history.slice(0,20))); }catch(e){}
+  }
+  function loadHistory(){
+    try{
+      var raw=localStorage.getItem("coco.history");
+      if(raw) history=JSON.parse(raw)||[];
+    }catch(e){ history=[]; }
+  }
+
+  function renderThread(){
+    var h="";
+    history.forEach(function(x){
+      h+='<div class="exchange">';
+      if(x.q) h+='<div class="asked">'+esc(x.q)+'</div>';
+      h+=x.html;
+      h+='</div>';
+    });
+    threadEl.innerHTML=h;
+    Array.prototype.forEach.call(threadEl.querySelectorAll(".rel"),function(b){
+      b.addEventListener("click",function(){
+        var e=KB.filter(function(x){return x.id===b.getAttribute("data-id");})[0];
+        if(e) push(e.title, cardHTML(e));
+      });
+    });
+  }
+
+  function reveal(el){
+    if(el && typeof el.scrollIntoView === "function"){
+      el.scrollIntoView({block:"nearest",behavior:"smooth"});
+    }
+  }
+
+  function push(q,html,quiet){
+    history.unshift({q:q,html:html});
+    if(history.length>20) history.pop();
+    saveHistory();
+    renderThread();
+    if(!quiet) reveal(threadEl);
+  }
+
+  function unsureHTML(q,top){
+    var h='<article class="card">'+
+      '<div class="a-head"><h2>I don’t have a confident answer for that</h2><span class="tag open">No match</span></div>'+
+      '<p>Nothing in this rulebook clearly covers it, and I’d rather say so than invent a ruling. The closest things I do hold:</p>'+
       '<div class="related"><span class="rel-label">Closest topics</span>';
-    top.forEach(function(e){
-      html += '<button class="rel" type="button" data-id="'+e.id+'">'+esc(e.title)+'</button>';
-    });
-    html += '</div>'+
-      '<p class="src">If none of these fit, the official PDF is the place to look — catan.com/junior.</p>'+
-      '</article>';
-    answerEl.innerHTML = html;
-    wire();
-  }
-
-  function wire(){
-    Array.prototype.forEach.call(answerEl.querySelectorAll(".rel"), function(b){
-      b.addEventListener("click", function(){ showById(b.getAttribute("data-id")); });
-    });
+    top.forEach(function(e){ h+='<button class="rel" type="button" data-id="'+e.id+'">'+esc(e.title)+'</button>'; });
+    h+='</div><p class="src">If none of these fit, the official PDF is at catan.com/junior.</p></article>';
+    return h;
   }
 
   function ask(q){
-    var nq = norm(q);
-    if(!nq){ return; }
-    var cans = canonSet(q);
-    var ranked = KB.map(function(e){ return {e:e, s:score(e, cans, nq)}; })
-                   .sort(function(a,b){ return b.s - a.s; });
-    if(ranked[0].s >= 3){
-      render(ranked[0].e);
-    } else {
-      renderUnsure(q, ranked.slice(0,4).map(function(o){ return o.e; }));
+    var nq=norm(q);
+    if(!nq) return;
+    var cans=canonSet(q);
+    var ranked=KB.map(function(e){ return {e:e,s:score(e,cans,nq)}; })
+                 .sort(function(a,b){ return b.s-a.s; });
+
+    if(ranked[0].s<3){
+      push(q,unsureHTML(q,ranked.slice(0,4).map(function(o){return o.e;})));
+      return;
     }
-    answerEl.scrollIntoView({block:"nearest", behavior:"smooth"});
+
+    var best=ranked[0].e;
+    var opts={};
+    if(isCheck(nq)){
+      opts.verdict="Checking your play against the rules — here’s what should have happened.";
+      opts.verdictKind="no";
+      opts.related=pickRelated(best,3);
+    }
+    var html=cardHTML(best,opts);
+
+    /* a question can straddle two rules — show the runner-up when it is genuinely close */
+    var second=ranked[1];
+    if(second && second.s>=5 && second.s>=ranked[0].s*0.6){
+      html+=cardHTML(second.e,{related:[]});
+    }
+    push(q,html);
   }
 
-  var EXAMPLES = [
-    "Does the player who rolled have to give resources to everyone else?",
-    "Can one roll produce molasses and cutlasses at the same time?",
-    "What does a pirates' lair cost?",
+  var EXAMPLES=[
+    "Was it wrong to give everyone resources on the first roll?",
+    "Does the player who rolled pay everyone else?",
+    "Can one roll produce two resources?",
     "What happens when you roll a 6?",
+    "What does a pirates' lair cost?",
     "Can we trade with each other?",
     "How do you win?",
-    "How does Spooky Island work?",
     "Is there a hand limit?"
   ];
-
-  var chipsEl = document.getElementById("chips");
+  var chipsEl=document.getElementById("chips");
   EXAMPLES.forEach(function(t){
-    var b = document.createElement("button");
-    b.type = "button";
-    b.className = "chip";
-    b.textContent = t;
-    b.addEventListener("click", function(){ input.value = t; ask(t); });
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent=t;
+    b.addEventListener("click",function(){ input.value=t; ask(t); });
     chipsEl.appendChild(b);
   });
 
-  document.getElementById("go").addEventListener("click", function(){ ask(input.value); });
-  input.addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ask(input.value); } });
+  document.getElementById("go").addEventListener("click",function(){ ask(input.value); input.value=""; });
+  input.addEventListener("keydown",function(ev){
+    if(ev.key==="Enter"){ ev.preventDefault(); ask(input.value); input.value=""; }
+  });
 
-  render(KB[0]);
+  /* ---------- tabs ---------- */
+
+  var TABS=[["tab-ask","panel-ask"],["tab-turn","panel-turn"],["tab-ref","panel-ref"]];
+  TABS.forEach(function(pair){
+    document.getElementById(pair[0]).addEventListener("click",function(){
+      TABS.forEach(function(p){
+        var on = p[0]===pair[0];
+        document.getElementById(p[0]).setAttribute("aria-selected",on?"true":"false");
+        document.getElementById(p[1]).hidden=!on;
+      });
+      try{ localStorage.setItem("coco.tab",pair[0]); }catch(e){}
+    });
+  });
+
+  /* ---------- turn resolver ---------- */
+
+  var turn={ roll:null, producing:{}, blocked:{}, players:{}, ghostTarget:null, lairs:{} };
+
+  function opt(name,value,label,swatchClass,type){
+    return '<label class="opt"><input type="'+(type||"checkbox")+'" name="'+name+'" value="'+value+'">'+
+      '<span>'+(swatchClass?'<span class="swatch '+swatchClass+'"></span>':'')+label+'</span></label>';
+  }
+
+  var rollOpts=document.getElementById("rollOpts");
+  var rollHTML="";
+  ["1","2","3","4","5"].forEach(function(n){
+    rollHTML+=opt("roll",n,n,null,"radio");
+  });
+  rollHTML+=opt("roll","ghost","6 — Ghost Captain",null,"radio");
+  rollOpts.innerHTML=rollHTML;
+
+  var prodOpts=document.getElementById("prodOpts");
+  var blockOpts=document.getElementById("blockOpts");
+  var ghostOpts=document.getElementById("ghostOpts");
+  var ph="",bh="",gh="";
+  RES.forEach(function(r){
+    ph+=opt("prod",r.id,r.many,"d-"+r.id);
+    bh+=opt("block",r.id,r.many,"d-"+r.id);
+    gh+=opt("gtarget",r.id,r.many,"d-"+r.id,"radio");
+  });
+  prodOpts.innerHTML=ph; blockOpts.innerHTML=bh; ghostOpts.innerHTML=gh;
+
+  var playerOpts=document.getElementById("playerOpts");
+  var pl="";
+  PLAYERS.forEach(function(p){ pl+=opt("player",p.id,p.label,"p-"+p.id); });
+  playerOpts.innerHTML=pl;
+  /* colour the player swatches from tokens */
+  Array.prototype.forEach.call(playerOpts.querySelectorAll(".swatch"),function(el,i){
+    el.style.background="var(--p-"+PLAYERS[i].id+")";
+  });
+
+  function checkedValues(name){
+    return Array.prototype.map.call(
+      document.querySelectorAll('input[name="'+name+'"]:checked'),
+      function(i){ return i.value; });
+  }
+
+  var lairGrid=document.getElementById("lairGrid");
+  var lairStep=document.getElementById("lairStep");
+  var ghostStep=document.getElementById("ghostStep");
+  var prodStep=document.getElementById("prodStep");
+  var blockStep=document.getElementById("blockStep");
+  var playersLegend=document.getElementById("playersLegend");
+
+  function syncMode(){
+    var isGhost = checkedValues("roll")[0]==="ghost";
+    ghostStep.hidden=!isGhost;
+    prodStep.hidden=isGhost;
+    blockStep.hidden=isGhost;
+    lairStep.hidden=isGhost;
+    playersLegend.textContent = isGhost ? "3 · Who's playing?" : "4 · Who's playing?";
+  }
+
+  function buildGrid(){
+    var prod=checkedValues("prod");
+    var players=checkedValues("player");
+    if(!prod.length || !players.length){
+      lairGrid.innerHTML='<tbody><tr><td style="color:var(--ink-3);border:none;padding-left:0">'+
+        'Pick the producing islands and the players first.</td></tr></tbody>';
+      return;
+    }
+    var h='<thead><tr><th>Player</th>';
+    prod.forEach(function(id){ h+='<th>'+resById(id).many+'</th>'; });
+    h+='</tr></thead><tbody>';
+    players.forEach(function(pid){
+      var p=PLAYERS.filter(function(x){return x.id===pid;})[0];
+      h+='<tr><td><span class="pname"><span class="swatch" style="background:var(--p-'+pid+')"></span>'+p.label+'</span></td>';
+      prod.forEach(function(rid){
+        var key=pid+":"+rid;
+        var v=turn.lairs[key]||0;
+        h+='<td><input type="number" min="0" max="7" value="'+v+'" data-key="'+key+'" '+
+           'aria-label="'+p.label+' lairs touching '+resById(rid).many+'"></td>';
+      });
+      h+='</tr>';
+    });
+    h+='</tbody>';
+    lairGrid.innerHTML=h;
+    Array.prototype.forEach.call(lairGrid.querySelectorAll("input"),function(inp){
+      inp.addEventListener("input",function(){
+        turn.lairs[inp.getAttribute("data-key")]=Math.max(0,parseInt(inp.value,10)||0);
+      });
+    });
+  }
+
+  document.addEventListener("change",function(ev){
+    var n=ev.target && ev.target.name;
+    if(n==="roll"){ syncMode(); buildGrid(); }
+    if(n==="prod"||n==="player"){ buildGrid(); }
+  });
+
+  function verdictCard(kind,title,inner,note){
+    return '<article class="card">'+
+      '<p class="verdict '+kind+'">'+title+'</p>'+
+      inner+
+      (note?'<p class="src">'+note+'</p>':'')+
+      '</article>';
+  }
+
+  function resolveTurn(){
+    var out=document.getElementById("verdict");
+    var roll=checkedValues("roll")[0];
+    var players=checkedValues("player");
+
+    if(!roll){ out.innerHTML=verdictCard("no","Pick what you rolled first.",""); return; }
+    if(!players.length){ out.innerHTML=verdictCard("no","Tick which players are in the game.",""); return; }
+
+    if(roll==="ghost"){
+      var target=checkedValues("gtarget")[0];
+      var inner='<p><strong>Nobody collects for their lairs on a 6.</strong> No island produces, whatever numbers are showing.</p>'+
+        '<p>The player who rolled moves the Ghost Captain to any <em>other</em> island, then takes <strong>2 tiles</strong> of that island’s resource from the stockpile.</p>';
+      if(target){
+        inner+='<ul class="payout"><li><span class="pname">The player who rolled</span><span class="arrow">takes</span>'+pill(target,2)+
+               '<span class="arrow">from the stockpile</span></li></ul>'+
+               '<p>That island now produces nothing for anyone until he moves again.</p>';
+      } else {
+        inner+='<div class="callout ghosty">Pick the island he moved to and I’ll tell you exactly what to take.</div>';
+      }
+      out.innerHTML=verdictCard("ok","Roll of 6 — the Ghost Captain moves.",inner,
+        "Official CATAN Junior rules.");
+      reveal(out);
+      return;
+    }
+
+    var prod=checkedValues("prod");
+    var blocked=checkedValues("block");
+    if(!prod.length){
+      out.innerHTML=verdictCard("no","Tick which islands show the number you rolled.",
+        '<p>Look at your board: every island carries a printed number. Tick the resource of each island showing a <strong>'+esc(roll)+'</strong>.</p>');
+      return;
+    }
+
+    var live=prod.filter(function(id){ return blocked.indexOf(id)===-1; });
+    var deadIslands=prod.filter(function(id){ return blocked.indexOf(id)!==-1; });
+
+    var lines=[], gotAny=false, idle=[];
+    players.forEach(function(pid){
+      var p=PLAYERS.filter(function(x){return x.id===pid;})[0];
+      var takes=[];
+      live.forEach(function(rid){
+        var n=turn.lairs[pid+":"+rid]||0;
+        if(n>0) takes.push({rid:rid,n:n});
+      });
+      if(takes.length){
+        gotAny=true;
+        var bits=takes.map(function(t){ return pill(t.rid,t.n); }).join(" ");
+        lines.push('<li><span class="pname"><span class="swatch" style="background:var(--p-'+pid+')"></span>'+
+          p.label+'</span><span class="arrow">takes</span>'+bits+'<span class="arrow">from the stockpile</span></li>');
+      } else {
+        idle.push(p.label);
+      }
+    });
+
+    var inner="";
+    if(gotAny){
+      inner+='<ul class="payout">'+lines.join("")+'</ul>';
+    }
+    if(idle.length){
+      inner+='<p>'+esc(idle.join(" and "))+' take'+(idle.length===1?"s":"")+
+        ' <strong>nothing</strong> this roll — no lairs touching a producing island.</p>';
+    }
+    if(deadIslands.length){
+      inner+='<p>The Ghost Captain is sitting on '+deadIslands.map(function(id){return resById(id).many;}).join(" and ")+
+        ', so '+(deadIslands.length===1?"that island produces":"those islands produce")+
+        ' <strong>nothing for anyone</strong>, including the player who put him there.</p>';
+    }
+    if(!gotAny && !deadIslands.length){
+      inner+='<p>Nobody had a lair touching a producing island, so this roll pays out nothing at all. That is a perfectly normal roll.</p>';
+    }
+    inner+='<div class="callout">Every tile above comes <strong>out of the stockpile</strong>. No player pays another, '+
+      'and nothing is ever put <em>into</em> a central pile on a roll.</div>';
+
+    var title = gotAny ? "Roll of "+esc(roll)+" — here's who takes what."
+                       : "Roll of "+esc(roll)+" — nothing is paid out.";
+    out.innerHTML=verdictCard("ok",title,inner,
+      "Official CATAN Junior rules. Island numbering comes from your own board.");
+    reveal(out);
+  }
+
+  document.getElementById("resolve").addEventListener("click",resolveTurn);
+  document.getElementById("resetTurn").addEventListener("click",function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#panel-turn input'),function(i){
+      if(i.type==="checkbox"||i.type==="radio") i.checked=false;
+    });
+    turn.lairs={};
+    document.getElementById("verdict").innerHTML="";
+    syncMode(); buildGrid();
+  });
+
+  /* ---------- boot ---------- */
+
+  syncMode();
+  buildGrid();
+  loadHistory();
+  if(history.length){ renderThread(); }
+  else { push(null, cardHTML(KB[0]), true); }
+
+  try{
+    var t=localStorage.getItem("coco.tab");
+    if(t){ var el=document.getElementById(t); if(el) el.click(); }
+  }catch(e){}
+
+  window.__coco={ask:ask,resolve:resolveTurn,KB:KB,isCheck:function(q){return isCheck(norm(q));}};
 })();
 </script>
