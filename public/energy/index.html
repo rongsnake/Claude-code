@@ -130,7 +130,7 @@ const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, bat
   buffer_minutes:15, shortfall_policy:'start_early', normal_reserve:20, charge_method:'reserve', restore_mode:'self_consumption', hold_until_window_end:true };
 let cfg = {...DEFAULTS}, state = {}, online = false;
 const $ = id => document.getElementById(id);
-const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—';
+const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'}) : '—';
 
 function localPlan(soc, c, now = new Date()) {   // mirror of plan_charge() in auto_smart_mode.py
   const [sh, sm] = c.window_start.split(':').map(Number), [eh, em] = c.window_end.split(':').map(Number);
