@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Energy — Auto Smart Mode</title>
+<style>
+  :root { --bg:#0f1620; --card:#172230; --ink:#e8eef5; --muted:#8aa0b6; --accent:#3aa0ff;
+          --green:#37c98b; --amber:#f5a623; --red:#ff6b6b; --line:#243245; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  header { padding:24px 32px 4px; display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; }
+  h1 { margin:0; font-size:23px; } .sub { color:var(--muted); font-size:13px; }
+  header a { color:var(--muted); font-size:13px; text-decoration:none; margin-left:auto; }
+  .wrap { padding:14px 32px 56px; max-width:1100px; margin:0 auto; }
+  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin:12px 0 14px; }
+  .banner.warn { background:#3a2e12; color:#ffd58a; border:1px solid #6b531f; }
+  .banner.ok { background:#143524; color:#8af0b8; border:1px solid #1f6b46; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:760px){ .grid{ grid-template-columns:1fr; } header,.wrap{ padding-left:16px; padding-right:16px; } }
+  .card { background:var(--card); border-radius:12px; padding:16px 18px 14px; }
+  .card h3 { margin:0 0 12px; font-size:14px; font-weight:600; color:#cdd8e4; }
+  .full { grid-column:1 / -1; }
+  .hero { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .switch { position:relative; width:64px; height:34px; flex:none; }
+  .switch input { opacity:0; width:0; height:0; }
+  .slider { position:absolute; inset:0; background:#2c3c50; border-radius:34px; cursor:pointer; transition:.2s; }
+  .slider:before { content:""; position:absolute; width:26px; height:26px; left:4px; top:4px;
+                   background:#fff; border-radius:50%; transition:.2s; }
+  input:checked + .slider { background:var(--green); } input:checked + .slider:before { transform:translateX(30px); }
+  .hero .title { font-size:20px; font-weight:650; } .hero .status { color:var(--muted); font-size:13px; margin-top:3px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-top:14px; }
+  .kpi { background:#0f1a26; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .kpi .v { font-size:20px; font-weight:650; } .kpi .l { color:var(--muted); font-size:11px; margin-top:3px;
+    text-transform:uppercase; letter-spacing:.5px; }
+  .pill { display:inline-block; font-size:10.5px; padding:2px 8px; border-radius:10px; margin-left:8px;
+          background:#23364a; color:#9fc4ea; vertical-align:middle; }
+  .pill.ok { background:#143524; color:#8af0b8; } .pill.warn { background:#4a3a12; color:#ffd58a; }
+  .pill.bad { background:#3d1a1a; color:#ffb3b3; }
+  .timeline { position:relative; height:54px; margin:10px 0 4px; background:#0f1a26; border:1px solid var(--line);
+              border-radius:8px; overflow:hidden; }
+  .tl-offpeak { position:absolute; top:0; bottom:0; background:#163a2c; }
+  .tl-charge { position:absolute; top:14px; height:26px; background:var(--accent); border-radius:5px; opacity:.9; }
+  .tl-charge.peak { background:var(--amber); }
+  .tl-now { position:absolute; top:0; bottom:0; width:2px; background:#fff; opacity:.8; }
+  .tl-ticks { display:flex; justify-content:space-between; color:var(--muted); font-size:10.5px; padding:0 2px; }
+  .legend { color:var(--muted); font-size:12px; margin-top:8px; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin:0 4px 0 10px; vertical-align:-1px; }
+  .note { font-size:13px; line-height:1.5; margin-top:8px; }
+  form { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; }
+  label { color:var(--muted); font-size:12px; display:flex; flex-direction:column; gap:4px; }
+  select,button,input { background:#0f1620; color:var(--ink); border:1px solid #2c3c50; border-radius:8px;
+                        padding:8px 10px; font-size:13px; font-family:inherit; }
+  button { cursor:pointer; } button:hover { border-color:var(--accent); }
+  button.primary { background:var(--accent); color:#04243f; border-color:var(--accent); font-weight:600; }
+  button.warn { background:var(--amber); color:#3a2500; border-color:var(--amber); font-weight:600; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  .log { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; max-height:220px; overflow:auto;
+         background:#0f1a26; border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+  .log div { padding:2px 0; border-bottom:1px dotted #223; } .log .ts { color:var(--muted); margin-right:8px; }
+  .muted { color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Energy</h1><div class="sub">Tesla overnight charging on Octopus Go</div>
+  <a href="/cds/">← CDS dashboard</a>
+</header>
+<div class="wrap">
+  <div id="banner" class="banner warn">Connecting to the Auto Smart Mode engine…</div>
+
+  <div class="grid">
+    <div class="card full">
+      <div class="hero">
+        <label class="switch"><input type="checkbox" id="toggle"><span class="slider"></span></label>
+        <div>
+          <div class="title">Auto Smart Mode <span id="modePill" class="pill">—</span></div>
+          <div class="status" id="modeText">Charges the car to target inside the off-peak window every night, and starts early only when the window alone is not enough.</div>
+        </div>
+        <div class="row" style="margin:0 0 0 auto">
+          <button id="refresh" title="Wake the car and re-read it">Refresh car</button>
+          <button id="boost" class="warn" title="Charge now at any rate">Boost 1 h</button>
+          <button id="cancelBoost" hidden>Cancel boost</button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="v" id="kSoc">—</div><div class="l">Battery now</div></div>
+        <div class="kpi"><div class="v" id="kPlug">—</div><div class="l">Charger</div></div>
+        <div class="kpi"><div class="v" id="kTarget">—</div><div class="l">Target</div></div>
+        <div class="kpi"><div class="v" id="kStart">—</div><div class="l">Tonight starts</div></div>
+        <div class="kpi"><div class="v" id="kEnd">—</div><div class="l">Full by</div></div>
+        <div class="kpi"><div class="v" id="kPeak">—</div><div class="l">Peak-rate minutes</div></div>
+      </div>
+    </div>
+
+    <div class="card full">
+      <h3>Tonight's plan <span class="muted" id="planWindow"></span></h3>
+      <div class="timeline" id="timeline"></div>
+      <div class="tl-ticks" id="ticks"></div>
+      <div class="legend"><i style="background:#163a2c"></i>Octopus off-peak
+        <i style="background:var(--accent)"></i>planned charging <i style="background:var(--amber)"></i>at peak rate
+        <i style="background:#fff"></i>now</div>
+      <div class="note" id="planNote"></div>
+    </div>
+
+    <div class="card">
+      <h3>Settings</h3>
+      <form id="settings">
+        <label>Off-peak starts <input name="window_start" placeholder="00:30"></label>
+        <label>Off-peak ends <input name="window_end" placeholder="05:30"></label>
+        <label>Target charge % <input name="target_soc" type="number" min="50" max="100"></label>
+        <label>Battery kWh <input name="battery_kwh" type="number" step="0.5" min="10"></label>
+        <label>Charger kW <input name="charger_kw" type="number" step="0.1" min="1"></label>
+        <label>Charging losses (efficiency) <input name="efficiency" type="number" step="0.01" min="0.5" max="1"></label>
+        <label>Finish this many minutes early <input name="buffer_minutes" type="number" min="0" max="120"></label>
+        <label>If it won't fit in the window
+          <select name="shortfall_policy">
+            <option value="start_early">Start early (full by window end)</option>
+            <option value="run_late">Run late (start at window start, overrun)</option>
+            <option value="window_only">Off-peak only (accept partial)</option>
+          </select></label>
+        <label><span><input type="checkbox" name="block_peak_charging" style="width:auto;vertical-align:middle"> Pause charging that starts at the peak rate</span></label>
+        <label><span><input type="checkbox" name="push_native_schedule" style="width:auto;vertical-align:middle"> Also set Tesla's own scheduled-charging time</span></label>
+      </form>
+      <div class="row"><button class="primary" id="save">Save settings</button><span class="muted" id="saveMsg"></span></div>
+    </div>
+
+    <div class="card">
+      <h3>What-if planner <span class="muted">(works without the engine)</span></h3>
+      <label>If the battery is at … % tonight <input id="whatif" type="number" min="0" max="100" value="45"></label>
+      <div class="note" id="whatifOut"></div>
+      <p class="muted">Octopus Go is 00:30–05:30; Intelligent Octopus Go is 23:30–05:30. A 75 kWh pack on a 7.4 kW
+        charger gains about 45 % in five hours, so from below roughly 55 % the engine starts early.</p>
+    </div>
+
+    <div class="card full">
+      <h3>Engine log</h3>
+      <div class="log" id="log"><div class="muted">No log yet.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '/energy/api';
+const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, battery_kwh:75, charger_kw:7.4,
+  efficiency:0.9, buffer_minutes:15, shortfall_policy:'start_early', block_peak_charging:true, push_native_schedule:true };
+let cfg = {...DEFAULTS}, state = {}, online = false;
+const $ = id => document.getElementById(id);
+const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—';
+
+// ---- local planner (mirror of plan_charge in auto_smart_mode.py) ----
+function localPlan(soc, c, now = new Date()) {
+  const [sh, sm] = c.window_start.split(':').map(Number), [eh, em] = c.window_end.split(':').map(Number);
+  let ws = new Date(now); ws.setHours(sh, sm, 0, 0);
+  let we = new Date(now); we.setHours(eh, em, 0, 0);
+  if (we <= ws) { we = new Date(+we + 864e5); if (now < new Date(+we - 864e5)) { ws = new Date(+ws - 864e5); we = new Date(+we - 864e5); } }
+  if (now >= we) { ws = new Date(+ws + 864e5); we = new Date(+we + 864e5); }
+  const rate = c.charger_kw * c.efficiency, need = Math.max(0, (c.target_soc - soc) / 100 * c.battery_kwh);
+  const mins = Math.round(need / rate * 60), latest = new Date(+we - c.buffer_minutes * 6e4);
+  const winMin = Math.floor((latest - ws) / 6e4);
+  const p = { soc, target_soc:c.target_soc, energy_needed_kwh:+need.toFixed(1), minutes_needed:mins, window_start:ws, window_end:we,
+              fits_in_window: mins <= winMin, policy:c.shortfall_policy, peak_minutes:0, expected_soc:c.target_soc };
+  if (!mins) { Object.assign(p, {start:ws, end:ws, note:'Already at target — nothing to do tonight.'}); return p; }
+  if (p.fits_in_window) { p.start = new Date(Math.max(+latest - mins*6e4, +ws)); p.end = new Date(+p.start + mins*6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min; fits in the off-peak window.`; }
+  else if (c.shortfall_policy === 'start_early') { p.end = latest; p.start = new Date(+latest - mins*6e4);
+    p.peak_minutes = Math.floor((ws - p.start)/6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min — ${p.peak_minutes} min more than the window. Starting early at the peak rate so it is full by ${hhmm(latest)}.`; }
+  else if (c.shortfall_policy === 'run_late') { p.start = ws; p.end = new Date(+ws + mins*6e4);
+    p.peak_minutes = Math.floor((p.end - latest)/6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min — overrunning the window by ${p.peak_minutes} min at the peak rate; full at ${hhmm(p.end)}.`; }
+  else { p.start = ws; p.end = latest; p.expected_soc = Math.min(c.target_soc, +(soc + rate*winMin/60/c.battery_kwh*100).toFixed(0));
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min but the window gives ${winMin} min; charging off-peak only — expect about ${p.expected_soc}%.`; }
+  return p;
+}
+
+// ---- rendering ----
+function drawTimeline(p) {
+  const tl = $('timeline'); tl.innerHTML = '';
+  const now = new Date(), t0 = new Date(now); t0.setHours(18,0,0,0); if (now.getHours() < 12) t0.setDate(t0.getDate()-1);
+  const span = 16*36e5, pct = d => Math.max(0, Math.min(100, (new Date(d) - t0) / span * 100));
+  const add = (cls, a, b) => { const e = document.createElement('div'); e.className = cls;
+    e.style.left = pct(a)+'%'; e.style.width = Math.max(0.3, pct(b)-pct(a))+'%'; tl.appendChild(e); };
+  add('tl-offpeak', p.window_start, p.window_end);
+  if (p.minutes_needed) {
+    const s = new Date(p.start), e = new Date(p.end), ws = new Date(p.window_start), we = new Date(p.window_end);
+    if (s < ws) add('tl-charge peak', s, Math.min(ws, e));
+    add('tl-charge', Math.max(s, ws), Math.min(e, we));
+    if (e > we) add('tl-charge peak', Math.max(s, we), e);
+  }
+  const n = document.createElement('div'); n.className = 'tl-now'; n.style.left = pct(now)+'%'; tl.appendChild(n);
+  $('ticks').innerHTML = ['18:00','20:00','22:00','00:00','02:00','04:00','06:00','08:00','10:00'].map(t=>`<span>${t}</span>`).join('');
+}
+
+function render() {
+  const v = state.vehicle || {}, p = state.plan || localPlan(+($('whatif').value||45), cfg);
+  const enabled = cfg.enabled !== false;
+  $('toggle').checked = enabled;
+  const mode = state.mode || (enabled ? 'waiting' : 'off');
+  const pill = $('modePill'); pill.textContent = mode;
+  pill.className = 'pill ' + ({charging:'ok', boost:'warn', off:'bad', 'not plugged in':'warn'}[mode] || '');
+  $('kSoc').textContent = v.soc != null ? `${Math.round(v.soc)}%` : '—';
+  $('kPlug').textContent = v.charging_state || (v.plugged_in === false ? 'Unplugged' : '—');
+  $('kTarget').textContent = `${cfg.target_soc}%`;
+  $('kStart').textContent = p.minutes_needed ? hhmm(p.start) : 'n/a';
+  $('kEnd').textContent = p.minutes_needed ? hhmm(p.end) : 'full';
+  $('kPeak').textContent = p.peak_minutes || 0;
+  $('kPeak').style.color = p.peak_minutes ? 'var(--amber)' : 'var(--green)';
+  $('planWindow').textContent = `off-peak ${hhmm(p.window_start)}–${hhmm(p.window_end)}`;
+  $('planNote').textContent = (state.plan ? '' : 'Preview from the what-if planner: ') + p.note;
+  drawTimeline(p);
+  $('cancelBoost').hidden = !state.boosting; $('boost').hidden = !!state.boosting;
+  const log = $('log'); const rows = (state.log || []).slice().reverse();
+  log.innerHTML = rows.length ? rows.map(r => `<div><span class="ts">${hhmm(r.ts)}</span>${r.msg}</div>`).join('') : '<div class="muted">No log yet.</div>';
+  const b = $('banner');
+  if (!online) { b.className = 'banner warn'; b.textContent = 'Engine API not reachable — showing the local planner only. Settings and the toggle need the engine (energy-api + energy-smart services).'; }
+  else if (state.error) { b.className = 'banner warn'; b.textContent = 'Engine running but the last car read failed: ' + state.error; }
+  else if (!state.engine_alive) { b.className = 'banner warn'; b.textContent = 'API up but the engine has not ticked recently — check the energy-smart service.'; }
+  else { b.className = 'banner ok'; b.textContent = `Engine live (${state.provider === 'dry-run' ? 'SIMULATED car — dry-run provider' : v.name || 'Tesla'}), last tick ${hhmm(state.last_tick)}.` + (v.ts ? ` Car read ${hhmm(v.ts)}.` : ''); }
+  if (state.provider === 'dry-run' && online) b.className = 'banner warn';
+}
+
+function fillForm() {
+  const f = $('settings');
+  for (const el of f.elements) { if (!el.name) continue;
+    if (el.type === 'checkbox') el.checked = !!cfg[el.name]; else el.value = cfg[el.name] ?? ''; }
+}
+function readForm() {
+  const out = {};
+  for (const el of $('settings').elements) { if (!el.name) continue;
+    out[el.name] = el.type === 'checkbox' ? el.checked : (el.type === 'number' ? +el.value : el.value); }
+  return out;
+}
+
+async function api(path, body) {
+  const r = await fetch(API + path, body ? {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)} : {});
+  if (!r.ok) throw new Error((await r.json().catch(()=>({}))).detail || r.statusText);
+  return r.json();
+}
+async function poll() {
+  try { const s = await api('/status'); online = true; cfg = {...DEFAULTS, ...s.config};
+    state = {...s.state, engine_alive: s.engine_alive, provider: s.config.provider};
+    if (!document.activeElement || !document.activeElement.name) fillForm(); }
+  catch (e) { online = false; }
+  render();
+}
+
+$('toggle').onchange = async e => { try { await api('/mode', {enabled: e.target.checked}); } catch (err) { alert(err.message); } poll(); };
+$('save').onclick = async () => { try { const r = await api('/settings', readForm()); cfg = {...DEFAULTS, ...r.config};
+    $('saveMsg').textContent = 'Saved.'; } catch (err) { $('saveMsg').textContent = 'Error: ' + err.message; } render(); };
+$('boost').onclick = async () => { try { await api('/boost', {minutes: 60}); } catch (err) { alert(err.message); } setTimeout(poll, 1500); };
+$('cancelBoost').onclick = async () => { try { await api('/boost/cancel'); } catch (err) { alert(err.message); } setTimeout(poll, 1500); };
+$('refresh').onclick = async () => { try { await api('/refresh'); } catch (err) { alert(err.message); } setTimeout(poll, 4000); };
+$('whatif').oninput = () => { const p = localPlan(+$('whatif').value, {...cfg, ...readForm()});
+  $('whatifOut').textContent = p.note + (p.minutes_needed ? ` Start ${hhmm(p.start)}, done ${hhmm(p.end)}.` : ''); if (!state.plan) render(); };
+$('settings').oninput = () => $('whatif').oninput();
+
+fillForm(); $('whatif').oninput(); poll(); setInterval(poll, 30000);
+</script>
+</body>
+</html>

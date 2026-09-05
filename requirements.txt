@@ -19,3 +19,6 @@ playwright>=1.40
 # Local Q&A API service (RAG over the doc corpus via Ollama; no external API key)
 fastapi>=0.110
 uvicorn>=0.29
+
+# Energy page / Auto Smart Mode (optional; see energy/README.md)
+teslapy>=2.9              # Tesla Owner API; leave provider=dry-run without it

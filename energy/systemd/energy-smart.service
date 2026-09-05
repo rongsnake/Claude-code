@@ -1,0 +1,13 @@
+# ~/.config/systemd/user/energy-smart.service — the Auto Smart Mode engine
+[Unit]
+Description=Auto Smart Mode — overnight Tesla charging engine (Octopus Go window)
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/Claude-code/energy
+ExecStart=/usr/bin/python3 %h/Claude-code/energy/auto_smart_mode.py --daemon
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=default.target
