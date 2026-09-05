@@ -31,6 +31,13 @@ Committees** (CDS = credit default swaps; source
   `POST /refresh` runs the pipeline async (locked, rate-limited); `GET /status`;
   `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
+- `energy/alstin/` — the **Alstin Lodge energy dashboard** (energy.gcburton.org: FastAPI `webapp.py`
+  :5077 on the Pi at `/mnt/media/ai-projects/alstin-lodge-energy`, Tesla Fleet API via pypowerwall,
+  `feed.py` optimiser; Mac original at `~/Claude/Projects/Raspberry Pi/alstin-lodge-energy`). Now
+  carries **Auto Smart Mode**: `auto_smart_mode.py` (engine, Backup-only mode for the Octopus Go
+  window 00:30–05:30 so the Powerwall fills to 100 %, restore at 05:30), `smart_mode_api.py` at
+  `/smart`, card in `web/index.html`. `energy/install_smart_mode.sh` deploys it to the Pi. It is a
+  home battery, not a car. See `energy/README.md`.
 
 ## Serving / scheduling (this Pi)
 - `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`

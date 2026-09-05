@@ -1,0 +1,20 @@
+[Unit]
+Description=Alstin Lodge Auto Smart Mode (overnight Powerwall grid-charging in the Octopus Go window)
+After=network-online.target
+Wants=network-online.target
+# Needs the dashboard's Tesla Fleet API token file (created by: python3 -m pypowerwall setup -fleetapi).
+ConditionPathExists=/mnt/media/ai-projects/alstin-lodge-energy/.pypowerwall.fleetapi
+
+[Service]
+Type=simple
+User=test
+WorkingDirectory=/mnt/media/ai-projects/alstin-lodge-energy
+EnvironmentFile=-/mnt/media/ai-projects/alstin-lodge-energy/.env
+Environment=ENERGY_DIR=/mnt/media/ai-projects/alstin-lodge-energy
+ExecStart=/mnt/media/ai-projects/alstin-lodge-energy/.venv/bin/python auto_smart_mode.py --daemon
+Restart=always
+RestartSec=30
+# Logs: journalctl -u energy-smart -f
+
+[Install]
+WantedBy=multi-user.target

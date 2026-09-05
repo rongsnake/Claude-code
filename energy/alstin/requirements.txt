@@ -1,0 +1,5 @@
+requests>=2.28
+PyYAML>=6.0
+pypowerwall>=0.12
+fastapi>=0.110
+uvicorn[standard]>=0.29

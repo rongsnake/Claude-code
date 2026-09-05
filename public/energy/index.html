@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Energy — Auto Smart Mode</title>
+<style>
+  :root{--bg:#0e1116;--card:#171c24;--card2:#1f2632;--line:#2a3340;--fg:#e6edf3;--mut:#8b97a7}
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  header { padding:24px 32px 4px; display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; max-width:1180px; margin:0 auto; }
+  h1 { margin:0; font-size:23px; } .sub { color:var(--mut); font-size:13px; }
+  header a { color:var(--mut); font-size:13px; text-decoration:none; margin-left:auto; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 20px; }
+  .foot { color:var(--mut); font-size:12px; max-width:1180px; margin:8px auto 40px; padding:0 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Energy</h1><div class="sub">Powerwall overnight grid charging on Octopus Go</div>
+  <a href="/cds/">← CDS dashboard</a>
+</header>
+<div class="wrap">
+<!-- Auto Smart Mode card (Powerwall grid-charging in the Octopus Go window) — self-contained; paste before </body> of the energy dashboard.
+     Talks to the Smart Mode API mounted at /smart (change data-api on the <section> if not). -->
+<section id="smartMode" data-api="/energy/api" style="margin:16px 0">
+<style>
+  #smartMode .sm-card{background:var(--card,#172230);color:var(--fg,#e8eef5);border:1px solid var(--line,#243245);border-radius:12px;padding:16px 18px 14px;margin-bottom:12px}
+  #smartMode .sm-card h3{margin:0 0 10px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--mut,#cdd8e4)}
+  #smartMode .sm-hero{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  #smartMode .sm-switch{position:relative;width:60px;height:32px;flex:none}
+  #smartMode .sm-switch input{opacity:0;width:0;height:0}
+  #smartMode .sm-slider{position:absolute;inset:0;background:#2c3c50;border-radius:32px;cursor:pointer;transition:.2s}
+  #smartMode .sm-slider:before{content:"";position:absolute;width:24px;height:24px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.2s}
+  #smartMode input:checked+.sm-slider{background:#37c98b}#smartMode input:checked+.sm-slider:before{transform:translateX(28px)}
+  #smartMode .sm-title{font-size:19px;font-weight:650}#smartMode .sm-sub{color:#8aa0b6;font-size:12.5px;margin-top:3px}
+  #smartMode .sm-pill{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:10px;margin-left:8px;background:#23364a;color:#9fc4ea;vertical-align:middle}
+  #smartMode .sm-pill.ok{background:#143524;color:#8af0b8}#smartMode .sm-pill.warn{background:#4a3a12;color:#ffd58a}#smartMode .sm-pill.bad{background:#3d1a1a;color:#ffb3b3}
+  #smartMode .sm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+  #smartMode .sm-kpi{background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:10px;padding:9px 11px}
+  #smartMode .sm-kpi .v{font-size:19px;font-weight:650}#smartMode .sm-kpi .l{color:#8aa0b6;font-size:10.5px;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+  #smartMode .sm-tl{position:relative;height:46px;margin:8px 0 4px;background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:8px;overflow:hidden}
+  #smartMode .sm-off{position:absolute;top:0;bottom:0;background:#163a2c}
+  #smartMode .sm-chg{position:absolute;top:11px;height:24px;background:#3aa0ff;border-radius:5px;opacity:.9}#smartMode .sm-chg.peak{background:#f5a623}
+  #smartMode .sm-now{position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.8}
+  #smartMode .sm-ticks{display:flex;justify-content:space-between;color:#8aa0b6;font-size:10px;padding:0 2px}
+  #smartMode .sm-legend{color:#8aa0b6;font-size:11.5px;margin-top:6px}#smartMode .sm-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px}
+  #smartMode .sm-note{font-size:13px;line-height:1.5;margin-top:8px}
+  #smartMode .sm-banner{padding:8px 12px;border-radius:8px;font-size:12.5px;margin-bottom:10px;background:#3a2e12;color:#ffd58a;border:1px solid #6b531f}
+  #smartMode .sm-banner.ok{background:#143524;color:#8af0b8;border-color:#1f6b46}
+  #smartMode .sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){#smartMode .sm-grid{grid-template-columns:1fr}}
+  #smartMode form{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+  #smartMode label{color:var(--mut,#8aa0b6);font-size:11.5px;display:flex;flex-direction:column;gap:3px;margin:0}
+  #smartMode select,#smartMode button,#smartMode input[type=number],#smartMode input[type=text]{background:var(--card2,#0f1620);color:var(--fg,#e8eef5);border:1px solid var(--line,#2c3c50);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;width:auto;font-weight:500}
+  #smartMode button{cursor:pointer}#smartMode button:hover{border-color:#3aa0ff}
+  #smartMode button.primary{background:#3aa0ff;color:#04243f;border-color:#3aa0ff;font-weight:600}#smartMode button.warn{background:#f5a623;color:#3a2500;border-color:#f5a623;font-weight:600}
+  #smartMode .sm-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  #smartMode .sm-log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;max-height:160px;overflow:auto;background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:8px;padding:6px 9px}
+  #smartMode .sm-log div{padding:2px 0;border-bottom:1px dotted #223}#smartMode .sm-log .ts{color:#8aa0b6;margin-right:8px}
+  #smartMode .sm-muted{color:#8aa0b6;font-size:11.5px}
+</style>
+<div class="sm-card">
+  <div id="smBanner" class="sm-banner">Connecting to the Auto Smart Mode engine…</div>
+  <div class="sm-hero">
+    <label class="sm-switch"><input type="checkbox" id="smToggle"><span class="sm-slider"></span></label>
+    <div>
+      <div class="sm-title">Auto Smart Mode <span id="smPill" class="sm-pill">—</span></div>
+      <div class="sm-sub">Fills the Powerwall from the grid inside the Octopus Go off-peak window every night (reserve up at the start, held until the end, then back to normal); starts early only when the window alone is not enough.</div>
+    </div>
+    <div class="sm-row" style="margin:0 0 0 auto">
+      <button id="smRefresh" title="Re-read the Powerwall now">Refresh</button>
+      <button id="smBoost" class="warn" title="Grid-charge now at any rate for an hour">Boost 1 h</button>
+      <button id="smCancelBoost" hidden>Cancel boost</button>
+    </div>
+  </div>
+  <div class="sm-kpis">
+    <div class="sm-kpi"><div class="v" id="smSoc">—</div><div class="l">Battery now</div></div>
+    <div class="sm-kpi"><div class="v" id="smReserve">—</div><div class="l">Reserve</div></div>
+    <div class="sm-kpi"><div class="v" id="smGrid">—</div><div class="l">Grid</div></div>
+    <div class="sm-kpi"><div class="v" id="smStart">—</div><div class="l">Grid charge from</div></div>
+    <div class="sm-kpi"><div class="v" id="smEnd">—</div><div class="l">Full by</div></div><div class="sm-kpi"><div class="v" id="smTarget">—</div><div class="l">Target</div></div>
+    <div class="sm-kpi"><div class="v" id="smPeak">—</div><div class="l">Peak-rate min</div></div>
+  </div>
+  <h3 style="margin-top:14px">Tonight's plan <span class="sm-muted" id="smWindow"></span></h3>
+  <div class="sm-tl" id="smTl"></div>
+  <div class="sm-ticks"><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00</span><span>10:00</span></div>
+  <div class="sm-legend"><i style="background:#163a2c"></i>off-peak (reserve held up) <i style="background:#3aa0ff"></i>grid charging <i style="background:#f5a623"></i>at peak rate <i style="background:#fff"></i>now</div>
+  <div class="sm-note" id="smNote"></div>
+</div>
+<div class="sm-grid">
+  <div class="sm-card">
+    <h3>Settings</h3>
+    <form id="smForm">
+      <label>Off-peak starts <input type="text" name="window_start" placeholder="00:30"></label>
+      <label>Off-peak ends <input type="text" name="window_end" placeholder="05:30"></label>
+      <label>Target charge % <input name="target_soc" type="number" min="50" max="100"></label>
+      <label>Powerwall kWh <input name="battery_kwh" type="number" step="0.5" min="1"></label>
+      <label>Grid charge kW <input name="charge_kw" type="number" step="0.1" min="0.5"></label>
+      <label>Efficiency <input name="efficiency" type="number" step="0.01" min="0.5" max="1"></label>
+      <label>Finish minutes early <input name="buffer_minutes" type="number" min="0" max="120"></label>
+      <label>If it won't fit
+        <select name="shortfall_policy">
+          <option value="start_early">Start early (full by window end)</option>
+          <option value="run_late">Run late (overrun the window)</option>
+          <option value="window_only">Off-peak only (accept partial)</option>
+        </select></label>
+      <label>Normal reserve % (restored after) <input name="normal_reserve" type="number" min="0" max="100"></label>
+      <label>How to charge
+        <select name="charge_method">
+          <option value="backup_mode">Backup-only mode for the window (fills to 100%)</option>
+          <option value="reserve">Raise backup reserve only (Fleet API caps at 80%)</option>
+        </select></label>
+      <label>Mode to restore
+        <select name="restore_mode">
+          <option value="self_consumption">Self-powered</option>
+          <option value="autonomous">Time-based control</option>
+        </select></label>
+      <label><span><input type="checkbox" name="hold_until_window_end"> Hold full until the window ends</span></label>
+    </form>
+    <div class="sm-row"><button class="primary" id="smSave">Save settings</button><span class="sm-muted" id="smSaveMsg"></span></div>
+  </div>
+  <div class="sm-card">
+    <h3>What-if planner <span class="sm-muted">(works without the engine)</span></h3>
+    <label>If the battery is at … % tonight <input id="smWhatIf" type="number" min="0" max="100" value="45"></label>
+    <div class="sm-note" id="smWhatIfOut"></div>
+    <h3 style="margin-top:12px">Engine log</h3>
+    <div class="sm-log" id="smLog"><div class="sm-muted">No log yet.</div></div>
+  </div>
+</div>
+<script>
+(function(){
+const ROOT = document.getElementById('smartMode'), API = ROOT.dataset.api || '/smart';
+const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, battery_kwh:13.5, charge_kw:5.0, efficiency:0.92,
+  buffer_minutes:15, shortfall_policy:'start_early', normal_reserve:20, charge_method:'backup_mode', restore_mode:'self_consumption', hold_until_window_end:true };
+let cfg = {...DEFAULTS}, state = {}, online = false;
+const $ = id => document.getElementById(id);
+const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'}) : '—';
+
+function localPlan(soc, c, now = new Date()) {   // mirror of plan_charge() in auto_smart_mode.py
+  const [sh, sm] = c.window_start.split(':').map(Number), [eh, em] = c.window_end.split(':').map(Number);
+  let ws = new Date(now); ws.setHours(sh, sm, 0, 0);
+  let we = new Date(now); we.setHours(eh, em, 0, 0);
+  if (we <= ws) { we = new Date(+we + 864e5); if (now < new Date(+we - 864e5)) { ws = new Date(+ws - 864e5); we = new Date(+we - 864e5); } }
+  if (now >= we) { ws = new Date(+ws + 864e5); we = new Date(+we + 864e5); }
+  const rate = c.charge_kw * c.efficiency, need = Math.max(0, (c.target_soc - soc) / 100 * c.battery_kwh);
+  const mins = Math.round(need / rate * 60), latest = new Date(+we - c.buffer_minutes * 6e4);
+  const winMin = Math.floor((latest - ws) / 6e4);
+  const p = { soc, target_soc:c.target_soc, energy_needed_kwh:+need.toFixed(1), minutes_needed:mins, window_start:ws, window_end:we,
+              fits_in_window: mins <= winMin, policy:c.shortfall_policy, peak_minutes:0, expected_soc:c.target_soc };
+  if (!mins) { Object.assign(p, {start:ws, end:ws, note:'Already at target — the reserve is simply held through the window.'}); return p; }
+  if (p.fits_in_window) { p.start = ws; p.end = new Date(+ws + mins*6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min from the grid; full by ${hhmm(p.end)}, then held until ${hhmm(we)}.`; }
+  else if (c.shortfall_policy === 'start_early') { p.end = latest; p.start = new Date(+latest - mins*6e4);
+    p.peak_minutes = Math.floor((ws - p.start)/6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min — ${p.peak_minutes} min more than the window. Starting early at the peak rate so it is full by ${hhmm(latest)}.`; }
+  else if (c.shortfall_policy === 'run_late') { p.start = ws; p.end = new Date(+ws + mins*6e4);
+    p.peak_minutes = Math.floor((p.end - latest)/6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min — overrunning the window by ${p.peak_minutes} min at the peak rate; full at ${hhmm(p.end)}.`; }
+  else { p.start = ws; p.end = latest; p.expected_soc = Math.min(c.target_soc, +(soc + rate*winMin/60/c.battery_kwh*100).toFixed(0));
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min but the window gives ${winMin} min; charging off-peak only — expect about ${p.expected_soc}%.`; }
+  return p;
+}
+function drawTimeline(p) {
+  const tl = $('smTl'); tl.innerHTML = '';
+  const now = new Date(), t0 = new Date(now); t0.setHours(18,0,0,0); if (now.getHours() < 12) t0.setDate(t0.getDate()-1);
+  const span = 16*36e5, pct = d => Math.max(0, Math.min(100, (new Date(d) - t0) / span * 100));
+  const add = (cls, a, b) => { const e = document.createElement('div'); e.className = cls;
+    e.style.left = pct(a)+'%'; e.style.width = Math.max(0.3, pct(b)-pct(a))+'%'; tl.appendChild(e); };
+  add('sm-off', p.window_start, p.window_end);
+  if (p.minutes_needed) {
+    const s = new Date(p.start), e = new Date(p.end), ws = new Date(p.window_start), we = new Date(p.window_end);
+    if (s < ws) add('sm-chg peak', s, Math.min(ws, e));
+    add('sm-chg', Math.max(s, ws), Math.min(e, we));
+    if (e > we) add('sm-chg peak', Math.max(s, we), e);
+  }
+  const n = document.createElement('div'); n.className = 'sm-now'; n.style.left = pct(now)+'%'; tl.appendChild(n);
+}
+function render() {
+  const v = state.battery || {}, p = state.plan || localPlan(+($('smWhatIf').value||45), cfg);
+  const enabled = cfg.enabled !== false; $('smToggle').checked = enabled;
+  const mode = state.mode || (enabled ? 'waiting' : 'off');
+  const pill = $('smPill'); pill.textContent = mode;
+  pill.className = 'sm-pill ' + ({charging:'ok', holding:'ok', boost:'warn', off:'bad', conflict:'bad'}[mode] || '');
+  $('smSoc').textContent = v.soc != null ? `${Math.round(v.soc)}%` : '—';
+  $('smReserve').textContent = v.reserve != null ? `${v.reserve}%` : '—';
+  $('smGrid').textContent = v.grid ? (v.grid.replace('SystemGridStatus','').replace('Grid','') || v.grid) + (v.grid_kw ? ` ${v.grid_kw > 0 ? 'in' : 'out'} ${Math.abs(v.grid_kw)} kW` : '') : '—';
+  $('smTarget').textContent = `${cfg.target_soc}%`;
+  $('smStart').textContent = hhmm(p.start);
+  $('smEnd').textContent = p.minutes_needed ? hhmm(p.end) : 'full';
+  $('smPeak').textContent = p.peak_minutes || 0; $('smPeak').style.color = p.peak_minutes ? '#f5a623' : '#37c98b';
+  $('smWindow').textContent = `off-peak ${hhmm(p.window_start)}–${hhmm(p.window_end)}`;
+  $('smNote').textContent = (state.plan ? '' : 'Preview from the what-if planner: ') + p.note;
+  drawTimeline(p);
+  $('smCancelBoost').hidden = !state.boosting; $('smBoost').hidden = !!state.boosting;
+  const rows = (state.log || []).slice().reverse();
+  $('smLog').innerHTML = rows.length ? rows.map(r => `<div><span class="ts">${hhmm(r.ts)}</span>${r.msg}</div>`).join('') : '<div class="sm-muted">No log yet.</div>';
+  const b = $('smBanner');
+  if (!online) { b.className = 'sm-banner'; b.textContent = 'Smart Mode API not reachable at ' + API + ' — showing the local planner only.'; }
+  else if (state.conflict) { b.className = 'sm-banner'; b.textContent = state.conflict; }
+  else if (state.error) { b.className = 'sm-banner'; b.textContent = 'Engine running but the last Powerwall read failed: ' + state.error; }
+  else if (!state.engine_alive) { b.className = 'sm-banner'; b.textContent = 'API up but the engine has not ticked recently — check the energy-smart service.'; }
+  else if (state.provider === 'dry-run') { b.className = 'sm-banner'; b.textContent = 'Engine live against a SIMULATED Powerwall (provider dry-run) — no .pypowerwall.fleetapi found next to the engine.'; }
+  else { b.className = 'sm-banner ok'; b.textContent = `Engine live (${v.name || 'Powerwall'}), last tick ${hhmm(state.last_tick)}.` + (v.ts ? ` Powerwall read ${hhmm(v.ts)}.` : ''); }
+}
+function fillForm() { for (const el of $('smForm').elements) { if (!el.name) continue;
+  if (el.type === 'checkbox') el.checked = !!cfg[el.name]; else el.value = cfg[el.name] ?? ''; } }
+function readForm() { const out = {}; for (const el of $('smForm').elements) { if (!el.name) continue;
+  out[el.name] = el.type === 'checkbox' ? el.checked : (el.type === 'number' ? +el.value : el.value); } return out; }
+async function api(path, body) {
+  const r = await fetch(API + path, body ? {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)} : {});
+  if (!r.ok) throw new Error((await r.json().catch(()=>({}))).detail || r.statusText);
+  return r.json();
+}
+async function poll() {
+  try { const s = await api('/status'); online = true; cfg = {...DEFAULTS, ...s.config};
+    state = {...s.state, engine_alive: s.engine_alive, provider: s.config.provider};
+    if (!ROOT.contains(document.activeElement) || !document.activeElement.name) fillForm(); }
+  catch (e) { online = false; }
+  render();
+}
+$('smToggle').onchange = async e => { try { await api('/mode', {enabled: e.target.checked}); } catch (err) { alert(err.message); } poll(); };
+$('smSave').onclick = async () => { try { const r = await api('/settings', readForm()); cfg = {...DEFAULTS, ...r.config};
+  $('smSaveMsg').textContent = 'Saved.'; } catch (err) { $('smSaveMsg').textContent = 'Error: ' + err.message; } render(); };
+$('smBoost').onclick = async () => { try { await api('/boost', {minutes: 60}); } catch (err) { alert(err.message); } setTimeout(poll, 1500); };
+$('smCancelBoost').onclick = async () => { try { await api('/boost/cancel'); } catch (err) { alert(err.message); } setTimeout(poll, 1500); };
+$('smRefresh').onclick = async () => { try { await api('/refresh'); } catch (err) { alert(err.message); } setTimeout(poll, 4000); };
+$('smWhatIf').oninput = () => { const p = localPlan(+$('smWhatIf').value, {...cfg, ...readForm()});
+  $('smWhatIfOut').textContent = p.note + (p.minutes_needed ? ` Start ${hhmm(p.start)}, done ${hhmm(p.end)}.` : ''); if (!state.plan) render(); };
+$('smForm').oninput = () => $('smWhatIf').oninput();
+fillForm(); $('smWhatIf').oninput(); poll(); setInterval(poll, 30000);
+})();
+</script>
+</section>
+
+</div>
+<p class="foot">Standalone copy of the Auto Smart Mode card (API at /energy/api). The same card lives in the Alstin Lodge dashboard at energy.gcburton.org under Battery controls, where it talks to /smart. Octopus Go is 00:30–05:30; Intelligent Octopus Go is 23:30–05:30. One Powerwall (13.5 kWh) fills from empty in about three hours at 5 kW, so it fits the window from any state of charge.</p>
+</body>
+</html>

@@ -1,0 +1,95 @@
+# Alstin Lodge Energy Controller - example config.
+# Copy to config.yaml and fill in (discover.py --write fills the octopus block).
+# The Octopus API key is read from $OCTOPUS_API_KEY, NEVER from this file.
+
+octopus:
+  account_number: <OCTOPUS_ACCOUNT_NUMBER>
+  base_url: https://api.octopus.energy/v1
+  region:                       # e.g. H - filled by discover.py
+  import_tariff_code:           # Octopus Go, e.g. E-1R-GO-VAR-22-10-14-H
+  export_tariff_code:           # Outgoing Octopus, e.g. E-1R-OUTGOING-FIX-12M-19-05-13-H
+  import_mpan:
+  export_mpan:
+  meter_serial:
+  # Gas usage card (gas.py) - dormant until $OCTOPUS_API_KEY is set. MPRN +
+  # serial auto-discover from the account; pin them here only to override.
+  gas_mprn:
+  gas_serial:
+  gas_units: auto               # auto | kwh | m3 (native unit your meter reports)
+  gas_kwh_per_m3: 11.1          # used only when the meter reports m3
+
+powerwall:
+  # control_mode: cloud  -> Tesla Fleet API (works on PW2/PW+/PW3); reserve capped at 80%.
+  # control_mode: local  -> direct LAN; full control only on wired PW3 (v1r mode).
+  control_mode: cloud
+  email: you@example.com     # Tesla account email (cloud mode)
+  host:                         # Gateway IP (local mode) - find via: python3 -m pypowerwall scan
+  gateway_password:             # Gateway password (local mode / PW3 v1r)
+  rsa_key_path:                 # RSA key path (local PW3 v1r control only)
+  timezone: Europe/London
+
+strategy:
+  reserve_floor: 10             # never discharge below this %
+  reserve_charge_target: 100    # target % when grid-charging (cloud clamps to 80)
+  cheap_charge_hours: 3         # hours of cheapest slots treated as the charge window
+  cheap_price_threshold_p: 15   # only charge if import <= this p/kWh
+  export_price_threshold_p: 30  # only export if export >= this p/kWh (kept high)
+
+control:
+  enabled: false                # master switch - false = never touch the battery
+  dry_run: true                 # true = log intended actions only
+
+loop:
+  interval_seconds: 300         # cycle period
+  price_refresh_seconds: 3600   # refresh prices hourly
+
+storage:
+  db_path: energy.db
+  csv_path: energy.csv
+
+# Used only when running --no-powerwall (simulated SoC for dry tests).
+simulate:
+  soc: 50
+
+# ---- energy.gcburton.org dashboard (webapp.py) ----------------------------
+web:
+  host: 127.0.0.1
+  port: 5077
+
+# Open-Meteo (free, no key). Set to your real lat/lon for an accurate forecast.
+weather:
+  latitude: 51.06
+  longitude: -1.31
+  label: Alstin Lodge
+
+# SolarEdge <-> Tesla bridge (solar.py): cap the overnight cheap-rate charge so
+# tomorrow's PV surplus fills the battery instead of exporting. The PV forecast
+# is Open-Meteo radiation x a yield factor self-calibrated against Tesla's own
+# daily solar meter readings (no SolarEdge credentials needed).
+solar:
+  enabled: true
+  day_load_kwh: 9.0            # house load while the sun is up
+  min_charge_target_pct: 35    # overnight floor so the morning is covered
+  calibration_days: 14
+  default_yield_kwh_per_mj: 0.9
+  outlook_days: 14             # dashboard solar prospect horizon (max 15)
+  accuracy_min_days: 7         # matched days before forecast accuracy shows
+
+# Counterfactual benchmark for the "is it worth switching?" tally:
+# current fixed plan (Go import + Outgoing export) vs Agile import + Agile Outgoing.
+market:
+  current_import_tariff: E-1R-GO-VAR-22-10-14-J
+  current_export_tariff: E-1R-OUTGOING-VAR-24-10-26-J
+  agile_import_tariff: E-1R-AGILE-24-10-01-J          # discover newest via /products
+  agile_export_tariff: E-1R-AGILE-OUTGOING-19-05-13-J
+
+# Physical battery model used by the arbitrage simulation.
+battery:
+  capacity_kwh: 13.5            # 1x Powerwall nameplate
+  max_power_kw: 5.0
+  charge_efficiency: 0.95       # one-way; ~0.90 round-trip with discharge_efficiency
+  discharge_efficiency: 0.95
+  reserve_floor_pct: 10
+  arb_charge_hours: 3           # grid-charge only during the cheapest 3h of slots
+  charge_below_pctile: 30
+  export_above_pctile: 70       # only export stored energy in the priciest 30% of slots
