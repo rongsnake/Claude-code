@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alstin Lodge Energy</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  :root{--bg:#0e1116;--card:#171c24;--card2:#1f2632;--line:#2a3340;--fg:#e6edf3;
+        --mut:#8b97a7;--accent:#3fb950;--warn:#d29922;--bad:#f85149;--good:#3fb950;--blue:#58a6ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);
+         background:var(--card);position:sticky;top:0;z-index:5}
+  header h1{font-size:18px;margin:0;font-weight:650}
+  .sub{color:var(--mut);font-size:13px}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  .grid{display:grid;gap:16px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin:0 0 10px}
+  .metric{font-size:26px;font-weight:680;letter-spacing:-.01em}
+  .metric small{font-size:14px;color:var(--mut);font-weight:500}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}
+  .pill{padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600}
+  .pill.ok{background:rgba(63,185,80,.16);color:var(--good)}
+  .pill.warn{background:rgba(210,153,34,.16);color:var(--warn)}
+  .pill.bad{background:rgba(248,81,73,.16);color:var(--bad)}
+  .banner{background:rgba(210,153,34,.12);border:1px solid var(--warn);color:#f0c060;
+          padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px}
+  label{display:block;font-size:13px;color:var(--mut);margin:12px 0 5px}
+  select,input[type=range]{width:100%}
+  select{background:var(--card2);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px}
+  .toggle{display:flex;align-items:center;gap:10px}
+  button{background:var(--accent);color:#05210c;border:0;border-radius:9px;padding:10px 16px;
+         font-weight:680;cursor:pointer;font-size:14px}
+  button.sec{background:var(--card2);color:var(--fg);border:1px solid var(--line)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .delta{font-size:34px;font-weight:740;letter-spacing:-.02em}
+  .pos{color:var(--good)} .neg{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--mut);font-weight:600}
+  .muted{color:var(--mut);font-size:12.5px}
+  .flex{display:flex;gap:16px;flex-wrap:wrap}
+  .flex>.card{flex:1;min-width:280px}
+  canvas{max-width:100%}
+  .wx{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}
+  .wxh{flex:0 0 auto;text-align:center;background:var(--card2);border-radius:9px;padding:8px 10px;min-width:62px}
+  .wxh .h{font-size:12px;color:var(--mut)} .wxh .c{font-size:13px;margin-top:3px}
+  .err{color:var(--bad);font-size:13px}
+  .spin{color:var(--mut);font-size:13px}
+  a{color:var(--blue)}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ Alstin Lodge Energy</h1>
+  <span class="sub" id="siteline">live dashboard</span>
+  <span style="margin-left:auto" class="sub" id="updated">—</span>
+  <nav class="sub" style="margin-left:14px">
+    <a href="https://gcburton.org/">⌂ gcburton.org</a>
+  </nav>
+</header>
+
+<div class="wrap grid" style="gap:22px">
+
+  <!-- LIVE INPUTS -->
+  <section>
+    <div class="grid cards" id="liveCards">
+      <div class="card"><h2>State of charge</h2><div class="metric" id="m_soc">—</div></div>
+      <div class="card"><h2>Solar</h2><div class="metric" id="m_solar">—</div></div>
+      <div class="card"><h2>Home load</h2><div class="metric" id="m_load">—</div></div>
+      <div class="card"><h2>Grid</h2><div class="metric" id="m_grid">—</div></div>
+      <div class="card"><h2>Battery</h2><div class="metric" id="m_batt">—</div></div>
+      <div class="card"><h2>Status</h2><div id="m_status"><span class="pill ok">—</span></div></div>
+    </div>
+  </section>
+
+  <!-- BATTERY LEVEL -->
+  <div class="card">
+    <h2>Battery level — today <span class="muted" id="b_now" style="text-transform:none;letter-spacing:0"></span></h2>
+    <canvas id="battChart" height="95"></canvas>
+    <div class="muted" id="battMsg" style="margin-top:8px"></div>
+  </div>
+
+  <div class="flex">
+    <!-- CONTROL -->
+    <div class="card">
+      <h2>Battery controls — live</h2>
+      <div class="banner">⚠ These write straight to your Powerwall via Tesla Fleet API. Changes take effect immediately.</div>
+      <label>Operating mode</label>
+      <select id="c_mode">
+        <option value="self_consumption">Self-consumption</option>
+        <option value="autonomous">Autonomous (time-based)</option>
+        <option value="backup">Backup only</option>
+      </select>
+      <label>Backup reserve — <span id="c_reserve_v">—</span>%</label>
+      <input type="range" id="c_reserve" min="0" max="100" step="5">
+      <div class="toggle" style="margin-top:14px">
+        <input type="checkbox" id="c_grid"><label for="c_grid" style="margin:0">Allow charging from grid</label>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <button id="applyBtn">Apply changes</button>
+        <button class="sec" id="revertBtn">Reset</button>
+      </div>
+      <div id="ctrlMsg" class="muted" style="margin-top:8px"></div>
+    </div>
+
+    <!-- WEATHER -->
+    <div class="card">
+      <h2>Weather &amp; solar outlook</h2>
+      <div id="wxNow" class="row"><span class="spin">loading…</span></div>
+      <div class="wx" id="wxHourly"></div>
+      <div class="muted" id="wxLabel" style="margin-top:8px"></div>
+      <div id="solarPlan" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><span class="spin">solar plan…</span></div>
+    </div>
+  </div>
+
+  <!-- SOLAR OUTLOOK -->
+  <div class="card">
+    <h2>Solar outlook — next 14 days</h2>
+    <canvas id="outlookChart" height="95"></canvas>
+    <div class="wx" id="outlookDays" style="margin-top:12px"><span class="spin">loading…</span></div>
+    <div class="muted" id="outlookYield" style="margin-top:8px"></div>
+    <div class="muted" id="outlookAcc"></div>
+  </div>
+
+  <!-- GAS USAGE -->
+  <div class="card" id="gasCard">
+    <h2>Gas usage — last 14 days <span class="muted" id="g_tot" style="text-transform:none;letter-spacing:0"></span></h2>
+    <canvas id="gasChart" height="95"></canvas>
+    <div class="muted" id="gasMsg" style="margin-top:8px"></div>
+  </div>
+
+  <!-- PRICES -->
+  <div class="card">
+    <h2>Half-hourly prices — current plan vs Agile (p/kWh)</h2>
+    <canvas id="priceChart" height="110"></canvas>
+    <div class="muted" id="priceLegend" style="margin-top:8px"></div>
+  </div>
+
+  <!-- TALLY -->
+  <div class="card">
+    <h2>Switch tally — Go + Outgoing vs Agile + active arbitrage</h2>
+    <div class="flex" style="align-items:flex-start">
+      <div style="flex:0 0 auto;min-width:230px">
+        <div class="muted">Cumulative delta over <span id="t_days">—</span> days</div>
+        <div class="delta" id="t_total">—</div>
+        <div class="muted" id="t_annual">—</div>
+        <div style="margin-top:12px" class="muted">
+          Current plan cost: <b id="t_base">—</b><br>
+          Agile-arbitrage cost: <b id="t_cf">—</b><br>
+          Avg/day: <b id="t_avg">—</b>
+        </div>
+        <div style="margin-top:12px"><button class="sec" id="recalcBtn">Recompute all days</button></div>
+        <div id="tallyMsg" class="muted" style="margin-top:8px"></div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <canvas id="deltaChart" height="150"></canvas>
+      </div>
+    </div>
+    <details style="margin-top:14px">
+      <summary class="muted" style="cursor:pointer">Daily breakdown &amp; method</summary>
+      <p class="muted" id="method"></p>
+      <div style="overflow-x:auto"><table id="tallyTable"><thead><tr>
+        <th>Date</th><th>Solar</th><th>Load</th>
+        <th>Now: import</th><th>Now: export</th><th>Now net £</th>
+        <th>Agile net £</th><th>Δ £</th>
+      </tr></thead><tbody></tbody></table></div>
+    </details>
+  </div>
+
+  <div class="muted" style="text-align:center;padding:8px 0 24px">
+    Alstin Lodge energy controller · data via Tesla Fleet API + Octopus public rates + Open-Meteo
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmtW = w => w==null ? "—" : (Math.abs(w)>=1000 ? (w/1000).toFixed(2)+" kW" : Math.round(w)+" W");
+const gbp = v => (v==null?"—":(v<0?"-£":"£")+Math.abs(v).toFixed(2));
+async function getJSON(u,o){const r=await fetch(u,o); if(!r.ok) throw new Error((await r.json().catch(()=>({}))).detail||r.status); return r.json();}
+
+// ---- LIVE ----
+let dirty=false;
+async function loadLive(){
+  try{
+    const d=await getJSON('/api/live');
+    $('m_soc').innerHTML = d.soc_pct!=null ? d.soc_pct.toFixed(0)+'<small>%</small>' : '—';
+    $('m_solar').innerHTML = fmtW(d.solar_w);
+    $('m_load').innerHTML = fmtW(d.load_w);
+    const g=d.grid_w; $('m_grid').innerHTML = fmtW(g) + (g!=null?` <small>${g<0?'export':g>0?'import':''}</small>`:'');
+    const b=d.battery_w; $('m_batt').innerHTML = fmtW(b) + (b!=null?` <small>${b>0?'discharge':b<0?'charge':''}</small>`:'');
+    const ok = d.grid_status==='Active';
+    $('m_status').innerHTML = `<span class="pill ${ok?'ok':'warn'}">${d.grid_status||'—'}</span> `+
+      (d.island_status?`<span class="muted">${d.island_status}</span>`:'');
+    $('updated').textContent = 'live: '+ (d.timestamp? new Date(d.timestamp).toLocaleTimeString() : '—');
+    if(!dirty){ // don't stomp on edits in progress
+      $('c_mode').value = d.mode||'self_consumption';
+      $('c_reserve').value = d.reserve_pct??10; $('c_reserve_v').textContent = d.reserve_pct??'—';
+      $('c_grid').checked = !!d.grid_charging;
+    }
+  }catch(e){ $('updated').innerHTML='<span class="err">live read failed: '+e.message+'</span>'; }
+}
+['c_mode','c_reserve','c_grid'].forEach(id=>$(id).addEventListener('input',()=>{dirty=true;
+  if(id==='c_reserve')$('c_reserve_v').textContent=$('c_reserve').value;}));
+$('revertBtn').onclick=()=>{dirty=false;loadLive();$('ctrlMsg').textContent='';};
+$('applyBtn').onclick=async()=>{
+  const body={mode:$('c_mode').value, reserve_pct:+$('c_reserve').value, grid_charging:$('c_grid').checked};
+  if(!confirm(`Apply to the real Powerwall now?\n• mode: ${body.mode}\n• reserve: ${body.reserve_pct}%\n• grid charging: ${body.grid_charging?'on':'off'}`)) return;
+  $('applyBtn').disabled=true; $('ctrlMsg').textContent='applying…';
+  try{
+    const r=await getJSON('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    dirty=false;
+    const errs=Object.keys(r.errors||{});
+    $('ctrlMsg').innerHTML = errs.length ? '<span class="err">issues: '+JSON.stringify(r.errors)+'</span>'
+      : '<span style="color:var(--good)">✓ applied — mode '+r.confirmed.mode+', reserve '+r.confirmed.reserve_pct+'%, grid '+(r.confirmed.grid_charging?'on':'off')+'</span>';
+    loadLive();
+  }catch(e){ $('ctrlMsg').innerHTML='<span class="err">failed: '+e.message+'</span>'; }
+  $('applyBtn').disabled=false;
+};
+
+// ---- WEATHER ----
+async function loadWeather(){
+  try{
+    const d=await getJSON('/api/weather'); const c=d.current;
+    $('wxNow').innerHTML = `<div><span style="font-size:24px">${c.desc?.emoji||''}</span> `+
+      `<b>${c.temp_c!=null?c.temp_c.toFixed(0)+'°C':'—'}</b> · ${c.desc?.label||''}</div>`+
+      `<div class="muted">cloud ${c.cloud_cover_pct??'—'}% · solar today ${d.today_solar_mj_m2!=null?d.today_solar_mj_m2.toFixed(1)+' MJ/m²':'—'}</div>`;
+    $('wxHourly').innerHTML = (d.hourly||[]).slice(0,14).map(h=>{
+      const t=new Date(h.time).getHours();
+      return `<div class="wxh"><div class="h">${t}:00</div>`+
+        `<div class="c">${h.temp_c!=null?Math.round(h.temp_c)+'°':'—'}</div>`+
+        `<div class="h">☁${h.cloud_cover_pct??'—'}%</div>`+
+        `<div class="h" style="color:var(--warn)">${h.shortwave_wm2!=null?Math.round(h.shortwave_wm2):0}</div></div>`;
+    }).join('');
+    $('wxLabel').textContent = (d.label||'') + ' · bottom number = solar irradiance W/m²';
+  }catch(e){ $('wxNow').innerHTML='<span class="err">weather failed: '+e.message+'</span>'; }
+}
+
+// ---- SOLAR PLAN (SolarEdge<->Tesla bridge) ----
+async function loadSolarPlan(){
+  try{
+    const d=await getJSON('/api/solar');
+    $('solarPlan').innerHTML = `<b>Overnight charge target ${d.charge_target_pct}%</b>`+
+      ` <span class="muted">· PV forecast ${d.pv_forecast_kwh} kWh for ${d.for_date}`+
+      ` · yield ${d.yield_kwh_per_mj} kWh/MJ ${d.calibrated?`(calibrated, ${d.calibration_days}d)`:'(default)'}</span>`;
+  }catch(e){ $('solarPlan').innerHTML='<span class="err">solar plan failed: '+e.message+'</span>'; }
+}
+
+// ---- BATTERY LEVEL (today's SoC curve) ----
+let battChart;
+async function loadBattery(){
+  try{
+    const d=await getJSON('/api/battery/history');
+    const pts=(d.points||[]).map(p=>({x:new Date(p.t),y:p.soe}));
+    if(pts.length) $('b_now').textContent='· now '+pts[pts.length-1].y+'%';
+    const res=d.reserve_pct;
+    const ds=[{label:'State of charge (%)',data:pts,borderColor:'#3fb950',
+      backgroundColor:'rgba(63,185,80,.12)',fill:true,tension:.25,pointRadius:0,borderWidth:2}];
+    if(res!=null && pts.length) ds.push({label:`Reserve ${res}%`,
+      data:[{x:pts[0].x,y:res},{x:pts[pts.length-1].x,y:res}],
+      borderColor:'#d29922',borderDash:[5,4],pointRadius:0,borderWidth:1.5,fill:false});
+    if(battChart) battChart.destroy();
+    battChart=new Chart($('battChart'),{type:'line',data:{datasets:ds},options:{
+      responsive:true,interaction:{mode:'index',intersect:false},
+      scales:{x:{type:'time',time:{unit:'hour'},grid:{color:'#222a35'},ticks:{color:'#8b97a7'}},
+        y:{min:0,max:100,grid:{color:'#222a35'},ticks:{color:'#8b97a7',callback:v=>v+'%'}}},
+      plugins:{legend:{labels:{color:'#e6edf3',boxWidth:14}}}}});
+    $('battMsg').textContent = pts.length ? '' : 'no history yet today';
+  }catch(e){ $('battMsg').innerHTML='<span class="err">battery history failed: '+e.message+'</span>'; }
+}
+
+// ---- GAS USAGE (dormant until Octopus key configured) ----
+let gasChart;
+async function loadGas(){
+  try{
+    const d=await getJSON('/api/gas');
+    const pts=d.points||[];
+    $('g_tot').textContent=`· ${d.total_kwh} kWh total · ${d.avg_kwh} kWh/day avg`;
+    const lbl=pts.map(p=>{const t=new Date(p.date+'T12:00');
+      return t.toLocaleDateString('en-GB',{weekday:'short',day:'numeric'});});
+    if(gasChart) gasChart.destroy();
+    gasChart=new Chart($('gasChart'),{type:'bar',data:{labels:lbl,datasets:[
+      {label:'Gas (kWh/day)',data:pts.map(p=>p.kwh),
+       backgroundColor:'#f0883e88',borderColor:'#f0883e',borderWidth:1}]},
+      options:{responsive:true,scales:{x:{grid:{display:false},ticks:{color:'#8b97a7'}},
+        y:{grid:{color:'#222a35'},ticks:{color:'#8b97a7',callback:v=>v+' kWh'}}},
+        plugins:{legend:{labels:{color:'#e6edf3',boxWidth:14}}}}});
+    $('gasMsg').textContent = d.source_unit==='m3'
+      ? 'Meter reports m³; converted at '+''+'configured calorific factor.' : '';
+  }catch(e){
+    if(/404|not configured/i.test(e.message)){
+      $('gasCard').style.opacity='.7';
+      $('gasMsg').innerHTML='<b>Not yet configured.</b> Add your Octopus API key to <code>.env</code> on the Pi '+
+        '(<code>OCTOPUS_API_KEY</code>) and restart — the gas meter is then found automatically. Key never goes in this page.';
+    } else { $('gasMsg').innerHTML='<span class="err">gas fetch failed: '+e.message+'</span>'; }
+  }
+}
+
+// ---- SOLAR OUTLOOK (multi-day prospect) ----
+let outlookChart;
+const FADE_AFTER=7; // horizon beyond which forecasts are speculative
+async function loadOutlook(){
+  try{
+    const d=await getJSON('/api/solar/outlook');
+    const days=d.days||[];
+    const lbl=days.map(x=>{const t=new Date(x.date+'T12:00');
+      return t.toLocaleDateString('en-GB',{weekday:'short',day:'numeric'});});
+    if(outlookChart) outlookChart.destroy();
+    outlookChart=new Chart($('outlookChart'),{data:{labels:lbl,datasets:[
+      {type:'bar',label:'Predicted harvest (kWh)',yAxisID:'y',order:2,
+       data:days.map(x=>x.pred_kwh),
+       backgroundColor:days.map(x=>x.horizon_days>FADE_AFTER?'#d2992240':'#d29922a8'),
+       borderColor:days.map(x=>x.horizon_days>FADE_AFTER?'#d2992266':'#d29922'),borderWidth:1},
+      {type:'line',label:'Cloud cover (%)',yAxisID:'y2',order:1,
+       data:days.map(x=>x.cloud_cover_pct),borderColor:'#58a6ff',backgroundColor:'#58a6ff',
+       tension:.3,pointRadius:2,borderWidth:2,spanGaps:false},
+    ]},options:{responsive:true,interaction:{mode:'index',intersect:false},
+      scales:{x:{grid:{display:false},ticks:{color:'#8b97a7'}},
+        y:{position:'left',grid:{color:'#222a35'},ticks:{color:'#8b97a7',callback:v=>v+' kWh'}},
+        y2:{position:'right',min:0,max:100,grid:{drawOnChartArea:false},
+            ticks:{color:'#58a6ff',callback:v=>v+'%'}}},
+      plugins:{legend:{labels:{color:'#e6edf3',boxWidth:14}}}}});
+    $('outlookDays').innerHTML=days.map(x=>{
+      const t=new Date(x.date+'T12:00');
+      const dn=x.horizon_days===0?'Today':t.toLocaleDateString('en-GB',{weekday:'short'});
+      const faded=x.horizon_days>FADE_AFTER?';opacity:.55':'';
+      if(x.placeholder) return `<div class="wxh" style="opacity:.4"><div class="h">${dn} ${t.getDate()}</div>`+
+        `<div class="c">·</div><div class="h">awaiting</div><div class="h">data</div></div>`;
+      return `<div class="wxh" style="min-width:70px${faded}"><div class="h">${dn} ${t.getDate()}</div>`+
+        `<div class="c">${x.desc?.emoji||''} ☁${x.cloud_cover_pct??'—'}%</div>`+
+        `<div class="h">${x.radiation_mj_m2!=null?x.radiation_mj_m2.toFixed(1):'—'} MJ</div>`+
+        `<div class="c" style="color:var(--warn);font-weight:650">${x.pred_kwh!=null?x.pred_kwh.toFixed(1):'—'}<span class="h"> kWh</span></div></div>`;
+    }).join('');
+    $('outlookYield').textContent=`Predicted harvest = forecast radiation × yield ${d.yield_kwh_per_mj} kWh/MJ `+
+      (d.calibrated?`(self-calibrated on ${d.calibration_days}d of Tesla-metered history)`:'(default yield — calibrating)')+
+      ` · days ${FADE_AFTER+1}+ faded = lower confidence`;
+    const a=d.accuracy||{};
+    $('outlookAcc').textContent = a.available
+      ? 'Forecast track record (median error): '+(a.by_horizon||[]).map(b=>`±${b.median_ape_pct}% at ${b.bucket} (n=${b.n})`).join(' · ')
+      : `Forecast track record: logging since ${a.since||'today'} — appears after ${a.min_required} matched days (${a.matched||0}/${a.min_required} so far)`;
+  }catch(e){ $('outlookDays').innerHTML='<span class="err">outlook failed: '+e.message+'</span>'; }
+}
+
+// ---- PRICES ----
+let priceChart;
+async function loadPrices(){
+  try{
+    const d=await getJSON('/api/prices');
+    const mk=(arr)=>arr.map(x=>({x:new Date(x.t),y:x.p}));
+    const ds=[
+      {label:'Agile import',data:mk(d.agile_import),borderColor:'#f85149',tension:.1,pointRadius:0,borderWidth:2},
+      {label:'Agile Outgoing',data:mk(d.agile_export),borderColor:'#3fb950',tension:.1,pointRadius:0,borderWidth:2},
+      {label:'Go import (now)',data:mk(d.current_import),borderColor:'#d29922',borderDash:[5,4],pointRadius:0,borderWidth:1.5},
+      {label:'Outgoing export (now)',data:mk(d.current_export),borderColor:'#58a6ff',borderDash:[5,4],pointRadius:0,borderWidth:1.5},
+    ];
+    if(priceChart) priceChart.destroy();
+    priceChart=new Chart($('priceChart'),{type:'line',data:{datasets:ds},options:{
+      responsive:true,interaction:{mode:'index',intersect:false},
+      scales:{x:{type:'time',time:{unit:'hour'},grid:{color:'#222a35'},ticks:{color:'#8b97a7'}},
+              y:{grid:{color:'#222a35'},ticks:{color:'#8b97a7',callback:v=>v+'p'}}},
+      plugins:{legend:{labels:{color:'#e6edf3',boxWidth:14}}}}});
+    $('priceLegend').textContent='Solid = Agile (half-hourly market). Dashed = your current fixed plan.';
+  }catch(e){ $('priceLegend').innerHTML='<span class="err">prices failed: '+e.message+'</span>'; }
+}
+
+// ---- TALLY ----
+let deltaChart;
+function renderTally(d){
+  const c=d.cumulative;
+  $('t_days').textContent=c.days;
+  const pos=c.total_delta>=0;
+  $('t_total').innerHTML=`<span class="${pos?'pos':'neg'}">${pos?'+':''}${gbp(c.total_delta)}</span>`;
+  $('t_annual').textContent=`≈ ${gbp(c.annualised_delta)}/yr if it holds`;
+  $('t_base').textContent=gbp(c.baseline_net_total);
+  $('t_cf').textContent=gbp(c.counterfactual_net_total);
+  $('t_avg').innerHTML=`<span class="${c.avg_daily_delta>=0?'pos':'neg'}">${gbp(c.avg_daily_delta)}/day</span>`;
+  $('method').textContent=d.method;
+  const rows=d.rows||[];
+  const labels=rows.map(r=>r.date.slice(5));
+  if(deltaChart) deltaChart.destroy();
+  deltaChart=new Chart($('deltaChart'),{type:'bar',
+    data:{labels,datasets:[{label:'Daily Δ (£, +ve = Agile wins)',data:rows.map(r=>r.delta),
+      backgroundColor:rows.map(r=>r.delta>=0?'#3fb95066':'#f8514966'),
+      borderColor:rows.map(r=>r.delta>=0?'#3fb950':'#f85149'),borderWidth:1}]},
+    options:{scales:{x:{grid:{display:false},ticks:{color:'#8b97a7'}},
+      y:{grid:{color:'#222a35'},ticks:{color:'#8b97a7',callback:v=>'£'+v}}},
+      plugins:{legend:{labels:{color:'#e6edf3'}}}}});
+  const tb=$('tallyTable').querySelector('tbody');
+  tb.innerHTML=rows.slice().reverse().map(r=>`<tr>
+    <td>${r.date}</td><td>${r.solar_kwh?.toFixed(1)}</td><td>${r.load_kwh?.toFixed(1)}</td>
+    <td>${r.actual_import_kwh?.toFixed(1)}</td><td>${r.actual_export_kwh?.toFixed(1)}</td>
+    <td>${gbp(r.baseline_net)}</td><td>${gbp(r.counterfactual_net)}</td>
+    <td class="${r.delta>=0?'pos':'neg'}">${r.delta>=0?'+':''}${gbp(r.delta)}</td></tr>`).join('');
+}
+async function loadTally(refresh){
+  $('tallyMsg').textContent= refresh?'recomputing…':'loading…';
+  try{
+    const d=await getJSON('/api/tally?days=14'+(refresh?'&refresh=true':''));
+    renderTally(d);
+    $('tallyMsg').innerHTML = (d.errors&&d.errors.length)? '<span class="err">'+d.errors.length+' day(s) failed</span>':'updated';
+  }catch(e){ $('tallyMsg').innerHTML='<span class="err">tally failed: '+e.message+'</span>'; }
+}
+$('recalcBtn').onclick=()=>loadTally(true);
+
+// ---- boot ----
+loadLive(); loadWeather(); loadPrices(); loadTally(false); loadSolarPlan(); loadOutlook(); loadBattery(); loadGas();
+setInterval(loadLive,30000);
+setInterval(loadPrices,15*60000);
+setInterval(loadWeather,30*60000);
+setInterval(loadSolarPlan,30*60000);
+setInterval(loadOutlook,30*60000);
+setInterval(loadBattery,5*60000);
+setInterval(loadGas,6*3600000);
+</script>
+</body>
+</html>

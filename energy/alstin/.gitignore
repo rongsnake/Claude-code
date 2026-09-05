@@ -1,0 +1,9 @@
+config.yaml
+*.db
+*.csv
+.venv/
+*.pem
+__pycache__/
+*.pyc
+.pypowerwall.fleetapi
+.env

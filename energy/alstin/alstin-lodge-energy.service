@@ -1,0 +1,20 @@
+[Unit]
+Description=Alstin Lodge Energy Controller (Octopus + Tesla Powerwall optimiser)
+After=network-online.target
+Wants=network-online.target
+# Won't start until the key file exists - create .env with OCTOPUS_API_KEY=...
+ConditionPathExists=/mnt/media/ai-projects/alstin-lodge-energy/.env
+
+[Service]
+Type=simple
+User=test
+WorkingDirectory=/mnt/media/ai-projects/alstin-lodge-energy
+# Octopus API key lives in .env (gitignored, mode 600), never in config.yaml.
+EnvironmentFile=/mnt/media/ai-projects/alstin-lodge-energy/.env
+ExecStart=/mnt/media/ai-projects/alstin-lodge-energy/.venv/bin/python feed.py --config config.yaml
+Restart=on-failure
+RestartSec=30
+# Logs go to the journal: journalctl -u alstin-lodge-energy -f
+
+[Install]
+WantedBy=multi-user.target

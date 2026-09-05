@@ -1,0 +1,18 @@
+[Unit]
+Description=Alstin Lodge Energy Dashboard (energy.gcburton.org - FastAPI/uvicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=test
+WorkingDirectory=/mnt/media/ai-projects/alstin-lodge-energy
+# Optional: OCTOPUS_API_KEY for billed-consumption reconciliation. Prices and the
+# tally work WITHOUT it (public rate endpoints + Tesla flows). .env is gitignored.
+EnvironmentFile=-/mnt/media/ai-projects/alstin-lodge-energy/.env
+ExecStart=/mnt/media/ai-projects/alstin-lodge-energy/.venv/bin/uvicorn webapp:app --host 127.0.0.1 --port 5077
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
