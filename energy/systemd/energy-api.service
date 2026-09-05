@@ -4,8 +4,8 @@ Description=Auto Smart Mode API (uvicorn :5056)
 After=network-online.target
 
 [Service]
-WorkingDirectory=%h/Claude-code/energy
-ExecStart=/usr/bin/python3 -m uvicorn energy_api:app --host 127.0.0.1 --port 5056
+WorkingDirectory=%h/Claude-code/energy/alstin
+ExecStart=/usr/bin/python3 -m uvicorn smart_mode_api:app --host 127.0.0.1 --port 5056
 Restart=always
 RestartSec=10
 

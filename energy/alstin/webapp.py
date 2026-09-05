@@ -3,7 +3,9 @@
 Served behind Caddy basic_auth (user 'gareth') via the cloudflared tunnel, so
 the app itself trusts the proxy and does no auth of its own. Exposes live
 Powerwall inputs, a weather forecast, LIVE battery controls, and the
-current-plan-vs-Agile-arbitrage tally (see market.py).
+current-plan-vs-Agile-arbitrage tally (see market.py), and Auto Smart Mode
+(overnight Powerwall grid-charging in the Octopus Go window; engine in
+auto_smart_mode.py, API in smart_mode_api.py mounted at /smart).
 """
 from __future__ import annotations
 
@@ -18,6 +20,7 @@ from pydantic import BaseModel
 
 import market
 import weather
+from smart_mode_api import router as smart_mode_router  # Auto Smart Mode (overnight grid charge)
 
 BASE = Path(__file__).resolve().parent
 CFG = yaml.safe_load((BASE / "config.yaml").read_text()) or {}
@@ -25,6 +28,7 @@ DB = str(BASE / (CFG.get("storage", {}).get("db_path", "energy.db")))
 TZ = CFG.get("powerwall", {}).get("timezone", "Europe/London")
 
 app = FastAPI(title="Alstin Lodge Energy", docs_url=None, redoc_url=None)
+app.include_router(smart_mode_router, prefix="/smart")   # /smart/status, /smart/mode, …
 
 _fleet = None
 

@@ -31,12 +31,13 @@ Committees** (CDS = credit default swaps; source
   `POST /refresh` runs the pipeline async (locked, rate-limited); `GET /status`;
   `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
-- `energy/` + `public/energy/index.html` — **Auto Smart Mode** for the energy page (the Alstin Lodge
-  dashboard, energy.gcburton.org = `webapp.py` on the Pi :5077; source on the Mac at
-  `~/Claude/Projects/alstin-lodge-energy/`, not in git). Drop-in via `energy/install_smart_mode.sh`: overnight **Powerwall** grid-charging (raise the backup reserve at 00:30, hold, restore at 05:30) —
-  not a car. `auto_smart_mode.py
-  --daemon` plans + sets the reserve (teslapy or dry-run), `energy_api.py` (uvicorn :5056,
-  Caddy `/energy/api/`) serves the page's toggle/settings/boost. See `energy/README.md`.
+- `energy/alstin/` — the **Alstin Lodge energy dashboard** (energy.gcburton.org: FastAPI `webapp.py`
+  :5077 on the Pi at `/mnt/media/ai-projects/alstin-lodge-energy`, Tesla Fleet API via pypowerwall,
+  `feed.py` optimiser; Mac original at `~/Claude/Projects/Raspberry Pi/alstin-lodge-energy`). Now
+  carries **Auto Smart Mode**: `auto_smart_mode.py` (engine, Backup-only mode for the Octopus Go
+  window 00:30–05:30 so the Powerwall fills to 100 %, restore at 05:30), `smart_mode_api.py` at
+  `/smart`, card in `web/index.html`. `energy/install_smart_mode.sh` deploys it to the Pi. It is a
+  home battery, not a car. See `energy/README.md`.
 
 ## Serving / scheduling (this Pi)
 - `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`

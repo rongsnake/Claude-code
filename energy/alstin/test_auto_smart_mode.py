@@ -9,7 +9,8 @@ import auto_smart_mode as asm
 
 TZ = ZoneInfo("Europe/London")
 CFG = {**asm.DEFAULT_CONFIG, "battery_kwh": 13.5, "charge_kw": 5.0, "efficiency": 0.92,
-       "buffer_minutes": 15, "target_soc": 100, "normal_reserve": 20}
+       "buffer_minutes": 15, "target_soc": 100, "normal_reserve": 20, "charge_method": "reserve",
+       "provider": "dry-run"}
 
 
 def at(s):
@@ -79,13 +80,35 @@ class PlanTests(unittest.TestCase):
 class FakePowerwall:
     def __init__(self):
         self.soc, self.reserve, self.mode, self.calls = 35.0, 20, "self_consumption", []
+        self.grid_charging = True
 
     def read(self):
         return {"soc": self.soc, "reserve": self.reserve, "mode": self.mode, "grid": "connected",
-                "charging": self.soc < self.reserve, "online": True, "name": "Fake PW"}
+                "charging": self.soc < self.reserve, "online": True, "name": "Fake PW",
+                "grid_charging": self.grid_charging}
 
     def set_reserve(self, p): self.reserve = int(p); self.calls.append(f"reserve{p}")
     def set_mode(self, m): self.mode = m; self.calls.append(f"mode:{m}")
+    def set_grid_charging(self, on): self.grid_charging = bool(on); self.calls.append(f"grid:{on}")
+
+
+class FakeFleetAPI:
+    """Mimics pypowerwall.fleetapi.FleetAPI for the provider test."""
+    def __init__(self):
+        self.reserve, self.mode, self.disallow = 20, "self_consumption", True
+        self.posts = []
+
+    def get_live_status(self, force=False):
+        return {"percentage_charged": 41.2, "grid_power": 3200, "battery_power": -3000, "grid_status": "Active"}
+
+    def get_site_info(self, force=False):
+        return {"backup_reserve_percent": self.reserve, "default_real_mode": self.mode, "site_name": "Alstin Lodge",
+                "components": {"disallow_charge_from_grid_with_solar_installed": self.disallow}}
+
+    def get_grid_charging(self, force=False): return not self.disallow
+    def set_battery_reserve(self, r): self.reserve = r; self.posts.append(("reserve", r)); return {"ok": True}
+    def set_operating_mode(self, m): self.mode = m; self.posts.append(("mode", m)); return {"ok": True}
+    def set_grid_charging(self, m): self.disallow = (m == "off"); self.posts.append(("grid", m)); return {"ok": True}
 
 
 class EngineTests(unittest.TestCase):
@@ -139,12 +162,65 @@ class EngineTests(unittest.TestCase):
         eng2.tick(at("2026-09-06T07:00"))
         self.assertEqual(self.pw.reserve, 20)
 
+    def test_grid_charging_is_enabled_when_off(self):
+        self.pw.grid_charging = False
+        self.eng.tick(at("2026-09-06T00:30"))
+        self.assertIn("grid:True", self.pw.calls)
+
+    def test_conflict_with_live_feed_controller_stands_down(self):
+        (self.tmp / "config.yaml").write_text("control:\n  enabled: true\n  dry_run: false\n")
+        self.eng.tick(at("2026-09-06T00:30"))
+        self.assertEqual(self.pw.calls, []); self.assertEqual(self.eng.state["mode"], "conflict")
+        asm.save_json(asm.CONFIG_PATH, {**CFG, "override_feed": True})
+        self.eng.tick(at("2026-09-06T00:31"))
+        self.assertEqual(self.pw.reserve, 100)
+
     def test_backup_mode_method(self):
         asm.save_json(asm.CONFIG_PATH, {**CFG, "charge_method": "backup_mode"})
         self.eng.tick(at("2026-09-06T00:30"))
         self.assertEqual(self.pw.mode, "backup")
         self.eng.tick(at("2026-09-06T05:30"))
         self.assertEqual(self.pw.mode, "self_consumption"); self.assertEqual(self.pw.reserve, 20)
+
+
+class ProviderAndSeedTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = pathlib.Path(tempfile.mkdtemp())
+        asm.ENERGY_DIR, asm.CONFIG_PATH = self.tmp, self.tmp / "config.json"
+        asm.STATE_PATH, asm.REQUESTS_PATH = self.tmp / "state.json", self.tmp / "requests.json"
+
+    def test_defaults_seeded_from_dashboard_config_yaml(self):
+        (self.tmp / "config.yaml").write_text(
+            "battery:\n  capacity_kwh: 27\n  max_power_kw: 10\n  charge_efficiency: 0.95\n"
+            "strategy:\n  reserve_floor: 10\npowerwall:\n  timezone: Europe/London\n")
+        cfg = asm.load_config()
+        self.assertEqual((cfg["battery_kwh"], cfg["charge_kw"], cfg["efficiency"], cfg["normal_reserve"]), (27.0, 10.0, 0.95, 10))
+        self.assertEqual(cfg["provider"], "dry-run")            # no .pypowerwall.fleetapi → simulated
+        (self.tmp / ".pypowerwall.fleetapi").write_text("{}")
+        self.assertEqual(asm.load_config()["provider"], "fleetapi")
+
+    def test_fleetapi_provider_reads_and_writes(self):
+        f = FakeFleetAPI()
+        pw = asm.FleetApiPowerwall({**CFG, "provider": "fleetapi"}, client=f)
+        r = pw.read()
+        self.assertEqual((r["soc"], r["reserve"], r["mode"], r["grid_charging"], r["grid_kw"], r["charging"]),
+                         (41.2, 20, "self_consumption", False, 3.2, True))
+        pw.set_grid_charging(True); pw.set_reserve(100); pw.set_mode("backup")
+        self.assertEqual(f.posts, [("grid", "on"), ("reserve", 100), ("mode", "backup")])
+        self.assertTrue(f.get_grid_charging())
+
+    def test_full_night_through_fleetapi_in_backup_mode(self):
+        f = FakeFleetAPI()
+        asm.save_json(asm.CONFIG_PATH, {**CFG, "provider": "fleetapi", "charge_method": "backup_mode", "normal_reserve": 10})
+        eng = asm.Engine(asm.load_config(), asm.FleetApiPowerwall(asm.load_config(), client=f))
+        eng.tick(at("2026-09-06T00:30"))
+        self.assertEqual(f.posts, [("grid", "on"), ("reserve", 100), ("mode", "backup")])
+        f.mode = "self_consumption"                               # app user changed it mid-window
+        eng.tick(at("2026-09-06T02:00"))
+        self.assertEqual(f.posts[-1], ("mode", "backup"))
+        eng.tick(at("2026-09-06T05:30"))
+        self.assertEqual(f.posts[-2:], [("reserve", 10), ("mode", "self_consumption")])
+        self.assertEqual(eng.state["mode"], "waiting")
 
 
 if __name__ == "__main__":

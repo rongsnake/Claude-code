@@ -7,3 +7,10 @@ __pycache__/
 *.pyc
 .pypowerwall.fleetapi
 .env
+
+# Auto Smart Mode runtime files
+config.json
+state.json
+requests.json
+sim.json
+*.tmp

@@ -1,9 +1,9 @@
 <!-- Auto Smart Mode card (Powerwall grid-charging in the Octopus Go window) — self-contained; paste before </body> of the energy dashboard.
      Talks to the Smart Mode API mounted at /smart (change data-api on the <section> if not). -->
-<section id="smartMode" data-api="/smart" style="margin:16px auto;max-width:1100px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+<section id="smartMode" data-api="/smart" style="margin:16px 0">
 <style>
-  #smartMode .sm-card{background:#172230;color:#e8eef5;border-radius:12px;padding:16px 18px 14px;margin-bottom:12px}
-  #smartMode .sm-card h3{margin:0 0 10px;font-size:14px;font-weight:600;color:#cdd8e4}
+  #smartMode .sm-card{background:var(--card,#172230);color:var(--fg,#e8eef5);border:1px solid var(--line,#243245);border-radius:12px;padding:16px 18px 14px;margin-bottom:12px}
+  #smartMode .sm-card h3{margin:0 0 10px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--mut,#cdd8e4)}
   #smartMode .sm-hero{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
   #smartMode .sm-switch{position:relative;width:60px;height:32px;flex:none}
   #smartMode .sm-switch input{opacity:0;width:0;height:0}
@@ -14,9 +14,9 @@
   #smartMode .sm-pill{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:10px;margin-left:8px;background:#23364a;color:#9fc4ea;vertical-align:middle}
   #smartMode .sm-pill.ok{background:#143524;color:#8af0b8}#smartMode .sm-pill.warn{background:#4a3a12;color:#ffd58a}#smartMode .sm-pill.bad{background:#3d1a1a;color:#ffb3b3}
   #smartMode .sm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
-  #smartMode .sm-kpi{background:#0f1a26;border:1px solid #243245;border-radius:10px;padding:9px 11px}
+  #smartMode .sm-kpi{background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:10px;padding:9px 11px}
   #smartMode .sm-kpi .v{font-size:19px;font-weight:650}#smartMode .sm-kpi .l{color:#8aa0b6;font-size:10.5px;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
-  #smartMode .sm-tl{position:relative;height:46px;margin:8px 0 4px;background:#0f1a26;border:1px solid #243245;border-radius:8px;overflow:hidden}
+  #smartMode .sm-tl{position:relative;height:46px;margin:8px 0 4px;background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:8px;overflow:hidden}
   #smartMode .sm-off{position:absolute;top:0;bottom:0;background:#163a2c}
   #smartMode .sm-chg{position:absolute;top:11px;height:24px;background:#3aa0ff;border-radius:5px;opacity:.9}#smartMode .sm-chg.peak{background:#f5a623}
   #smartMode .sm-now{position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.8}
@@ -27,12 +27,12 @@
   #smartMode .sm-banner.ok{background:#143524;color:#8af0b8;border-color:#1f6b46}
   #smartMode .sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){#smartMode .sm-grid{grid-template-columns:1fr}}
   #smartMode form{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
-  #smartMode label{color:#8aa0b6;font-size:11.5px;display:flex;flex-direction:column;gap:3px}
-  #smartMode select,#smartMode button,#smartMode input[type=number],#smartMode input[type=text]{background:#0f1620;color:#e8eef5;border:1px solid #2c3c50;border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit}
+  #smartMode label{color:var(--mut,#8aa0b6);font-size:11.5px;display:flex;flex-direction:column;gap:3px;margin:0}
+  #smartMode select,#smartMode button,#smartMode input[type=number],#smartMode input[type=text]{background:var(--card2,#0f1620);color:var(--fg,#e8eef5);border:1px solid var(--line,#2c3c50);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;width:auto;font-weight:500}
   #smartMode button{cursor:pointer}#smartMode button:hover{border-color:#3aa0ff}
   #smartMode button.primary{background:#3aa0ff;color:#04243f;border-color:#3aa0ff;font-weight:600}#smartMode button.warn{background:#f5a623;color:#3a2500;border-color:#f5a623;font-weight:600}
   #smartMode .sm-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
-  #smartMode .sm-log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;max-height:160px;overflow:auto;background:#0f1a26;border:1px solid #243245;border-radius:8px;padding:6px 9px}
+  #smartMode .sm-log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;max-height:160px;overflow:auto;background:var(--card2,#0f1a26);border:1px solid var(--line,#243245);border-radius:8px;padding:6px 9px}
   #smartMode .sm-log div{padding:2px 0;border-bottom:1px dotted #223}#smartMode .sm-log .ts{color:#8aa0b6;margin-right:8px}
   #smartMode .sm-muted{color:#8aa0b6;font-size:11.5px}
 </style>
@@ -84,8 +84,8 @@
       <label>Normal reserve % (restored after) <input name="normal_reserve" type="number" min="0" max="100"></label>
       <label>How to charge
         <select name="charge_method">
-          <option value="reserve">Raise backup reserve (recommended)</option>
-          <option value="backup_mode">Raise reserve + Backup mode</option>
+          <option value="backup_mode">Backup-only mode for the window (fills to 100%)</option>
+          <option value="reserve">Raise backup reserve only (Fleet API caps at 80%)</option>
         </select></label>
       <label>Mode to restore
         <select name="restore_mode">
@@ -108,7 +108,7 @@
 (function(){
 const ROOT = document.getElementById('smartMode'), API = ROOT.dataset.api || '/smart';
 const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, battery_kwh:13.5, charge_kw:5.0, efficiency:0.92,
-  buffer_minutes:15, shortfall_policy:'start_early', normal_reserve:20, charge_method:'reserve', restore_mode:'self_consumption', hold_until_window_end:true };
+  buffer_minutes:15, shortfall_policy:'start_early', normal_reserve:20, charge_method:'backup_mode', restore_mode:'self_consumption', hold_until_window_end:true };
 let cfg = {...DEFAULTS}, state = {}, online = false;
 const $ = id => document.getElementById(id);
 const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'}) : '—';
@@ -157,7 +157,7 @@ function render() {
   const enabled = cfg.enabled !== false; $('smToggle').checked = enabled;
   const mode = state.mode || (enabled ? 'waiting' : 'off');
   const pill = $('smPill'); pill.textContent = mode;
-  pill.className = 'sm-pill ' + ({charging:'ok', holding:'ok', boost:'warn', off:'bad'}[mode] || '');
+  pill.className = 'sm-pill ' + ({charging:'ok', holding:'ok', boost:'warn', off:'bad', conflict:'bad'}[mode] || '');
   $('smSoc').textContent = v.soc != null ? `${Math.round(v.soc)}%` : '—';
   $('smReserve').textContent = v.reserve != null ? `${v.reserve}%` : '—';
   $('smGrid').textContent = v.grid ? (v.grid.replace('SystemGridStatus','').replace('Grid','') || v.grid) + (v.grid_kw ? ` ${v.grid_kw > 0 ? 'in' : 'out'} ${Math.abs(v.grid_kw)} kW` : '') : '—';
@@ -173,9 +173,10 @@ function render() {
   $('smLog').innerHTML = rows.length ? rows.map(r => `<div><span class="ts">${hhmm(r.ts)}</span>${r.msg}</div>`).join('') : '<div class="sm-muted">No log yet.</div>';
   const b = $('smBanner');
   if (!online) { b.className = 'sm-banner'; b.textContent = 'Smart Mode API not reachable at ' + API + ' — showing the local planner only.'; }
+  else if (state.conflict) { b.className = 'sm-banner'; b.textContent = state.conflict; }
   else if (state.error) { b.className = 'sm-banner'; b.textContent = 'Engine running but the last Powerwall read failed: ' + state.error; }
   else if (!state.engine_alive) { b.className = 'sm-banner'; b.textContent = 'API up but the engine has not ticked recently — check the energy-smart service.'; }
-  else if (state.provider === 'dry-run') { b.className = 'sm-banner'; b.textContent = 'Engine live against a SIMULATED Powerwall (provider dry-run) — set provider=teslapy in config.json to control the real one.'; }
+  else if (state.provider === 'dry-run') { b.className = 'sm-banner'; b.textContent = 'Engine live against a SIMULATED Powerwall (provider dry-run) — no .pypowerwall.fleetapi found next to the engine.'; }
   else { b.className = 'sm-banner ok'; b.textContent = `Engine live (${v.name || 'Powerwall'}), last tick ${hhmm(state.last_tick)}.` + (v.ts ? ` Powerwall read ${hhmm(v.ts)}.` : ''); }
 }
 function fillForm() { for (const el of $('smForm').elements) { if (!el.name) continue;

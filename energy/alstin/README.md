@@ -97,3 +97,13 @@ sudo systemctl restart alstin-lodge-energy   # after a config change
 
 > Don't revoke Tesla access until this controller has been running live and steady,
 > or you'll have no automation in between.
+
+
+## Auto Smart Mode (added 2026-09-05)
+
+Overnight Powerwall grid-charging in the Octopus Go window, independent of the
+`feed.py` optimiser: `auto_smart_mode.py` (engine, `energy-smart.service`),
+`smart_mode_api.py` (mounted at `/smart` in `webapp.py`), and the card in
+`web/index.html` under *Battery controls*. See `../README.md` for how it works and how
+to install it on the Pi. Keep `control.enabled: false` here while it runs — the engine
+stands down if feed.py live control is on, so the two never fight.

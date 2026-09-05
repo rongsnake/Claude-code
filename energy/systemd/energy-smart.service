@@ -4,8 +4,8 @@ Description=Auto Smart Mode — Powerwall grid-charging engine (Octopus Go windo
 After=network-online.target
 
 [Service]
-WorkingDirectory=%h/Claude-code/energy
-ExecStart=/usr/bin/python3 %h/Claude-code/energy/auto_smart_mode.py --daemon
+WorkingDirectory=%h/Claude-code/energy/alstin
+ExecStart=/usr/bin/python3 %h/Claude-code/energy/alstin/auto_smart_mode.py --daemon
 Restart=always
 RestartSec=30
 

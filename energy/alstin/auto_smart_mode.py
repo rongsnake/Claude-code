@@ -25,8 +25,20 @@ Once a minute (``--daemon``):
      (e.g. after a restart) it restores it, so the house is never left importing at
      the peak rate.
 
-Providers: ``dry-run`` (simulated Powerwall, safe default) and ``teslapy`` (Tesla
-Owner/Fleet API via the ``teslapy`` package; can reuse an existing token cache).
+Providers:
+  ``fleetapi``  the dashboard's own Tesla Fleet API client (pypowerwall's FleetAPI, token
+                file ``.pypowerwall.fleetapi`` next to webapp.py) — chosen automatically
+                when that file exists.  Note Tesla's cloud API caps the backup reserve at
+                80 %, so the default charge method here is ``backup_mode``: switch the
+                Powerwall to Backup-only for the window (it then fills to 100 % from the
+                grid and holds), and back to self-powered afterwards.
+  ``teslapy``   Tesla Owner API via the ``teslapy`` package (own login / token cache).
+  ``dry-run``   simulated Powerwall (safe default when no Fleet API file exists).
+
+Coexistence: the dashboard's optimiser loop (feed.py / alstin-lodge-energy.service)
+also writes mode + reserve when ``control.enabled`` is true and ``dry_run`` false in
+config.yaml.  Smart Mode reads config.yaml and refuses to act while that loop is live
+(``state.conflict``), unless ``override_feed`` is set.
 
 Files (in this directory unless overridden with ``ENERGY_DIR``):
   config.json   settings, editable from the page via energy_api.py
@@ -67,11 +79,13 @@ DEFAULT_CONFIG = {
     "shortfall_policy": "start_early",   # start_early | run_late | window_only
     "normal_reserve": 20,       # % backup reserve to restore after the window
     "restore_mode": "self_consumption",  # operation mode to restore (self_consumption | autonomous)
-    "charge_method": "reserve", # reserve (raise backup reserve) | backup_mode (also switch mode to backup)
+    "charge_method": "backup_mode", # backup_mode (Backup-only for the window → fills to 100 %) | reserve (raise reserve only; Fleet API caps it at 80 %)
     "hold_until_window_end": True,  # keep the reserve raised until the window ends even once full
     "plan_time": "21:00",       # (re)plan from this time each evening (also Octopus lookup)
     "poll_seconds": 60,
-    "provider": "dry-run",      # dry-run | teslapy
+    "provider": "auto",         # auto (fleetapi if .pypowerwall.fleetapi exists, else dry-run) | fleetapi | teslapy | dry-run
+    "fleetapi_config": "",      # path to .pypowerwall.fleetapi (default: next to this file)
+    "override_feed": False,     # act even if feed.py's live control is enabled in config.yaml
     "tesla_email": "",
     "tesla_cache_file": "",     # reuse an existing teslapy cache.json (e.g. the dashboard's); default ./tesla_cache.json
     "tesla_site_index": 0,
@@ -105,9 +119,40 @@ def save_json(path: Path, obj) -> None:
     tmp.replace(path)
 
 
+def dashboard_config() -> dict:
+    """The Alstin Lodge dashboard's config.yaml (same directory), or {} if absent."""
+    try:
+        import yaml
+        return yaml.safe_load((ENERGY_DIR / "config.yaml").read_text()) or {}
+    except Exception:  # noqa: BLE001  (no file, no yaml, bad yaml)
+        return {}
+
+
+def seeded_defaults() -> dict:
+    """DEFAULT_CONFIG with battery / tariff / timezone facts taken from config.yaml."""
+    d = dict(DEFAULT_CONFIG)
+    y = dashboard_config()
+    b, st, pw = y.get("battery") or {}, y.get("strategy") or {}, y.get("powerwall") or {}
+    if b.get("capacity_kwh"): d["battery_kwh"] = float(b["capacity_kwh"])
+    if b.get("max_power_kw"): d["charge_kw"] = float(b["max_power_kw"])
+    if b.get("charge_efficiency"): d["efficiency"] = float(b["charge_efficiency"])
+    if st.get("reserve_floor") is not None: d["normal_reserve"] = int(st["reserve_floor"])
+    if pw.get("timezone"): d["timezone"] = pw["timezone"]
+    return d
+
+
+def feed_control_live() -> bool:
+    """True when feed.py is configured to write to the Powerwall (it would fight us)."""
+    c = dashboard_config().get("control") or {}
+    return bool(c.get("enabled", False)) and not bool(c.get("dry_run", True))
+
+
 def load_config() -> dict:
-    cfg = dict(DEFAULT_CONFIG)
+    cfg = seeded_defaults()
     cfg.update(load_json(CONFIG_PATH, {}))
+    if cfg["provider"] == "auto":
+        fa = Path(cfg["fleetapi_config"] or (ENERGY_DIR / ".pypowerwall.fleetapi"))
+        cfg["provider"] = "fleetapi" if fa.exists() else "dry-run"
     return cfg
 
 
@@ -302,8 +347,48 @@ class TeslaPyPowerwall:
     def set_mode(self, mode: str): self.b.set_operation(mode)
 
 
+class FleetApiPowerwall:
+    """The dashboard's own Tesla Fleet API client (pypowerwall.fleetapi.FleetAPI).
+
+    Reuses ``.pypowerwall.fleetapi`` (client id/secret + tokens; FleetAPI refreshes
+    the access token itself), so no second Tesla login is needed.
+    """
+
+    def __init__(self, cfg: dict, client=None):
+        if client is None:
+            from pypowerwall.fleetapi.fleetapi import FleetAPI
+            client = FleetAPI(configfile=cfg.get("fleetapi_config") or str(ENERGY_DIR / ".pypowerwall.fleetapi"))
+        self.f = client
+        self._cap = float(cfg["battery_kwh"])
+
+    def read(self) -> dict:
+        live = self.f.get_live_status(force=True) or {}
+        info = self.f.get_site_info(force=True) or {}
+        grid_w = float(live.get("grid_power") or 0)
+        soc = float(live.get("percentage_charged") or 0)
+        return {"soc": round(soc, 1), "reserve": int(info.get("backup_reserve_percent") or 0),
+                "mode": info.get("default_real_mode"), "grid": live.get("grid_status"),
+                "grid_charging": self.f.get_grid_charging(), "grid_kw": round(grid_w / 1000.0, 2),
+                "charging": grid_w > 200 and float(live.get("battery_power") or 0) < -200,
+                "online": True, "name": info.get("site_name") or "Powerwall", "capacity_kwh": self._cap}
+
+    @staticmethod
+    def _ok(r, what):
+        if r is False:
+            raise RuntimeError(f"Fleet API rejected {what}")
+
+    def set_reserve(self, pct: int): self._ok(self.f.set_battery_reserve(int(pct)), f"reserve {pct}%")
+    def set_mode(self, mode: str): self._ok(self.f.set_operating_mode(mode), f"mode {mode}")
+    def set_grid_charging(self, on: bool): self._ok(self.f.set_grid_charging("on" if on else "off"), "grid charging")
+
+
 def make_powerwall(cfg: dict):
-    return TeslaPyPowerwall(cfg) if cfg["provider"] == "teslapy" else DryRunPowerwall(cfg)
+    p = cfg["provider"]
+    if p == "fleetapi":
+        return FleetApiPowerwall(cfg)
+    if p == "teslapy":
+        return TeslaPyPowerwall(cfg)
+    return DryRunPowerwall(cfg)
 
 
 # ----------------------------------------------------------------------------- engine
@@ -384,6 +469,17 @@ class Engine:
             self.save()
             return
 
+        # The dashboard's own optimiser loop would fight us if it is live.
+        if feed_control_live() and not self.cfg["override_feed"]:
+            self.state["conflict"] = ("feed.py live control is enabled in config.yaml (control.enabled true, "
+                                      "dry_run false) — Smart Mode is standing down. Disable one of them.")
+            self.state["mode"] = "conflict"
+            if raised:
+                self._restore(raised, "feed.py live control detected")
+            self.save()
+            return
+        self.state.pop("conflict", None)
+
         hold_end = plan.window_end if self.cfg["hold_until_window_end"] else plan.end
         want = boosting or (plan.start <= now < hold_end)
         raised_before = raised
@@ -397,12 +493,16 @@ class Engine:
             self.state["mode"] = "boost" if boosting else ("holding" if soc >= plan.target_soc - 0.5 else "charging")
             # Somebody (the Tesla app?) lowered the reserve under us — re-assert it. (The reading
             # predates a raise made this tick, so only check on later ticks.)
-            if raised_before and int(v.get("reserve", 0)) < int(plan.target_soc) and not boosting:
+            if raised_before and not boosting:
                 try:
-                    self.pw.set_reserve(int(plan.target_soc))
-                    self.note(f"Reserve was {v.get('reserve')}% — set back to {plan.target_soc:.0f}%.")
+                    if self.cfg["charge_method"] == "backup_mode" and v.get("mode") not in (None, "backup"):
+                        self.pw.set_mode("backup")
+                        self.note(f"Mode was {v.get('mode')} — set back to backup for the window.")
+                    elif self.cfg["charge_method"] == "reserve" and int(v.get("reserve", 0)) < min(int(plan.target_soc), 80):
+                        self.pw.set_reserve(int(plan.target_soc))
+                        self.note(f"Reserve was {v.get('reserve')}% — set back to {plan.target_soc:.0f}%.")
                 except Exception as e:  # noqa: BLE001
-                    self.note(f"Could not re-assert reserve: {e}", "warning")
+                    self.note(f"Could not re-assert: {e}", "warning")
         else:
             self.state["mode"] = "waiting"
         self.save()
@@ -413,8 +513,11 @@ class Engine:
 
     def _raise(self, v: dict, plan: Plan, boosting: bool) -> None:
         target = int(plan.target_soc)
-        prev = {"reserve": int(v.get("reserve", self.cfg["normal_reserve"])), "mode": v.get("mode") or self.cfg["restore_mode"]}
+        prev = {"reserve": int(v.get("reserve", self.cfg["normal_reserve"])), "mode": v.get("mode") or self.cfg["restore_mode"],
+                "grid_charging": v.get("grid_charging")}
         try:
+            if v.get("grid_charging") is False and hasattr(self.pw, "set_grid_charging"):
+                self.pw.set_grid_charging(True)          # otherwise it cannot pull from the grid at all
             self.pw.set_reserve(target)
             if self.cfg["charge_method"] == "backup_mode":
                 self.pw.set_mode("backup")
@@ -449,7 +552,7 @@ def main(argv=None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
     if not CONFIG_PATH.exists():
-        save_json(CONFIG_PATH, DEFAULT_CONFIG)
+        save_json(CONFIG_PATH, seeded_defaults())
         print(f"wrote {CONFIG_PATH}")
     if a.init_config:
         return 0

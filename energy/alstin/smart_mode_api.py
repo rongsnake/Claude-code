@@ -12,11 +12,12 @@ GET  /plan?soc=42      what-if plan for a given state of charge
 The engine (auto_smart_mode.py --daemon) owns the Powerwall; this API only edits
 config.json and drops one-shot commands into requests.json.
 
-Standalone: ``uvicorn energy_api:app`` (:5056).  Embedded in the Alstin Lodge
-dashboard's webapp.py (install_smart_mode.sh does this)::
+Mounted in the Alstin Lodge dashboard (webapp.py)::
 
-    from energy_api import router as smart_mode_router
+    from smart_mode_api import router as smart_mode_router
     app.include_router(smart_mode_router, prefix="/smart")
+
+Standalone: ``uvicorn smart_mode_api:app`` (:5056).
 """
 from __future__ import annotations
 
@@ -35,12 +36,12 @@ app = FastAPI(title="Auto Smart Mode API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 EDITABLE = {
-    "enabled": bool, "window_start": str, "window_end": str, "target_soc": int,
+    "enabled": bool, "override_feed": bool, "window_start": str, "window_end": str, "target_soc": int,
     "battery_kwh": float, "charge_kw": float, "efficiency": float, "buffer_minutes": int,
     "shortfall_policy": str, "normal_reserve": int, "restore_mode": str, "charge_method": str,
     "hold_until_window_end": bool, "plan_time": str, "octopus_product": str, "octopus_tariff": str,
 }
-SECRET = {"tesla_email", "tesla_cache_file"}
+SECRET = {"tesla_email", "tesla_cache_file", "fleetapi_config"}
 CHOICES = {
     "shortfall_policy": ("start_early", "run_late", "window_only"),
     "restore_mode": ("self_consumption", "autonomous"),

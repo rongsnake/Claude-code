@@ -1,113 +1,103 @@
 #!/usr/bin/env bash
-# Install Auto Smart Mode (Powerwall grid-charging in the Octopus Go window) into the Alstin Lodge energy dashboard on the Pi.
+# Install / update Auto Smart Mode on the Pi's live Alstin Lodge energy dashboard.
 #
-# What it does (idempotent, with backups; prints every change it makes):
-#   1. Copies auto_smart_mode.py, energy_api.py and smart_mode_card.html next to webapp.py.
-#   2. Patches webapp.py to mount the Smart Mode API under /smart  (app.include_router).
-#   3. Injects the Smart Mode card into the dashboard's HTML (before </body>) if a
-#      single index/template HTML file can be found; otherwise tells you where to put it.
-#   4. Installs + starts the engine as a user systemd unit (energy-smart.service) using
-#      the same Python as the dashboard.
-#   5. Writes config.json with defaults if missing (provider dry-run until you switch it).
+#   sudo bash install_smart_mode.sh [/mnt/media/ai-projects/alstin-lodge-energy]
 #
-# Usage on the Pi:   bash install_smart_mode.sh /path/to/alstin-lodge-energy
-#   env overrides:   PYTHON=/path/to/venv/bin/python  APP_UNIT=alstin-lodge-energy.service
+# Idempotent, keeps a backup of every file it changes, prints each step. It:
+#   1. copies the Smart Mode files from this checkout (energy/alstin/) next to webapp.py:
+#      auto_smart_mode.py, smart_mode_api.py, web/smart_mode_card.html
+#   2. mounts the API in webapp.py  (app.include_router(smart_mode_router, prefix="/smart"))
+#   3. puts the Smart Mode card into web/index.html under the Battery-controls row
+#   4. writes config.json (seeded from config.yaml: 13.5 kWh, 5 kW, reserve floor…)
+#   5. installs energy-smart.service (system unit, User=test, .venv python) and starts it
+#   6. restarts energy-web.service so /smart/… is live
+# The engine picks up the dashboard's Tesla Fleet API token file automatically.
 set -euo pipefail
 
-APP_DIR="${1:-}"
-[ -n "$APP_DIR" ] || { echo "usage: $0 /path/to/alstin-lodge-energy" >&2; exit 2; }
+APP_DIR="${1:-/mnt/media/ai-projects/alstin-lodge-energy}"
+SRC="$(cd "$(dirname "$0")/alstin" && pwd)"
 [ -f "$APP_DIR/webapp.py" ] || { echo "no webapp.py in $APP_DIR" >&2; exit 2; }
-HERE="$(cd "$(dirname "$0")" && pwd)"
 PYTHON="${PYTHON:-$( [ -x "$APP_DIR/.venv/bin/python" ] && echo "$APP_DIR/.venv/bin/python" || command -v python3 )}"
-APP_UNIT="${APP_UNIT:-}"
+OWNER="$(stat -c %U "$APP_DIR/webapp.py" 2>/dev/null || echo "$USER")"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 say() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+as_owner() { if [ "$(id -un)" != "$OWNER" ] && command -v sudo >/dev/null; then sudo -u "$OWNER" "$@"; else "$@"; fi; }
 
-say "Copying engine + API + card into $APP_DIR"
-cp "$HERE/auto_smart_mode.py" "$HERE/energy_api.py" "$HERE/smart_mode_card.html" "$APP_DIR/"
-"$PYTHON" -c "import fastapi, uvicorn" 2>/dev/null || "$PYTHON" -m pip install -q fastapi uvicorn
-"$PYTHON" -c "import teslapy" 2>/dev/null || echo "note: teslapy not installed for $PYTHON — engine runs dry-run until: $PYTHON -m pip install teslapy"
+say "Copying Smart Mode files into $APP_DIR (owner $OWNER, python $PYTHON)"
+mkdir -p "$APP_DIR/web"
+for f in auto_smart_mode.py smart_mode_api.py web/smart_mode_card.html; do
+  cp "$SRC/$f" "$APP_DIR/$f"; chown "$OWNER" "$APP_DIR/$f" 2>/dev/null || true
+done
+"$PYTHON" -c "import fastapi, uvicorn, yaml, pypowerwall" 2>/dev/null || echo "note: the app venv lacks one of fastapi/uvicorn/yaml/pypowerwall — install them first" >&2
 
-# --- 2. mount the router in webapp.py -------------------------------------------------
+# --- 2. mount the router --------------------------------------------------------------
 if grep -q "smart_mode_router" "$APP_DIR/webapp.py"; then
   say "webapp.py already mounts the Smart Mode router"
 else
-  cp "$APP_DIR/webapp.py" "$APP_DIR/webapp.py.bak-$STAMP"
+  cp -p "$APP_DIR/webapp.py" "$APP_DIR/webapp.py.bak-$STAMP"
   APPVAR="$(grep -oE '^[A-Za-z_][A-Za-z0-9_]*\s*=\s*FastAPI\(' "$APP_DIR/webapp.py" | head -1 | sed -E 's/\s*=.*//')"
-  [ -n "$APPVAR" ] || { echo "could not find 'xxx = FastAPI(' in webapp.py — add manually:
-    from energy_api import router as smart_mode_router
-    app.include_router(smart_mode_router, prefix=\"/smart\")" >&2; exit 1; }
+  [ -n "$APPVAR" ] || { echo "could not find 'xxx = FastAPI(' in webapp.py" >&2; exit 1; }
   cat >> "$APP_DIR/webapp.py" <<EOF
 
-# --- Auto Smart Mode (Powerwall grid charging in the Octopus Go window) — added by install_smart_mode.sh $STAMP ---
-from energy_api import router as smart_mode_router  # noqa: E402
+# --- Auto Smart Mode (overnight Powerwall grid charge in the Octopus Go window) — install_smart_mode.sh $STAMP
+from smart_mode_api import router as smart_mode_router  # noqa: E402
 $APPVAR.include_router(smart_mode_router, prefix="/smart")
 EOF
-  say "Patched webapp.py: $APPVAR.include_router(smart_mode_router, prefix=\"/smart\")  (backup: webapp.py.bak-$STAMP)"
-  (cd "$APP_DIR" && "$PYTHON" -c "import ast,sys; ast.parse(open('webapp.py').read())") && say "webapp.py parses"
+  (cd "$APP_DIR" && "$PYTHON" -c "import ast; ast.parse(open('webapp.py').read())")
+  say "Patched webapp.py (backup webapp.py.bak-$STAMP)"
 fi
 
-# --- 3. inject the card into the page -------------------------------------------------
-mapfile -t PAGES < <(cd "$APP_DIR" && grep -lis "</body>" index.html templates/*.html static/*.html *.html 2>/dev/null | grep -v '^smart_mode_card.html$' | sort -u)
-if [ "${#PAGES[@]}" -eq 1 ]; then
-  PAGE="$APP_DIR/${PAGES[0]}"
-  if grep -q 'id="smartMode"' "$PAGE"; then
-    say "Card already present in ${PAGES[0]}"
-  else
-    cp "$PAGE" "$PAGE.bak-$STAMP"
-    "$PYTHON" - "$PAGE" "$APP_DIR/smart_mode_card.html" <<'EOF'
-import sys, re
+# --- 3. the card in the page ------------------------------------------------------------
+PAGE="$APP_DIR/web/index.html"
+if [ ! -f "$PAGE" ]; then
+  echo "no web/index.html in $APP_DIR — paste web/smart_mode_card.html into the dashboard page by hand" >&2
+elif grep -q 'id="smartMode"' "$PAGE"; then
+  say "Card already present in web/index.html"
+else
+  cp -p "$PAGE" "$PAGE.bak-$STAMP"
+  "$PYTHON" - "$PAGE" "$APP_DIR/web/smart_mode_card.html" <<'EOF'
+import sys
 page, card = sys.argv[1], sys.argv[2]
 html = open(page).read(); snippet = open(card).read()
-i = html.lower().rfind("</body>")
-html = html[:i] + snippet + "\n" + html[i:] if i >= 0 else html + snippet
+anchor = "  <!-- SOLAR OUTLOOK -->"
+if anchor in html:
+    html = html.replace(anchor, "  <!-- AUTO SMART MODE -->\n" + snippet + "\n" + anchor, 1)
+else:
+    i = html.lower().rfind("</body>")
+    html = (html[:i] + snippet + "\n" + html[i:]) if i >= 0 else html + snippet
 open(page, "w").write(html)
 EOF
-    say "Injected the Smart Mode card into ${PAGES[0]} (backup: ${PAGES[0]}.bak-$STAMP)"
-  fi
-elif [ "${#PAGES[@]}" -eq 0 ]; then
-  echo "No HTML page with </body> found in $APP_DIR — if webapp.py renders HTML from a Python string, paste the contents of smart_mode_card.html before </body> there." >&2
+  say "Card added to web/index.html (backup index.html.bak-$STAMP)"
+fi
+
+# --- 4. config.json ----------------------------------------------------------------------
+if [ ! -f "$APP_DIR/config.json" ]; then
+  (cd "$APP_DIR" && ENERGY_DIR="$APP_DIR" as_owner "$PYTHON" auto_smart_mode.py --init-config)
 else
-  echo "Several HTML pages found (${PAGES[*]}) — paste smart_mode_card.html before </body> in the dashboard's main page." >&2
+  say "config.json already exists (kept)"
 fi
-
-# --- 4. engine service ------------------------------------------------------------------
-(cd "$APP_DIR" && ENERGY_DIR="$APP_DIR" "$PYTHON" auto_smart_mode.py --init-config) || true
-if ! command -v systemctl >/dev/null 2>&1 || ! systemctl --user daemon-reload >/dev/null 2>&1; then
-  echo "user systemd not available here — skipping the service steps (run the engine with: $PYTHON $APP_DIR/auto_smart_mode.py --daemon)" >&2
-  exit 0
-fi
-say "Installing the engine as a user systemd unit"
-mkdir -p "$HOME/.config/systemd/user"
-cat > "$HOME/.config/systemd/user/energy-smart.service" <<EOF
-[Unit]
-Description=Auto Smart Mode — Powerwall grid-charging engine (Octopus Go window)
-After=network-online.target
-
-[Service]
-WorkingDirectory=$APP_DIR
-Environment=ENERGY_DIR=$APP_DIR
-ExecStart=$PYTHON $APP_DIR/auto_smart_mode.py --daemon
-Restart=always
-RestartSec=30
-
-[Install]
-WantedBy=default.target
+[ -f "$APP_DIR/.pypowerwall.fleetapi" ] && say "Found .pypowerwall.fleetapi — engine will use the Fleet API (provider auto → fleetapi)" \
+  || echo "WARNING: no .pypowerwall.fleetapi in $APP_DIR — the engine will run in dry-run against a simulated Powerwall" >&2
+if "$PYTHON" - "$APP_DIR" <<'EOF'
+import sys, yaml, pathlib
+c = (yaml.safe_load((pathlib.Path(sys.argv[1]) / "config.yaml").read_text()) or {}).get("control") or {}
+sys.exit(0 if (c.get("enabled") and not c.get("dry_run", True)) else 1)
 EOF
-systemctl --user daemon-reload
-systemctl --user enable --now energy-smart.service
-systemctl --user --no-pager --lines=3 status energy-smart.service || true
+then echo "WARNING: feed.py live control is ON in config.yaml — Smart Mode will stand down until you disable one of them" >&2; fi
 
-# --- 5. restart the dashboard so the router is live -------------------------------------
-if [ -z "$APP_UNIT" ]; then
-  APP_UNIT="$(systemctl --user list-units --type=service --all --no-legend 2>/dev/null | awk '{print $1}' | grep -iE 'energy|alstin|webapp' | grep -v energy-smart | head -1 || true)"
+# --- 5/6. services ----------------------------------------------------------------------
+if ! command -v systemctl >/dev/null 2>&1; then
+  echo "no systemctl here — run the engine with: $PYTHON $APP_DIR/auto_smart_mode.py --daemon" >&2; exit 0
 fi
-if [ -n "$APP_UNIT" ]; then
-  say "Restarting dashboard unit $APP_UNIT"
-  systemctl --user restart "$APP_UNIT" 2>/dev/null || sudo systemctl restart "$APP_UNIT"
-else
-  echo "Could not identify the dashboard's systemd unit — restart it by hand so /smart/status goes live." >&2
-fi
-
-say "Done. Check:  curl -s http://127.0.0.1:5077/smart/status | head -c 400"
-say "Then edit $APP_DIR/config.json: provider=teslapy, tesla_email (or tesla_cache_file), battery_kwh, charge_kw, normal_reserve; run '$PYTHON auto_smart_mode.py --once' for the Tesla login; systemctl --user restart energy-smart"
+UNIT=/etc/systemd/system/energy-smart.service
+say "Installing $UNIT"
+sed -e "s#/mnt/media/ai-projects/alstin-lodge-energy#$APP_DIR#g" -e "s#^User=.*#User=$OWNER#" \
+    -e "s#\.venv/bin/python#$(realpath --relative-to="$APP_DIR" "$PYTHON" 2>/dev/null || echo "$PYTHON")#" \
+    "$SRC/energy-smart.service" | sudo tee "$UNIT" >/dev/null
+sudo systemctl daemon-reload
+sudo systemctl enable --now energy-smart.service
+sudo systemctl restart energy-web.service 2>/dev/null || echo "note: could not restart energy-web.service — restart the dashboard by hand" >&2
+sleep 2
+sudo systemctl --no-pager --lines=5 status energy-smart.service || true
+say "Check: curl -s http://127.0.0.1:5077/smart/status | head -c 400"
+say "Then open energy.gcburton.org — the Auto Smart Mode card sits under Battery controls. Toggle it on there."
