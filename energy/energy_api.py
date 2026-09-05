@@ -11,17 +11,25 @@ GET  /plan?soc=42      what-if plan for a given state of charge
 
 The engine (auto_smart_mode.py --daemon) owns the car; this API only edits
 config.json and drops one-shot commands into requests.json.
+
+Standalone: ``uvicorn energy_api:app``.  Embedded in an existing FastAPI app
+(the Alstin Lodge dashboard's webapp.py, which install_smart_mode.sh patches)::
+
+    from energy_api import router as smart_mode_router
+    app.include_router(smart_mode_router, prefix="/smart")
 """
 from __future__ import annotations
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import auto_smart_mode as asm
+
+router = APIRouter(tags=["auto-smart-mode"])
 
 app = FastAPI(title="Auto Smart Mode API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -67,7 +75,7 @@ def _request(**kw) -> None:
     asm.save_json(asm.REQUESTS_PATH, req)
 
 
-@app.get("/status")
+@router.get("/status")
 def status():
     cfg = public_config()
     state = asm.load_json(asm.STATE_PATH, {})
@@ -83,12 +91,12 @@ class Mode(BaseModel):
     enabled: bool
 
 
-@app.post("/mode")
+@router.post("/mode")
 def set_mode(m: Mode):
     return set_settings({"enabled": m.enabled})
 
 
-@app.post("/settings")
+@router.post("/settings")
 def set_settings(body: dict):
     unknown = set(body) - set(EDITABLE)
     if unknown:
@@ -104,7 +112,7 @@ class Boost(BaseModel):
     minutes: int = 60
 
 
-@app.post("/boost")
+@router.post("/boost")
 def boost(b: Boost):
     if not 5 <= b.minutes <= 600:
         raise HTTPException(400, "minutes must be 5–600")
@@ -112,23 +120,26 @@ def boost(b: Boost):
     return {"ok": True}
 
 
-@app.post("/boost/cancel")
+@router.post("/boost/cancel")
 def boost_cancel():
     _request(cancel_boost=True)
     return {"ok": True}
 
 
-@app.post("/refresh")
+@router.post("/refresh")
 def refresh():
     _request(refresh=True)
     return {"ok": True}
 
 
-@app.get("/plan")
+@router.get("/plan")
 def plan(soc: float):
     cfg = asm.load_config()
     now = datetime.now(ZoneInfo(cfg["timezone"]))
     return asm.plan_charge(soc, cfg, now).to_json()
+
+
+app.include_router(router)
 
 
 if __name__ == "__main__":

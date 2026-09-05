@@ -1,22 +1,31 @@
-# Energy page — Auto Smart Mode
+# Auto Smart Mode — overnight Tesla charging for the energy page
 
-Overnight Tesla charging engine for the Octopus Go off-peak window
-(default **00:30–05:30**, UK time; Intelligent Octopus Go is 23:30–05:30 — change
+Overnight charging engine for the Octopus Go off-peak window (default
+**00:30–05:30** UK time; Intelligent Octopus Go is 23:30–05:30 — change
 `window_start`). The aim: the car is at its target charge by the end of the cheap
 window (almost) every night, and never charges at the peak rate unless the plan
 says the window alone cannot get it there.
 
-## Pieces
-- `auto_smart_mode.py` — the engine. `--daemon` ticks once a minute:
-  reads the car → plans tonight (kWh needed ÷ charger rate → start time so it
-  finishes 15 min before the window ends) → starts / stops charging accordingly.
-  `--plan 42` prints the plan for a 42 % state of charge. `--once` runs one tick.
-- `energy_api.py` — FastAPI on `:5056`: `/status`, `/mode`, `/settings`, `/boost`,
-  `/refresh`, `/plan?soc=`. The page polls it every 30 s and degrades to a local
-  what-if planner when it is off.
-- `../public/energy/index.html` — the page: toggle, tonight's plan on a 24-hour
-  timeline, settings, boost button and the engine log.
-- `systemd/*.service` — user units, same pattern as `cds-api.service`.
+## Where it goes
+The live energy page is the **Alstin Lodge energy dashboard** at
+**energy.gcburton.org**: a FastAPI app (`webapp.py`, uvicorn `:5077`, systemd unit with
+an EnvironmentFile) on the Pi behind Caddy + the Cloudflare tunnel. Its source lives on
+the Mac at `~/Claude/Projects/alstin-lodge-energy/` (not in git). Smart Mode is packaged
+as a **drop-in** for that app:
+
+- `auto_smart_mode.py` — the engine. `--daemon` ticks once a minute: reads the car →
+  plans tonight (kWh needed ÷ charger rate → start time so it finishes 15 min before the
+  window ends) → starts / stops charging. `--plan 42` prints the plan for 42 %. `--once`
+  runs one tick.
+- `energy_api.py` — the API as a FastAPI **router** (`/status`, `/mode`, `/settings`,
+  `/boost`, `/refresh`, `/plan?soc=`). Mounted into the dashboard at **`/smart`**; also
+  runs standalone (`uvicorn energy_api:app`, `:5056`).
+- `smart_mode_card.html` — the self-contained card (toggle, tonight's plan on a 24-hour
+  timeline, settings, boost, log) that the installer pastes before `</body>` of the
+  dashboard page. Talks to `/smart`; degrades to a local what-if planner if the API is off.
+- `install_smart_mode.sh` — one-shot, idempotent installer for the Pi (see below).
+- `../public/energy/index.html` — a standalone page with the same card, for use without
+  the dashboard (API at `/energy/api/`). `systemd/*.service` are the standalone units.
 - `test_auto_smart_mode.py` — planner + engine tests (`python3 -m unittest`).
 
 ## Shortfall policy (what "almost always" means)
@@ -26,21 +35,27 @@ From below ~55 % it cannot reach 100 % on off-peak alone, so:
 - `run_late` — start at 00:30 and keep going past 05:30.
 - `window_only` — off-peak only; the plan shows the % you will get.
 
-## Install on the Pi
+## Install into the live dashboard (on the Pi)
 ```bash
-pip install teslapy fastapi uvicorn requests
-cd ~/Claude-code/energy && python3 auto_smart_mode.py --init-config
-# edit config.json: "provider": "teslapy", "tesla_email": "...", battery_kwh, charger_kw
-python3 auto_smart_mode.py --once            # first run does the Tesla OAuth (paste URL)
-mkdir -p ~/.config/systemd/user && cp systemd/*.service ~/.config/systemd/user/
-systemctl --user daemon-reload && systemctl --user enable --now energy-smart energy-api
-rsync -av ../public/energy/index.html gcburton.org:/var/www/gated/energy/index.html
+git clone --branch claude/tesla-auto-smart-mode-8cjumu https://github.com/rongsnake/Claude-code.git ~/cc-smart
+bash ~/cc-smart/energy/install_smart_mode.sh /path/to/alstin-lodge-energy      # where webapp.py lives
 ```
-Caddy, inside the existing gated site block (mirrors `/cds/api/*`):
+The installer copies the three files next to `webapp.py`, appends
+`app.include_router(smart_mode_router, prefix="/smart")` to `webapp.py` (backup kept),
+injects the card before `</body>` of the dashboard's page (backup kept; if the HTML is
+built inside Python it tells you where to paste it), writes `config.json`, installs
+`energy-smart.service` as a user unit with the dashboard's Python, and restarts the
+dashboard unit. Then:
+```bash
+# in the app dir: provider=teslapy, tesla_email, battery_kwh, charger_kw
+$EDITOR config.json
+python3 -m pip install teslapy && python3 auto_smart_mode.py --once   # first run = Tesla login (paste URL)
+systemctl --user restart energy-smart
+curl -s http://127.0.0.1:5077/smart/status | head -c 300
 ```
-handle_path /energy/api/* {
-    reverse_proxy localhost:5056 { flush_interval -1 }
-}
-```
+If the dashboard already holds Tesla credentials (Powerwall/Fleet API), point
+`TeslaPyVehicle` at them instead of the teslapy login — see the provider classes in
+`auto_smart_mode.py`; the engine only needs read (SoC, plug state) + charge start/stop/limit.
+
 Leave `"provider": "dry-run"` to exercise everything against a simulated car
 (`sim.json` holds its state of charge).

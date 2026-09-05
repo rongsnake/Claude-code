@@ -31,7 +31,9 @@ Committees** (CDS = credit default swaps; source
   `POST /refresh` runs the pipeline async (locked, rate-limited); `GET /status`;
   `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
-- `energy/` + `public/energy/index.html` — **Energy page / Auto Smart Mode**: overnight
+- `energy/` + `public/energy/index.html` — **Auto Smart Mode** for the energy page (the Alstin Lodge
+  dashboard, energy.gcburton.org = `webapp.py` on the Pi :5077; source on the Mac at
+  `~/Claude/Projects/alstin-lodge-energy/`, not in git). Drop-in via `energy/install_smart_mode.sh`: overnight
   Tesla charging engine for the Octopus Go off-peak window (00:30–05:30). `auto_smart_mode.py
   --daemon` plans + drives the car (teslapy or dry-run), `energy_api.py` (uvicorn :5056,
   Caddy `/energy/api/`) serves the page's toggle/settings/boost. See `energy/README.md`.
