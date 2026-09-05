@@ -1,10 +1,13 @@
-# Auto Smart Mode — overnight Tesla charging for the energy page
+# Auto Smart Mode — overnight Powerwall grid-charging for the energy page
 
-Overnight charging engine for the Octopus Go off-peak window (default
+Overnight grid-charging engine for the Tesla Powerwall in the Octopus Go off-peak window (default
 **00:30–05:30** UK time; Intelligent Octopus Go is 23:30–05:30 — change
-`window_start`). The aim: the car is at its target charge by the end of the cheap
-window (almost) every night, and never charges at the peak rate unless the plan
-says the window alone cannot get it there.
+`window_start`). The aim: the Powerwall is at its target charge by the end of the cheap
+window (almost) every night, and never grid-charges at the peak rate unless the plan
+says the window alone cannot get it there. It works by raising the Powerwall's **backup
+reserve** to the target at the window start (the Powerwall then imports from the grid at
+full power and stops discharging), holding it until the window ends, then restoring the
+normal reserve and self-powered mode so the battery runs the house through the day.
 
 ## Where it goes
 The live energy page is the **Alstin Lodge energy dashboard** at
@@ -13,9 +16,9 @@ an EnvironmentFile) on the Pi behind Caddy + the Cloudflare tunnel. Its source l
 the Mac at `~/Claude/Projects/alstin-lodge-energy/` (not in git). Smart Mode is packaged
 as a **drop-in** for that app:
 
-- `auto_smart_mode.py` — the engine. `--daemon` ticks once a minute: reads the car →
-  plans tonight (kWh needed ÷ charger rate → start time so it finishes 15 min before the
-  window ends) → starts / stops charging. `--plan 42` prints the plan for 42 %. `--once`
+- `auto_smart_mode.py` — the engine. `--daemon` ticks once a minute: reads the Powerwall →
+  plans tonight (kWh needed ÷ grid charge rate; starts at the window start, earlier only if it
+  would not fit) → raises / restores the reserve. `--plan 42` prints the plan for 42 %. `--once`
   runs one tick.
 - `energy_api.py` — the API as a FastAPI **router** (`/status`, `/mode`, `/settings`,
   `/boost`, `/refresh`, `/plan?soc=`). Mounted into the dashboard at **`/smart`**; also
@@ -29,8 +32,8 @@ as a **drop-in** for that app:
 - `test_auto_smart_mode.py` — planner + engine tests (`python3 -m unittest`).
 
 ## Shortfall policy (what "almost always" means)
-A 75 kWh pack on a 7.4 kW charger gains ≈ 33 kWh (≈ 45 %) in the 5-hour window.
-From below ~55 % it cannot reach 100 % on off-peak alone, so:
+One Powerwall (13.5 kWh) at 5 kW fills from empty in about three hours, so it always fits
+the five-hour window. The policy matters only with several Powerwalls or a slow feed:
 - `start_early` (default) — start before 00:30, just early enough to be full by 05:15.
 - `run_late` — start at 00:30 and keep going past 05:30.
 - `window_only` — off-peak only; the plan shows the % you will get.
@@ -47,15 +50,16 @@ built inside Python it tells you where to paste it), writes `config.json`, insta
 `energy-smart.service` as a user unit with the dashboard's Python, and restarts the
 dashboard unit. Then:
 ```bash
-# in the app dir: provider=teslapy, tesla_email, battery_kwh, charger_kw
+# in the app dir: provider=teslapy, tesla_email (and tesla_cache_file if the dashboard already has one), battery_kwh, charge_kw, normal_reserve
 $EDITOR config.json
 python3 -m pip install teslapy && python3 auto_smart_mode.py --once   # first run = Tesla login (paste URL)
 systemctl --user restart energy-smart
 curl -s http://127.0.0.1:5077/smart/status | head -c 300
 ```
-If the dashboard already holds Tesla credentials (Powerwall/Fleet API), point
-`TeslaPyVehicle` at them instead of the teslapy login — see the provider classes in
-`auto_smart_mode.py`; the engine only needs read (SoC, plug state) + charge start/stop/limit.
+If the dashboard already logs into Tesla with teslapy, set `tesla_cache_file` to its
+cache.json and no second login is needed. Make sure **Grid charging** is allowed in the
+Tesla app (Settings → Powerwall → Advanced), or the raised reserve cannot pull from the grid.
+The engine only needs read (SoC, reserve, mode) + set reserve / set mode.
 
-Leave `"provider": "dry-run"` to exercise everything against a simulated car
+Leave `"provider": "dry-run"` to exercise everything against a simulated Powerwall
 (`sim.json` holds its state of charge).

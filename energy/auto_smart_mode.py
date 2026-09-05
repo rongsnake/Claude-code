@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
-"""Auto Smart Mode — overnight Tesla charging engine for the Octopus Go off-peak window.
+"""Auto Smart Mode — charge the Tesla Powerwall from the grid in the Octopus Go off-peak window.
 
-Goal: the car is (almost) always at its target charge by the end of the cheap
-window (default 00:30–05:30 UK time, i.e. Octopus Go) while never charging at the
-peak rate unless the plan says the window alone is not enough.
+Goal: the home battery is full by the end of the cheap window (default 00:30–05:30
+UK time, Octopus Go) every night, so the house runs on cheap stored energy through
+the peak-rate day. It never grid-charges at the peak rate unless the plan says the
+window alone is not enough.
 
-How it works, once a minute (``--daemon``):
-  1. Read the vehicle (state of charge, plugged in, charging state).
-  2. Build tonight's plan: how many kWh are needed to reach the target, how long
-     that takes on the home charger, and therefore when to start so it finishes
-     by the end of the window.  If it will not fit, the ``shortfall_policy``
-     decides: ``start_early`` (begin before the window, just enough), ``run_late``
-     (keep going past the window end) or ``window_only`` (accept a partial charge).
-  3. Act: start charging at the planned time, keep it going, stop it at the
-     window end (window_only), and — if ``block_peak_charging`` is on — pause any
-     charging that starts at the peak rate outside the plan (a "boost" request
-     from the page overrides this).
-  4. As belt-and-braces, push Tesla's own scheduled-charging time for the window
-     start to the car, so it still starts on time if this engine is down.
+How a Powerwall is made to charge from the grid: raise its **backup reserve** to the
+target (100 %). The Powerwall then imports from the grid at full power until it reaches
+the reserve, and will not discharge below it. At the end of the window the engine puts
+the reserve back to your normal level (e.g. 20 %) and the mode back to
+self-consumption, so the battery powers the house through the day.
 
-Providers: ``dry-run`` (simulated car, safe default) and ``teslapy`` (Tesla Owner
-API via the ``teslapy`` package; first run performs the browser OAuth flow).
+Once a minute (``--daemon``):
+  1. Read the Powerwall (state of charge, reserve, mode, grid status).
+  2. Plan tonight: kWh needed to reach the target ÷ charge rate → start time so it is
+     full ``buffer_minutes`` before the window ends.  If it will not fit, the
+     ``shortfall_policy`` decides: ``start_early`` (begin before the window),
+     ``run_late`` (keep going after it) or ``window_only`` (accept a partial charge).
+  3. Act: at the planned start raise the reserve (remembering what it was); hold it
+     until the window ends; then restore reserve + mode.  A "boost" request from the
+     page raises the reserve now for N minutes regardless of tariff.
+  4. Safety: whenever the engine finds the reserve raised by itself outside the plan
+     (e.g. after a restart) it restores it, so the house is never left importing at
+     the peak rate.
 
-Files (all in this directory unless overridden with ``ENERGY_DIR``):
+Providers: ``dry-run`` (simulated Powerwall, safe default) and ``teslapy`` (Tesla
+Owner/Fleet API via the ``teslapy`` package; can reuse an existing token cache).
+
+Files (in this directory unless overridden with ``ENERGY_DIR``):
   config.json   settings, editable from the page via energy_api.py
   state.json    live status + tonight's plan + log, read by the page
-  requests.json one-shot commands from the page (boost / charge-now / refresh)
+  requests.json one-shot commands from the page (boost / cancel / refresh)
 """
 from __future__ import annotations
 
@@ -54,19 +60,21 @@ DEFAULT_CONFIG = {
     "window_start": "00:30",
     "window_end": "05:30",
     "target_soc": 100,          # % — "fully charge"
-    "battery_kwh": 75.0,        # usable pack size (Model Y/3 Long Range ≈ 75)
-    "charger_kw": 7.4,          # single-phase 32 A home charger
-    "charge_amps": 32,
-    "efficiency": 0.90,         # AC charging losses
-    "buffer_minutes": 15,       # finish this long before the window ends
+    "battery_kwh": 13.5,        # one Powerwall 2/3 = 13.5 kWh usable; two = 27
+    "charge_kw": 5.0,           # grid charge rate (Powerwall 2 ≈ 5 kW, Powerwall 3 ≈ 11.5 kW)
+    "efficiency": 0.92,         # AC→DC charging losses
+    "buffer_minutes": 15,       # be full this long before the window ends
     "shortfall_policy": "start_early",   # start_early | run_late | window_only
-    "block_peak_charging": True, # pause charging that starts outside the plan
-    "push_native_schedule": True,# also set Tesla's own scheduled-charging time
-    "plan_time": "21:00",        # (re)plan from this time each evening
+    "normal_reserve": 20,       # % backup reserve to restore after the window
+    "restore_mode": "self_consumption",  # operation mode to restore (self_consumption | autonomous)
+    "charge_method": "reserve", # reserve (raise backup reserve) | backup_mode (also switch mode to backup)
+    "hold_until_window_end": True,  # keep the reserve raised until the window ends even once full
+    "plan_time": "21:00",       # (re)plan from this time each evening (also Octopus lookup)
     "poll_seconds": 60,
-    "provider": "dry-run",       # dry-run | teslapy
+    "provider": "dry-run",      # dry-run | teslapy
     "tesla_email": "",
-    "tesla_vehicle_index": 0,
+    "tesla_cache_file": "",     # reuse an existing teslapy cache.json (e.g. the dashboard's); default ./tesla_cache.json
+    "tesla_site_index": 0,
     # Optional: auto-detect the cheap window from Octopus' public tariff API.
     # e.g. product "GO-VAR-22-10-14", tariff "E-1R-GO-VAR-22-10-14-C" (C = London).
     "octopus_product": "",
@@ -147,7 +155,7 @@ def next_window(now: datetime, start_hhmm: str, end_hhmm: str) -> tuple[datetime
 
 def plan_charge(soc: float, cfg: dict, now: datetime) -> Plan:
     target = float(cfg["target_soc"])
-    rate = float(cfg["charger_kw"]) * float(cfg["efficiency"])
+    rate = float(cfg["charge_kw"]) * float(cfg["efficiency"])
     needed = max(0.0, (target - soc) / 100.0 * float(cfg["battery_kwh"]))
     minutes = int(round(needed / rate * 60)) if rate > 0 else 0
     ws, we = next_window(now, cfg["window_start"], cfg["window_end"])
@@ -158,16 +166,17 @@ def plan_charge(soc: float, cfg: dict, now: datetime) -> Plan:
 
     if minutes == 0:
         return Plan(soc, target, 0.0, rate, 0, ws, we, ws, ws, True, policy, 0, soc,
-                    "Already at target — nothing to do tonight.")
+                    "Already at target — the reserve is simply held through the window.")
 
     fits = minutes <= window_minutes
     if fits:
-        start = latest_finish - timedelta(minutes=minutes)
-        start = max(start, ws)               # never earlier than the window
+        # Start at the window start, not just-in-time: while the reserve is raised the
+        # house runs on cheap grid instead of draining the battery, so earlier is better.
+        start = ws
         end = start + timedelta(minutes=minutes)
         peak = 0
         exp = target
-        note = f"Needs {needed:.1f} kWh ≈ {minutes} min; fits in the off-peak window."
+        note = f"Needs {needed:.1f} kWh ≈ {minutes} min from the grid; full by {end:%H:%M}, then held until {we:%H:%M}."
     elif policy == "start_early":
         end = latest_finish
         start = end - timedelta(minutes=minutes)
@@ -218,100 +227,93 @@ def octopus_offpeak_window(product: str, tariff: str) -> tuple[str, str] | None:
     if not cheap:
         return None
     tz = ZoneInfo("Europe/London")
-    first = cheap[-1]  # most recent cheap slot
-    vf = datetime.fromisoformat(first["valid_from"].replace("Z", "+00:00")).astimezone(tz)
-    vt = datetime.fromisoformat(first["valid_to"].replace("Z", "+00:00")).astimezone(tz)
+    slot = cheap[-1]  # most recent cheap slot
+    vf = datetime.fromisoformat(slot["valid_from"].replace("Z", "+00:00")).astimezone(tz)
+    vt = datetime.fromisoformat(slot["valid_to"].replace("Z", "+00:00")).astimezone(tz)
     return vf.strftime("%H:%M"), vt.strftime("%H:%M")
 
 
-# ----------------------------------------------------------------------------- vehicle providers
-class DryRunVehicle:
-    """Simulated car so the engine and page can be exercised without Tesla access."""
+# ----------------------------------------------------------------------------- Powerwall providers
+class DryRunPowerwall:
+    """Simulated Powerwall so the engine and page can be exercised without Tesla access."""
+
+    HOUSE_KW = 0.6  # overnight house load when discharging
 
     def __init__(self, cfg: dict):
         self.cfg = cfg
         sim = load_json(ENERGY_DIR / "sim.json", {})
-        self.soc = float(sim.get("soc", 42))
-        self.plugged = bool(sim.get("plugged_in", True))
-        self.charging = bool(sim.get("charging", False))
-        self.limit = int(sim.get("charge_limit", cfg["target_soc"]))
+        self.soc = float(sim.get("soc", 35))
+        self.reserve = int(sim.get("reserve", cfg["normal_reserve"]))
+        self.mode = sim.get("mode", "self_consumption")
         self.last = datetime.fromisoformat(sim["ts"]) if sim.get("ts") else None
 
     def _save(self):
-        save_json(ENERGY_DIR / "sim.json", {"soc": self.soc, "plugged_in": self.plugged,
-                                             "charging": self.charging, "charge_limit": self.limit,
+        save_json(ENERGY_DIR / "sim.json", {"soc": self.soc, "reserve": self.reserve, "mode": self.mode,
                                              "ts": datetime.now().astimezone().isoformat()})
 
     def read(self) -> dict:
         now = datetime.now().astimezone()
-        if self.charging and self.last:
+        if self.last:
             hrs = (now - self.last).total_seconds() / 3600
-            self.soc = min(self.limit, self.soc + hrs * self.cfg["charger_kw"] * self.cfg["efficiency"]
-                           / self.cfg["battery_kwh"] * 100)
-            if self.soc >= self.limit:
-                self.charging = False
+            cap = float(self.cfg["battery_kwh"])
+            if self.soc < self.reserve or self.mode == "backup":
+                self.soc = min(max(self.reserve, self.soc), self.soc + hrs * self.cfg["charge_kw"] * self.cfg["efficiency"] / cap * 100)
+                if self.mode == "backup":
+                    self.soc = min(100.0, self.soc)
+            else:
+                self.soc = max(float(self.reserve), self.soc - hrs * self.HOUSE_KW / cap * 100)
         self.last = now
         self._save()
-        return {"soc": round(self.soc, 1), "plugged_in": self.plugged,
-                "charging_state": "Charging" if self.charging else ("Stopped" if self.plugged else "Disconnected"),
-                "charge_limit": self.limit, "online": True, "name": "Simulated Tesla"}
+        charging = self.soc < self.reserve or (self.mode == "backup" and self.soc < 100)
+        return {"soc": round(self.soc, 1), "reserve": self.reserve, "mode": self.mode,
+                "grid": "connected", "charging": charging, "online": True, "name": "Simulated Powerwall",
+                "capacity_kwh": float(self.cfg["battery_kwh"])}
 
-    def start(self): self.charging = self.plugged; self._save()
-    def stop(self): self.charging = False; self._save()
-    def set_limit(self, pct): self.limit = int(pct); self._save()
-    def set_amps(self, amps): pass
-    def set_scheduled_charging(self, enable, minutes_after_midnight): pass
+    def set_reserve(self, pct: int): self.reserve = int(pct); self._save()
+    def set_mode(self, mode: str): self.mode = mode; self._save()
 
 
-class TeslaPyVehicle:
-    """Tesla Owner API via `pip install teslapy`. Cache lives next to this file."""
+class TeslaPyPowerwall:
+    """Tesla energy site via `pip install teslapy` (Owner API). Token cache reusable."""
 
     def __init__(self, cfg: dict):
-        import teslapy  # noqa: F401  (import error surfaces clearly)
-        self.tesla = teslapy.Tesla(cfg["tesla_email"], cache_file=str(ENERGY_DIR / "tesla_cache.json"))
+        import teslapy  # noqa: F401
+        cache = cfg.get("tesla_cache_file") or str(ENERGY_DIR / "tesla_cache.json")
+        self.tesla = teslapy.Tesla(cfg["tesla_email"], cache_file=cache)
         if not self.tesla.authorized:
             print("Open this URL, log in, then paste the resulting (blank-page) URL back here:")
             print(self.tesla.authorization_url())
             self.tesla.fetch_token(authorization_response=input("URL: ").strip())
-        self.v = self.tesla.vehicle_list()[int(cfg["tesla_vehicle_index"])]
-        self._awake_until = None
+        self.b = self.tesla.battery_list()[int(cfg["tesla_site_index"])]
 
-    def _wake(self):
-        if not self.v.available():
-            self.v.sync_wake_up()
+    def read(self) -> dict:
+        d = self.b.get_battery_data()
+        cap = float(d.get("total_pack_energy") or 0) / 1000.0
+        left = float(d.get("energy_left") or 0) / 1000.0
+        soc = float(d.get("percentage_charged") or (left / cap * 100 if cap else 0))
+        pm = d.get("power_reading") or [{}]
+        grid_kw = float((pm[0] or {}).get("grid_power") or 0) / 1000.0
+        return {"soc": round(soc, 1), "reserve": int(d.get("backup", {}).get("backup_reserve_percent", 0)),
+                "mode": d.get("operation") or d.get("default_real_mode"), "grid": d.get("grid_status"),
+                "charging": grid_kw > 0.2 and soc < 100, "grid_kw": round(grid_kw, 2), "online": True,
+                "name": d.get("site_name", "Powerwall"), "capacity_kwh": round(cap, 1)}
 
-    def read(self, wake: bool = True) -> dict:
-        if not wake and not self.v.available():
-            return {"online": False, "name": self.v["display_name"]}
-        self._wake()
-        d = self.v.get_vehicle_data()
-        cs = d["charge_state"]
-        return {"soc": cs["battery_level"], "plugged_in": cs["charging_state"] != "Disconnected",
-                "charging_state": cs["charging_state"], "charge_limit": cs["charge_limit_soc"],
-                "online": True, "name": d["display_name"],
-                "charger_power_kw": cs.get("charger_power"), "minutes_to_full": cs.get("minutes_to_full_charge")}
-
-    def start(self): self._wake(); self.v.command("START_CHARGE")
-    def stop(self): self._wake(); self.v.command("STOP_CHARGE")
-    def set_limit(self, pct): self._wake(); self.v.command("CHANGE_CHARGE_LIMIT", percent=int(pct))
-    def set_amps(self, amps): self._wake(); self.v.command("CHARGING_AMPS", charging_amps=int(amps))
-    def set_scheduled_charging(self, enable, minutes_after_midnight):
-        self._wake(); self.v.command("SCHEDULED_CHARGING", enable=bool(enable), time=int(minutes_after_midnight))
+    def set_reserve(self, pct: int): self.b.set_backup_reserve_percent(int(pct))
+    def set_mode(self, mode: str): self.b.set_operation(mode)
 
 
-def make_vehicle(cfg: dict):
-    return TeslaPyVehicle(cfg) if cfg["provider"] == "teslapy" else DryRunVehicle(cfg)
+def make_powerwall(cfg: dict):
+    return TeslaPyPowerwall(cfg) if cfg["provider"] == "teslapy" else DryRunPowerwall(cfg)
 
 
 # ----------------------------------------------------------------------------- engine
 class Engine:
-    def __init__(self, cfg: dict, vehicle):
+    def __init__(self, cfg: dict, pw):
         self.cfg = cfg
-        self.vehicle = vehicle
+        self.pw = pw
         self.tz = ZoneInfo(cfg["timezone"])
         self.state = load_json(STATE_PATH, {"log": []})
         self.state.setdefault("log", [])
-        self._native_pushed_for = self.state.get("native_schedule_pushed_for")
 
     # -- state/log
     def note(self, msg: str, level: str = "info") -> None:
@@ -337,11 +339,11 @@ class Engine:
         now = now or datetime.now(self.tz)
         req = self.take_requests()
 
-        # Boost = charge now regardless of tariff, until the given time.
+        # Boost = grid-charge now regardless of tariff, until the given time.
         if "boost_minutes" in req:
             until = now + timedelta(minutes=int(req["boost_minutes"]))
             self.state["boost_until"] = fmt(until)
-            self.note(f"Boost requested: charging at any rate until {until:%H:%M}.")
+            self.note(f"Boost requested: grid-charging at any rate until {until:%H:%M}.")
         if req.get("cancel_boost"):
             self.state.pop("boost_until", None)
             self.note("Boost cancelled.")
@@ -350,27 +352,16 @@ class Engine:
         if boost_until and not boosting:
             self.state.pop("boost_until", None)
 
-        # Read the car. Outside the action periods only read it if it is already awake,
-        # so we don't keep it from sleeping (vampire drain).
-        plan_prev = self.state.get("plan")
-        in_action = bool(plan_prev and plan_prev.get("start") and
-                         datetime.fromisoformat(plan_prev["start"]) - timedelta(minutes=2) <= now
-                         <= datetime.fromisoformat(plan_prev["end"]) + timedelta(minutes=5))
-        must_wake = in_action or boosting or req.get("refresh") or self._is_plan_time(now) \
-            or "vehicle" not in self.state
         try:
-            v = self.vehicle.read(wake=True) if not isinstance(self.vehicle, DryRunVehicle) and must_wake \
-                else (self.vehicle.read() if isinstance(self.vehicle, DryRunVehicle) else self.vehicle.read(wake=False))
+            v = self.pw.read()
         except Exception as e:  # noqa: BLE001
-            self.note(f"Vehicle read failed: {e}", "warning")
+            self.note(f"Powerwall read failed: {e}", "warning")
             self.state["error"] = str(e)
             self.save()
             return
         self.state.pop("error", None)
-        if v.get("online"):
-            v["ts"] = now.isoformat(timespec="seconds")
-            self.state["vehicle"] = v
-        v = self.state.get("vehicle", v)
+        v["ts"] = now.isoformat(timespec="seconds")
+        self.state["battery"] = v
 
         # Optional: refresh window from Octopus once a day.
         if self._is_plan_time(now) and self.cfg.get("octopus_product"):
@@ -380,66 +371,70 @@ class Engine:
                 self.cfg["window_start"], self.cfg["window_end"] = win
                 save_json(CONFIG_PATH, {**load_json(CONFIG_PATH, {}), "window_start": win[0], "window_end": win[1]})
 
-        # Plan (cheap; recomputed every tick from the latest SoC).
         soc = float(v.get("soc", 0))
         plan = plan_charge(soc, self.cfg, now)
         self.state["plan"] = plan.to_json()
         self.state["boosting"] = boosting
+        raised = self.state.get("raised")          # what we changed, so we can put it back
 
         if not self.cfg["enabled"]:
             self.state["mode"] = "off"
+            if raised:
+                self._restore(raised, "Auto Smart Mode switched off")
             self.save()
             return
 
-        # Belt-and-braces: Tesla's own schedule for the window start (once per window).
-        key = fmt(plan.window_start)
-        if self.cfg["push_native_schedule"] and self._native_pushed_for != key:
-            try:
-                ws = plan.window_start
-                self.vehicle.set_scheduled_charging(True, ws.hour * 60 + ws.minute)
-                self.vehicle.set_limit(self.cfg["target_soc"])
-                self._native_pushed_for = key
-                self.state["native_schedule_pushed_for"] = key
-                self.note(f"Pushed Tesla scheduled charging for {ws:%H:%M} and limit {self.cfg['target_soc']}%.")
-            except Exception as e:  # noqa: BLE001
-                self.note(f"Could not push native schedule: {e}", "warning")
+        hold_end = plan.window_end if self.cfg["hold_until_window_end"] else plan.end
+        want = boosting or (plan.start <= now < hold_end)
+        raised_before = raised
+        if want and not raised:
+            self._raise(v, plan, boosting)
+        elif not want and raised:
+            self._restore(raised, f"window over at {hold_end:%H:%M}" if now >= hold_end else "outside the plan")
+        raised = self.state.get("raised")
 
-        charging = v.get("charging_state") == "Charging"
-        plugged = bool(v.get("plugged_in"))
-        want = boosting or (plan.start <= now < plan.end and soc < plan.target_soc)
-        self.state["mode"] = "boost" if boosting else ("charging" if want else "waiting")
-
-        if want and plugged and not charging:
-            self._act("start", plan)
-        elif not want and charging and not boosting and self.cfg["block_peak_charging"]:
-            # Charging outside the plan: only intervene at the peak rate. Inside the
-            # window but after the plan's end (already at target) we leave it alone.
-            in_window = plan.window_start <= now < plan.window_end
-            if not in_window:
-                self._act("stop", plan)
-        if want and not plugged:
-            self.state["mode"] = "not plugged in"
-            if not self.state.get("warned_unplugged") == key:
-                self.note("Planned start reached but the car is not plugged in.", "warning")
-                self.state["warned_unplugged"] = key
+        if raised:
+            self.state["mode"] = "boost" if boosting else ("holding" if soc >= plan.target_soc - 0.5 else "charging")
+            # Somebody (the Tesla app?) lowered the reserve under us — re-assert it. (The reading
+            # predates a raise made this tick, so only check on later ticks.)
+            if raised_before and int(v.get("reserve", 0)) < int(plan.target_soc) and not boosting:
+                try:
+                    self.pw.set_reserve(int(plan.target_soc))
+                    self.note(f"Reserve was {v.get('reserve')}% — set back to {plan.target_soc:.0f}%.")
+                except Exception as e:  # noqa: BLE001
+                    self.note(f"Could not re-assert reserve: {e}", "warning")
+        else:
+            self.state["mode"] = "waiting"
         self.save()
 
     def _is_plan_time(self, now: datetime) -> bool:
         pt = parse_hhmm(self.cfg["plan_time"])
         return now.hour == pt.hour and now.minute == pt.minute
 
-    def _act(self, what: str, plan: Plan) -> None:
+    def _raise(self, v: dict, plan: Plan, boosting: bool) -> None:
+        target = int(plan.target_soc)
+        prev = {"reserve": int(v.get("reserve", self.cfg["normal_reserve"])), "mode": v.get("mode") or self.cfg["restore_mode"]}
         try:
-            if what == "start":
-                self.vehicle.set_limit(self.cfg["target_soc"])
-                self.vehicle.set_amps(self.cfg["charge_amps"])
-                self.vehicle.start()
-                self.note(f"Started charging ({plan.soc:.0f}% → {plan.target_soc:.0f}%, ends ~{plan.end:%H:%M}).")
-            else:
-                self.vehicle.stop()
-                self.note(f"Paused charging: peak rate now; plan resumes at {plan.start:%H:%M}.")
+            self.pw.set_reserve(target)
+            if self.cfg["charge_method"] == "backup_mode":
+                self.pw.set_mode("backup")
+            self.state["raised"] = {**prev, "at": fmt(datetime.now(self.tz))}
+            why = "boost" if boosting else f"planned start ({plan.soc:.0f}% → {target}%, full ~{plan.end:%H:%M})"
+            self.note(f"Grid charging on: reserve {prev['reserve']}% → {target}% — {why}.")
         except Exception as e:  # noqa: BLE001
-            self.note(f"Command {what} failed: {e}", "warning")
+            self.note(f"Could not raise the reserve: {e}", "warning")
+
+    def _restore(self, raised: dict, why: str) -> None:
+        reserve = int(self.cfg["normal_reserve"]) if self.cfg.get("normal_reserve") is not None else int(raised.get("reserve", 20))
+        mode = self.cfg["restore_mode"] or raised.get("mode") or "self_consumption"
+        try:
+            self.pw.set_reserve(reserve)
+            if self.cfg["charge_method"] == "backup_mode" or raised.get("mode") not in (None, mode):
+                self.pw.set_mode(mode)
+            self.state.pop("raised", None)
+            self.note(f"Grid charging off: reserve back to {reserve}%, mode {mode} — {why}.")
+        except Exception as e:  # noqa: BLE001
+            self.note(f"Could not restore the reserve: {e}", "warning")
 
 
 # ----------------------------------------------------------------------------- CLI
@@ -453,12 +448,11 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-    if a.init_config or not CONFIG_PATH.exists():
-        if not CONFIG_PATH.exists():
-            save_json(CONFIG_PATH, DEFAULT_CONFIG)
-            print(f"wrote {CONFIG_PATH}")
-        if a.init_config:
-            return 0
+    if not CONFIG_PATH.exists():
+        save_json(CONFIG_PATH, DEFAULT_CONFIG)
+        print(f"wrote {CONFIG_PATH}")
+    if a.init_config:
+        return 0
     cfg = load_config()
     tz = ZoneInfo(cfg["timezone"])
     now = datetime.fromisoformat(a.now).astimezone(tz) if a.now else datetime.now(tz)
@@ -467,7 +461,7 @@ def main(argv=None) -> int:
         print(json.dumps(plan_charge(a.plan, cfg, now).to_json(), indent=2))
         return 0
 
-    eng = Engine(cfg, make_vehicle(cfg))
+    eng = Engine(cfg, make_powerwall(cfg))
     if a.daemon:
         eng.note("Auto Smart Mode engine started.")
         while True:
@@ -477,7 +471,7 @@ def main(argv=None) -> int:
                 log.exception("tick failed: %s", e)
             time.sleep(int(load_config()["poll_seconds"]))
     eng.tick(now)
-    print(json.dumps({k: eng.state.get(k) for k in ("mode", "vehicle", "plan")}, indent=2))
+    print(json.dumps({k: eng.state.get(k) for k in ("mode", "battery", "plan", "raised")}, indent=2))
     return 0
 
 

@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Tiny FastAPI for the energy page (uvicorn :5056, behind Caddy at /energy/api/).
+"""API for the energy page's Auto Smart Mode (Powerwall grid-charging in the Octopus Go window).
 
 GET  /status           live state + plan + non-secret settings (what the page polls)
 POST /mode             {"enabled": true|false}   — the Auto Smart Mode toggle
 POST /settings         any subset of the editable settings (validated)
-POST /boost            {"minutes": 60}            — charge now at any rate
+POST /boost            {"minutes": 60}            — grid-charge now at any rate
 POST /boost/cancel
-POST /refresh          ask the engine to wake the car and re-read it
+POST /refresh          re-read the Powerwall now
 GET  /plan?soc=42      what-if plan for a given state of charge
 
-The engine (auto_smart_mode.py --daemon) owns the car; this API only edits
+The engine (auto_smart_mode.py --daemon) owns the Powerwall; this API only edits
 config.json and drops one-shot commands into requests.json.
 
-Standalone: ``uvicorn energy_api:app``.  Embedded in an existing FastAPI app
-(the Alstin Lodge dashboard's webapp.py, which install_smart_mode.sh patches)::
+Standalone: ``uvicorn energy_api:app`` (:5056).  Embedded in the Alstin Lodge
+dashboard's webapp.py (install_smart_mode.sh does this)::
 
     from energy_api import router as smart_mode_router
     app.include_router(smart_mode_router, prefix="/smart")
@@ -36,11 +36,16 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 EDITABLE = {
     "enabled": bool, "window_start": str, "window_end": str, "target_soc": int,
-    "battery_kwh": float, "charger_kw": float, "charge_amps": int, "efficiency": float,
-    "buffer_minutes": int, "shortfall_policy": str, "block_peak_charging": bool,
-    "push_native_schedule": bool, "plan_time": str, "octopus_product": str, "octopus_tariff": str,
+    "battery_kwh": float, "charge_kw": float, "efficiency": float, "buffer_minutes": int,
+    "shortfall_policy": str, "normal_reserve": int, "restore_mode": str, "charge_method": str,
+    "hold_until_window_end": bool, "plan_time": str, "octopus_product": str, "octopus_tariff": str,
 }
-SECRET = {"tesla_email"}
+SECRET = {"tesla_email", "tesla_cache_file"}
+CHOICES = {
+    "shortfall_policy": ("start_early", "run_late", "window_only"),
+    "restore_mode": ("self_consumption", "autonomous"),
+    "charge_method": ("reserve", "backup_mode"),
+}
 
 
 def public_config() -> dict:
@@ -60,9 +65,11 @@ def _validate(k: str, v):
             raise HTTPException(400, f"{k}: use HH:MM")
     if k == "target_soc" and not 50 <= v <= 100:
         raise HTTPException(400, "target_soc must be 50–100")
-    if k == "shortfall_policy" and v not in ("start_early", "run_late", "window_only"):
-        raise HTTPException(400, "shortfall_policy must be start_early | run_late | window_only")
-    if k in ("battery_kwh", "charger_kw") and not v > 0:
+    if k == "normal_reserve" and not 0 <= v <= 100:
+        raise HTTPException(400, "normal_reserve must be 0–100")
+    if k in CHOICES and v not in CHOICES[k]:
+        raise HTTPException(400, f"{k} must be one of {' | '.join(CHOICES[k])}")
+    if k in ("battery_kwh", "charge_kw") and not v > 0:
         raise HTTPException(400, f"{k} must be > 0")
     if k == "efficiency" and not 0.5 <= v <= 1:
         raise HTTPException(400, "efficiency must be 0.5–1")

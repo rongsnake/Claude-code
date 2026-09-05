@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install Auto Smart Mode into the existing Alstin Lodge energy dashboard on the Pi.
+# Install Auto Smart Mode (Powerwall grid-charging in the Octopus Go window) into the Alstin Lodge energy dashboard on the Pi.
 #
 # What it does (idempotent, with backups; prints every change it makes):
 #   1. Copies auto_smart_mode.py, energy_api.py and smart_mode_card.html next to webapp.py.
@@ -39,7 +39,7 @@ else
     app.include_router(smart_mode_router, prefix=\"/smart\")" >&2; exit 1; }
   cat >> "$APP_DIR/webapp.py" <<EOF
 
-# --- Auto Smart Mode (Tesla overnight charging) — added by install_smart_mode.sh $STAMP ---
+# --- Auto Smart Mode (Powerwall grid charging in the Octopus Go window) — added by install_smart_mode.sh $STAMP ---
 from energy_api import router as smart_mode_router  # noqa: E402
 $APPVAR.include_router(smart_mode_router, prefix="/smart")
 EOF
@@ -81,7 +81,7 @@ say "Installing the engine as a user systemd unit"
 mkdir -p "$HOME/.config/systemd/user"
 cat > "$HOME/.config/systemd/user/energy-smart.service" <<EOF
 [Unit]
-Description=Auto Smart Mode — overnight Tesla charging engine (Octopus Go window)
+Description=Auto Smart Mode — Powerwall grid-charging engine (Octopus Go window)
 After=network-online.target
 
 [Service]
@@ -110,4 +110,4 @@ else
 fi
 
 say "Done. Check:  curl -s http://127.0.0.1:5077/smart/status | head -c 400"
-say "Then edit $APP_DIR/config.json: provider=teslapy, tesla_email, battery_kwh, charger_kw; run '$PYTHON auto_smart_mode.py --once' for the Tesla login; systemctl --user restart energy-smart"
+say "Then edit $APP_DIR/config.json: provider=teslapy, tesla_email (or tesla_cache_file), battery_kwh, charge_kw, normal_reserve; run '$PYTHON auto_smart_mode.py --once' for the Tesla login; systemctl --user restart energy-smart"

@@ -1,4 +1,4 @@
-<!-- Auto Smart Mode card — self-contained; paste before </body> of the energy dashboard.
+<!-- Auto Smart Mode card (Powerwall grid-charging in the Octopus Go window) — self-contained; paste before </body> of the energy dashboard.
      Talks to the Smart Mode API mounted at /smart (change data-api on the <section> if not). -->
 <section id="smartMode" data-api="/smart" style="margin:16px auto;max-width:1100px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
 <style>
@@ -42,26 +42,26 @@
     <label class="sm-switch"><input type="checkbox" id="smToggle"><span class="sm-slider"></span></label>
     <div>
       <div class="sm-title">Auto Smart Mode <span id="smPill" class="sm-pill">—</span></div>
-      <div class="sm-sub">Charges the Tesla to target inside the Octopus off-peak window every night; starts early only when the window alone is not enough.</div>
+      <div class="sm-sub">Fills the Powerwall from the grid inside the Octopus Go off-peak window every night (reserve up at the start, held until the end, then back to normal); starts early only when the window alone is not enough.</div>
     </div>
     <div class="sm-row" style="margin:0 0 0 auto">
-      <button id="smRefresh" title="Wake the car and re-read it">Refresh car</button>
-      <button id="smBoost" class="warn" title="Charge now at any rate">Boost 1 h</button>
+      <button id="smRefresh" title="Re-read the Powerwall now">Refresh</button>
+      <button id="smBoost" class="warn" title="Grid-charge now at any rate for an hour">Boost 1 h</button>
       <button id="smCancelBoost" hidden>Cancel boost</button>
     </div>
   </div>
   <div class="sm-kpis">
     <div class="sm-kpi"><div class="v" id="smSoc">—</div><div class="l">Battery now</div></div>
-    <div class="sm-kpi"><div class="v" id="smPlug">—</div><div class="l">Charger</div></div>
-    <div class="sm-kpi"><div class="v" id="smTarget">—</div><div class="l">Target</div></div>
-    <div class="sm-kpi"><div class="v" id="smStart">—</div><div class="l">Tonight starts</div></div>
-    <div class="sm-kpi"><div class="v" id="smEnd">—</div><div class="l">Full by</div></div>
+    <div class="sm-kpi"><div class="v" id="smReserve">—</div><div class="l">Reserve</div></div>
+    <div class="sm-kpi"><div class="v" id="smGrid">—</div><div class="l">Grid</div></div>
+    <div class="sm-kpi"><div class="v" id="smStart">—</div><div class="l">Grid charge from</div></div>
+    <div class="sm-kpi"><div class="v" id="smEnd">—</div><div class="l">Full by</div></div><div class="sm-kpi"><div class="v" id="smTarget">—</div><div class="l">Target</div></div>
     <div class="sm-kpi"><div class="v" id="smPeak">—</div><div class="l">Peak-rate min</div></div>
   </div>
   <h3 style="margin-top:14px">Tonight's plan <span class="sm-muted" id="smWindow"></span></h3>
   <div class="sm-tl" id="smTl"></div>
   <div class="sm-ticks"><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00</span><span>10:00</span></div>
-  <div class="sm-legend"><i style="background:#163a2c"></i>off-peak <i style="background:#3aa0ff"></i>planned charging <i style="background:#f5a623"></i>at peak rate <i style="background:#fff"></i>now</div>
+  <div class="sm-legend"><i style="background:#163a2c"></i>off-peak (reserve held up) <i style="background:#3aa0ff"></i>grid charging <i style="background:#f5a623"></i>at peak rate <i style="background:#fff"></i>now</div>
   <div class="sm-note" id="smNote"></div>
 </div>
 <div class="sm-grid">
@@ -71,8 +71,8 @@
       <label>Off-peak starts <input type="text" name="window_start" placeholder="00:30"></label>
       <label>Off-peak ends <input type="text" name="window_end" placeholder="05:30"></label>
       <label>Target charge % <input name="target_soc" type="number" min="50" max="100"></label>
-      <label>Battery kWh <input name="battery_kwh" type="number" step="0.5" min="10"></label>
-      <label>Charger kW <input name="charger_kw" type="number" step="0.1" min="1"></label>
+      <label>Powerwall kWh <input name="battery_kwh" type="number" step="0.5" min="1"></label>
+      <label>Grid charge kW <input name="charge_kw" type="number" step="0.1" min="0.5"></label>
       <label>Efficiency <input name="efficiency" type="number" step="0.01" min="0.5" max="1"></label>
       <label>Finish minutes early <input name="buffer_minutes" type="number" min="0" max="120"></label>
       <label>If it won't fit
@@ -81,8 +81,18 @@
           <option value="run_late">Run late (overrun the window)</option>
           <option value="window_only">Off-peak only (accept partial)</option>
         </select></label>
-      <label><span><input type="checkbox" name="block_peak_charging"> Pause charging that starts at peak rate</span></label>
-      <label><span><input type="checkbox" name="push_native_schedule"> Also set Tesla's own schedule</span></label>
+      <label>Normal reserve % (restored after) <input name="normal_reserve" type="number" min="0" max="100"></label>
+      <label>How to charge
+        <select name="charge_method">
+          <option value="reserve">Raise backup reserve (recommended)</option>
+          <option value="backup_mode">Raise reserve + Backup mode</option>
+        </select></label>
+      <label>Mode to restore
+        <select name="restore_mode">
+          <option value="self_consumption">Self-powered</option>
+          <option value="autonomous">Time-based control</option>
+        </select></label>
+      <label><span><input type="checkbox" name="hold_until_window_end"> Hold full until the window ends</span></label>
     </form>
     <div class="sm-row"><button class="primary" id="smSave">Save settings</button><span class="sm-muted" id="smSaveMsg"></span></div>
   </div>
@@ -97,8 +107,8 @@
 <script>
 (function(){
 const ROOT = document.getElementById('smartMode'), API = ROOT.dataset.api || '/smart';
-const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, battery_kwh:75, charger_kw:7.4,
-  efficiency:0.9, buffer_minutes:15, shortfall_policy:'start_early', block_peak_charging:true, push_native_schedule:true };
+const DEFAULTS = { window_start:'00:30', window_end:'05:30', target_soc:100, battery_kwh:13.5, charge_kw:5.0, efficiency:0.92,
+  buffer_minutes:15, shortfall_policy:'start_early', normal_reserve:20, charge_method:'reserve', restore_mode:'self_consumption', hold_until_window_end:true };
 let cfg = {...DEFAULTS}, state = {}, online = false;
 const $ = id => document.getElementById(id);
 const hhmm = d => d ? new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—';
@@ -109,14 +119,14 @@ function localPlan(soc, c, now = new Date()) {   // mirror of plan_charge() in a
   let we = new Date(now); we.setHours(eh, em, 0, 0);
   if (we <= ws) { we = new Date(+we + 864e5); if (now < new Date(+we - 864e5)) { ws = new Date(+ws - 864e5); we = new Date(+we - 864e5); } }
   if (now >= we) { ws = new Date(+ws + 864e5); we = new Date(+we + 864e5); }
-  const rate = c.charger_kw * c.efficiency, need = Math.max(0, (c.target_soc - soc) / 100 * c.battery_kwh);
+  const rate = c.charge_kw * c.efficiency, need = Math.max(0, (c.target_soc - soc) / 100 * c.battery_kwh);
   const mins = Math.round(need / rate * 60), latest = new Date(+we - c.buffer_minutes * 6e4);
   const winMin = Math.floor((latest - ws) / 6e4);
   const p = { soc, target_soc:c.target_soc, energy_needed_kwh:+need.toFixed(1), minutes_needed:mins, window_start:ws, window_end:we,
               fits_in_window: mins <= winMin, policy:c.shortfall_policy, peak_minutes:0, expected_soc:c.target_soc };
-  if (!mins) { Object.assign(p, {start:ws, end:ws, note:'Already at target — nothing to do tonight.'}); return p; }
-  if (p.fits_in_window) { p.start = new Date(Math.max(+latest - mins*6e4, +ws)); p.end = new Date(+p.start + mins*6e4);
-    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min; fits in the off-peak window.`; }
+  if (!mins) { Object.assign(p, {start:ws, end:ws, note:'Already at target — the reserve is simply held through the window.'}); return p; }
+  if (p.fits_in_window) { p.start = ws; p.end = new Date(+ws + mins*6e4);
+    p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min from the grid; full by ${hhmm(p.end)}, then held until ${hhmm(we)}.`; }
   else if (c.shortfall_policy === 'start_early') { p.end = latest; p.start = new Date(+latest - mins*6e4);
     p.peak_minutes = Math.floor((ws - p.start)/6e4);
     p.note = `Needs ${need.toFixed(1)} kWh ≈ ${mins} min — ${p.peak_minutes} min more than the window. Starting early at the peak rate so it is full by ${hhmm(latest)}.`; }
@@ -143,15 +153,16 @@ function drawTimeline(p) {
   const n = document.createElement('div'); n.className = 'sm-now'; n.style.left = pct(now)+'%'; tl.appendChild(n);
 }
 function render() {
-  const v = state.vehicle || {}, p = state.plan || localPlan(+($('smWhatIf').value||45), cfg);
+  const v = state.battery || {}, p = state.plan || localPlan(+($('smWhatIf').value||45), cfg);
   const enabled = cfg.enabled !== false; $('smToggle').checked = enabled;
   const mode = state.mode || (enabled ? 'waiting' : 'off');
   const pill = $('smPill'); pill.textContent = mode;
-  pill.className = 'sm-pill ' + ({charging:'ok', boost:'warn', off:'bad', 'not plugged in':'warn'}[mode] || '');
+  pill.className = 'sm-pill ' + ({charging:'ok', holding:'ok', boost:'warn', off:'bad'}[mode] || '');
   $('smSoc').textContent = v.soc != null ? `${Math.round(v.soc)}%` : '—';
-  $('smPlug').textContent = v.charging_state || (v.plugged_in === false ? 'Unplugged' : '—');
+  $('smReserve').textContent = v.reserve != null ? `${v.reserve}%` : '—';
+  $('smGrid').textContent = v.grid ? (v.grid.replace('SystemGridStatus','').replace('Grid','') || v.grid) + (v.grid_kw ? ` ${v.grid_kw > 0 ? 'in' : 'out'} ${Math.abs(v.grid_kw)} kW` : '') : '—';
   $('smTarget').textContent = `${cfg.target_soc}%`;
-  $('smStart').textContent = p.minutes_needed ? hhmm(p.start) : 'n/a';
+  $('smStart').textContent = hhmm(p.start);
   $('smEnd').textContent = p.minutes_needed ? hhmm(p.end) : 'full';
   $('smPeak').textContent = p.peak_minutes || 0; $('smPeak').style.color = p.peak_minutes ? '#f5a623' : '#37c98b';
   $('smWindow').textContent = `off-peak ${hhmm(p.window_start)}–${hhmm(p.window_end)}`;
@@ -162,10 +173,10 @@ function render() {
   $('smLog').innerHTML = rows.length ? rows.map(r => `<div><span class="ts">${hhmm(r.ts)}</span>${r.msg}</div>`).join('') : '<div class="sm-muted">No log yet.</div>';
   const b = $('smBanner');
   if (!online) { b.className = 'sm-banner'; b.textContent = 'Smart Mode API not reachable at ' + API + ' — showing the local planner only.'; }
-  else if (state.error) { b.className = 'sm-banner'; b.textContent = 'Engine running but the last car read failed: ' + state.error; }
+  else if (state.error) { b.className = 'sm-banner'; b.textContent = 'Engine running but the last Powerwall read failed: ' + state.error; }
   else if (!state.engine_alive) { b.className = 'sm-banner'; b.textContent = 'API up but the engine has not ticked recently — check the energy-smart service.'; }
-  else if (state.provider === 'dry-run') { b.className = 'sm-banner'; b.textContent = 'Engine live against a SIMULATED car (provider dry-run) — set provider=teslapy in config.json to drive the real Tesla.'; }
-  else { b.className = 'sm-banner ok'; b.textContent = `Engine live (${v.name || 'Tesla'}), last tick ${hhmm(state.last_tick)}.` + (v.ts ? ` Car read ${hhmm(v.ts)}.` : ''); }
+  else if (state.provider === 'dry-run') { b.className = 'sm-banner'; b.textContent = 'Engine live against a SIMULATED Powerwall (provider dry-run) — set provider=teslapy in config.json to control the real one.'; }
+  else { b.className = 'sm-banner ok'; b.textContent = `Engine live (${v.name || 'Powerwall'}), last tick ${hhmm(state.last_tick)}.` + (v.ts ? ` Powerwall read ${hhmm(v.ts)}.` : ''); }
 }
 function fillForm() { for (const el of $('smForm').elements) { if (!el.name) continue;
   if (el.type === 'checkbox') el.checked = !!cfg[el.name]; else el.value = cfg[el.name] ?? ''; } }

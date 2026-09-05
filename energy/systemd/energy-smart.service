@@ -1,6 +1,6 @@
 # ~/.config/systemd/user/energy-smart.service — the Auto Smart Mode engine
 [Unit]
-Description=Auto Smart Mode — overnight Tesla charging engine (Octopus Go window)
+Description=Auto Smart Mode — Powerwall grid-charging engine (Octopus Go window)
 After=network-online.target
 
 [Service]
