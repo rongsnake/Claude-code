@@ -17,6 +17,27 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+# Guard: the Pi that serves gcburton.org runs **Caddy**, not nginx — there this
+# script is the wrong tool, and as root it would write /etc/nginx/… and reload a
+# web server that isn't serving the site. On that host the dashboard is already
+# behind a single Caddy basic_auth block and deploying is just a file copy into
+# the gated docroot (see ./deploy.sh, which the weekly refresh runs). This
+# script is kept as a reference recipe for a genuine nginx host.
+if [[ "${FORCE_NGINX:-0}" != "1" ]] && command -v caddy &>/dev/null; then
+  cat >&2 <<'GUARD'
+✗ Refusing to run: Caddy is installed on this host, so this nginx recipe is
+  almost certainly the wrong deploy path.
+
+  gcburton.org is served by Caddy behind one basic_auth block; publishing the
+  dashboard is a file copy into the already-gated docroot — use ./deploy.sh
+  (the weekly refresh already calls it).
+
+  If this really is an nginx host, re-run with:
+      FORCE_NGINX=1 sudo -E bash deploy_gcburton_gated.sh
+GUARD
+  exit 1
+fi
+
 DOMAIN="${DOMAIN:-gcburton.org}"
 URL_PATH="${URL_PATH:-/cds/}"                       # public path, must start+end with /
 WEBROOT="${WEBROOT:-/var/www/gcburton-gated}"       # auth-only docroot (NOT /var/www/html)

@@ -89,9 +89,37 @@ as an instruction bus is **GitHub**, which both sides already share:
   (prior index backed up as `index.html.bak-20260614-predeploy`).
 - ✅ **Infra live:** `cds-api.service` running (uvicorn :5055), `cds-refresh.timer`
   next Mon 06:00, linger on; Caddy `/cds/api/*` proxy applied.
+- ⚠️ **Known failure mode — a partial scrape can silently replace good data.**
+  The scrapers are best-effort (`|| true` in `cds_refresh.sh`) so a 403 or a
+  changed selector yields *partial* data rather than a failure, and until now
+  nothing inspected the result before deploy + commit + push. This is not
+  hypothetical: on the `refine/2026-06-15` branch the automated refreshes of
+  06-22 and 06-29 committed a collapsed dataset —
+
+  | | good | after the partial refresh |
+  |---|---|---|
+  | determinations | 2,574 | 2,452 (all 122 `dc-isda` rows gone) |
+  | auctions | 245 | 15 (`creditfixings` 245 → 12) |
+  | matched | 120 | **0** (reconciliation 4.7% → 0.0%) |
+
+  **This branch was never affected** — `claude/setup-cds-scraper-dashboard-i0TxS`
+  has carried 2,574 / 245 / 120 continuously, so no data restore is needed. The
+  damage was confined to that side branch, which is stale (last commit 06-29).
+  Still unexplained: *why* that run had creditfixings return 12 of 245 and the
+  ISDA enrichment return 0 — the gate below stops the damage but not the cause.
+- ✅ **Gate (`check_refresh.py`)** so a collapsed scrape can't get through
+  unnoticed. It runs after `analytics.py` and before build/deploy/commit,
+  compares the run against the last commit, and rejects a collapsed table, a
+  vanished source, or stray `synthetic-demo` rows — restoring the previous data
+  and exiting non-zero. Stdlib-only, so it still runs when the venv is broken.
+  Verified against the real degraded data: it flags all three rows above, and
+  passes an unchanged run. **It only takes effect on the Pi once
+  `bash pi_autopilot.sh` is re-run** (that regenerates `cds_refresh.sh`), or the
+  gate is pasted into the existing `cds_refresh.sh` by hand.
 - ℹ️ **nginx vs Caddy:** this host serves gcburton.org with **Caddy**, so the
   nginx-based `deploy_gcburton_gated.sh` is not used here — deploy is a file copy
-  into the already-gated Caddy docroot (above).
+  into the already-gated Caddy docroot (above). The script now refuses to run when
+  Caddy is present (`FORCE_NGINX=1` overrides).
 
 ## Next steps (run on the Pi / gcburton.org host — it can reach the DC site)
 
@@ -101,6 +129,7 @@ python cds_dc_scraper.py --pdf                  # FULL live DC refresh (+ parse 
 python creditex_scraper.py                      # live Creditex auction scrape
 python reconcile.py                             # join auctions ↔ determinations
 python analytics.py                             # refresh metrics + tidy export
+python check_refresh.py                         # GATE: reject a collapsed scrape
 python build_dashboard.py --output public/index.html
 # deploy behind a login (see "Gated access" below — do NOT deploy public)
 streamlit run dashboard.py                      # optional: interactive + SQL box
