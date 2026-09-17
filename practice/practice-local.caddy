@@ -1,0 +1,60 @@
+# The Practice — local, password-free access on the machine that serves it.
+#
+# gcburton.org is already gated site-wide by Caddy basic_auth, so publishing
+# the page into the docroot is all that /practice/ needs. This file is only
+# for the second half: reading it on this device WITHOUT the password.
+#
+# Install:
+#   sudo cp practice/practice-local.caddy /etc/caddy/practice-local.caddy
+#   echo 'import /etc/caddy/practice-local.caddy' | sudo tee -a /etc/caddy/Caddyfile
+#   sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
+#
+# Then: http://localhost:8080/
+#
+# Bound to 127.0.0.1, so it answers only on this machine — nothing new is
+# exposed to the network, and the public route keeps its password.
+
+http://127.0.0.1:8080 {
+	root * /home/test/www/gcburton.org/practice
+	file_server
+	encode gzip
+
+	log {
+		output discard
+	}
+}
+
+# ── To read it from the iPad or phone on the home network instead ────────────
+# Replace the block above with the one below: it answers on the LAN but still
+# refuses anything off it. Set the range to match your own network.
+#
+# http://:8080 {
+# 	@lan remote_ip 192.168.0.0/16 10.0.0.0/8 127.0.0.1/8 ::1
+# 	handle @lan {
+# 		root * /home/test/www/gcburton.org/practice
+# 		file_server
+# 		encode gzip
+# 	}
+# 	handle {
+# 		respond "Not available here" 403
+# 	}
+# }
+#
+# ── Or: keep one URL and drop the password for local callers ─────────────────
+# If you would rather have https://gcburton.org/practice/ itself skip the
+# prompt when you are on the box, put this INSIDE the existing gcburton.org
+# site block, above the site-wide basic_auth, and leave everything else alone:
+#
+# 	@practice_local {
+# 		path /practice/*
+# 		remote_ip 127.0.0.1/8 ::1 192.168.0.0/16
+# 	}
+# 	handle @practice_local {
+# 		root * /home/test/www/gcburton.org
+# 		file_server
+# 	}
+#
+# Caddy runs handle blocks in order, so the matched local request is served and
+# never reaches the basic_auth directive below it. Test it before relying on
+# it — `curl -I http://127.0.0.1/practice/` should give 200, and the same URL
+# from outside should still give 401.

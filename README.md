@@ -32,6 +32,10 @@ bash run_dashboard.sh              # add --demo for synthetic data, --static for
 | `analytics.py` | Derives columns (days-to-auction, recovery, is-restructuring, …) and computes the metrics that answer the common questions |
 | `build_dashboard.py` | Renders a self-contained static `dashboard.html` (Plotly.js via CDN) with charts, an "ask the data" pivot, and downloads |
 | `dashboard.py` | Interactive Streamlit dashboard incl. a DuckDB SQL "ask the data" box |
+| `practice/page.html` | **The Practice** — the front-door page: four strands, a contents index and a brief-builder. Single source for both the Claude artifact and the self-hosted copy |
+| `build_practice.py` | Wraps `practice/page.html` into a standalone `public/practice/index.html` that opens over HTTP or straight off disk |
+| `build_contents.py` | Writes `public/practice/contents.js` — the contents index — from `data/documents.csv` and any folders you point it at |
+| `deploy_practice.sh` | Publishes the page into the Caddy docroot, and optionally installs the password-free local listener |
 | `setup.sh` / `run_dashboard.sh` | venv setup and one-command refresh+build |
 | `data/determinations.csv` / `.json` | Raw DC scraper output |
 | `data/auctions.csv` / `.json` | Raw Creditex auction output |
@@ -113,6 +117,49 @@ deployment is just copying one file, e.g.:
 python build_dashboard.py --output public/index.html
 # then upload public/index.html via your normal gcburton.org deploy (scp/rsync/CI)
 ```
+
+## The Practice (front door + contents index)
+
+`https://gcburton.org/practice/` is one page across all four strands of the
+work — derivatives, restructuring, bank capital, insurance. It carries a
+contents index over every source document, and a brief-builder that turns a
+chosen deliverable into a filled-in prompt for the skill that produces it.
+
+```bash
+python build_contents.py --docs data/documents.csv   # → public/practice/contents.js
+python build_practice.py                             # → public/practice/index.html
+bash deploy_practice.sh                              # publish to the docroot
+```
+
+**The contents index.** `build_contents.py` indexes only what it is shown, so a
+file appears because it was found, never because it was assumed. Out of this
+repo alone it finds ~3,550 DC source documents. Point it at the project folders
+on the machine that holds them to pull in the definitions sets, reports and
+diagrams:
+
+```bash
+python build_contents.py \
+  --docs data/documents.csv \
+  --root "derivatives:Derivatives law:$HOME/Claude/Derivatives law" \
+  --root "capital:Bank capital:$HOME/Claude/Bank capital RWA tracker"
+```
+
+Each `--root` is `strand:label:path`, where strand is one of `derivatives`,
+`restructuring`, `capital`, `insurance`. Folder names that clearly belong to
+another strand (`Thames Water`, `crr-site`, anything with `insur`) are re-filed
+on the way in.
+
+**Three ways to read it.**
+
+| Route | Password | Notes |
+|---|---|---|
+| `https://gcburton.org/practice/` | yes — the existing site sign-in | Caddy gates the whole site; publishing is a file copy, no new gate |
+| `http://localhost:8080/` | no | `LOCAL=1 sudo -E bash deploy_practice.sh` installs it; bound to 127.0.0.1, so this machine only |
+| `file:///…/practice/index.html` | no | No server at all. Fonts fall back to system faces offline; everything else works |
+
+The queued-briefs list is per-browser (`localStorage`) on the self-hosted copy,
+and shared server-side on the Claude artifact — the same page, adapting to
+where it is running.
 
 ## Hands-off autopilot (set up once, never touch again)
 
