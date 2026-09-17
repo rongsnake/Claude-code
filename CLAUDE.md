@@ -31,8 +31,19 @@ Committees** (CDS = credit default swaps; source
   `POST /refresh` runs the pipeline async (locked, rate-limited); `GET /status`;
   `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
+- `practice/page.html` — **The Practice**: the front door across all four strands
+  (derivatives, restructuring, capital, insurance). A body fragment, so the same
+  file is published as the Claude artifact and wrapped for self-hosting.
+  `build_practice.py` → `public/practice/index.html`; `build_contents.py` →
+  `public/practice/contents.js` (the contents index: ~3,550 files from
+  `data/documents.csv`, plus any `--root "strand:label:path"` folders on the host).
+  `deploy_practice.sh` publishes to the Caddy docroot; `practice/practice-local.caddy`
+  is the password-free localhost listener. Artifact:
+  https://claude.ai/artifact/NkY1kEJ3XM54xZWCAudfrP
 
 ## Serving / scheduling (this Pi)
+- `/practice/` = The Practice, same Caddy gate (site-wide basic_auth); the local
+  listener on `127.0.0.1:8080` serves the same folder with no password.
 - `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`
   reverse-proxied to `localhost:5055` (same gate, `flush_interval -1` for streaming).
 - systemd **user** units: `cds-api.service` (the API) + `cds-refresh.timer`

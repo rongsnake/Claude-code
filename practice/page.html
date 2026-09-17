@@ -1,0 +1,941 @@
+<title>The Practice</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#f2f1ee; --card:#fffdfa; --sunk:#eae7e3;
+    --ink:#201a1b; --ink-2:#4e4548; --mute:#867c7e;
+    --rule:#dcd6d4; --rule-2:#ebe6e4;
+    --accent:#7b1f2b; --accent-ink:#fffdfa; --accent-soft:#f4e6e7;
+    --live:#2f6b4f; --live-bg:#e4efe9;
+    --build:#8a6212; --build-bg:#f6eeda;
+    --plan:#5d6470; --plan-bg:#e8eaee;
+    --shadow:0 1px 2px rgba(32,26,27,.07), 0 6px 20px -14px rgba(32,26,27,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#171314; --card:#201b1d; --sunk:#191416;
+      --ink:#efe8e6; --ink-2:#c1b6b6; --mute:#8c8184;
+      --rule:#372f31; --rule-2:#2a2325;
+      --accent:#e79aa3; --accent-ink:#1b1516; --accent-soft:#3a2427;
+      --live:#7fc9a5; --live-bg:#1d3329;
+      --build:#dcb25f; --build-bg:#352b16;
+      --plan:#a2aab8; --plan-bg:#262b33;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#171314; --card:#201b1d; --sunk:#191416;
+    --ink:#efe8e6; --ink-2:#c1b6b6; --mute:#8c8184;
+    --rule:#372f31; --rule-2:#2a2325;
+    --accent:#e79aa3; --accent-ink:#1b1516; --accent-soft:#3a2427;
+    --live:#7fc9a5; --live-bg:#1d3329;
+    --build:#dcb25f; --build-bg:#352b16;
+    --plan:#a2aab8; --plan-bg:#262b33;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:15px/1.55 "IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1220px;margin:0 auto;padding-inline:20px}
+  h1,h2,h3{font-family:"Newsreader","Iowan Old Style",Georgia,serif;font-weight:500;margin:0;text-wrap:balance}
+  a{color:var(--accent)}
+  a:hover{text-decoration:none}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+  code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600}
+
+  header{padding-block:34px 0}
+  header h1{font-size:46px;line-height:1.02;margin-top:8px;letter-spacing:-.015em}
+  header .lede{max-width:64ch;color:var(--ink-2);margin:12px 0 0;font-size:16.5px}
+
+  /* pillars */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin:26px 0 0}
+  .pillar{
+    text-align:left;font:inherit;color:var(--ink);cursor:pointer;
+    background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--rule);
+    border-radius:2px;padding:14px 15px 13px;display:flex;flex-direction:column;gap:5px;
+  }
+  .pillar:hover{border-color:var(--mute)}
+  .pillar[aria-pressed="true"]{border-top-color:var(--accent);background:var(--card);box-shadow:var(--shadow)}
+  .pillar[aria-pressed="true"] .pname{color:var(--accent)}
+  .pname{font-family:"Newsreader",Georgia,serif;font-size:21px;font-weight:500;line-height:1.1}
+  .ptag{font-size:12.5px;color:var(--ink-2)}
+  .pmeta{font-size:11.5px;color:var(--mute);margin-top:2px;font-variant-numeric:tabular-nums}
+
+  main{display:grid;grid-template-columns:minmax(0,1fr) 375px;gap:36px;align-items:start;padding-block:30px 56px}
+  @media (max-width:980px){ main{grid-template-columns:1fr;gap:28px} aside{position:static !important} }
+
+  .sechead{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:6px;margin:4px 0 2px}
+  .sechead h2{font-size:22px}
+  .sechead .n{color:var(--mute);font-size:12px;margin-left:auto;font-variant-numeric:tabular-nums}
+  .intro{color:var(--ink-2);font-size:14.5px;margin:12px 0 18px;max-width:70ch}
+
+  .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule-2);align-items:start}
+  .row h3{font-size:16px;font-weight:600;font-family:"IBM Plex Sans",sans-serif;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .row h3 a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+  .row h3 a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .row .what{color:var(--ink-2);margin:4px 0 6px;max-width:74ch;font-size:14px}
+  .loc{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mute);align-items:baseline}
+  .loc code{color:var(--ink-2);background:var(--sunk);padding:1px 5px;border-radius:2px}
+  .side{display:flex;flex-direction:column;align-items:flex-end;gap:5px;font-size:12px;color:var(--mute);text-align:right}
+  .side b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+  .lock{color:var(--mute);font-size:11.5px;font-weight:500}
+
+  .pill{display:inline-block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;padding:2px 7px;border-radius:2px;white-space:nowrap}
+  .pill.live{color:var(--live);background:var(--live-bg)}
+  .pill.building{color:var(--build);background:var(--build-bg)}
+  .pill.planned{color:var(--plan);background:var(--plan-bg)}
+
+  /* view switch */
+  .views{display:flex;gap:2px;margin:18px 0 0;border-bottom:1px solid var(--rule)}
+  .views button{
+    font:inherit;font-size:13.5px;font-weight:500;background:none;border:0;border-bottom:2px solid transparent;
+    color:var(--mute);padding:9px 14px;margin-bottom:-1px;border-radius:0
+  }
+  .views button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+  .views button:hover{color:var(--ink)}
+
+  /* contents */
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
+  .toolbar input[type="search"]{flex:2 1 230px;width:auto}
+  .toolbar select{flex:1 1 150px;width:auto}
+  .chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2);white-space:nowrap}
+  .chk input{width:auto}
+  .tblwrap{overflow-x:auto;border-top:1px solid var(--rule)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600;padding:8px 10px 7px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:8px 10px 8px 0;border-bottom:1px solid var(--rule-2);vertical-align:top}
+  td.t{min-width:280px}
+  td.t a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+  td.t a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  td.c{white-space:nowrap;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  td .ent{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
+  .setup{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:16px 17px;margin-top:6px}
+  .setup p{margin:0 0 10px;color:var(--ink-2);font-size:14px;max-width:70ch}
+  .setup pre{margin:0;background:var(--sunk);padding:11px;border-radius:2px;overflow-x:auto;
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+
+  /* deliverables */
+  .docs{margin-top:34px}
+  .doc{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule-2)}
+  .doc h3{font-size:15.5px;font-weight:600;font-family:"IBM Plex Sans",sans-serif}
+  .doc p{margin:3px 0 0;color:var(--ink-2);font-size:13.5px;max-width:72ch}
+  .doc .via{font-size:11.5px;color:var(--mute);margin-top:4px;display:block}
+  .doc .via code{background:var(--sunk);padding:1px 5px;border-radius:2px;color:var(--ink-2)}
+  .doc[data-active="true"]{background:var(--accent-soft);box-shadow:-14px 0 0 var(--accent-soft),14px 0 0 var(--accent-soft)}
+
+  button{font:inherit;cursor:pointer;border-radius:2px}
+  .btn{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);font-weight:600;font-size:13.5px;padding:7px 14px}
+  .btn:hover{filter:brightness(1.12)}
+  .btn:disabled{opacity:.45;cursor:default;filter:none}
+  .btn.ghost{background:transparent;color:var(--accent);border-color:var(--rule);font-weight:500}
+  .btn.ghost:hover{border-color:var(--accent);filter:none}
+  .btn.small{font-size:12.5px;padding:5px 11px}
+
+  /* brief panel */
+  aside{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px)}
+  .brief{background:var(--card);border:1px solid var(--rule);border-radius:2px;box-shadow:var(--shadow);padding:18px 18px 16px}
+  .brief h2{font-size:20px;margin-bottom:2px}
+  .brief .sub{font-size:13px;color:var(--ink-2);margin:6px 0 14px}
+  .brief .sub b{font-weight:600;color:var(--ink)}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+  .field label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .field .hint{font-size:12px;color:var(--mute);font-style:italic}
+  input,select,textarea{
+    font:inherit;font-size:13.5px;width:100%;padding:7px 9px;border:1px solid var(--rule);border-radius:2px;
+    background:var(--paper);color:var(--ink)
+  }
+  textarea{min-height:60px;resize:vertical;line-height:1.45}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .stat{font-size:12px;color:var(--mute);flex:1 1 100%;min-height:1.3em}
+  .stat.ok{color:var(--live)} .stat.bad{color:var(--build)}
+  .preview{margin-top:14px;border-top:1px solid var(--rule-2);padding-top:12px}
+  .preview pre{
+    margin:6px 0 0;white-space:pre-wrap;word-break:break-word;font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;line-height:1.5;color:var(--ink-2);background:var(--sunk);padding:11px;border-radius:2px;
+    max-height:230px;overflow:auto
+  }
+  .queue{margin-top:16px;border-top:1px solid var(--rule-2);padding-top:12px}
+  .qhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .queue ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;max-height:260px;overflow:auto}
+  .queue li{font-size:12.5px;line-height:1.4;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start}
+  .queue li .t{color:var(--ink);font-weight:500}
+  .queue li .d{color:var(--mute);font-size:11px;display:block;margin-top:1px}
+  .queue .empty{color:var(--mute);font-style:italic}
+  .note{font-size:12px;color:var(--mute);line-height:1.5;margin:12px 0 0}
+
+  footer{border-top:1px solid var(--rule);padding-block:16px 44px;font-size:12.5px;color:var(--mute);max-width:84ch}
+  footer p{margin:0 0 6px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">gcburton.org &middot; front door &middot; 17 September 2026</div>
+    <h1>The Practice</h1>
+    <p class="lede">Four strands of work — derivatives, restructuring, bank capital, insurance — with what exists in each, and a brief-builder that turns any of it into a document. Pick a strand, pick a deliverable, fill the variables that actually change the answer, and send it to Claude.</p>
+    <div class="pillars" id="pillars" role="group" aria-label="Practice strands"></div>
+    <div class="views" id="views" role="group" aria-label="View">
+      <button type="button" data-v="strands" aria-pressed="true">Strands</button>
+      <button type="button" data-v="contents" aria-pressed="false">Contents</button>
+    </div>
+  </header>
+
+  <main>
+    <div>
+      <section id="viewContents" hidden>
+        <div class="sechead"><h2>Contents</h2><span class="n" id="cxCount"></span></div>
+        <p class="intro" id="cxIntro">Every source document, definitions set and report the index knows about. Search it, or narrow by strand with the tabs above.</p>
+        <div class="toolbar" id="cxTools">
+          <input type="search" id="cxq" placeholder="Search titles, entities, file names…" aria-label="Search the contents index">
+          <select id="cxkind" aria-label="Filter by kind"></select>
+          <select id="cxsrc" aria-label="Filter by collection"></select>
+          <label class="chk"><input type="checkbox" id="cxall" checked> All strands</label>
+        </div>
+        <div class="tblwrap" id="cxWrap">
+          <table>
+            <thead><tr><th>Document</th><th>Kind</th><th>Date</th><th>Size</th></tr></thead>
+            <tbody id="cxBody"></tbody>
+          </table>
+        </div>
+        <p class="note" id="cxNote"></p>
+      </section>
+
+      <div id="viewStrands">
+      <section id="assets">
+        <div class="sechead"><h2 id="wsHead">Workstreams</h2><span class="n" id="wsCount"></span></div>
+        <p class="intro" id="wsIntro"></p>
+        <div id="wsList"></div>
+      </section>
+
+      <section class="docs">
+        <div class="sechead"><h2>Documents you can raise from here</h2><span class="n" id="docCount"></span></div>
+        <p class="intro">Each one runs a skill you already have. Choosing it loads its brief on the right — the fields are the variables that decide the answer, not boilerplate.</p>
+        <div id="docList"></div>
+      </section>
+      </div>
+    </div>
+
+    <aside>
+      <div class="brief">
+        <div class="kicker">Brief</div>
+        <h2 id="briefName">CRR credit risk mitigation analysis</h2>
+        <p class="sub" id="briefSub"></p>
+        <form id="briefForm" autocomplete="off"></form>
+        <div class="actions">
+          <button type="button" class="btn" id="send">Copy &amp; open in Claude</button>
+          <button type="button" class="btn ghost" id="copy">Copy only</button>
+          <button type="button" class="btn ghost small" id="queue">Queue it</button>
+          <span class="stat" id="stat">&nbsp;</span>
+        </div>
+        <div class="preview">
+          <div class="kicker">The brief as it will be sent</div>
+          <pre id="out"></pre>
+        </div>
+        <div class="queue">
+          <div class="qhead">
+            <span class="kicker">Queued briefs</span>
+            <button type="button" class="btn ghost small" id="export" hidden>Export</button>
+          </div>
+          <ul id="queueList"><li class="empty">Nothing queued.</li></ul>
+        </div>
+        <p class="note">Queued briefs are saved to this page. Say <em>“work the queue on The Practice”</em> in a session and Claude picks them up in order.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <p><b>Where things live.</b> 🔒 marks pages behind the gcburton.org sign-in. Asset detail and the full feed list stay on <a href="https://claude.ai/artifact/CCVxqwpngYqLKD5psE2XMo">Derivatives Desk</a>; matter files sit in <a href="https://drive.google.com/drive/folders/1hSEmrmICclA3VZof8aERwq4_1QBxG2rl">Claude Cowork Projects</a> on Drive. Counts carry over from the Desk as at 5 September 2026 and are only as current as that page.</p>
+    <p>Working index for Gareth Burton. Nothing here is legal advice.</p>
+  </footer>
+</div>
+
+<script src="contents.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var DATA = [
+    {
+      id:"derivatives", name:"Derivatives", tag:"CDS, FX, rates, clause library",
+      intro:"The documentation estate: ISDA definitional frameworks by asset class, the Determinations Committee record, and the drafting work that sits on top of them.",
+      work:[
+        {t:"CDS dashboard", href:"https://gcburton.org/cds/", lock:true, status:"live", side:["2,574 determinations"],
+         what:"Scraper-fed determinations table with CSV / XLSX / JSON export, an auction-reconciled 2009–14 subset and a local-LLM Q&A endpoint. The schema behind the horizon scan and the events archive.",
+         loc:[["Pi · Caddy","/cds/"],["api","/cds/api/* → :5055"],["code","~/Claude-code/"]]},
+        {t:"The 2026 FX Definitions", href:"https://gcburton.org/fx/", lock:true, status:"live", side:["go-live 22 Nov 2027"],
+         what:"Explainer on the 3 March 2026 publication, the consolidation map from the 1998 framework, substantive changes and the embedded-legacy problem — with the document library and the architecture diagrams behind it.",
+         loc:[["Pi","/fx/"],["library","/fx/library/"],["diagrams","/fx/architecture/"]]},
+        {t:"FX document library", href:"https://gcburton.org/fx/library/", lock:true, status:"live", side:["75 files","18 pending pulls"],
+         what:"Main Book v1.0 and its seven ancillary components, the 1998 Definitions and User's Guide, Annex A and its amendment history, supplements 2005–23, and the whole 2024–26 consultation record.",
+         loc:[["source","Derivatives law/FX Definitions/"],["index","00_MANIFEST.md"]]},
+        {t:"Credit Definitions module", status:"building", side:["13 files","binaries pending"],
+         what:"2014 Definitions ecosystem — NTCE Supplement extract, the Physical Settlement Matrix chain to 6 Oct 2025, the 2003 baseline, the DC Rules version chain with the Firth implementation record, and the 2003→2014 change matrix.",
+         loc:[["local","Derivatives law/Credit Definitions/"],["gap","primary PDFs await a manual pull"]]},
+        {t:"Rates, commodity and Clause Library modules", status:"planned", side:["3 of 4 phases empty"],
+         what:"The rest of the ISDA rollout: 2021 Interest Rate Definitions against the 2006 baseline, the 2005 Commodity Definitions, and the Clause Library with its CDM relationship. Scaffolded in June 2026; no content collected.",
+         loc:[["local","Derivatives law/Interest Rate Definitions/"],["fix","re-run with web access pre-approved"]]},
+        {t:"Cleary &amp; Morris — digitised", href:"https://drive.google.com/drive/folders/1CF9o4D6Hll0VrTYRSC-xUQUGT34o3nUb", status:"live", side:["ch. 1–4 in the KB","ch. 5–13 on Drive"],
+         what:"The authoritative source for house-view points. Chapters 1–4 are searchable in the project knowledge base; 5–13 are per-chapter searchable PDFs. Cite by paragraph number, never by page.",
+         loc:[["Drive","Claude Cowork Projects/Cleary Morris"]]}
+      ],
+      docs:[
+        {id:"redline", name:"Redline + rationale", produces:"two-column .docx — mark-up left, attributed explanation right", skill:"redline-rationale",
+         lead:"Run the redline-rationale skill and produce the two-column mark-up.",
+         close:"House style: “Clause”, not the section symbol; no “gate”/“gating” or “going forward”; concise and plain. Number every change and mark each as substantive or consequential, with its source and its effect.",
+         fields:[
+           {id:"clause", label:"Clause or definition", ph:"e.g. the Restructuring Credit Event definition, Section 4.7"},
+           {id:"doc", label:"Document and parties", ph:"e.g. 4T CDS MCA — DB as seller, August 2026 drafts"},
+           {id:"objective", label:"What the change must achieve", type:"textarea", ph:"The commercial or regulatory outcome the mark-up is for."},
+           {id:"counterparty", label:"Counterparty position", type:"textarea", ph:"What they have asked for, and what they will resist."},
+           {id:"constraint", label:"Constraints", ph:"e.g. must survive rating agency review; no change to settlement mechanics"}
+         ]},
+        {id:"matrix", name:"Definitions change matrix", produces:".docx narrative plus an .xlsx matrix, one row per change", skill:"docx + xlsx",
+         lead:"Build a line-by-line change matrix between the two definitional frameworks below, working from the documents already collected in the project.",
+         close:"One row per change: old wording, new wording, character of the change (consolidation, substantive, drafting), and the practical consequence for a live trade. Flag every point where the change is only apparent — same words, different defined term.",
+         fields:[
+           {id:"pair", label:"Which frameworks", type:"select", opts:["2003 → 2014 Credit Derivatives Definitions","1998 → 2026 FX Definitions","2006 → 2021 Interest Rate Definitions"]},
+           {id:"scope", label:"Scope", ph:"e.g. the full book, or Article II and the settlement provisions only"},
+           {id:"use", label:"What it is for", type:"select", opts:["Internal reference","Client briefing","Training material","Pitch support"]},
+           {id:"depth", label:"Anything to go deep on", type:"textarea", ph:"Sections where the summary view is not enough."}
+         ]},
+        {id:"dcnote", name:"DC determination note", produces:"footnoted .docx note citing the determinations record", skill:"docx",
+         lead:"Draft a note on the Determinations Committee question below, using the determinations record in the CDS dashboard as the evidence base.",
+         close:"Cite each determination by reference entity, committee, date and issue number, and link the published decision or explanatory statement. Distinguish the DC's reasoning from commentary on it. Say plainly where the record is silent.",
+         fields:[
+           {id:"entity", label:"Reference entity", ph:"e.g. Altice France / SFR"},
+           {id:"question", label:"The question", type:"textarea", ph:"e.g. whether the exchange constitutes a Governmental Intervention or a Restructuring, and what the DC actually decided."},
+           {id:"period", label:"Period", ph:"e.g. 2023 to date, with the 2016 Norske Skog comparison"},
+           {id:"angle", label:"Audience and angle", type:"select", opts:["Client briefing","Internal file note","Talk or article","Opinion support"]}
+         ]},
+        {id:"preread", name:"Pre-read + audiobook", produces:".docx pre-read, then an M4A in the George neural voice", skill:"docx + audiobook",
+         lead:"Write the pre-read below, then run the audiobook skill over the finished text.",
+         close:"Pre-read first, audio second — narrate the final text, not a draft. Keep the written version to the stated length and make it readable aloud: no tables in the narration path, expand every abbreviation on first use.",
+         fields:[
+           {id:"topic", label:"Topic", ph:"e.g. what the 2026 FX Definitions change for legacy portfolios"},
+           {id:"audience", label:"Audience", ph:"e.g. the S&S derivatives group; assume ISDA fluency, no FX specialism"},
+           {id:"length", label:"Length", type:"select", opts:["Short — 10 minutes read","Medium — 25 minutes read","Long — an hour, chaptered"]},
+           {id:"when", label:"Needed by", ph:"e.g. Friday, for the run on Saturday"}
+         ]}
+      ]
+    },
+    {
+      id:"restructuring", name:"Restructuring", tag:"European HY, LMEs, capital stacks",
+      intro:"Where the credit work meets the distressed borrower: which issuers are moving, what the documents let them do, and where protection attaches when they do it.",
+      work:[
+        {t:"European HY horizon scan", href:"https://drive.google.com/drive/folders/1_KRKtE69SPS7z_YOWd7w873sxYxsmyVi", status:"live", side:["24 entities","as at 2 Aug 2026"],
+         what:"One row per distressed European HY debtor with driver taxonomy — debt wall, second RP, liquidity, LME / priming, creditor enforcement, war-energy shock, operational, regulatory — plus stage, key dates and CDS relevance. Rebuilt monthly.",
+         loc:[["local","Derivatives law/horizon-scan.{xlsx,csv,json}"],["Drive","My Drive/CDS horizon scans/"]]},
+        {t:"Capital stacks × CDS", href:"https://gcburton.org/cds/stacks/", lock:true, status:"live", side:["2 stacks built","27 documents"],
+         what:"Where protection attaches in a distressed issuer's capital structure. Altice International and Altice France / SFR fully built with stack diagrams; the rest of the dropdown is a watchlist carrying CDS and DC status. Companion open-data document library with entity trees and a weekly refresh.",
+         loc:[["Pi","/cds/stacks/"],["library","/cds/stacks/library/"],["truth","library/corpus.json"]]},
+        {t:"Ardagh 2025 external review", status:"live", side:["deep dive (B)"],
+         what:"The DC external review read against the 2014 Definitions and the Firth recommendations — the worked example for how a contested Restructuring determination now runs.",
+         loc:[["local","Derivatives law/"],["companion","Norske Skog 2016 case diagram"]]},
+        {t:"The Private Creditor Playbook", status:"live", side:["reference"],
+         what:"How private credit behaves in a workout — the tactics that now precede a formal process, and what they do to a CDS position.",
+         loc:[["local","Derivatives law/"]]},
+        {t:"Thames Water prospectuses", status:"live", side:["TWUF 2023 · SWS 2024"],
+         what:"The document set behind the stack work on the UK water names: TWUF (Oct 2023) and SWS (2024), with the structural subordination map.",
+         loc:[["local","Derivatives law/Thames Water/"]]},
+        {t:"CDS and the new restructuring landscape", status:"live", side:["March 2026"],
+         what:"The standing briefing tying the two strands together — LME technology against a definitional framework written for a different kind of default.",
+         loc:[["Drive","CDS_and_the_New_Restructuring_Landscape_Briefing_March_2026.docx"]]}
+      ],
+      docs:[
+        {id:"scan", name:"Horizon scan refresh", produces:".xlsx, .csv, .json and the corpus .md, dated and copied to Drive", skill:"xlsx + web research",
+         lead:"Refresh the European HY restructuring horizon scan. Start from the current horizon-scan files and the corpus, then verify each row against the last month's news before changing it.",
+         close:"Keep the existing schema and the driver taxonomy. Every changed row needs a dated source. Write the dated copies to My Drive / CDS horizon scans and leave the undated working copies in the project root. Say which rows you could not verify rather than carrying them forward silently.",
+         fields:[
+           {id:"asat", label:"As at", ph:"e.g. 1 October 2026"},
+           {id:"add", label:"Entities to add or drop", type:"textarea", ph:"Names that have entered or left the watchlist since the last run."},
+           {id:"focus", label:"Drivers to emphasise", ph:"e.g. LME / priming and second RP activity"},
+           {id:"outputs", label:"Outputs", type:"select", opts:["All four — xlsx, csv, json, corpus","Spreadsheet and corpus only","Corpus narrative only"]}
+         ]},
+        {id:"stack", name:"Capital stack × CDS note", produces:"stack diagram plus a .docx note on where protection attaches", skill:"docx + diagrams",
+         lead:"Build the capital stack for the issuer below and analyse where CDS protection attaches to it.",
+         close:"Work from primary documents — prospectuses, indentures, the intercreditor — and name each one where you rely on it. The diagram must show issuing entity, guarantor coverage, security and structural subordination, and mark which obligations are Deliverable Obligations. Flag anything that turns on a Successor or Substitute Reference Obligation question.",
+         fields:[
+           {id:"issuer", label:"Issuer", ph:"e.g. Altice France / SFR"},
+           {id:"instruments", label:"Instruments in scope", ph:"e.g. the 2027 and 2029 senior secured notes, the RCF"},
+           {id:"question", label:"The question", type:"select", opts:["Where does protection attach","Deliverability and the auction","Successor / Substitute Reference Obligation","DC status and next triggers"]},
+           {id:"sources", label:"Documents to work from", type:"textarea", ph:"Anything already in the stacks library, plus what you want pulled."}
+         ]},
+        {id:"lme", name:"LME / priming analysis", produces:"footnoted .docx note with the covenant routes tabulated", skill:"docx",
+         lead:"Analyse the liability management routes open to the issuer below on its current documents.",
+         close:"Tabulate each route against the specific covenant, basket or definition that permits it, quoting the operative words. Separate what the documents permit from what the creditor group would tolerate. Close with the CDS consequence of each route: does it trigger, and on whose obligations.",
+         fields:[
+           {id:"issuer", label:"Issuer", ph:"e.g. the name and the relevant borrowing group"},
+           {id:"deal", label:"Transaction contemplated", type:"textarea", ph:"e.g. drop-down to an unrestricted subsidiary, then a new-money exchange at a discount."},
+           {id:"docs", label:"Documents", ph:"e.g. 2021 indenture, RCF, intercreditor"},
+           {id:"audience", label:"Audience", type:"select", opts:["Creditor-side client","Company-side client","Internal file note","Market briefing"]}
+         ]},
+        {id:"casediagram", name:"Case study diagram set", produces:"SVG, PNG and Mermaid, plus a caption sheet", skill:"diagrams + docx",
+         lead:"Build a case diagram set on the matter below, in the same idiom as the Norske Skog 2016 and Ardagh 2025 sets.",
+         close:"Deliver SVG, PNG and the Mermaid source. Every diagram must carry real dates and real figures from the record — no illustrative numbers. Both themes legible; no colour-only encoding.",
+         fields:[
+           {id:"case", label:"Case", ph:"e.g. the 2025 Ardagh exchange and the DC process that followed"},
+           {id:"shows", label:"What the diagram must show", type:"textarea", ph:"The mechanism you want a reader to grasp in one look."},
+           {id:"use", label:"Where it will be used", type:"select", opts:["Talk or deck","Briefing document","Website page","Training"]}
+         ]}
+      ]
+    },
+    {
+      id:"capital", name:"Bank capital", tag:"CRR, RWA, credit risk mitigation",
+      intro:"The regulatory half of the derivatives work: what the CRR says article by article, what the banks actually report, and whether a given structure earns the relief it was bought for.",
+      work:[
+        {t:"CRR Annotated", status:"building", side:["61 articles · 14 concepts","deploy unconfirmed"],
+         what:"The Capital Requirements Regulation article by article — EU consolidated text as at 1 Jan 2026 with nutshell, commentary, CRR3 delta and UK panel. Arts 192–197, 201, 203–207, 213–216, 219, 233 and 235a annotated in full; the rest of 192–241 outlined; Part Seven leverage seeded.",
+         loc:[["local","Bank capital RWA tracker/crr-site/"],["single file","crr-annotated-standalone.html"],["target","/crr/"]]},
+        {t:"CRM citation map and house positions", status:"live", side:["9 settled positions"],
+         what:"The verified article map post-CRR3, the corrections to commonly mis-cited provisions, the nine settled house positions and the standing list of what remains unverified. Read before any capital-relief question; added to after any run that settles something new.",
+         loc:[["project","Derivatives law/"],["rule","never re-verify what it already covers"]]},
+        {t:"Bank capital & derivatives RWA tracker", status:"building", side:["9 banks × 3 years"],
+         what:"DB, UBS, Barclays, NatWest, Citi, JPM, Morgan Stanley, Nomura and StanChart, FY2023–25: CET1 / T1 / total capital and ratios, leverage ratio, total RWA, P2R / Pillar 2A, and derivatives-related RWA from Pillar 3. Mirrored into the CRR site; the module shows a coverage scaffold until the gathering run succeeds.",
+         loc:[["workbook","Bank capital and derivatives RWA tracker.xlsx"],["task","bank-pillar3-capital-rwa-tracker"]]},
+        {t:"RWA module reports", status:"live", side:["4 reports"],
+         what:"The leverage ratio and fourth-trigger intermediation; the “resolution” of Credit Suisse and the claims market; CDS and bank capital — CRR treatment (A); SA-CCR cross-product netting and the US/EU divergence. Each digested into a CRR Annotated concept page.",
+         loc:[["local","Bank capital RWA tracker/*.docx"]]},
+        {t:"BIS–FSB library", status:"planned", side:["index empty","1 sweep"],
+         what:"Running index of BIS / BCBS / FSI / FSB publications on capital and resolution, with downloads and draft posts. First sweep on 10 Aug 2026 found nothing in scope.",
+         loc:[["local","BIS-FSB library/library-index.md"],["cadence","weekly"]]}
+      ],
+      docs:[
+        {id:"crm", name:"CRR credit risk mitigation analysis", produces:"footnoted .docx report or opinion-support memo, with a conditions checklist mapped to articles", skill:"crr-crm-analysis",
+         lead:"Run the crr-crm-analysis skill on the instrument below. Read the CRM citation map and house positions first and do not re-verify what it already covers.",
+         close:"Answer in short up front, then the fact pattern, the analytical spine, a conditions checklist mapped to articles, conclusions, and an explicit open-items / verification status section. Every proposition footnoted to the article and paragraph or the Cleary paragraph number. Never fill a gap from memory — say what could not be verified. State plainly if the commercial hedge survives but the capital recognition fails.",
+         fields:[
+           {id:"matter", label:"Matter", ph:"e.g. Project Violet II — bank buyer, insurer seller"},
+           {id:"instrument", label:"Instrument", type:"select", opts:["Credit insurance policy","Guarantee","Credit derivative (CDS)","Total return swap","Credit-linked note","Sub-participation","Collateralised structure"]},
+           {id:"book", label:"Book", type:"select", opts:["Banking book","Trading book","Both — say which for each leg"]},
+           {id:"sec", label:"Securitisation position?", type:"select", opts:["No — general banking book exposure","Yes — Chapter 5, not Chapter 4","Unsure — settle this first"]},
+           {id:"tranche", label:"Tranching features", type:"textarea", ph:"Any retention, attachment point, materiality threshold or first-loss — each takes it out of Chapter 4 under Art 234.", hint:"Say “none identified” if there are none."},
+           {id:"approach", label:"Approach", ph:"e.g. A-IRB on the exposure; SA on a direct exposure to the provider"},
+           {id:"provider", label:"Protection provider", ph:"e.g. EEA insurer authorised under Solvency II; or the third country and its equivalence status"},
+           {id:"collateral", label:"Collateral mechanics", type:"textarea", ph:"Above all: what event entitles the bank to apply the collateral — the obligor's default, or only the provider's?"},
+           {id:"out", label:"Deliverable", type:"select", opts:["Full footnoted report","Opinion-support memo (Art 194(1))","Conditions checklist answering the client's CRR questionnaire"]}
+         ]},
+        {id:"pillar3", name:"Pillar 3 / RWA tracker update", produces:"updated .xlsx plus the bankcap.js mirror for the CRR site", skill:"xlsx + web research",
+         lead:"Update the bank capital and derivatives RWA tracker from the banks' published Pillar 3 and annual reports.",
+         close:"Every figure needs the report, page and as-at date beside it. Do not interpolate a missing disclosure — leave the cell empty and list it as a gap. Regenerate data/bankcap.js so the CRR site module reads live figures instead of the scaffold.",
+         fields:[
+           {id:"banks", label:"Banks", ph:"e.g. all nine, or just DB, UBS and Barclays"},
+           {id:"period", label:"Period", ph:"e.g. add FY2026 H1"},
+           {id:"metrics", label:"Metrics", type:"textarea", ph:"Default set is CET1 / T1 / total capital and ratios, leverage, total RWA, P2R / Pillar 2A, derivatives-related RWA."},
+           {id:"note", label:"Anything to watch", ph:"e.g. output floor phase-in disclosures"}
+         ]},
+        {id:"annotate", name:"CRR Annotated article pass", produces:"article pages for the CRR site, plus any concept essay", skill:"docx + site authoring",
+         lead:"Annotate the CRR articles below for the CRR Annotated site, following AUTHORING.md and the house structure.",
+         close:"Each article gets nutshell, commentary, CRR3 delta and UK panel. Quote the operative words of the consolidated text as at 1 January 2026; where a formula is published as an image, give the Cleary or Basel form and flag that it could not be read from the source.",
+         fields:[
+           {id:"arts", label:"Articles", ph:"e.g. Arts 217–224, and 429a"},
+           {id:"depth", label:"Depth", type:"select", opts:["Full — all four panels","Nutshell and commentary only","Outline to be filled later"]},
+           {id:"concept", label:"Concept essay to go with it", ph:"e.g. maturity mismatch, or leave blank"},
+           {id:"why", label:"What prompted it", type:"textarea", ph:"The live question that made these articles worth doing now."}
+         ]},
+        {id:"bisdigest", name:"BIS / FSB digest", produces:"library index entry, digest .md and draft posts", skill:"web research + docx",
+         lead:"Run the BIS / FSB sweep for capital and resolution publications and write the digest.",
+         close:"Index every publication with its date, issuing body and a one-line statement of what changes. If nothing in the window is in scope, say so plainly and do not pad the index.",
+         fields:[
+           {id:"window", label:"Window", ph:"e.g. the last 14 days"},
+           {id:"themes", label:"Themes", ph:"e.g. CRM, output floor, resolution and bail-in"},
+           {id:"post", label:"Draft a post?", type:"select", opts:["Yes — LinkedIn draft for anything significant","No — index and digest only"]}
+         ]}
+      ]
+    },
+    {
+      id:"insurance", name:"Insurance", tag:"credit insurance as capital relief",
+      intro:"The newest strand, and the one the method already points at: insurers writing credit protection for banks that need the capital relief to work. Post-CRR3 the provider route is open — the drafting is what decides whether the relief survives.",
+      work:[
+        {t:"Insurer as protection provider, post-CRR3", status:"building", side:["Art 201(1)(fa)"],
+         what:"Insurers go through Art 201(1)(fa): no rating requirement, no size threshold. What remains is Solvency II authorisation or third-country equivalence, and whether eligibility can be lost part-way through the cover. Currently a set of house positions in the CRM citation map rather than a built asset.",
+         loc:[["source","CRM citation map — house positions"],["superseded","double default is repealed; do not rely on it"]]},
+        {t:"De-characterisation clauses", status:"building", side:["the asymmetry"],
+         what:"“Not a contract of insurance, guarantee or indemnity…” — common where the seller is an insurer, and it forecloses the guarantee route under Art 215, which is usually the cleaner one. The clause buys the seller regulatory comfort at the buyer's cost; the drafting question is whether that trade is being made knowingly.",
+         loc:[["method","crr-crm-analysis — characterisation step"],["output","redline + rationale"]]},
+        {t:"IRRD implementation", status:"planned", side:["stays from 30 Jan 2027"],
+         what:"The Insurance Recovery and Resolution Directive brings resolution stays to insurer counterparties. What that does to termination rights, netting and the Art 213(1)(c) analysis has not yet been written up.",
+         loc:[["date","30 January 2027"],["status","not yet drafted"]]},
+        {t:"Claims mechanics and Art 213(1)(b)", status:"planned", side:["open thread"],
+         what:"Where cover is model-determined, expert-determined or subject to clawback, the protection may fail Art 213(1)(b) outright. Insurance wordings reach these traps by a different route than bank documents do — the comparison has not been done systematically.",
+         loc:[["traps","clawback · repayable protection · third-party determination"]]}
+      ],
+      docs:[
+        {id:"insrelief", name:"Credit insurance capital-relief analysis", produces:"opinion-support memo or full report, .docx, footnoted", skill:"crr-crm-analysis",
+         lead:"Run the crr-crm-analysis skill on the credit insurance policy below. Read the CRM citation map first. Settle characterisation before anything else — the de-characterisation question decides whether Art 215 or Art 216 governs.",
+         close:"Tabulate every termination event and who may exercise it; the allocation, not the existence, decides Art 213(1)(c)(i)/(iv), and a seller-side option also shortens maturity under Art 238(2). Cover provider eligibility under Art 201(1)(fa) — Solvency II authorisation or third-country equivalence, and any ongoing eligibility trigger. Note expressly that an Art 194(1) opinion establishes enforceability, not eligibility, and that the client should be commissioning both.",
+         fields:[
+           {id:"matter", label:"Matter", ph:"e.g. Project Violet II"},
+           {id:"policy", label:"The policy", type:"textarea", ph:"Form, cover, tenor, and how the insured loss is defined."},
+           {id:"insurer", label:"Insurer", ph:"e.g. EEA, Solvency II authorised; or the third country and its equivalence position"},
+           {id:"dechar", label:"De-characterisation clause?", type:"select", opts:["Yes — present, Art 216 route","No — guarantee route open under Art 215","Not yet drafted — advise on which to take"]},
+           {id:"thresh", label:"Thresholds and retentions", type:"textarea", ph:"Any materiality threshold, deductible or co-insurance — Art 234 tranching risk."},
+           {id:"claims", label:"Claims mechanics", type:"textarea", ph:"What triggers payment, who determines it, on what timetable, and whether anything is repayable.", hint:"Model or expert determination engages Art 213(1)(b)."},
+           {id:"out", label:"Deliverable", type:"select", opts:["Opinion-support memo","Full footnoted report","Conditions checklist for the bank's CRR questionnaire"]}
+         ]},
+        {id:"decharredline", name:"De-characterisation clause mark-up", produces:"two-column .docx — redline left, rationale right", skill:"redline-rationale",
+         lead:"Mark up the de-characterisation wording below and attribute every change.",
+         close:"For each change, say whether it is substantive or consequential, its source, and its effect on the capital analysis — specifically whether it keeps the Art 215 guarantee route open. House style: “Clause”, not the section symbol; plain and concise.",
+         fields:[
+           {id:"wording", label:"Current wording", type:"textarea", ph:"Paste the clause as drafted."},
+           {id:"objective", label:"Objective", type:"textarea", ph:"e.g. preserve the guarantee characterisation without costing the insurer its regulatory position."},
+           {id:"counterparty", label:"Counterparty", ph:"e.g. the insurer's regulatory counsel"},
+           {id:"fallback", label:"Fallback position", ph:"What you will settle for if the primary formulation is refused."}
+         ]},
+        {id:"irrd", name:"IRRD readiness note", produces:"footnoted .docx note, with the affected rights tabulated", skill:"docx + research",
+         lead:"Write the IRRD readiness note for the exposures below, against the 30 January 2027 application date.",
+         close:"Tabulate every contractual right that a resolution stay could suspend, and say for each whether the CRR analysis depends on it — above all Art 213(1)(c) and the Art 216 settlement mechanics. Where the answer turns on national implementation that is not yet made, say so instead of predicting it.",
+         fields:[
+           {id:"counterparty", label:"Counterparty type", ph:"e.g. EEA insurer writing unfunded credit protection"},
+           {id:"exposures", label:"Exposures affected", type:"textarea", ph:"Which positions rely on this provider, and for what relief."},
+           {id:"rights", label:"Rights at risk", ph:"e.g. termination on non-payment, close-out netting, collateral enforcement"},
+           {id:"audience", label:"Audience", type:"select", opts:["Bank capital team","Credit committee","Internal file note","Client briefing"]}
+         ]},
+        {id:"eligibility", name:"Provider eligibility check", produces:"short .docx note with the checklist and its sources", skill:"crr-crm-analysis",
+         lead:"Run the provider eligibility limb only — Art 201(1) — on the protection provider below, and report as a checklist.",
+         close:"Post-CRR3 insurers go through Art 201(1)(fa): no rating requirement, no size threshold. Confirm Solvency II authorisation or third-country equivalence with a source, and identify every event that could cost the provider its eligibility mid-term and what that would do to the relief. Double default is repealed — do not rely on it.",
+         fields:[
+           {id:"provider", label:"Provider and jurisdiction", ph:"e.g. name, and where it is authorised"},
+           {id:"auth", label:"Authorisation", type:"select", opts:["Solvency II authorised (EEA)","Third country — equivalence to check","UK","Unknown — establish it"]},
+           {id:"cover", label:"What it is providing", ph:"e.g. unfunded protection on a corporate loan portfolio"},
+           {id:"triggers", label:"Ongoing eligibility concerns", type:"textarea", ph:"Group restructuring, licence conditions, rating triggers in the wording, anything time-limited."}
+         ]}
+      ]
+    }
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { pillar: DATA[0], doc: DATA[0].docs[0], values: {}, view: "strands" };
+  var db = null;
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c];
+    });
+  }
+
+  /* ---------- pillars ---------- */
+  function renderPillars(){
+    $("pillars").innerHTML = DATA.map(function(p){
+      return '<button type="button" class="pillar" data-p="' + p.id + '" aria-pressed="' +
+        (p.id === state.pillar.id) + '">' +
+        '<span class="pname">' + esc(p.name) + '</span>' +
+        '<span class="ptag">' + esc(p.tag) + '</span>' +
+        '<span class="pmeta">' + p.work.length + ' workstreams &middot; ' + p.docs.length + ' documents</span>' +
+        '</button>';
+    }).join("");
+  }
+
+  /* ---------- workstreams ---------- */
+  function renderWork(){
+    var p = state.pillar;
+    $("wsHead").textContent = p.name;
+    $("wsCount").textContent = p.work.length + " workstreams";
+    $("wsIntro").textContent = p.intro;
+    $("wsList").innerHTML = p.work.map(function(w){
+      var title = w.href
+        ? '<a href="' + w.href + '" target="_blank" rel="noopener">' + w.t + '</a>'
+        : w.t;
+      var lock = w.lock ? ' <span class="lock">🔒 sign-in</span>' : '';
+      var loc = (w.loc || []).map(function(pair){
+        return '<span>' + esc(pair[0]) + '</span><code>' + esc(pair[1]) + '</code>';
+      }).join("");
+      var side = (w.side || []).map(function(s){ return '<b>' + esc(s) + '</b>'; }).join("");
+      return '<div class="row"><div>' +
+        '<h3>' + title + lock + '</h3>' +
+        '<p class="what">' + w.what + '</p>' +
+        '<div class="loc">' + loc + '</div>' +
+        '</div><div class="side"><span class="pill ' + w.status + '">' + w.status + '</span>' + side + '</div></div>';
+    }).join("");
+  }
+
+  /* ---------- deliverables ---------- */
+  function renderDocs(){
+    var p = state.pillar;
+    $("docCount").textContent = p.docs.length + " deliverables";
+    $("docList").innerHTML = p.docs.map(function(d){
+      return '<div class="doc" data-doc="' + d.id + '" data-active="' + (d.id === state.doc.id) + '">' +
+        '<div><h3>' + esc(d.name) + '</h3><p>' + esc(d.produces) + '</p>' +
+        '<span class="via">runs <code>' + esc(d.skill) + '</code></span></div>' +
+        '<button type="button" class="btn small' + (d.id === state.doc.id ? '' : ' ghost') + '" data-pick="' + d.id + '">' +
+        (d.id === state.doc.id ? "Loaded" : "Brief it") + '</button></div>';
+    }).join("");
+  }
+
+  /* ---------- contents index ----------
+     Data comes from contents.js next to this page (build_contents.py writes it).
+     Absent — as it is until that script has run — the view explains how to build it. */
+  var CX = null, cxReady = false;
+
+  function decodeContents(){
+    var C = window.PRACTICE_CONTENTS;
+    if (!C || !C.rows || !C.rows.length) return null;
+    var d = C.dict || {};
+    function at(list, i){ return (list && list[i] != null) ? list[i] : ""; }
+    return {
+      generated: C.generated || "",
+      items: C.rows.map(function(r){
+        return {
+          t: r[0],
+          k: at(d.kind, r[1]),
+          e: at(d.entity, r[2]),
+          d: r[3] || "",
+          b: r[4] || 0,
+          x: at(d.ext, r[5]),
+          s: at(d.src, r[6]),
+          st: at(d.strand, r[7]),
+          u: (r[8] != null && r[8] >= 0) ? at(d.base, r[8]) + (r[9] || "") : ""
+        };
+      })
+    };
+  }
+
+  function bytes(n){
+    if (!n) return "";
+    if (n < 1024) return n + " B";
+    if (n < 1024 * 1024) return Math.round(n / 1024) + " KB";
+    return (n / 1048576).toFixed(1) + " MB";
+  }
+
+  function uniq(items, key){
+    var seen = {}, out = [];
+    items.forEach(function(i){
+      var v = i[key];
+      if (v && !seen[v]){ seen[v] = 1; out.push(v); }
+    });
+    return out.sort();
+  }
+
+  function fillSelect(el, all, values){
+    el.innerHTML = '<option value="">' + all + "</option>" +
+      values.map(function(v){ return '<option value="' + esc(v) + '">' + esc(v) + "</option>"; }).join("");
+  }
+
+  function setupContents(){
+    CX = decodeContents();
+    if (!CX){
+      $("cxTools").hidden = true;
+      $("cxWrap").hidden = true;
+      $("cxCount").textContent = "not built yet";
+      $("cxNote").innerHTML = '<span class="setup" style="display:block">' +
+        "<p>No index file is loaded. <b>The Practice</b> reads <code>contents.js</code> from the folder it is served out of; " +
+        "build it on the machine that actually holds the files, then drop it beside this page:</p>" +
+        "<pre>python build_contents.py \\\n" +
+        "  --docs data/documents.csv \\\n" +
+        "  --root \"derivatives:Derivatives law:$HOME/Claude/Derivatives law\" \\\n" +
+        "  --root \"capital:Bank capital:$HOME/Claude/Bank capital RWA tracker\"</pre></span>";
+      return;
+    }
+    cxReady = true;
+    fillSelect($("cxkind"), "All kinds", uniq(CX.items, "k"));
+    fillSelect($("cxsrc"), "All collections", uniq(CX.items, "s"));
+    $("cxIntro").textContent = "Every source document, definitions set and report in the index — " +
+      CX.items.length.toLocaleString("en-GB") + " files as at " + (CX.generated || "the last build") +
+      ". Search it, or narrow by strand with the tabs above.";
+  }
+
+  var CX_CAP = 300;
+  function renderContents(){
+    if (!cxReady) return;
+    var q = $("cxq").value.trim().toLowerCase();
+    var kind = $("cxkind").value;
+    var src = $("cxsrc").value;
+    var allStrands = $("cxall").checked;
+    var strand = state.pillar.id;
+
+    var hits = CX.items.filter(function(i){
+      if (kind && i.k !== kind) return false;
+      if (src && i.s !== src) return false;
+      if (!allStrands && i.st !== strand) return false;
+      if (q && (i.t + " " + i.e + " " + i.s).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+
+    hits.sort(function(a, b){
+      if (a.d !== b.d) return a.d < b.d ? 1 : -1;
+      return a.t < b.t ? -1 : 1;
+    });
+
+    $("cxCount").textContent = hits.length.toLocaleString("en-GB") + " of " +
+      CX.items.length.toLocaleString("en-GB") + " files";
+
+    var shown = hits.slice(0, CX_CAP);
+    $("cxBody").innerHTML = shown.length ? shown.map(function(i){
+      var title = i.u
+        ? '<a href="' + esc(i.u) + '" target="_blank" rel="noopener">' + esc(i.t) + "</a>"
+        : esc(i.t);
+      var ent = i.e ? '<span class="ent">' + esc(i.e) + (i.s ? " &middot; " + esc(i.s) : "") + "</span>" : "";
+      return "<tr><td class=\"t\">" + title + ent + "</td>" +
+        '<td class="c">' + esc(i.k) + "</td>" +
+        '<td class="c">' + esc(i.d) + "</td>" +
+        '<td class="c">' + bytes(i.b) + "</td></tr>";
+    }).join("") : '<tr><td colspan="4" style="color:var(--mute);padding:18px 0">Nothing matches that search.</td></tr>';
+
+    $("cxNote").textContent = hits.length > CX_CAP
+      ? "Showing the first " + CX_CAP + " by date. Narrow the search to see the rest."
+      : "";
+  }
+
+  function setView(v){
+    state.view = v;
+    $("viewStrands").hidden = (v !== "strands");
+    $("viewContents").hidden = (v !== "contents");
+    Array.prototype.forEach.call($("views").querySelectorAll("[data-v]"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.v === v));
+    });
+    if (v === "contents") renderContents();
+  }
+
+  /* ---------- the brief ---------- */
+  function renderBrief(){
+    var d = state.doc;
+    $("briefName").textContent = d.name;
+    $("briefSub").innerHTML = "Produces " + esc(d.produces) + ". Runs <b>" + esc(d.skill) + "</b>.";
+    $("briefForm").innerHTML = d.fields.map(function(f){
+      var id = "f_" + d.id + "_" + f.id;
+      var val = state.values[d.id] && state.values[d.id][f.id] || "";
+      var control;
+      if (f.type === "select"){
+        control = '<select id="' + id + '" data-f="' + f.id + '">' + f.opts.map(function(o){
+          return '<option' + (o === val ? ' selected' : '') + '>' + esc(o) + '</option>';
+        }).join("") + '</select>';
+      } else if (f.type === "textarea"){
+        control = '<textarea id="' + id + '" data-f="' + f.id + '" placeholder="' + esc(f.ph || "") + '">' + esc(val) + '</textarea>';
+      } else {
+        control = '<input type="text" id="' + id + '" data-f="' + f.id + '" value="' + esc(val) +
+          '" placeholder="' + esc(f.ph || "") + '">';
+      }
+      return '<div class="field"><label for="' + id + '">' + esc(f.label) + '</label>' + control +
+        (f.hint ? '<span class="hint">' + esc(f.hint) + '</span>' : '') + '</div>';
+    }).join("");
+
+    // selects contribute their default value from the outset
+    d.fields.forEach(function(f){
+      if (f.type === "select" && !(state.values[d.id] && state.values[d.id][f.id])){
+        setValue(d.id, f.id, f.opts[0]);
+      }
+    });
+    renderOut();
+  }
+
+  function setValue(docId, fieldId, v){
+    if (!state.values[docId]) state.values[docId] = {};
+    state.values[docId][fieldId] = v;
+  }
+
+  function compose(){
+    var d = state.doc, v = state.values[d.id] || {};
+    var lines = d.fields.map(function(f){
+      var val = (v[f.id] || "").trim();
+      // Labels that read as questions keep their mark in the form, not in the brief.
+      return val ? f.label.replace(/\?$/, "") + ": " + val : null;
+    }).filter(Boolean);
+    var body = lines.length ? lines.join("\n") : "(No variables filled in yet — fill the fields on the right.)";
+    return d.lead + "\n\n" + body + "\n\n" + d.close;
+  }
+
+  function renderOut(){ $("out").textContent = compose(); }
+
+  function say(msg, cls){
+    var s = $("stat");
+    s.textContent = msg || " ";
+    s.className = "stat" + (cls ? " " + cls : "");
+  }
+
+  function toClipboard(text){
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    }
+    return Promise.reject(new Error("no clipboard"));
+  }
+
+  /* ---------- queue ---------- */
+  var LS = "the-practice-queue";
+  function localItems(){
+    try { return JSON.parse(localStorage.getItem(LS) || "[]"); } catch(e){ return []; }
+  }
+  function localSave(items){
+    try { localStorage.setItem(LS, JSON.stringify(items)); } catch(e){}
+  }
+  function fmt(iso){
+    try { return new Date(iso).toLocaleString("en-GB", {day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"}); }
+    catch(e){ return iso; }
+  }
+  var lastItems = [];
+  function renderQueue(items){
+    lastItems = items || [];
+    var list = $("queueList");
+    if (!items.length){ list.innerHTML = '<li class="empty">Nothing queued.</li>'; return; }
+    list.innerHTML = items.map(function(r){
+      var cls = r.status === "done" ? "live" : (r.status === "in progress" ? "building" : "planned");
+      var label = r.status === "done" ? "Done" : (r.status === "in progress" ? "Running" : "Open");
+      return '<li><span class="pill ' + cls + '">' + label + '</span>' +
+        '<div><span class="t">' + esc(r.title || "Brief") + '</span>' +
+        '<span class="d">' + esc(r.pillar || "") + " &middot; " + fmt(r.created) + '</span></div></li>';
+    }).join("");
+  }
+
+  function queueBrief(){
+    var record = {
+      title: state.doc.name,
+      pillar: state.pillar.name,
+      deliverable: state.doc.id,
+      text: compose(),
+      created: new Date().toISOString(),
+      status: "open"
+    };
+    if (db){
+      db.collection("briefs").add(record)
+        .then(function(){ say("Queued — Claude picks it up next session.", "ok"); })
+        .catch(function(e){ say("Could not queue (" + ((e && e.code) || "error") + "). Copy it instead.", "bad"); });
+    } else {
+      var items = localItems();
+      items.unshift(record);
+      localSave(items);
+      renderQueue(items);
+      say("Kept in this browser only — copy it into the chat to act on it.", "bad");
+    }
+  }
+
+  /* Export: through the downloads capability on the artifact, through a blob
+     link on a plain page. Hidden where neither can land a file. */
+  var dl = null;
+
+  function exportQueue(){
+    if (!lastItems.length){ say("Nothing queued to export.", "bad"); return; }
+    var stamp = new Date().toISOString().slice(0, 10);
+    var text = "QUEUED BRIEFS — THE PRACTICE\nExported " + stamp + "\n\n" +
+      lastItems.map(function(r, i){
+        return (i + 1) + ". " + (r.title || "Brief") + "  [" + (r.pillar || "") + " · " + fmt(r.created) + "]\n\n" +
+          (r.text || "");
+      }).join("\n\n" + new Array(60).join("-") + "\n\n") + "\n";
+    var name = "practice-briefs-" + stamp + ".txt";
+    var n = lastItems.length;
+    var done = function(){ say("Exported " + n + " brief" + (n === 1 ? "" : "s") + ".", "ok"); };
+
+    if (dl){
+      dl.save({ filename: name, data: text }).then(function(r){
+        if (r && r.status === "saved") done();
+      }).catch(function(e){
+        if (e && e.code === "cancelled") return;
+        say("Could not export (" + ((e && e.code) || "error") + ").", "bad");
+      });
+      return;
+    }
+
+    var url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    done();
+  }
+
+  /* ---------- events ---------- */
+  $("pillars").addEventListener("click", function(e){
+    var b = e.target.closest("[data-p]");
+    if (!b) return;
+    var p = DATA.filter(function(x){ return x.id === b.dataset.p; })[0];
+    if (!p || p.id === state.pillar.id) return;
+    state.pillar = p;
+    state.doc = p.docs[0];
+    renderPillars(); renderWork(); renderDocs(); renderBrief();
+    say("");
+    if (state.view === "contents"){
+      // Picking a strand while reading the index means filter the index by it.
+      $("cxall").checked = false;
+      renderContents();
+    }
+  });
+
+  $("views").addEventListener("click", function(e){
+    var b = e.target.closest("[data-v]");
+    if (b) setView(b.dataset.v);
+  });
+
+  ["cxq", "cxkind", "cxsrc", "cxall"].forEach(function(id){
+    var el = $(id);
+    el.addEventListener(id === "cxq" ? "input" : "change", renderContents);
+  });
+
+  $("docList").addEventListener("click", function(e){
+    var b = e.target.closest("[data-pick]");
+    if (!b) return;
+    var d = state.pillar.docs.filter(function(x){ return x.id === b.dataset.pick; })[0];
+    if (!d) return;
+    state.doc = d;
+    renderDocs(); renderBrief();
+    say("");
+    if (window.matchMedia("(max-width: 980px)").matches){
+      document.querySelector(".brief").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+
+  $("briefForm").addEventListener("input", function(e){
+    var f = e.target.dataset.f;
+    if (!f) return;
+    setValue(state.doc.id, f, e.target.value);
+    renderOut();
+  });
+  $("briefForm").addEventListener("change", function(e){
+    var f = e.target.dataset.f;
+    if (!f) return;
+    setValue(state.doc.id, f, e.target.value);
+    renderOut();
+  });
+  $("briefForm").addEventListener("submit", function(e){ e.preventDefault(); });
+
+  $("copy").addEventListener("click", function(){
+    toClipboard(compose())
+      .then(function(){ say("Copied. Paste it into a Claude session.", "ok"); })
+      .catch(function(){ say("Clipboard blocked here — select the text below and copy it.", "bad"); });
+  });
+
+  $("send").addEventListener("click", function(){
+    var text = compose();
+    var url = "https://claude.ai/new?q=" + encodeURIComponent(text);
+    toClipboard(text).then(function(){
+      say("Copied and opening Claude — paste if the brief does not carry over.", "ok");
+    }).catch(function(){
+      say("Opening Claude — paste the brief from below if it does not carry over.", "bad");
+    });
+    window.open(url, "_blank", "noopener");
+  });
+
+  $("queue").addEventListener("click", queueBrief);
+
+  /* ---------- boot ---------- */
+  renderPillars(); renderWork(); renderDocs(); renderBrief();
+  setupContents(); setView("strands");
+  renderQueue(localItems());
+
+  $("export").addEventListener("click", exportQueue);
+  if (window.claude && typeof window.claude.use === "function"){
+    window.claude.use("downloads").then(function(ns){
+      dl = ns;
+      if (dl) $("export").hidden = false;   // viewer can be handed a file
+    }).catch(function(){});
+  } else {
+    $("export").hidden = false;             // plain page: the blob link works
+  }
+
+  var use = (window.claude && typeof window.claude.use === "function")
+    ? window.claude.use("db")
+    : Promise.resolve(null);
+
+  use.then(function(ns){
+    db = ns;
+    if (!db){ renderQueue(localItems()); return; }
+    db.collection("briefs").orderBy("created", "desc").limit(20).onSnapshot(function(snap){
+      renderQueue(snap.docs.map(function(doc){ return doc.data() || {}; }));
+    }, function(){ renderQueue(localItems()); });
+  }).catch(function(){ renderQueue(localItems()); });
+})();
+</script>
