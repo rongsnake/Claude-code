@@ -120,6 +120,34 @@ def norm_ppf(p: float) -> float:
     return _NORM.inv_cdf(p)
 
 
+#: The rate at which the PRA converted euro thresholds into sterling.
+#:
+#: The CRR and the Basel text set dozens of thresholds in euro. Rather than let
+#: firms use the euro figures — which it declined to permit, on competition and
+#: safety-and-soundness grounds, so that every UK bank uses the same numbers —
+#: the PRA redenominated them using the average daily spot rate over the twelve
+#: months to 10 July 2020, rounded to two significant figures. That works out
+#: at 0.88, which is why the operational risk buckets break at £880m and £26bn
+#: rather than £1bn and £30bn.
+PRA_EUR_GBP_RATE = 0.88
+
+
+def redenominate_eur_to_gbp(eur: float) -> float:
+    """Apply the PRA's euro-to-sterling redenomination, to two significant figures.
+
+    Deriving the sterling thresholds rather than hard-coding them keeps the
+    convention visible and makes every threshold in the model consistent with
+    every other one — the tests check the derived values against the figures
+    the PRA actually publishes.
+    """
+    value = eur * PRA_EUR_GBP_RATE
+    if value == 0:
+        return 0.0
+    magnitude = math.floor(math.log10(abs(value)))
+    factor = 10.0 ** (magnitude - 1)
+    return round(value / factor) * factor
+
+
 def bps(x: float) -> float:
     """Basis points -> decimal. bps(25) == 0.0025."""
     return x / 10_000.0

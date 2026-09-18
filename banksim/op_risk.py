@@ -24,15 +24,16 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from .units import safe_div
+from .units import redenominate_eur_to_gbp, safe_div
 
 RWA_MULTIPLIER = 12.5
 
-#: Marginal BI buckets and coefficients. Basel states these in euro; the PRA
-#: sets sterling equivalents. STYLISED conversion at a round rate — check the
-#: actual thresholds in the PRA Rulebook Operational Risk part before use.
-BI_BUCKET_1_CAP = 1_000.0      # £m
-BI_BUCKET_2_CAP = 30_000.0     # £m
+#: Marginal BI buckets and coefficients. Basel states the boundaries as EUR 1bn
+#: and EUR 30bn; the PRA redenominated them into sterling at 0.88 to two
+#: significant figures, giving £880m and £26bn. Derived rather than hard-coded
+#: so the convention stays visible — see `units.redenominate_eur_to_gbp`.
+BI_BUCKET_1_CAP = redenominate_eur_to_gbp(1_000.0)    # £880m
+BI_BUCKET_2_CAP = redenominate_eur_to_gbp(30_000.0)   # £26,000m
 BI_COEFFICIENT_1 = 0.12
 BI_COEFFICIENT_2 = 0.15
 BI_COEFFICIENT_3 = 0.18

@@ -31,7 +31,7 @@ from .exposures import (
     Facility,
     IRBApproach,
 )
-from .units import clamp, norm_cdf, norm_ppf, pct, safe_div
+from .units import clamp, norm_cdf, norm_ppf, redenominate_eur_to_gbp, safe_div
 
 # ---------------------------------------------------------------------------
 # Standardised approach: risk weight tables
@@ -321,6 +321,11 @@ FIRB_LGD_SENIOR = 0.40
 FIRB_LGD_SUBORDINATED = 0.75
 FIRB_MATURITY = 2.5
 
+#: Turnover band over which the SME firm-size adjustment tapers, in £m. Basel
+#: sets it at EUR 5m to EUR 50m; the PRA's redenomination makes it £4.4m-£44m.
+SME_TURNOVER_FLOOR = redenominate_eur_to_gbp(5.0)
+SME_TURNOVER_CAP = redenominate_eur_to_gbp(50.0)
+
 #: Asset value correlation multiplier for exposures to large regulated
 #: financials (total assets >= $100bn) and all unregulated financials.
 AVC_MULTIPLIER = 1.25
@@ -349,10 +354,13 @@ def irb_correlation(e: CreditExposure) -> float:
     # Corporate / sovereign / institution
     r = _base_correlation(pd_val, 0.12, 0.24, 50.0)
 
-    # SME firm-size adjustment: turnover S in £m, applied between 5 and 50.
+    # SME firm-size adjustment. Basel applies it to turnover between EUR 5m and
+    # EUR 50m; in the UK those become £4.4m and £44m under the PRA's
+    # redenomination, which shifts the whole taper.
     if e.sme and e.turnover_gbp_m is not None:
-        s = clamp(e.turnover_gbp_m, 5.0, 50.0)
-        r -= 0.04 * (1.0 - (s - 5.0) / 45.0)
+        s = clamp(e.turnover_gbp_m, SME_TURNOVER_FLOOR, SME_TURNOVER_CAP)
+        span = SME_TURNOVER_CAP - SME_TURNOVER_FLOOR
+        r -= 0.04 * (1.0 - (s - SME_TURNOVER_FLOOR) / span)
 
     if cls is ExposureClass.INSTITUTION:
         r *= AVC_MULTIPLIER

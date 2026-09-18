@@ -22,7 +22,7 @@ python -m banksim.cli run --scenario acs_severe --detail
 python -m banksim.cli stress                      # every scenario, compared
 python -m banksim.cli stress --json out.json      # machine-readable
 
-python -m unittest discover -s banksim/tests -t . # 110 tests
+python -m unittest discover -s banksim/tests -t . # 116 tests
 ```
 
 ## What it produces

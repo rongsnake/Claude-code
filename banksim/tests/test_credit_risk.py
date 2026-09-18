@@ -11,6 +11,9 @@ from banksim.credit_risk import (
     PD_FLOOR,
     SAConfig,
     SME_SUPPORT_FACTOR,
+    SME_TURNOVER_CAP,
+    SME_TURNOVER_FLOOR,
+    irb_correlation,
     removed_support_factor_relief,
     credit_rwa,
     irb_capital_requirement,
@@ -173,6 +176,23 @@ class TestIRBFormula(unittest.TestCase):
                                 maturity_years=2.5)
         # F-IRB ignores the firm's own LGD and uses 40% senior unsecured.
         self.assertAlmostEqual(irb_rwa(e), irb_rwa(supervisory), places=4)
+
+    def test_sme_firm_size_adjustment_uses_the_sterling_band(self):
+        """Basel tapers the adjustment over EUR 5m-50m of turnover; the PRA's
+        redenomination makes that £4.4m-£44m, which shifts the whole taper."""
+        self.assertAlmostEqual(SME_TURNOVER_FLOOR, 4.4)
+        self.assertAlmostEqual(SME_TURNOVER_CAP, 44.0)
+        # At the floor the full 0.04 reduction applies; at the cap, none of it.
+        at_floor = irb_correlation(corporate(sme=True, turnover_gbp_m=4.4))
+        at_cap = irb_correlation(corporate(sme=True, turnover_gbp_m=44.0))
+        no_sme = irb_correlation(corporate(sme=False))
+        self.assertAlmostEqual(at_floor, no_sme - 0.04)
+        self.assertAlmostEqual(at_cap, no_sme)
+
+    def test_smaller_smes_get_more_relief(self):
+        weights = [irb_rwa(corporate(sme=True, turnover_gbp_m=t))
+                   for t in (4.4, 15.0, 30.0, 44.0)]
+        self.assertEqual(weights, sorted(weights))
 
     def test_institution_correlation_carries_the_avc_multiplier(self):
         bank_exp = corporate(exposure_class=ExposureClass.INSTITUTION,

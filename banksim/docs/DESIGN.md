@@ -111,7 +111,9 @@ Faithful (the rule as written, and tested):
   across-bucket formulae, the three correlation scenarios and the
   negative-root fallback, and the GIRR tenor correlation function;
 - the DRC netting and weighted-to-short hedge-benefit ratio;
-- the operational risk BI/BIC/ILM construction, with the PRA's ILM = 1;
+- the operational risk BI/BIC/ILM construction, with the PRA's ILM = 1 and the
+  sterling bucket boundaries (£880m / £26bn) derived from the PRA's own
+  euro-to-sterling redenomination convention;
 - LCR HQLA caps, run-off rates, the 75% inflow cap and the net outflow floor;
 - NSFR available and required stable funding factors;
 - the capital stack, buffer hierarchy, MDA quartiles, and the

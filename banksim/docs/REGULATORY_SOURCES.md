@@ -120,9 +120,34 @@ The PRA sets the **Internal Loss Multiplier to 1** for all firms rather than
 using internal loss data. `OpRiskConfig.use_ilm` defaults to `False` to match,
 but the Basel ILM is implemented so the effect of the UK choice can be measured.
 
-The BI bucket thresholds are stated in the code in sterling at round numbers
-(£1bn / £30bn). **These are a stylised conversion** — check the PRA Rulebook
-Operational Risk Part for the actual sterling thresholds.
+The BI bucket boundaries are **£880m and £26bn**, not the £1bn and £30bn of
+the Basel text — see the redenomination note below.
+
+## Currency redenomination — why UK thresholds are odd numbers
+
+The CRR and the Basel text set dozens of thresholds in euro. The PRA converted
+them into sterling using **the average daily spot rate over the twelve months
+to 10 July 2020, rounded to two significant figures**, and declined to let
+firms use the euro figures instead — on competition and safety-and-soundness
+grounds, so that every UK bank works to the same numbers.
+
+The rate is **0.88**. So:
+
+| Basel threshold | UK equivalent | Used for |
+|---|---|---|
+| EUR 1bn | **£880m** | Operational risk BI bucket 1/2 boundary |
+| EUR 30bn | **£26bn** | Operational risk BI bucket 2/3 boundary |
+| EUR 5m | **£4.4m** | SME firm-size adjustment, lower taper |
+| EUR 50m | **£44m** | SME firm-size adjustment, upper taper |
+| EUR 500m | **£440m** | Large-corporate threshold |
+
+`units.redenominate_eur_to_gbp` applies the convention rather than hard-coding
+each figure, so every threshold in the model is consistent with every other.
+
+There is a satisfying cross-check on this. The PRA's operational risk reporting
+instructions state the bucket 2 *marginal* amount as **£25.12bn**. Deriving it
+from the rate — £26bn less £880m — reproduces that exactly, which independently
+confirms both the 0.88 rate and the two-significant-figure rounding.
 
 ## CVA
 
@@ -137,23 +162,31 @@ visible.
 
 ## Known uncertainties in this model
 
-1. **Sterling BI thresholds** for operational risk. The PRA recast the euro
-   thresholds into sterling; the actual figures were not recoverable from
-   secondary sources, so the code uses round £1bn / £30bn. Check the
-   Operational Risk Part.
-2. **The capital adjustment factor** in the Pillar 2A lending adjustments. The
+1. **The capital adjustment factor** in the Pillar 2A lending adjustments. The
    PRA's own methodology is firm-specific and not published in detail; the
    model derives the adjustment from the constant-requirement identity instead.
-3. **The FRTB CSR bucket grid** in `market_risk.CSR_RW` follows the Basel
+2. **The FRTB CSR bucket grid** in `market_risk.CSR_RW` follows the Basel
    sector/credit-quality structure but the covered-bond and index buckets are
    folded in at headline weights rather than reproduced exactly.
-4. **Scenario paths** are stylised throughout. `acs_severe` is *shaped* like a
+3. **Scenario paths** are stylised throughout. `acs_severe` is *shaped* like a
    Bank of England annual cyclical scenario but the numbers are ours. To make
    the stress real, import the Bank's published variable paths.
 
+### Also confirmed
+
+The **10% credit conversion factor for unconditionally cancellable
+commitments** is right, and the PRA applied it with no transitional phase-in —
+unlike the EU, which allowed one. For a bank with a large undrawn revolver
+book this is one of Basel 3.1's more expensive changes, so it was worth
+checking.
+
 ### Resolved since the first draft
 
-The 65% risk weight for unrated investment-grade corporates was flagged as the
+**Sterling operational risk thresholds.** Resolved via the redenomination
+convention above: £880m and £26bn, derived rather than guessed, and
+cross-checked against the PRA's published £25.12bn marginal amount.
+
+**The 65% risk weight for unrated investment-grade corporates** was flagged as the
 single assumption most worth checking. It checks out, and the first draft was
 **wrong in the other direction**: it weighted unrated non-investment-grade
 corporates at 100% when the UK risk-sensitive approach puts them at 135%. Now

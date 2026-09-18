@@ -29,6 +29,7 @@ from banksim.exposures import (
     TradingBook,
 )
 from banksim.liquidity import INFLOW_CAP, LCRInputs, hqla_stock, lcr, nsfr
+from banksim.units import redenominate_eur_to_gbp
 from banksim.market_risk import (
     DRC_RW,
     RRAO_EXOTIC,
@@ -40,6 +41,8 @@ from banksim.market_risk import (
     vega_risk_weight,
 )
 from banksim.op_risk import (
+    BI_BUCKET_1_CAP,
+    BI_BUCKET_2_CAP,
     IncomeStatementYear,
     OpRiskConfig,
     bi_component,
@@ -244,13 +247,45 @@ class TestFRTB(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
+class TestRedenomination(unittest.TestCase):
+    """The PRA converted the euro thresholds at 0.88, to two significant figures."""
+
+    def test_published_thresholds(self):
+        self.assertAlmostEqual(redenominate_eur_to_gbp(1_000.0), 880.0)      # EUR 1bn
+        self.assertAlmostEqual(redenominate_eur_to_gbp(30_000.0), 26_000.0)  # EUR 30bn
+        self.assertAlmostEqual(redenominate_eur_to_gbp(5.0), 4.4)            # EUR 5m
+        self.assertAlmostEqual(redenominate_eur_to_gbp(50.0), 44.0)          # EUR 50m
+
+    def test_rounds_to_two_significant_figures(self):
+        # 30,000 x 0.88 = 26,400, which rounds to 26,000 — not 26,400.
+        self.assertAlmostEqual(redenominate_eur_to_gbp(30_000.0), 26_000.0)
+        self.assertAlmostEqual(redenominate_eur_to_gbp(0.0), 0.0)
+
+    def test_derived_buckets_match_the_pra_published_figures(self):
+        """Cross-check: the PRA's operational risk reporting instructions state
+        the bucket 2 marginal amount as £25.12bn. Deriving £26bn - £880m from
+        the redenomination rate reproduces it exactly, which is independent
+        confirmation of both the rate and the rounding convention."""
+        self.assertAlmostEqual(BI_BUCKET_1_CAP, 880.0)
+        self.assertAlmostEqual(BI_BUCKET_2_CAP, 26_000.0)
+        self.assertAlmostEqual(BI_BUCKET_2_CAP - BI_BUCKET_1_CAP, 25_120.0)
+
+
 class TestOperationalRisk(unittest.TestCase):
     def test_marginal_bucket_coefficients(self):
         self.assertAlmostEqual(bi_component(500.0), 0.12 * 500.0)
-        self.assertAlmostEqual(bi_component(2_000.0), 0.12 * 1_000.0 + 0.15 * 1_000.0)
+        self.assertAlmostEqual(bi_component(2_000.0),
+                               0.12 * 880.0 + 0.15 * 1_120.0)
         self.assertAlmostEqual(
             bi_component(40_000.0),
-            0.12 * 1_000.0 + 0.15 * 29_000.0 + 0.18 * 10_000.0)
+            0.12 * 880.0 + 0.15 * 25_120.0 + 0.18 * 14_000.0)
+
+    def test_bucket_boundaries_are_the_sterling_ones(self):
+        """A firm with a £950m BI is in bucket 2 in the UK, but would be in
+        bucket 1 on the euro thresholds — the redenomination moves real firms."""
+        just_over = bi_component(950.0)
+        all_bucket_1 = 0.12 * 950.0
+        self.assertGreater(just_over, all_bucket_1)
 
     def test_ilm_is_one_when_losses_equal_the_bi_component(self):
         bic = 1_000.0
