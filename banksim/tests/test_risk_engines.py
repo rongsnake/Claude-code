@@ -385,6 +385,37 @@ class TestLiquidity(unittest.TestCase):
         res = nsfr([], [], cet1=0.0, trading_inventory=1_000.0)
         self.assertAlmostEqual(res.required, 850.0)
 
+    def test_nsfr_derivative_assets_are_net_of_variation_margin(self):
+        """The caller passes the NSFR figure, not the gross accounting balance.
+
+        Applying 100% RSF to a gross derivative book that is substantially
+        collateralised overstates required stable funding enormously — it fails
+        a comfortably compliant dealer on paper.
+        """
+        gross = nsfr([], [], cet1=0.0, derivative_assets=24_000.0)
+        net = nsfr([], [], cet1=0.0, derivative_assets=7_000.0)
+        self.assertAlmostEqual(gross.required, 24_000.0)
+        self.assertAlmostEqual(net.required, 7_000.0)
+
+    def test_reverse_repo_requires_stable_funding_by_collateral(self):
+        """Secured lending is cheap to fund but not free — 10% against Level 1
+        collateral, 15% against anything else."""
+        l1 = nsfr([], [], cet1=0.0, reverse_repo_l1=1_000.0)
+        other = nsfr([], [], cet1=0.0, reverse_repo_other=1_000.0)
+        self.assertAlmostEqual(l1.required, 100.0)
+        self.assertAlmostEqual(other.required, 150.0)
+
+    def test_a_matched_repo_book_costs_nsfr(self):
+        """Overnight repo funding earns no available stable funding while the
+        reverse repo it funds still requires some. A matched book is NSFR
+        negative, which is why a wholesale bank terms out part of it."""
+        matched = nsfr(
+            [], [Funding("repo", FundingType.SECURED_FUNDING, 1_000.0, 0.03,
+                         maturity_years=0.05, collateral_level="L1")],
+            cet1=0.0, reverse_repo_l1=1_000.0)
+        self.assertAlmostEqual(matched.available, 0.0)
+        self.assertGreater(matched.required, 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

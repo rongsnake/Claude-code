@@ -13,6 +13,28 @@ scipy. It runs anywhere Python 3.10+ runs, including a Raspberry Pi.
 > published; the balance sheet, P&L and scenarios are invented, and every
 > report says so.
 
+## The page
+
+`banksim/dashboard.html` is an interactive simulator built from the engine —
+pick the scenario, step through the years, move Pillar 2A and the buffers,
+switch the leverage regime and the dividend policy, and watch the capital
+ladder move under the CET1 ratio. Build it with:
+
+```bash
+python -m banksim.build_dashboard
+```
+
+It emits two files from one template: `dashboard.html`, standalone and
+deployable by copying, and `dashboard_artifact.html`, a bare fragment for
+platforms that supply their own document skeleton.
+
+The split between baked and live is deliberate. Anything needing the risk
+engines or compounding through time — RWAs, the P&L, ECL, staging — is
+pre-computed across a grid of scenario x unrated-corporate approach x dividend
+policy. The requirement stack and everything downstream of it — buffers, the
+MDA test, the leverage requirement, MREL, which constraint binds — recomputes
+in the browser, which is what makes it a simulator rather than a report.
+
 ## Quick start
 
 ```bash
@@ -22,7 +44,7 @@ python -m banksim.cli run --scenario acs_severe --detail
 python -m banksim.cli stress                      # every scenario, compared
 python -m banksim.cli stress --json out.json      # machine-readable
 
-python -m unittest discover -s banksim/tests -t . # 116 tests
+python -m unittest discover -s banksim/tests -t . # 119 tests
 ```
 
 ## What it produces
@@ -40,7 +62,7 @@ acs_severe          10.16%      3.51pp    5.89%       2,378       914    USED
 
 In the severe scenario the bank takes £2.4bn of cumulative impairment, three
 quarters of its lending book migrates to IFRS 9 stage 2, its CET1 ratio falls
-3.51 percentage points, its RWAs *inflate* as IRB PDs migrate with the cycle,
+3.21 percentage points, its RWAs *inflate* as IRB PDs migrate with the cycle,
 and it drops through its combined buffer requirement so that the maximum
 distributable amount caps its payout — while never coming close to its Pillar 1
 minimum. Which is what a buffer is for.

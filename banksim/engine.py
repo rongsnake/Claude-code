@@ -464,9 +464,12 @@ def run_period(
     stable = nsfr(
         bank.exposures, bank.funding, bank.own_funds.cet1,
         trading_inventory=bank.trading_book.inventory,
-        derivative_assets=bank.derivative_assets,
+        derivative_assets=bank.derivative_assets_net,
         derivative_liabilities=bank.derivative_liabilities,
         fixed_assets=bank.fixed_assets,
+        reverse_repo_l1=bank.lcr_inputs.reverse_repo_l1,
+        reverse_repo_other=(bank.lcr_inputs.reverse_repo_l2a
+                            + bank.lcr_inputs.reverse_repo_other),
     )
 
     # Snapshot the staging over the lending book before the balance sheet moves.

@@ -236,13 +236,34 @@ def available_stable_funding(
     return total, detail
 
 
+#: Required stable funding for reverse repo, by the collateral taken. Secured
+#: lending to a financial institution with under six months to run is the
+#: cheapest asset on the balance sheet to fund — 10% against Level 1 collateral,
+#: 15% against anything else. It is not free, which is why a matched repo book
+#: costs NSFR: the repo funding on the other side earns 0% available stable
+#: funding.
+RSF_REVERSE_REPO_L1 = 0.10
+RSF_REVERSE_REPO_OTHER = 0.15
+
+
 def required_stable_funding(
     assets: list[CreditExposure],
     trading_inventory: float = 0.0,
     derivative_assets: float = 0.0,
     derivative_liabilities: float = 0.0,
     fixed_assets: float = 0.0,
+    reverse_repo_l1: float = 0.0,
+    reverse_repo_other: float = 0.0,
 ) -> tuple[float, dict[str, float]]:
+    """Required stable funding.
+
+    `derivative_assets` must be the NSFR derivative asset figure — gross
+    derivative assets less the variation margin received against them — not the
+    gross accounting balance. The difference is enormous for a dealer: applying
+    100% RSF to a gross derivative book that is substantially collateralised
+    overstates required stable funding by tens of billions and will fail a bank
+    that is comfortably compliant.
+    """
     detail: dict[str, float] = {}
     total = 0.0
 
@@ -273,9 +294,11 @@ def required_stable_funding(
 
     for label, amount, factor in (
         ("trading_inventory", trading_inventory, 0.85),
-        ("derivative_assets", derivative_assets, 1.00),
+        ("derivative_assets_net", derivative_assets, 1.00),
         ("derivative_liabilities_addon", derivative_liabilities, 0.05),
         ("fixed_assets", fixed_assets, 1.00),
+        ("reverse_repo_l1", reverse_repo_l1, RSF_REVERSE_REPO_L1),
+        ("reverse_repo_other", reverse_repo_other, RSF_REVERSE_REPO_OTHER),
     ):
         if amount:
             detail[label] = amount * factor
@@ -292,10 +315,13 @@ def nsfr(
     derivative_assets: float = 0.0,
     derivative_liabilities: float = 0.0,
     fixed_assets: float = 0.0,
+    reverse_repo_l1: float = 0.0,
+    reverse_repo_other: float = 0.0,
 ) -> NSFRResult:
     asf, asf_detail = available_stable_funding(funding, cet1)
     rsf, rsf_detail = required_stable_funding(
-        assets, trading_inventory, derivative_assets, derivative_liabilities, fixed_assets
+        assets, trading_inventory, derivative_assets, derivative_liabilities,
+        fixed_assets, reverse_repo_l1, reverse_repo_other,
     )
     return NSFRResult(
         available=asf, required=rsf, ratio=safe_div(asf, rsf),

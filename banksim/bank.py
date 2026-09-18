@@ -97,7 +97,11 @@ class Bank:
 
     #: Non-credit balance-sheet items needed by NSFR and the exposure measure.
     fixed_assets: float = 0.0
+    #: Gross derivative assets as they appear on the balance sheet.
     derivative_assets: float = 0.0
+    #: Derivative assets net of variation margin received — the figure NSFR
+    #: actually uses. For a well-margined dealer it is a fraction of the gross.
+    derivative_assets_net: float = 0.0
     derivative_liabilities: float = 0.0
     #: Dividend policy: share of attributable profit paid out, before the MDA.
     target_payout_ratio: float = 0.40
@@ -458,19 +462,22 @@ def _funding(a: AssumptionSet) -> list[Funding]:
                 amount=17_500, rate=0.021, maturity_years=0.1),
         Funding("Corporate non-operational deposits",
                 FundingType.CORPORATE_NON_OPERATIONAL,
-                amount=15_800, rate=0.030, maturity_years=0.2),
+                amount=18_000, rate=0.030, maturity_years=0.2),
         Funding("Financial institution deposits", FundingType.FINANCIAL_DEPOSIT,
                 amount=9_400, rate=0.034, maturity_years=0.1),
         Funding("Private bank deposits", FundingType.RETAIL_LESS_STABLE,
                 amount=5_600, rate=0.026, maturity_years=0.3, insured=True),
-        Funding("Repo - gilt collateral", FundingType.SECURED_FUNDING,
-                amount=44_000, rate=0.037, maturity_years=0.05,
+        Funding("Repo - gilt collateral, overnight", FundingType.SECURED_FUNDING,
+                amount=30_000, rate=0.037, maturity_years=0.05,
+                collateral_level="L1"),
+        Funding("Repo - gilt collateral, term", FundingType.SECURED_FUNDING,
+                amount=10_000, rate=0.040, maturity_years=1.5,
                 collateral_level="L1"),
         Funding("Repo - corporate and equity collateral", FundingType.SECURED_FUNDING,
-                amount=26_000, rate=0.040, maturity_years=0.08,
+                amount=16_000, rate=0.040, maturity_years=0.08,
                 collateral_level=None),
         Funding("Senior unsecured (OpCo)", FundingType.SENIOR_UNSECURED,
-                amount=13_000, rate=0.048, maturity_years=3.0),
+                amount=21_000, rate=0.048, maturity_years=3.0),
         Funding("Senior non-preferred (HoldCo)", FundingType.SENIOR_NON_PREFERRED,
                 amount=9_000, rate=0.056, maturity_years=4.5, mrel_eligible=True),
         Funding("Covered bonds", FundingType.COVERED_BOND_ISSUED,
@@ -628,10 +635,14 @@ def build_bank() -> Bank:
         derivative_outflows=2_900, derivative_inflows=2_400,
         downgrade_trigger_collateral=1_150, market_valuation_outflow=780,
         inflow_retail=140, inflow_corporate=2_600, inflow_financial=3_900,
-        reverse_repo_l1=32_000, reverse_repo_l2a=9_000, reverse_repo_other=13_000,
+        reverse_repo_l1=32_000, reverse_repo_l2a=9_000, reverse_repo_other=9_000,
     )
 
     bank.derivative_assets = 24_000
+    # Net of variation margin received. The gross figure above is the accounting
+    # balance; NSFR and the leverage exposure measure both work off netted
+    # numbers, and confusing the two fails a compliant bank on paper.
+    bank.derivative_assets_net = 7_000
     bank.derivative_liabilities = 22_000
     bank.fixed_assets = 1_900
     bank.at1_coupons = 145

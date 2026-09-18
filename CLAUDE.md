@@ -41,6 +41,9 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
   IFRS 9 ECL, and a P&L with NII, markets desks, fees, costs and UK tax.
 - `python -m banksim.cli {snapshot,run,stress}`;
   `python -m unittest discover -s banksim/tests -t .`
+- `python -m banksim.build_dashboard` → `banksim/dashboard.html`, an interactive
+  simulator (scenario, year, Pillar 2A, buffers, leverage regime, payout), plus
+  `dashboard_artifact.html` for platforms supplying their own head/body.
 - Same honesty rule as the CDS data: every input carries a `Provenance`, and
   every report banners that the bank is fictional. Never present a simulated
   capital ratio as a real firm's.
