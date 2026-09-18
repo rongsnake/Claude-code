@@ -6,6 +6,8 @@ import unittest
 
 from banksim.capital import (
     CCOB,
+    P1_TOTAL,
+    lending_adjustment,
     CapitalPosition,
     CapitalRequirements,
     ExposureMeasure,
@@ -81,7 +83,7 @@ class TestOwnFunds(unittest.TestCase):
 
 class TestRequirements(unittest.TestCase):
     def test_pillar2a_is_split_in_pillar1_proportions(self):
-        req = CapitalRequirements(pillar2a=0.04, ccyb=0.0, systemic_buffer=0.0)
+        req = CapitalRequirements(pillar2a_gross=0.04, ccyb=0.0, systemic_buffer=0.0)
         self.assertAlmostEqual(req.cet1_minimum, 0.045 + 0.5625 * 0.04)
         self.assertAlmostEqual(req.tier1_minimum, 0.060 + 0.75 * 0.04)
         self.assertAlmostEqual(req.total_minimum, 0.080 + 0.04)
@@ -89,6 +91,29 @@ class TestRequirements(unittest.TestCase):
     def test_combined_buffer_sums_the_three_buffers(self):
         req = CapitalRequirements(ccyb=0.02, systemic_buffer=0.015)
         self.assertAlmostEqual(req.combined_buffer, CCOB + 0.02 + 0.015)
+
+    def test_lending_adjustments_reduce_pillar2a(self):
+        req = CapitalRequirements(pillar2a_gross=0.032,
+                                  sme_lending_adjustment=0.0008,
+                                  infrastructure_lending_adjustment=0.0010)
+        self.assertAlmostEqual(req.pillar2a, 0.032 - 0.0008 - 0.0010)
+
+    def test_pillar2a_cannot_go_negative(self):
+        req = CapitalRequirements(pillar2a_gross=0.001,
+                                  sme_lending_adjustment=0.05)
+        self.assertAlmostEqual(req.pillar2a, 0.0)
+
+    def test_lending_adjustment_holds_the_total_requirement_constant(self):
+        """The PRA calibrates these so removing the Pillar 1 supporting factor
+        does not raise overall capital requirements for the affected lending."""
+        gross, rwa, relief = 0.030, 100_000.0, 4_000.0
+        adj = lending_adjustment(gross, relief, rwa)
+        before = (P1_TOTAL + gross) * (rwa - relief)   # factor still in place
+        after = (P1_TOTAL + gross - adj) * rwa         # factor removed, P2A cut
+        self.assertAlmostEqual(before, after, places=6)
+
+    def test_no_adjustment_without_affected_lending(self):
+        self.assertAlmostEqual(lending_adjustment(0.03, 0.0, 100_000.0), 0.0)
 
     def test_pra_buffer_sits_above_the_combined_buffer(self):
         req = CapitalRequirements(pra_buffer=0.01)
@@ -100,7 +125,7 @@ class TestMDA(unittest.TestCase):
     def _at_buffer_usage(self, available_share: float) -> CapitalPosition:
         """Build a position whose CET1 available for buffers is a given share
         of the combined buffer requirement."""
-        req = CapitalRequirements(pillar2a=0.0, ccyb=0.015, systemic_buffer=0.0)
+        req = CapitalRequirements(pillar2a_gross=0.0, ccyb=0.015, systemic_buffer=0.0)
         cbr = req.combined_buffer
         rwa = 100_000.0
         # CET1 ratio = P1 CET1 + the share of the buffer we want available.
@@ -131,7 +156,7 @@ class TestMDA(unittest.TestCase):
 
     def test_at1_shortfall_consumes_buffer_capacity(self):
         """CET1 plugging an AT1 hole is not available to meet the buffers."""
-        req = CapitalRequirements(pillar2a=0.0, ccyb=0.0, systemic_buffer=0.0)
+        req = CapitalRequirements(pillar2a_gross=0.0, ccyb=0.0, systemic_buffer=0.0)
         rwa = 100_000.0
         with_at1 = CapitalPosition(
             year=2027,
@@ -177,7 +202,7 @@ class TestBindingConstraint(unittest.TestCase):
         """A percentage point of leverage headroom and a percentage point of
         CET1 headroom are different amounts of money."""
         p = position(cet1_before=10_000.0, live=60_000.0, sa=60_000.0,
-                     exposure=300_000.0, pillar2a=0.0, ccyb=0.0)
+                     exposure=300_000.0, pillar2a_gross=0.0, ccyb=0.0)
         headroom = p.headroom_gbp_m
         self.assertAlmostEqual(headroom["risk_weighted_cet1"],
                                p.cet1_headroom_pct * p.total_rwa)
@@ -188,19 +213,19 @@ class TestBindingConstraint(unittest.TestCase):
 
 class TestMREL(unittest.TestCase):
     def test_bail_in_firm_takes_twice_the_risk_weighted_minimum(self):
-        req = CapitalRequirements(pillar2a=0.03)
+        req = CapitalRequirements(pillar2a_gross=0.03)
         value = mrel_requirement(req, leverage_requirement=0.0325,
                                  total_rwa=60_000.0, exposure_measure=100_000.0)
         self.assertAlmostEqual(value, 2.0 * 0.11)
 
     def test_leverage_limb_can_bind_for_a_low_density_balance_sheet(self):
-        req = CapitalRequirements(pillar2a=0.01)
+        req = CapitalRequirements(pillar2a_gross=0.01)
         value = mrel_requirement(req, leverage_requirement=0.0325,
                                  total_rwa=30_000.0, exposure_measure=400_000.0)
         self.assertAlmostEqual(value, 2.0 * 0.0325 * 400_000.0 / 30_000.0)
 
     def test_firm_without_a_bail_in_strategy_takes_its_minimum(self):
-        req = CapitalRequirements(pillar2a=0.02)
+        req = CapitalRequirements(pillar2a_gross=0.02)
         value = mrel_requirement(req, 0.0325, 10_000.0, 30_000.0,
                                  bail_in_strategy=False)
         self.assertAlmostEqual(value, req.total_minimum)

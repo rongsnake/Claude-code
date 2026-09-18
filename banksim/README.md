@@ -22,7 +22,7 @@ python -m banksim.cli run --scenario acs_severe --detail
 python -m banksim.cli stress                      # every scenario, compared
 python -m banksim.cli stress --json out.json      # machine-readable
 
-python -m unittest discover -s banksim/tests -t . # 103 tests
+python -m unittest discover -s banksim/tests -t . # 110 tests
 ```
 
 ## What it produces
@@ -32,15 +32,15 @@ Stress test comparison
 ------------------------------------------------------------------------------
 Scenario          Min CET1   Drawdown  Min lev  Cum impair   Cum PAT  Buffer
 ----------------------------------------------------------------------------
-baseline            14.82%      0.00pp    7.06%         795     4,878       -
-upside              15.32%      0.00pp    7.16%         520     7,576       -
-stagflation         14.18%      0.00pp    7.00%       1,446     3,576       -
-acs_severe          10.67%      3.47pp    6.05%       2,218     1,030    USED
+baseline            14.32%      0.00pp    6.94%         857     4,833       -
+upside              14.82%      0.00pp    7.04%         560     7,547       -
+stagflation         13.68%      0.00pp    6.88%       1,559     3,495       -
+acs_severe          10.16%      3.51pp    5.89%       2,378       914    USED
 ```
 
-In the severe scenario the bank takes £2.2bn of cumulative impairment, three
+In the severe scenario the bank takes £2.4bn of cumulative impairment, three
 quarters of its lending book migrates to IFRS 9 stage 2, its CET1 ratio falls
-3.47 percentage points, its RWAs *inflate* as IRB PDs migrate with the cycle,
+3.51 percentage points, its RWAs *inflate* as IRB PDs migrate with the cycle,
 and it drops through its combined buffer requirement so that the maximum
 distributable amount caps its payout — while never coming close to its Pillar 1
 minimum. Which is what a buffer is for.
@@ -53,12 +53,12 @@ metrics), **UK OV1** (RWAs by risk type, with the output floor comparator),
 
 | Layer | Contents |
 |---|---|
-| Credit risk | Revised standardised approach; IRB risk-weight function with asset correlation, SME firm-size adjustment, AVC multiplier, maturity adjustment; Basel 3.1 PD/LGD/EAD input floors; CCFs; credit risk mitigation |
+| Credit risk | Revised standardised approach, with the UK 65%/135% risk-sensitive treatment of unrated corporates; IRB risk-weight function with asset correlation, SME firm-size adjustment, AVC multiplier, maturity adjustment; Basel 3.1 PD/LGD/EAD input floors; CCFs; credit risk mitigation |
 | Counterparty | SA-CCR (replacement cost, hedging-set add-ons, PFE multiplier, supervisory delta and duration); BA-CVA reduced form with the UK exemptions |
 | Market risk | FRTB standardised: SBM across GIRR/CSR/EQ/FX/commodity with the three correlation scenarios, DRC with the hedge-benefit ratio, RRAO |
 | Operational | Business Indicator → BI Component → Internal Loss Multiplier, with the PRA's ILM = 1 |
 | Liquidity | LCR with HQLA caps, run-off rates, the 75% inflow cap and the net outflow floor; NSFR with ASF/RSF factors |
-| Capital | Own funds and deductions; output floor with its transitional path; Pillar 1, Pillar 2A, combined buffer, PRA buffer; MDA quartiles; UK leverage in both its current and FPC-proposed form; MREL |
+| Capital | Own funds and deductions; Pillar 2A SME and infrastructure lending adjustments; output floor with its transitional path; Pillar 1, Pillar 2A, combined buffer, PRA buffer; MDA quartiles; UK leverage in both its current and FPC-proposed form; MREL |
 | Accounting | IFRS 9 three-stage ECL, SICR, macro conditioning, multiple weighted scenarios, default crystallisation and write-off |
 | P&L | NII with a rolling structural hedge; four markets desks with differing macro betas; three fee businesses; costs with a flexing bonus pool; UK corporation tax, banking surcharge and bank levy |
 

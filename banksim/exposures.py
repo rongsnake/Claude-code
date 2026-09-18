@@ -130,6 +130,10 @@ class CreditExposure:
     ltv: float | None = None               # RRE/CRE loan-to-value, decimal
     investment_grade: bool = False         # for the 65% IG corporate weight
     sme: bool = False
+    #: Qualifying infrastructure lending. Like SME lending, it lost its Pillar 1
+    #: supporting factor under Basel 3.1 and is compensated by a firm-specific
+    #: Pillar 2A adjustment instead.
+    infrastructure: bool = False
     #: SCRA grade for unrated bank exposures: "A", "B" or "C".
     scra_grade: str | None = None
 

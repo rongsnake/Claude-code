@@ -106,12 +106,18 @@ COVERED_BOND_RW = {
     CreditQuality.UNRATED: 0.20,
 }
 
-#: Unrated corporates assessed as investment grade. The 65% weight is the Basel
-#: treatment for jurisdictions that do not permit external ratings; the UK does
-#: permit them, and whether the PRA's final rules retain a 65% IG weight is the
-#: single assumption here most worth checking against PS1/26 before use.
-#: Toggle with `SAConfig.allow_ig_corporate_65`.
+#: Unrated corporates: the UK "risk-sensitive approach". This is a genuine
+#: divergence from both the Basel text and the EU, which weight all unrated
+#: corporates at a flat 100%. A UK firm with PRA permission, and systems able
+#: to separate investment grade from non-investment grade, splits them 65/135
+#: instead. Without that permission it uses the flat 100%.
+#:
+#: The choice is all-or-nothing by design: a firm must apply one approach to
+#: *every* unrated exposure, including for the output floor comparator, so that
+#: it cannot take 65% on the good names and 100% on the bad ones.
 IG_CORPORATE_RW = 0.65
+NON_IG_CORPORATE_RW = 1.35
+FLAT_UNRATED_CORPORATE_RW = 1.00
 UNRATED_SME_RW = 0.85
 RETAIL_RW = 0.75
 RETAIL_TRANSACTOR_RW = 0.45
@@ -165,11 +171,21 @@ CCF = {
 }
 
 
+#: The Pillar 1 supporting factors Basel 3.1 removes. The SME factor cut
+#: eligible SME RWAs by 23.81%; the infrastructure factor by 25%. Retained here
+#: only to size the Pillar 2A lending adjustments that replace them.
+SME_SUPPORT_FACTOR = 0.7619
+INFRASTRUCTURE_SUPPORT_FACTOR = 0.75
+
+
 @dataclass
 class SAConfig:
     """Switches on the standardised engine where the UK position is optional."""
 
-    allow_ig_corporate_65: bool = True
+    #: "risk_sensitive" (65%/135%, needs PRA permission) or "flat_100".
+    #: Applied to every unrated exposure — that consistency is the rule, not a
+    #: convenience of having one flag.
+    unrated_corporate_approach: str = "risk_sensitive"
     #: RRE/CRE books whose repayment depends on the property's own cash flows
     #: take the income-producing tables. Set per-portfolio by the caller.
     treat_cre_as_ipre: bool = True
@@ -223,11 +239,12 @@ def sa_risk_weight(e: CreditExposure, cfg: SAConfig | None = None) -> float:
                ExposureClass.SPECIALISED_LENDING):
         if e.rating is not CreditQuality.UNRATED:
             return CORPORATE_RW[e.rating]
-        if e.investment_grade and cfg.allow_ig_corporate_65:
-            return IG_CORPORATE_RW
+        # Unrated SMEs take their own weight ahead of the corporate ladder.
         if e.sme or cls is ExposureClass.CORPORATE_SME:
             return UNRATED_SME_RW
-        return CORPORATE_RW[CreditQuality.UNRATED]
+        if cfg.unrated_corporate_approach == "risk_sensitive":
+            return IG_CORPORATE_RW if e.investment_grade else NON_IG_CORPORATE_RW
+        return FLAT_UNRATED_CORPORATE_RW
     if cls is ExposureClass.RETAIL:
         return RETAIL_RW
     if cls is ExposureClass.RETAIL_TRANSACTOR:
@@ -462,6 +479,29 @@ class CreditRWAResult:
     @property
     def average_risk_weight(self) -> float:
         return safe_div(self.live_rwa, self.ead)
+
+
+def removed_support_factor_relief(
+    exposures: list[CreditExposure], cfg: SAConfig | None = None
+) -> tuple[float, float]:
+    """RWAs that the withdrawn Pillar 1 supporting factors used to remove.
+
+    Basel 3.1 deletes the SME and infrastructure supporting factors. The PRA
+    compensates with firm-specific Pillar 2A lending adjustments (PS7/25)
+    calibrated so that overall capital requirements for those exposures do not
+    rise. Sizing those adjustments needs the RWA relief that has been lost,
+    which is what this returns as (SME, infrastructure).
+    """
+    cfg = cfg or SAConfig()
+    sme_relief = 0.0
+    infra_relief = 0.0
+    for e in exposures:
+        rwa = irb_rwa(e, cfg) if e.approach is not IRBApproach.SA_ONLY else standardised_rwa(e, cfg)
+        if e.sme or e.exposure_class is ExposureClass.CORPORATE_SME:
+            sme_relief += rwa * (1.0 - SME_SUPPORT_FACTOR)
+        elif e.infrastructure:
+            infra_relief += rwa * (1.0 - INFRASTRUCTURE_SUPPORT_FACTOR)
+    return sme_relief, infra_relief
 
 
 def credit_rwa(

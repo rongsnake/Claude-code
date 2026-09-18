@@ -208,8 +208,16 @@ MDA_QUARTILE_PAYOUT = (0.00, 0.20, 0.40, 0.60)
 class CapitalRequirements:
     """Firm-specific requirements. P2A and the PRA buffer are supervisory."""
 
-    #: Pillar 2A as a share of RWAs (total capital basis).
-    pillar2a: float = 0.030
+    #: Pillar 2A as a share of RWAs (total capital basis), before the lending
+    #: adjustments below.
+    pillar2a_gross: float = 0.030
+    #: Pillar 2A reductions replacing the withdrawn Pillar 1 supporting
+    #: factors (PRA PS7/25, 22 May 2025). Both are firm-specific structural
+    #: adjustments calibrated so that removing the Pillar 1 factors does not
+    #: raise overall capital requirements for SME and infrastructure lending.
+    #: Entered as positive numbers and subtracted.
+    sme_lending_adjustment: float = 0.000
+    infrastructure_lending_adjustment: float = 0.000
     #: Institution-specific countercyclical buffer. The FPC has held the UK
     #: rate at its 2% neutral setting through 2026; a firm's own rate is the
     #: exposure-weighted average across the jurisdictions it lends into.
@@ -219,6 +227,13 @@ class CapitalRequirements:
     #: PRA buffer (Pillar 2B). Confidential in practice; sits above the CBR
     #: and is not an MDA trigger, but using it invites supervisory action.
     pra_buffer: float = 0.010
+
+    @property
+    def pillar2a(self) -> float:
+        """Pillar 2A net of the SME and infrastructure lending adjustments."""
+        return max(0.0, self.pillar2a_gross
+                   - self.sme_lending_adjustment
+                   - self.infrastructure_lending_adjustment)
 
     @property
     def combined_buffer(self) -> float:
@@ -503,6 +518,31 @@ class CapitalPosition:
 # ---------------------------------------------------------------------------
 # MREL
 # ---------------------------------------------------------------------------
+
+
+def lending_adjustment(
+    pillar2a_gross: float, rwa_relief: float, total_rwa: float
+) -> float:
+    """Size a Pillar 2A lending adjustment from the RWA relief that was lost.
+
+    The PRA calibrates these firm-specifically, using the change in RWAs from
+    removing the supporting factor and a capital adjustment factor it does not
+    publish in detail. What it states the calibration achieves is that overall
+    capital requirements for the affected lending are held constant, and that
+    identity is what is implemented here.
+
+    If the supporting factor had remained, RWAs would be lower by `rwa_relief`.
+    Holding the total requirement constant across the change:
+
+        (P1 + P2A_new) x RWA = (P1 + P2A_gross) x (RWA - relief)
+
+    so the adjustment is the fall in the Pillar 2A rate that follows.
+    """
+    if total_rwa <= 0 or rwa_relief <= 0:
+        return 0.0
+    gross_requirement = P1_TOTAL + pillar2a_gross
+    new_requirement = gross_requirement * (total_rwa - rwa_relief) / total_rwa
+    return max(0.0, gross_requirement - new_requirement)
 
 
 def mrel_requirement(

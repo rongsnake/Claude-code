@@ -34,8 +34,9 @@ from .capital import (
     ExposureMeasure,
     LeverageConfig,
     OwnFunds,
+    lending_adjustment,
 )
-from .credit_risk import SAConfig
+from .credit_risk import SAConfig, credit_rwa, removed_support_factor_relief
 from .exposures import (
     Commitment,
     CreditExposure,
@@ -201,6 +202,15 @@ def _banking_book(a: AssumptionSet) -> list[CreditExposure]:
             approach=IRBApproach.AIRB, pd=0.0165, lgd=0.40, maturity_years=3.0,
             asset_yield=0.078, segment="corporate", residual_maturity_years=3.0,
             effective_rate=0.078, behavioural_life_years=3.0,
+        ),
+
+        CreditExposure(
+            "Infrastructure and project finance", ExposureClass.SPECIALISED_LENDING,
+            drawn=2_800, undrawn=700, facility=Facility.COMMITMENT,
+            rating=CreditQuality.UNRATED, investment_grade=True, infrastructure=True,
+            approach=IRBApproach.AIRB, pd=0.0090, lgd=0.28, maturity_years=6.0,
+            asset_yield=0.068, segment="corporate", residual_maturity_years=6.0,
+            effective_rate=0.068, behavioural_life_years=6.0,
         ),
 
         # --- Real estate ---------------------------------------------------
@@ -549,8 +559,15 @@ def build_bank() -> Bank:
 
     a.add(Assumption("cet1_opening_gbp_m", 9_620, Provenance.STYLISED,
                      "Opening CET1 capital"))
-    a.add(Assumption("pillar2a", 0.032, Provenance.SUPERVISORY,
-                     "Pillar 2A as a share of RWAs; real firms disclose theirs"))
+    a.add(Assumption("pillar2a_gross", 0.032, Provenance.SUPERVISORY,
+                     "Pillar 2A before the lending adjustments; real firms "
+                     "disclose theirs"))
+    a.add(Assumption("unrated_corporate_65_135", 1.0, Provenance.REGULATORY,
+                     "UK risk-sensitive approach to unrated corporates: 65% "
+                     "investment grade, 135% non-investment grade, with PRA "
+                     "permission. A divergence from Basel and the EU, which "
+                     "use a flat 100%.",
+                     source="PRA PS9/24 / PS1/26"))
     a.add(Assumption("ccyb", 0.020, Provenance.REGULATORY,
                      "UK countercyclical capital buffer, held at the FPC's 2% "
                      "neutral setting through 2026",
@@ -600,8 +617,9 @@ def build_bank() -> Bank:
         at1_instruments=1_650, tier2_instruments=2_600,
     )
     bank.requirements = CapitalRequirements(
-        pillar2a=0.032, ccyb=0.020, systemic_buffer=0.000, pra_buffer=0.010,
+        pillar2a_gross=0.032, ccyb=0.020, systemic_buffer=0.000, pra_buffer=0.010,
     )
+    bank.sa_cfg = SAConfig(unrated_corporate_approach="risk_sensitive")
     bank.leverage_cfg = LeverageConfig(regime="current_uk", in_scope=True)
     bank.op_risk_history = _op_risk_history()
     bank.op_risk_cfg = OpRiskConfig(use_ilm=False, average_annual_loss=95.0)
@@ -619,4 +637,33 @@ def build_bank() -> Bank:
     bank.at1_coupons = 145
     bank.target_payout_ratio = 0.65
 
+    # The Pillar 2A lending adjustments are firm-specific and derived from the
+    # firm's own SME and infrastructure book, so they can only be sized once
+    # that book exists.
+    _apply_lending_adjustments(bank)
+
     return bank
+
+
+def _apply_lending_adjustments(bank: Bank) -> None:
+    """Set the SME and infrastructure Pillar 2A adjustments (PRA PS7/25)."""
+    credit = credit_rwa(bank.exposures, bank.sa_cfg)
+    sme_relief, infra_relief = removed_support_factor_relief(bank.exposures, bank.sa_cfg)
+    # Sized against total RWAs, approximated here by credit RWAs grossed up for
+    # the other risk types, which the caller has not yet computed.
+    total_rwa = credit.live_rwa / 0.42
+    bank.requirements.sme_lending_adjustment = lending_adjustment(
+        bank.requirements.pillar2a_gross, sme_relief, total_rwa)
+    bank.requirements.infrastructure_lending_adjustment = lending_adjustment(
+        bank.requirements.pillar2a_gross, infra_relief, total_rwa)
+
+    bank.assumptions.add(Assumption(
+        "sme_lending_adjustment", bank.requirements.sme_lending_adjustment,
+        Provenance.SUPERVISORY,
+        "Pillar 2A reduction replacing the withdrawn Pillar 1 SME supporting factor",
+        source="PRA PS7/25, 22 May 2025"))
+    bank.assumptions.add(Assumption(
+        "infrastructure_lending_adjustment",
+        bank.requirements.infrastructure_lending_adjustment, Provenance.SUPERVISORY,
+        "Pillar 2A reduction replacing the withdrawn infrastructure supporting factor",
+        source="PRA PS7/25, 22 May 2025"))

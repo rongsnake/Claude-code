@@ -7,7 +7,11 @@ import unittest
 
 from banksim.credit_risk import (
     CCF,
+    INFRASTRUCTURE_SUPPORT_FACTOR,
     PD_FLOOR,
+    SAConfig,
+    SME_SUPPORT_FACTOR,
+    removed_support_factor_relief,
     credit_rwa,
     irb_capital_requirement,
     irb_ead,
@@ -51,12 +55,44 @@ class TestStandardisedWeights(unittest.TestCase):
         self.assertAlmostEqual(sa_risk_weight(corporate(rating=CreditQuality.BBB)), 0.75)
         self.assertAlmostEqual(sa_risk_weight(corporate(rating=CreditQuality.B)), 1.50)
 
-    def test_unrated_corporate_variants(self):
-        unrated = corporate(rating=CreditQuality.UNRATED)
-        self.assertAlmostEqual(sa_risk_weight(unrated), 1.00)
-        self.assertAlmostEqual(sa_risk_weight(corporate(rating=CreditQuality.UNRATED, sme=True)), 0.85)
+    def test_unrated_corporates_under_the_uk_risk_sensitive_approach(self):
+        """65% investment grade, 135% not — a UK divergence from Basel and the
+        EU, both of which weight every unrated corporate at a flat 100%."""
+        risk_sensitive = SAConfig(unrated_corporate_approach="risk_sensitive")
         ig = corporate(rating=CreditQuality.UNRATED, investment_grade=True)
-        self.assertAlmostEqual(sa_risk_weight(ig), 0.65)
+        non_ig = corporate(rating=CreditQuality.UNRATED, investment_grade=False)
+        self.assertAlmostEqual(sa_risk_weight(ig, risk_sensitive), 0.65)
+        self.assertAlmostEqual(sa_risk_weight(non_ig, risk_sensitive), 1.35)
+
+    def test_unrated_corporates_without_pra_permission(self):
+        """A firm without the permission takes a flat 100% for all of them."""
+        flat = SAConfig(unrated_corporate_approach="flat_100")
+        for ig in (True, False):
+            e = corporate(rating=CreditQuality.UNRATED, investment_grade=ig)
+            self.assertAlmostEqual(sa_risk_weight(e, flat), 1.00)
+
+    def test_unrated_sme_takes_its_own_weight_under_either_approach(self):
+        for approach in ("risk_sensitive", "flat_100"):
+            e = corporate(rating=CreditQuality.UNRATED, sme=True)
+            self.assertAlmostEqual(
+                sa_risk_weight(e, SAConfig(unrated_corporate_approach=approach)), 0.85,
+                msg=approach)
+
+    def test_support_factor_relief_is_sized_off_the_affected_books(self):
+        """The withdrawn Pillar 1 factors cut SME RWAs by 23.81% and
+        infrastructure RWAs by 25%; the relief lost is what the Pillar 2A
+        lending adjustments are calibrated against."""
+        sme = corporate(rating=CreditQuality.UNRATED, sme=True,
+                        approach=IRBApproach.SA_ONLY)
+        infra = corporate(rating=CreditQuality.UNRATED, infrastructure=True,
+                          investment_grade=True, approach=IRBApproach.SA_ONLY)
+        plain = corporate(approach=IRBApproach.SA_ONLY)
+        sme_relief, infra_relief = removed_support_factor_relief([sme, infra, plain])
+        self.assertAlmostEqual(sme_relief,
+                               standardised_rwa(sme) * (1.0 - SME_SUPPORT_FACTOR))
+        self.assertAlmostEqual(
+            infra_relief,
+            standardised_rwa(infra) * (1.0 - INFRASTRUCTURE_SUPPORT_FACTOR))
 
     def test_residential_ltv_bands(self):
         for ltv, expected in ((0.40, 0.20), (0.55, 0.25), (0.75, 0.35),

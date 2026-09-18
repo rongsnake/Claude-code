@@ -97,7 +97,11 @@ Faithful (the rule as written, and tested):
 - the IRB risk-weight function, including the asset correlation, the SME
   firm-size adjustment, the AVC multiplier for financial institutions, the
   maturity adjustment, and the Basel 3.1 PD/LGD/EAD input floors;
-- the revised standardised risk-weight tables and credit conversion factors;
+- the revised standardised risk-weight tables and credit conversion factors,
+  including the UK risk-sensitive approach to unrated corporates (65%/135%)
+  and its flat-100% alternative;
+- the Pillar 2A SME and infrastructure lending adjustments that replace the
+  withdrawn Pillar 1 supporting factors;
 - SA-CCR: replacement cost with and without margin, supervisory duration,
   supervisory delta, maturity factor, the add-on hedging-set structure and the
   PFE multiplier;

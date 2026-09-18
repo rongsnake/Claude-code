@@ -4,6 +4,16 @@ Checked September 2026. Where a rule is time-sensitive it is dated and sourced;
 where the model makes a choice that could reasonably go the other way, that is
 flagged. **Verify against the primary source before relying on any of it.**
 
+### How these were checked, and the limit on that
+
+The build environment's egress policy blocks `bankofengland.co.uk`, `bis.org`
+and `prarulebook.co.uk` outright (403 at the proxy on every attempt, by
+organisation policy). Nothing below was read from the primary text. It comes
+from search over secondary commentary — law firms, the Big Four, specialist
+advisers — triangulated across several sources where they agreed. That is good
+enough to build a model against and not good enough to advise on. Anyone
+relying on a number here should open the rulebook.
+
 ## Basel 3.1 in the UK
 
 - The PRA published the **final rules in PS1/26 on 20 January 2026**,
@@ -58,6 +68,52 @@ Both regimes are implemented; switch with `LeverageConfig(regime=...)`.
   (26 March 2026), applying from 1 January 2027 with a first reference date of
   31 December 2026.
 
+## Credit risk: unrated corporates (a real UK divergence)
+
+The UK applies a **risk-sensitive approach** to unrated corporate exposures:
+**65% where the firm assesses the obligor as investment grade, 135% where it
+does not.** Basel and the EU both use a flat 100% for all unrated corporates,
+so this is one of the clearer UK departures, and a favourable one for banks
+with good internal rating systems.
+
+Two conditions matter and are modelled:
+
+- it requires **PRA permission** and systems capable of making the
+  investment-grade distinction. Without it, the firm uses a **flat 100%**;
+- a firm must apply **one approach to every unrated exposure**, including in
+  the output floor comparator, so that it cannot take 65% on its good names and
+  100% on its bad ones.
+
+`SAConfig.unrated_corporate_approach` is `"risk_sensitive"` or `"flat_100"`,
+and being a single switch is itself the consistency requirement. For Kingsgate
+the choice moves the all-standardised comparator by about £1.1bn.
+
+Unrated corporate SMEs take 85% under either approach.
+
+## Pillar 1 supporting factors, and what replaced them
+
+Basel 3.1 **removes the SME supporting factor** (which cut eligible SME RWAs by
+23.81%) **and the infrastructure supporting factor** (25%). The PRA compensates
+with **firm-specific Pillar 2A structural adjustments** — the SME lending
+adjustment and the infrastructure lending adjustment — finalised in **PS7/25
+(22 May 2025)** and applying alongside the rest of Basel 3.1 from 1 January
+2027.
+
+The PRA calibrates them firm-specifically from the change in RWAs and a capital
+adjustment factor it does not publish in detail. What it states the calibration
+achieves is that removing the Pillar 1 factors does not raise overall capital
+requirements for that lending, and that identity is what `capital.
+lending_adjustment` implements. `CapitalRequirements` therefore carries a
+`pillar2a_gross` plus the two adjustments rather than a single net figure, and
+UK KM1 shows the build-up.
+
+## Market risk: a live consultation
+
+**CP9/26 (June 2026)** — the PRA is consulting on adjustments to the internal
+model approach for market risk. It does not affect this model, which uses the
+standardised approach throughout, but it is the reason the FRTB-IMA date is
+worth re-checking rather than assuming.
+
 ## Operational risk
 
 The PRA sets the **Internal Loss Multiplier to 1** for all firms rather than
@@ -81,15 +137,24 @@ visible.
 
 ## Known uncertainties in this model
 
-1. **The 65% risk weight for unrated investment-grade corporates.** This is the
-   Basel treatment for jurisdictions that do not permit external ratings. The
-   UK does permit them. Whether the PRA's final rules retain a 65% IG weight,
-   and on what conditions, is the single assumption here most worth checking
-   against PS1/26. Toggle with `SAConfig.allow_ig_corporate_65`.
-2. **Sterling BI thresholds** for operational risk, as above.
+1. **Sterling BI thresholds** for operational risk. The PRA recast the euro
+   thresholds into sterling; the actual figures were not recoverable from
+   secondary sources, so the code uses round £1bn / £30bn. Check the
+   Operational Risk Part.
+2. **The capital adjustment factor** in the Pillar 2A lending adjustments. The
+   PRA's own methodology is firm-specific and not published in detail; the
+   model derives the adjustment from the constant-requirement identity instead.
 3. **The FRTB CSR bucket grid** in `market_risk.CSR_RW` follows the Basel
    sector/credit-quality structure but the covered-bond and index buckets are
    folded in at headline weights rather than reproduced exactly.
 4. **Scenario paths** are stylised throughout. `acs_severe` is *shaped* like a
    Bank of England annual cyclical scenario but the numbers are ours. To make
    the stress real, import the Bank's published variable paths.
+
+### Resolved since the first draft
+
+The 65% risk weight for unrated investment-grade corporates was flagged as the
+single assumption most worth checking. It checks out, and the first draft was
+**wrong in the other direction**: it weighted unrated non-investment-grade
+corporates at 100% when the UK risk-sensitive approach puts them at 135%. Now
+implemented, along with the flat-100% alternative and the consistency rule.
