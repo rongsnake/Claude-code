@@ -2,6 +2,49 @@
 
 Ordered by what would most improve the model's fidelity per unit of work.
 
+## Standing permission — the risk books (recorded 19 September 2026)
+
+Gareth has said the risk books may now be drawn on. **Nothing has been done
+with this yet**, and it is recorded here so it survives the session.
+
+Two things need settling before anything is built on it:
+
+1. **What they are and where.** "The risk books" has not been pinned down on
+   this side — whether it means texts on the Pi, a directory to be mounted, a
+   personal library to be consulted by hand, or something else. Confirm before
+   relying on it.
+2. **Provenance treatment.** Anything sourced from them must be tagged. A
+   figure taken from a textbook is not `REGULATORY` — the rules as published —
+   and it is no longer `STYLISED` either. Expect to add a provenance value
+   along the lines of `LITERATURE`, with the citation carried on the
+   `Assumption`, so the appendix can say which book a number came from.
+
+### What they would actually unblock
+
+Worth naming, because it is narrower and more valuable than "better research".
+The regulatory parameters in this model are already the rules as published. What
+is weak is the **calibration**, and almost all of it sits in one place:
+
+| Currently `STYLISED` | What a credit-risk text would give it |
+|---|---|
+| `scenario.Z_SCALE` | The systematic factor's real scale, fitted to observed default rates rather than tuned to produce a plausible-looking stress. This is the single dial that moves impairment, IRB PD migration and the stage 2 share together, and `DESIGN.md` currently admits it is set by eye. |
+| `scenario.SEGMENT_LOADINGS` | Empirical macro sensitivities by portfolio segment, instead of invented weights. |
+| `ifrs9.SEGMENT_RHO` | Asset correlations from the portfolio-modelling literature rather than round numbers near the Basel values. |
+| `exposures.pd_dispersion` | The real within-pool dispersion of obligor PDs, which drives the IFRS 9 stage 2 share — presently 0.75 in log PD because it produced a believable answer. |
+| `ifrs9.LGD_DOWNTURN_ELASTICITY` | A grounded downturn-LGD relationship in place of a linear guess. |
+| `pnl` desk betas | Observed revenue sensitivities to volatility and activity. |
+
+A market-risk text would also close the FRTB gaps listed under **Next** — the
+full CSR bucket grid and the cross-bucket correlation matrices — and a
+securitisation text would open item 3.
+
+### The honest framing
+
+This does not make the model more *correct* in the regulatory sense; the rules
+are already implemented as published. It makes the model's behaviour defensible
+rather than merely plausible, which is a different and harder claim, and the one
+`DESIGN.md` currently declines to make.
+
 ## Next
 
 1. **Import the Bank of England's published stress scenario.** The single
