@@ -1,0 +1,108 @@
+regime,wave,bank_model,tier,theme,title,url,why
+Banking,1,Y,1,"Counterparty risk, collateral & margin",Collateral and Financial Plumbing (2nd Impression),https://www.risk.net/collateral-and-financial-plumbing,Collateral mechanics; relevant to CRM eligibility and funded protection.
+Banking,1,Y,1,"Counterparty risk, collateral & margin",Collateral Markets and Financial Plumbing (3rd ed),https://www.risk.net/collateral-markets-and-financial-plumbing-3rd-edition,Collateral mechanics; relevant to CRM eligibility and funded protection.
+Banking,1,Y,1,"Counterparty risk, collateral & margin","Counterparty Risk Management: Measurement, Pricing and Regulation",https://www.risk.net/counterparty-risk-management-measurement-pricing-and-regulation,Counterparty credit — the exposure side of any protection trade.
+Banking,1,Y,1,"Counterparty risk, collateral & margin",Landmarks in XVA,https://www.risk.net/landmarks-in-xva,XVA — pricing the counterparty/funding cost of protection.
+Banking,1,Y,1,"Counterparty risk, collateral & margin",Margin in Derivatives Trading,https://www.risk.net/margin-in-derivatives-trading,Margin rules bear directly on derivative protection economics.
+Banking,1,Y,1,Credit derivatives & CDS,Credit Default Swaps: The Vanilla Essence,https://www.risk.net/credit-default-swaps-the-vanilla-essence,Directly on the CDS beat — contract mechanics behind the DC determinations pipeline.
+Banking,1,Y,1,Credit derivatives & CDS,Credit Derivatives,https://www.risk.net/credit-derivatives,Core reference for the instrument class the whole project tracks.
+Banking,1,Y,1,Credit risk & modelling,Correlation Risk Management and Modelling,https://www.risk.net/correlation-risk-modelling-and-management-2nd-edition,Correlation is the crux of tranched and portfolio credit protection.
+Banking,1,Y,1,Credit risk & modelling,Credit Modelling: Advanced Topics (2nd edition),https://www.risk.net/credit-modelling-advanced-topics,Credit modelling underpinning capital and protection analysis.
+Banking,1,Y,1,Credit risk & modelling,Credit Risk Measurement and Management: Disruption and Evolution,https://www.risk.net/credit-risk-measurement-and-management-disruption-and-evolution,Credit modelling underpinning capital and protection analysis.
+Banking,1,Y,1,Regulatory capital & Basel,"Adapting to Basel III, IV and the post financial crisis era (2nd edition)",https://www.risk.net/adapting-to-basel-iii-iv,Capital framework that CRR credit risk mitigation relief sits inside.
+Banking,1,Y,1,Regulatory capital & Basel,Basel III and Beyond,https://www.risk.net/basel-iii-and-beyond,Capital framework that CRR credit risk mitigation relief sits inside.
+Banking,1,Y,1,Regulatory capital & Basel,Derivatives Markets: The New Regulatory Paradigm,https://www.risk.net/derivatives-markets-the-new-regulatory-paradigm,Post-crisis derivatives regulation; frames the CRR/EMIR overlay.
+Banking,1,Y,1,Regulatory capital & Basel,Economic Capital,https://www.risk.net/economic-capital,Capital measurement — the quantum any CRM relief moves.
+Banking,1,Y,1,Regulatory capital & Basel,Firm-wide Stress Testing and Economic Capital,https://www.risk.net/firm-wide-stress-testing-and-economic-capital,Capital measurement — the quantum any CRM relief moves.
+Banking,1,Y,1,Regulatory capital & Basel,The Basel Handbook 2nd ed,https://www.risk.net/the-basel-handbook,Capital framework that CRR credit risk mitigation relief sits inside.
+Banking,2,Y,2,Accounting & impairment,The CECL Handbook: A Practitioner’s Guide,https://www.risk.net/the-cecl-handbook-a-practitioners-guide,Expected-loss accounting interacts with capital and protection recognition.
+Banking,2,Y,2,Accounting & impairment,The New Impairment Model under IFRS 9,https://www.risk.net/the-new-impairment-model-under-ifrs-9-and-cecl,Expected-loss accounting interacts with capital and protection recognition.
+Banking,2,Y,2,Credit risk & modelling,Country and Political Risk (2nd edition),https://www.risk.net/country-and-political-risk,Sovereign/political risk; sovereign CDS relevance.
+Banking,2,Y,2,Credit risk & modelling,Hedging Wisely,https://www.risk.net/hedging-wisely,Hedging strategy and its limits.
+Banking,2,Y,2,Credit risk & modelling,"Reinventing Retail Lending Analytics (2nd impression), by Joseph Breeden",https://www.risk.net/reinventing-retail-lending-analytics,Lending analytics; credit modelling adjacent.
+Banking,2,Y,2,Credit risk & modelling,Tail Risk Hedging,https://www.risk.net/tail-risk-hedging,Hedging strategy and its limits.
+Banking,2,Y,2,Credit risk & modelling,The Handbook of Corporate Financial Risk (2nd ed),https://www.risk.net/the-handbook-of-corporate-financial-risk-management-2nd-edition,Broad corporate risk handbook.
+Banking,2,Y,2,Market risk & FRTB,Market Risk Modelling (2nd edition),https://www.risk.net/market-risk-modelling,Market risk capital methodology.
+Banking,2,Y,2,Market risk & FRTB,"The FRTB: Concepts, Implications and Implementation (Sanjay Sharma & John Beckwith)",https://www.risk.net/the-frtb,Trading-book capital; adjacent to banking-book CRM work.
+Banking,2,Y,2,Model risk & validation,Model Risk and Uncertainty,https://www.risk.net/model-risk-and-uncertainty-in-the-financial-world,Model validation standards — applies to any internal credit model.
+Banking,2,Y,2,Model risk & validation,Risk Model Validation (2nd edition),https://www.risk.net/risk-model-validation,Model validation standards — applies to any internal credit model.
+Banking,2,Y,2,Regulatory capital & Basel,BCBS 239: Guiding Principles for Compliance,https://www.risk.net/bcbs-239,Risk data aggregation expectations.
+Banking,2,Y,2,Regulatory capital & Basel,"Risk, Capital and Value-Based Management",https://www.risk.net/risk-capital-and-value-based-management,Capital allocation and value-based management; capital-relief adjacent.
+Banking,2,Y,2,Stress testing & economic capital,CCAR and Beyond,https://www.risk.net/ccar-and-beyond,Stress testing — where protection benefit is tested under adverse scenarios.
+Banking,2,Y,2,Stress testing & economic capital,Stress Testing for Financial Institutions,https://www.risk.net/stress-testing-for-financial-institutions,Stress testing — where protection benefit is tested under adverse scenarios.
+Banking,2,Y,2,Stress testing & economic capital,"Stress Testing: Approaches, Methods and Applications 1st edition",https://www.risk.net/stress-testing-approaches-methods-and-applications,Stress testing — where protection benefit is tested under adverse scenarios.
+Banking,2,Y,2,Stress testing & economic capital,"Stress Testing: Approaches, Methods and Applications 2nd edition",https://www.risk.net/stress-testing-approaches-methods-and-applications-2nd-edition,Stress testing — where protection benefit is tested under adverse scenarios.
+Banking,2,Y,2,Systemic risk & market structure,Europe's New Supervisory Tool,https://www.risk.net/europes-new-supervisory-toolkit,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Lessons from the Financial Crisis,https://www.risk.net/lessons-from-the-financial-crisis,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Managing Systemic Exposure,https://www.risk.net/managing-systemic-exposure,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Network Theory and Financial Risk,https://www.risk.net/network-theory-and-financial-risk,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Portfolio Compression,https://www.risk.net/portfolio-compression,Compression directly affects derivative notional and exposure.
+Banking,2,Y,2,Systemic risk & market structure,Systemic Operational Risk,https://www.risk.net/systemic-operational-risk,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Systemic Risk Assessment and Oversight,https://www.risk.net/systemic-risk-assessment-and-oversight,Systemic/market-structure context for credit events.
+Banking,2,Y,2,Systemic risk & market structure,Systemic Risk Assessment and Oversight (2nd Edition),https://www.risk.net/systemic-risk-assessment-and-oversight-2nd-edition,Systemic/market-structure context for credit events.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",Interest Rate Risk in the Banking Book,https://www.risk.net/interest-rate-risk-in-the-banking-book,Banking-book ALM context.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",Liquidity Modelling,https://www.risk.net/liquidity-modelling,Liquidity risk and supervision.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",Liquidity Risk Management and Supervision,https://www.risk.net/liquidity-risk-management-and-supervision,Liquidity risk and supervision.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",Managing Illiquid Assets,https://www.risk.net/managing-illiquid-assets,Illiquid asset management.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",The Handbook of ALM (1st edition),https://www.risk.net/the-handbook-of-alm-in-banking-0,Banking-book ALM context.
+Banking,3,Y,2,"ALM, IRRBB & liquidity",The Handbook of ALM (2nd edition),https://www.risk.net/the-handbook-of-alm-in-banking,Banking-book ALM context.
+Banking,3,Y,3,"Operational, conduct & non-financial risk",Operational Risk Capital Models,https://www.risk.net/operational-risk-capital-models,Non-financial risk — outside the credit beat.
+Banking,3,Y,3,"Operational, conduct & non-financial risk",Operational Risk Capital Models (2nd edition),https://www.risk.net/operational-risk-capital-models-2nd-edition,Non-financial risk — outside the credit beat.
+Insurance,1,N,3,Insurance & Solvency II,Internal Models and Solvency II,https://www.risk.net/internal-models-and-solvency-ii,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,Life Annuities,https://www.risk.net/life-annuities,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,Longevity Risk 2nd edition,https://www.risk.net/longevity-risk-2nd-edition,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,Non-traditional Life Insurance Products with Guarantees,https://www.risk.net/non-traditional-life-insurance-products-with-guarantees,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,ORSA Design and Implementation,https://www.risk.net/orsa-design-and-implementation,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,Risk Management for Insurers (3rd edition),https://www.risk.net/risk-management-for-insurers,Insurance prudential regime.
+Insurance,1,N,3,Insurance & Solvency II,The Solvency II Handbook,https://www.risk.net/the-solvency-ii-handbook-practical-approaches-to-implementation,Insurance prudential regime.
+Insurance,1,N,3,"Operational, conduct & non-financial risk",Fundamentals of Operational Risk for Insurers,https://www.risk.net/fundamentals-of-operational-risk-for-insurers,Non-financial risk — outside the credit beat.
+Misc,1,N,3,ESG & climate,Climate Change: Managing the Financial Risk and Funding the Transition,https://www.risk.net/climate-change-managing-the-financial-risk-and-funding-the-transition,Climate/ESG risk.
+Misc,1,N,3,ESG & climate,"Climate-Related Financial Risk: Arguments, Analytics and Regulations",https://www.risk.net/climate-related-financial-risk-arguments-analytics-and-regulations,Climate/ESG risk.
+Misc,1,N,3,ESG & climate,ESG Investing and Analysis: A Practitioner’s Guide,https://www.risk.net/esg-investing-and-analysis-a-practitioners-guide,Climate/ESG risk.
+Misc,1,N,3,Energy & commodities,Energy Markets,https://www.risk.net/energy-markets,Energy/commodity markets.
+Misc,1,N,3,Energy & commodities,Managing Energy Price Risk (4th edition),https://www.risk.net/managing-energy-price-risk,Energy/commodity markets.
+Misc,1,N,3,Energy & commodities,Navigating European Energy and Commodity Markets Regulation,https://www.risk.net/navigating-european-energy-and-commodity-markets-regulation,Energy/commodity markets.
+Misc,1,N,3,Energy & commodities,Systematic Trading in Energy Markets,https://www.risk.net/systematic-trading-in-energy-markets,Energy/commodity markets.
+Misc,1,N,3,Investment & portfolio management,A Guide to Behavioural Modelling,https://www.risk.net/a-guide-to-behavioural-modelling,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,A Guide to Equity Index Construction (2nd Edition),https://www.risk.net/a-guide-to-equity-index-construction-2nd-edition,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,An Introduction to Investment Funds,https://www.risk.net/an-introduction-to-investment-funds,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Behavioural Risk Management,https://www.risk.net/behavioural-risk-management,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Foreign Exchange Options and Risk Management,https://www.risk.net/foreign-exchange-options-and-risk-management,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Global Macro: Theory and Practice,https://www.risk.net/global-macro-theory-and-practice,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Inflation-Sensitive Assets,https://www.risk.net/inflation-sensitive-assets,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,MiFID II: Value-Generation for Investors,https://www.risk.net/mifid-ii-value-generation-for-investors,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Modern Portfolio Management,https://www.risk.net/modern-portfolio-management,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Performance Measurement for Alternative Investments,https://www.risk.net/performance-measurement-for-alternative-investments,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Portfolio Construction and Management,https://www.risk.net/portfolio-construction-and-management,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Portfolio Construction and Risk Budgeting (5th Edition),https://www.risk.net/portfolio-construction-and-risk-budgeting,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Reserve Management Trends 2019,https://www.centralbanking.com/hsbc-reserve-management-trends-2019,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,Risk Budgeting 2nd Edition,https://www.risk.net/risk-budgeting,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,"The RMB Handbook: Trading, Investing and Hedging",https://www.risk.net/the-rmb-handbook-trading-investing-and-hedging,Buy-side / portfolio construction.
+Misc,1,N,3,Investment & portfolio management,The Role of Currency in Institutional Portfolios,https://www.risk.net/the-role-of-currency-in-institutional-portfolios,Buy-side / portfolio construction.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Conduct Risk: The Practitioner’s Guide,https://www.risk.net/conduct-risk-a-practitioners-guide,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Cyber Risk,https://www.risk.net/cyber-risk,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Digital Money: Operational Risks and the Threats to Operational Resilience,https://www.risk.net/digital-money-operational-risks-and-the-threats-to-operational-resilience,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Front-to-Back Designing and Changing Trade Processing Infrastructure,https://www.risk.net/front-to-back-designing-and-changing-trade-processing-infrastructure,Trade infrastructure.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Key Risk Indicators,https://www.risk.net/key-risk-indicators,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Managing Operational Risk: New Insights and Lessons Learnt,https://www.risk.net/managing-operational-risk,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Non-Financial Risk Management: Emerging stronger after Covid-19,https://www.risk.net/non-financial-risk-management-emerging-stronger-after-covid-19,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Operational Resilience in Financial Institutions,https://www.risk.net/operational-resilience-in-financial-institutions,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Operational Resilience: Beyond the Checklists,https://www.risk.net/operational-resilience-beyond-the-checklists,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk","Operational Risk Perspectives: Cyber, Big Data, and Other Emerging Risks",https://www.risk.net/operational-risk-perspectives,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Reflections on OpRisk Management,https://www.risk.net/reflections-on-oprisk-management,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk","Reputational Risk Management in Financial Institutions, eds Thomas Kaiser + Petra Merl",https://www.risk.net/reputational-risk-management-in-financial-institutions,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Risk and Governance (2nd edition),https://www.risk.net/risk-and-governance,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Risk Culture and Effective Risk Governance,https://www.risk.net/risk-culture-and-effective-risk-governance,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",Strategic Risk Management,https://www.risk.net/strategic-risk-management,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",The Operational Risk Manager's Guide (2nd edition),https://www.risk.net/the-operational-risk-managers-guide,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Operational, conduct & non-financial risk",The Risk Within,https://www.risk.net/the-risk-within,Non-financial risk — outside the credit beat.
+Misc,1,N,3,"Technology, AI & data","Artificial Intelligence in Finance, Volume 1: Fundamentals and Applications",https://www.risk.net/artificial-intelligence-in-finance-volume-1-fundamentals-and-applications,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data","Artificial Intelligence in Finance, Volume 2: Reinforcement Learning Theory and Practice",https://www.risk.net/artificial-intelligence-in-finance-volume-2-reinforcement-learning-theory-and-practice,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",Blockchain in Financial Markets and Beyond,https://www.risk.net/blockchain-in-financial-markets-and-beyond,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",Data Science in Economics and Finance for Decision Makers,https://www.risk.net/data-science-in-economics-and-finance-for-decision-makers,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",FinTech: Growth and Deregulation,https://www.risk.net/fintech-growth-and-deregulation,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",High-Frequency Trading,https://www.risk.net/high-frequency-trading,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data","Machine Learning: Origins, Developments and Implications",https://www.risk.net/machine-learning-origins-developments-and-implications,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",Probabilistic Graphical Models,https://www.risk.net/probabilistic-graphical-models,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data","Regtech, Suptech and Beyond: Innovation in Financial Services",https://www.risk.net/regtech-suptech-and-beyond-innovation-in-financial-services,Technology and quantitative methods.
+Misc,1,N,3,"Technology, AI & data",Strategic Technology Risk,https://www.risk.net/strategic-technology-risk,Technology and quantitative methods.

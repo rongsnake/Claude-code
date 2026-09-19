@@ -1,0 +1,67 @@
+name: Publish CDS dashboard
+
+# Publishes the static dashboard to GitHub Pages.
+#
+# The LIVE data refresh happens on the Raspberry Pi (a systemd timer set up by
+# pi_autopilot.sh) which scrapes from a permitted network and pushes the rebuilt
+# public/index.html. That push triggers this workflow, which deploys to Pages —
+# giving a stable public URL with no hosting credentials.
+#
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+#
+# It also runs on a weekly cron and manual dispatch as a fallback rebuild (note:
+# GitHub-hosted runners are likely 403'd by the sites, so a hosted run only
+# rebuilds from already-committed data — the Pi is what pulls fresh data).
+
+on:
+  push:
+    branches: [main, claude/setup-cds-scraper-dashboard-i0TxS]
+    # No paths filter on purpose. The job rebuilds the dashboard from committed
+    # data, so anything that changes the build output must republish — that
+    # includes analytics.py, credit_events.py, summaries.py and requirements.txt.
+    # A paths list silently went stale once already: a metrics fix in analytics.py
+    # did not match it, so the corrected numbers were never published.
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rebuild dashboard from committed data
+        run: |
+          python build_dashboard.py
+          mkdir -p public
+          python build_dashboard.py --output public/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

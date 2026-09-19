@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# OPTIONAL local deploy hook.
+#
+# You only need this if you want the Pi to ALSO push the dashboard somewhere
+# other than GitHub Pages (which is already automatic). The day you learn how
+# gcburton.org is served, copy this to `deploy.sh`, fill in ONE of the blocks
+# below, make it executable (chmod +x deploy.sh), and the weekly refresh will
+# publish there too.
+#
+#   cp deploy.sh.example deploy.sh && chmod +x deploy.sh
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+# ── A) The Pi itself serves gcburton.org (nginx/apache on the Pi) ─────────────
+# sudo cp public/index.html /var/www/html/index.html
+
+# ── B) A separate server, reachable over SSH ─────────────────────────────────
+# rsync -av public/index.html user@gcburton.org:/var/www/html/index.html
+
+# ── C) Netlify (one-time: npm i -g netlify-cli && netlify login) ─────────────
+# netlify deploy --prod --dir public
+
+echo "deploy.sh: no target configured — edit me (see blocks above)."

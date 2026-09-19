@@ -1,0 +1,21 @@
+# Scraper
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=5.1.0
+pdfplumber>=0.11.0          # optional: decision-PDF text extraction
+python-dateutil>=2.9.0
+
+# Data + dashboards
+pandas>=2.0.0
+numpy>=1.26.0
+plotly>=5.20.0              # used by the interactive Streamlit app
+streamlit>=1.32.0          # optional interactive dashboard (run locally)
+duckdb>=0.10.0             # SQL "ask the data" box in the Streamlit dashboard
+openpyxl>=3.1.0            # credit_events.xlsx export (dashboard download button)
+
+# Headless-browser fallback for bot-protected / JS-rendered sources
+playwright>=1.40
+
+# Local Q&A API service (RAG over the doc corpus via Ollama; no external API key)
+fastapi>=0.110
+uvicorn>=0.29
