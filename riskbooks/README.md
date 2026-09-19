@@ -23,9 +23,10 @@ Implementation, Risk Management for Insurers, Life Annuities, Longevity Risk,
 Non-traditional Life Insurance Products with Guarantees, Fundamentals of
 Operational Risk for Insurers.
 
-### Neither regime — 50 titles
-Energy, buy-side portfolio, ESG, tech/AI, general op/conduct risk. Still
-listed (regime `—`), just not scheduled.
+### Risk Misc — 50 titles (its own folder)
+Everything outside both prudential regimes: general op/conduct/resilience
+risk (17), buy-side / portfolio management (16), tech/AI & data (10),
+energy & commodities (4), ESG & climate (3). Regime `Misc`.
 
 Regimes and waves are editorial — re-sort columns A/B in the xlsx to change
 them. `RiskBooks_mapped.*` are the earlier theme+tier view, kept for reference.
@@ -43,10 +44,11 @@ python3 fetch_riskbooks.py --wave 1 --dry-run                                   
 python3 fetch_riskbooks.py --wave 1      --dest /mnt/pinas/RiskBooks --drive gdrive:RiskBooks
 python3 fetch_riskbooks.py --bank-model  --dest /mnt/pinas/RiskBooks --drive gdrive:RiskBooks
 python3 fetch_riskbooks.py --regime insurance --dest /mnt/pinas/RiskBooks --drive gdrive:RiskBooks
+python3 fetch_riskbooks.py --regime misc      --dest /mnt/pinas/RiskBooks --drive gdrive:RiskBooks
 ```
 
 Each regime lands in its own top-level folder under `<dest>` (and on Drive):
-`Banking/Wave N - <Theme>/<Title>/` and `Insurance (Solvency II)/Wave 1 - <Theme>/<Title>/`,
+`Banking/Wave N - <Theme>/<Title>/`, `Insurance (Solvency II)/Wave 1 - <Theme>/<Title>/` and `Risk Misc/Wave 1 - <Theme>/<Title>/`,
 with `manifest.csv` logging every fetch. Re-runs skip what's already there;
 `--drive` rclone-syncs the regime folder to a matching Drive subfolder. If a
 book page yields no PDF the manifest says so — layouts differ per title, so

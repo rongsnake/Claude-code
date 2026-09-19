@@ -16,10 +16,11 @@ Usage:
   python3 fetch_riskbooks.py --wave 1 2                        # banking + all credit & regulatory
   python3 fetch_riskbooks.py --bank-model                      # whole 49-book banking-model set (waves 1-3)
   python3 fetch_riskbooks.py --regime insurance               # the 8-book Solvency II set
+  python3 fetch_riskbooks.py --regime misc                    # the 50-book Risk Misc set
   python3 fetch_riskbooks.py --bank-model --dest /mnt/pinas/RiskBooks --drive gdrive:RiskBooks
 
 Regimes are filed in separate top-level folders under <dest> (and on Drive):
-"Banking" and "Insurance (Solvency II)" — two distinct prudential regimes.
+"Banking", "Insurance (Solvency II)" and "Risk Misc".
 
 Downloads land under <dest>/<Tier N - Theme>/<Book Title>/, one PDF per
 chapter/file found, with a manifest.csv logging every fetch. Re-runs skip
@@ -43,7 +44,7 @@ PDF_LINK_HINTS = (".pdf", "/system/files/", "/download", "attachment")
 def safe(name: str) -> str:
     return re.sub(r'[\\/:*?"<>|]+', " ", name).strip()[:150]
 
-REGIME_FOLDER = {"Banking": "Banking", "Insurance": "Insurance (Solvency II)"}
+REGIME_FOLDER = {"Banking": "Banking", "Insurance": "Insurance (Solvency II)", "Misc": "Risk Misc"}
 
 def load_plan(regime, waves):
     """Load the download plan, keeping rows in the chosen regime whose wave is
@@ -88,7 +89,7 @@ def pdf_links(html, base):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--regime", choices=["banking", "insurance"], default="banking",
+    ap.add_argument("--regime", choices=["banking", "insurance", "misc"], default="banking",
                     help="prudential regime to fetch; filed in its own folder. Default: banking")
     ap.add_argument("--wave", nargs="+", type=int, default=[1],
                     help="banking waves to fetch (1=Tier-1 core, 2=credit+regulatory, 3=rest of banking model). Default: 1")
@@ -100,8 +101,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    regime = "Insurance" if args.regime == "insurance" else "Banking"
-    if regime == "Insurance":
+    regime = {"insurance": "Insurance", "misc": "Misc"}.get(args.regime, "Banking")
+    if regime in ("Insurance", "Misc"):
         waves = {1}
     else:
         waves = {1, 2, 3} if args.bank_model else set(args.wave)
