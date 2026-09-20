@@ -32,6 +32,33 @@ Committees** (CDS = credit default swaps; source
   `POST /reload` re-reads the index. Run via the `cds-api.service` user unit.
 - `dashboard.py` — Streamlit app with a DuckDB "ask the data" SQL box.
 
+## Second project in this repo: `banksim/`
+A from-scratch **UK wholesale banking simulator** (hypothetical "Kingsgate Bank
+plc"), independent of the CDS pipeline and sharing only its conventions.
+Stdlib-only Python so it runs on the Pi with nothing to compile.
+- Engines: credit risk (SA + IRB), SA-CCR, BA-CVA, FRTB-SA, operational risk,
+  LCR/NSFR, own funds + output floor + buffers + MDA + leverage + MREL,
+  IFRS 9 ECL, and a P&L with NII, markets desks, fees, costs and UK tax.
+- `python -m banksim.cli {snapshot,run,stress}`;
+  `python -m unittest discover -s banksim/tests -t .`
+- `python -m banksim.build_dashboard` → `banksim/dashboard.html`, an interactive
+  simulator (scenario, year, Pillar 2A, buffers, leverage regime, payout), plus
+  `dashboard_artifact.html` for platforms supplying their own head/body.
+- Same honesty rule as the CDS data: every input carries a `Provenance`, and
+  every report banners that the bank is fictional. Never present a simulated
+  capital ratio as a real firm's.
+- Read `banksim/docs/DESIGN.md` for what is faithful to the rules and what is
+  simplified, and `banksim/docs/REGULATORY_SOURCES.md` for the dated UK
+  position (Basel 3.1 applies in the UK from 1 Jan 2027 per PRA PS1/26).
+- **The risk books (mapped 20 Sep 2026).** Gareth's Risk Books library —
+  49 banking titles, risk.net captures as PDF + EPUB + per-chapter HTML — lives
+  on the piNAS at `pinas/riskbooks` and, reachably from here, in Google Drive
+  `RiskBooks/`. `banksim/docs/RISK_BOOKS.md` is the map: layout, Drive ids,
+  which book grounds which model constant, and the reading protocol (Drive PDF
+  text; check the known scrape corruptions; tag `Provenance.LITERATURE` with
+  the citation). Permission to draw on them is standing; calibration work has
+  not started.
+
 ## Serving / scheduling (this Pi)
 - `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`
   reverse-proxied to `localhost:5055` (same gate, `flush_interval -1` for streaming).
