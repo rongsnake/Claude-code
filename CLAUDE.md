@@ -50,11 +50,14 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
 - Read `banksim/docs/DESIGN.md` for what is faithful to the rules and what is
   simplified, and `banksim/docs/REGULATORY_SOURCES.md` for the dated UK
   position (Basel 3.1 applies in the UK from 1 Jan 2027 per PRA PS1/26).
-- **Standing permission (19 Sep 2026): the risk books may be drawn on.** Not
-  acted on yet, and not yet pinned down (what they are, where, in what form).
-  See the note at the top of `banksim/docs/ROADMAP.md` — it lists the
-  calibration constants this would ground and the provenance tag such figures
-  would need.
+- **The risk books (mapped 20 Sep 2026).** Gareth's Risk Books library —
+  49 banking titles, risk.net captures as PDF + EPUB + per-chapter HTML — lives
+  on the piNAS at `pinas/riskbooks` and, reachably from here, in Google Drive
+  `RiskBooks/`. `banksim/docs/RISK_BOOKS.md` is the map: layout, Drive ids,
+  which book grounds which model constant, and the reading protocol (Drive PDF
+  text; check the known scrape corruptions; tag `Provenance.LITERATURE` with
+  the citation). Permission to draw on them is standing; calibration work has
+  not started.
 
 ## Serving / scheduling (this Pi)
 - `/cds/` = static `index.html` behind Caddy basic_auth (user `gareth`); `/cds/api/*`

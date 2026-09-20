@@ -4,20 +4,10 @@ Ordered by what would most improve the model's fidelity per unit of work.
 
 ## Standing permission — the risk books (recorded 19 September 2026)
 
-Gareth has said the risk books may now be drawn on. **Nothing has been done
-with this yet**, and it is recorded here so it survives the session.
-
-Two things need settling before anything is built on it:
-
-1. **What they are and where.** "The risk books" has not been pinned down on
-   this side — whether it means texts on the Pi, a directory to be mounted, a
-   personal library to be consulted by hand, or something else. Confirm before
-   relying on it.
-2. **Provenance treatment.** Anything sourced from them must be tagged. A
-   figure taken from a textbook is not `REGULATORY` — the rules as published —
-   and it is no longer `STYLISED` either. Expect to add a provenance value
-   along the lines of `LITERATURE`, with the citation carried on the
-   `Assumption`, so the appendix can say which book a number came from.
+Gareth has said the risk books may now be drawn on. Both questions this note
+originally left open are now closed — **see `RISK_BOOKS.md`** for the library
+map, the Drive ids, the book-to-constant build map and the reading protocol.
+`Provenance.LITERATURE` exists in `units.py`. Calibration work has not started.
 
 ### What they would actually unblock
 

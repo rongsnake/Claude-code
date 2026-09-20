@@ -37,6 +37,11 @@ class Provenance(str, Enum):
     SUPERVISORY = "supervisory"
     #: Taken from published market or peer data (index levels, spread ranges).
     MARKET_REF = "market-reference"
+    #: Taken from a textbook or practitioner text — neither the rule as written
+    #: nor invented here. `Assumption.source` carries the citation (title,
+    #: chapter, table or page) so the appendix can say which book it came from.
+    #: See banksim/docs/RISK_BOOKS.md for the library and reading protocol.
+    LITERATURE = "literature"
     #: Invented for the simulation. NOT a real firm's number.
     STYLISED = "stylised"
     #: Computed from the above by the model.
