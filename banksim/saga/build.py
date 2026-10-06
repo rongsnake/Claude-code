@@ -15,7 +15,7 @@ import json
 from datetime import date
 from pathlib import Path
 
-from . import borrowers, cities, eras, events, techs
+from . import borrowers, cities, eras, events, rivals, techs
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE = HERE / "saga_template.html"
@@ -47,6 +47,10 @@ def data() -> dict:
         "regimes": borrowers.CAPITAL_REGIMES,
         "gsib": borrowers.GSIB,
         "events": sorted(events.EVENTS, key=lambda e: e["year"]),
+        "rivals": rivals.RIVALS,
+        "acquisition": rivals.ACQUISITION,
+        "branch_weight": rivals.BRANCH_WEIGHT,
+        "court_contest": rivals.COURT_CONTEST,
         "turns": eras.total_turns(),
     }
 
@@ -67,4 +71,4 @@ def build() -> dict:
 if __name__ == "__main__":
     p = build()
     print(f"wrote {OUT_HTML.relative_to(HERE.parent.parent)} — {p['turns']} turns, "
-          f"{len(p['events'])} events, {len(p['techs'])} innovations, {len(p['cities'])} cities")
+          f"{len(p['events'])} events, {len(p['techs'])} innovations, {len(p['cities'])} cities, {len(p['rivals'])} rival houses")

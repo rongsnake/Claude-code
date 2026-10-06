@@ -42,7 +42,9 @@ banking house from a bench on the Rialto in 1300 to the FSB's list of global
 systemically important banks. 257 era-scaled turns; a tech tree of financial
 innovations from the bill of exchange to stress testing; branches in nineteen
 cities; Edward III, Charles the Bold, Philip II, the Ayr Bank, Overend Gurney
-and Lehman landing on whoever is exposed; permadeath. The modern era runs the
+and Lehman landing on whoever is exposed; twenty-two rival houses from the
+Bardi to Lehman that take the pool and the court while they live, fall on
+their dates, and can be bought or rescued when they do; permadeath. The modern era runs the
 Basel regimes and the G-SIB score. Build it with:
 
 ```bash
@@ -61,7 +63,7 @@ python -m banksim.cli run --scenario acs_severe --detail
 python -m banksim.cli stress                      # every scenario, compared
 python -m banksim.cli stress --json out.json      # machine-readable
 
-python -m unittest discover -s banksim/tests -t . # 150 tests
+python -m unittest discover -s banksim/tests -t . # 158 tests
 ```
 
 ## What it produces

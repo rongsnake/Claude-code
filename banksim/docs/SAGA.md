@@ -55,6 +55,40 @@ the inside. This is the seven centuries that lead up to it.
 10. **G-SIB score** from 2011: size, interconnectedness, substitutability,
     complexity, cross-jurisdictional activity, 20% each; 130 bps designates.
 
+## The rival houses
+
+Twenty-two real banks share the table (`rivals.py`): the Peruzzi and the
+Bardi, the Medici, the Lippomano and the Pisani–Tiepolo on the Rialto, the
+Fuggers and the Welsers, the Genoese, Backwell and Vyner, Hoare's, Hope & Co.,
+Barings, Rothschild, Overend Gurney, the City of Glasgow Bank, the Midland,
+J.P. Morgan, the Hongkong and Shanghai Bank, Warburg, BCCI, Northern Rock and
+Lehman. Each has a home city, a founding year, a size by era (a share of its
+home pool — STYLISED), the cities it reaches, the innovations its people know,
+and its fates: HISTORICAL dates on which it failed, was absorbed, was rescued
+or was gutted, each coinciding with a scripted event.
+
+While a rival lives it **takes its share of each city's pool** — your
+deposit and lending capacity there is what is left — and **competes at
+court**: a prince whose city it reaches sometimes gives it the loan before
+you see it, less often the higher your standing. When it **falls** it frees
+the share, adds to the panic in the cities where you share a counter, and
+its business goes on sale by the liquidator at a deposit premium of 2%, with
+half the deposits kept and a tenth of them bad. **The turn before** a fall or
+a rescue it is in distress, and can be rescued at 8% with most of the
+deposits and a quarter of them bad — which is 1890, and what the Governor's
+guarantee fund was for. Buying a house brings its people: the innovations it
+knew are half the price to adopt. The Houses panel ranks you by deposits
+against the living; the end screen counts the houses you outlived and the
+ones you bought.
+
+The fates that are also events of yours: Edward III's default kills the
+Peruzzi and the Bardi; Nancy guts the Medici; Spain's 1557 stop guts the
+Fuggers; the Stop of the Exchequer kills Backwell; Overend Gurney and City of
+Glasgow fall on their days; Barings is rescued in 1890 and sold for £1 in
+1995 (and if you have a Singapore desk and no VaR, a one-in-two chance of
+their trader is yours); BCCI is closed; Northern Rock and Lehman fall in
+2007 and 2008.
+
 ## Honesty: what is historical and what is a dial
 
 Every era, city, innovation and event carries a `provenance`.
@@ -148,12 +182,12 @@ takes a seed. The footer lists the rules in force.
 
 ## Testing
 
-`banksim/tests/test_saga_data.py` — 31 tests on the data: eras tile the
+`banksim/tests/test_saga_data.py` — 39 tests on the data: eras tile the
 timeline and turns shorten; cities' sovereigns exist and each era's centre is
 prosperous; the tech tree is acyclic, monotone in time, and refers to real
 classes; every class has numbers for every era it is live in and princes pay
 most; every scripted default is preceded by a way of being exposed to that
-sovereign; the spine of the story is present; the build produces a page.
+sovereign; the spine of the story is present; the rivals' fates fall on the dates of scripted events and the famous ones on the right years; the build produces a page.
 
 The engine is exercised headlessly with Playwright (`Saga.autoplay(turns,
 opts)` is exposed on `window` for the purpose); the three strategies above are
@@ -162,8 +196,9 @@ are stdlib-only by rule.
 
 ## Roadmap
 
-1. **Competitors.** Named rival houses that take pool share, fail in the
-   crises, and can be bought — the Medici, the Fuggers, Overend Gurney.
+1. ~~Competitors.~~ Done: the rival houses above. Still to do for them:
+   rivals that *grow* with their fortunes rather than following a table, and
+   rivals that bid against you for a failed house.
 2. **Exchange and remittance.** Real cross-rates between branches, so a bill
    earns what the rate says and a seat in the wrong city costs what it did.
 3. **A council.** Partners with views, who leave with their capital if they

@@ -20,5 +20,6 @@ from .cities import CITIES, SOVEREIGNS
 from .techs import TECHS
 from .borrowers import BORROWERS, CAPITAL_REGIMES
 from .events import EVENTS
+from .rivals import RIVALS
 
-__all__ = ["ERAS", "CITIES", "SOVEREIGNS", "TECHS", "BORROWERS", "CAPITAL_REGIMES", "EVENTS"]
+__all__ = ["ERAS", "CITIES", "SOVEREIGNS", "TECHS", "BORROWERS", "CAPITAL_REGIMES", "EVENTS", "RIVALS"]

@@ -14,6 +14,7 @@ from banksim.saga import ERAS, CITIES, SOVEREIGNS, TECHS, BORROWERS, CAPITAL_REG
 from banksim.saga.borrowers import FUNDING, GSIB
 from banksim.saga.eras import era_for_year, total_turns
 from banksim.saga.techs import tech_by_id
+from banksim.saga.rivals import RIVALS, ACQUISITION, BRANCH_WEIGHT, COURT_CONTEST
 
 ERA_IDS = [e["id"] for e in ERAS]
 CITY_IDS = {c["id"] for c in CITIES}
@@ -244,6 +245,84 @@ class EventTests(unittest.TestCase):
         for eid in ("peel", "ring_fence", "venice_bans_trade", "provveditori", "banking_act"):
             e = next(e for e in EVENTS if e["id"] == eid)
             self.assertIn("scope", e["effect"], eid)
+
+
+class RivalTests(unittest.TestCase):
+    def test_homes_cities_and_techs_exist(self):
+        for r in RIVALS:
+            self.assertIn(r["home"], CITY_IDS, r["id"])
+            self.assertIn(r["home"], r["cities"], r["id"])
+            for c in r["cities"]:
+                self.assertIn(c, CITY_IDS, (r["id"], c))
+            for t in r["techs"]:
+                self.assertIn(t, TECH_IDS, (r["id"], t))
+
+    def test_sizes_are_shares_keyed_by_era(self):
+        for r in RIVALS:
+            self.assertTrue(r["size"], r["id"])
+            for era_id, share in r["size"].items():
+                self.assertIn(era_id, ERA_IDS, r["id"])
+                self.assertTrue(0 < share <= 0.5, (r["id"], era_id, share))
+
+    def test_fates_are_ordered_after_founding_and_well_formed(self):
+        kinds = {"failed", "absorbed", "rescued", "gutted"}
+        for r in RIVALS:
+            years = [f["year"] for f in r["fates"]]
+            self.assertEqual(years, sorted(years), r["id"])
+            for f in r["fates"]:
+                self.assertGreater(f["year"], r["founded"], r["id"])
+                self.assertIn(f["kind"], kinds, r["id"])
+                self.assertTrue(f["text"], r["id"])
+                if f["kind"] in ("rescued", "gutted"):
+                    self.assertTrue(0 < f.get("size_mult", 0.5) < 1, r["id"])
+            terminal = [f for f in r["fates"] if f["kind"] in ("failed", "absorbed")]
+            self.assertLessEqual(len(terminal), 1, r["id"])
+            if terminal:
+                self.assertEqual(terminal[0], r["fates"][-1], r["id"])
+
+    def test_a_rival_is_alive_in_the_eras_it_has_a_size_for(self):
+        for r in RIVALS:
+            end = next((f["year"] for f in r["fates"] if f["kind"] in ("failed", "absorbed")), 9999)
+            for era_id in r["size"]:
+                e = ERAS[ERA_IDS.index(era_id)]
+                self.assertLess(r["founded"], e["end"], (r["id"], era_id))
+                self.assertGreater(end, e["start"], (r["id"], era_id))
+
+    def test_the_famous_fall_on_the_right_dates(self):
+        fell = {r["id"]: next((f["year"] for f in r["fates"] if f["kind"] == "failed"), None) for r in RIVALS}
+        self.assertEqual(fell["peruzzi"], 1343)
+        self.assertEqual(fell["bardi"], 1346)
+        self.assertEqual(fell["medici"], 1494)
+        self.assertEqual(fell["backwell"], 1672)
+        self.assertEqual(fell["overend"], 1866)
+        self.assertEqual(fell["glasgow"], 1878)
+        self.assertEqual(fell["barings"], 1995)
+        self.assertEqual(fell["lehman"], 2008)
+        self.assertIsNone(fell["rothschild"])
+        self.assertIsNone(fell["hoare"])
+
+    def test_fates_coincide_with_scripted_events(self):
+        event_years = {e["year"] for e in EVENTS}
+        for rid, year in (("peruzzi", 1343), ("bardi", 1346), ("medici", 1494), ("lippomano", 1499),
+                          ("fugger", 1557), ("pisani", 1584), ("backwell", 1672), ("overend", 1866),
+                          ("glasgow", 1878), ("barings", 1890), ("bcci", 1991), ("barings", 1995), ("lehman", 2008)):
+            r = next(r for r in RIVALS if r["id"] == rid)
+            self.assertIn(year, [f["year"] for f in r["fates"]], rid)
+            self.assertIn(year, event_years, (rid, year))
+
+    def test_acquisition_terms(self):
+        for mode, t in ACQUISITION.items():
+            self.assertTrue(0 < t["price"] < 0.2, mode)
+            self.assertTrue(0 < t["deposits_kept"] <= 1, mode)
+            self.assertTrue(0 <= t["bad_book"] < 0.5, mode)
+        self.assertGreater(ACQUISITION["rescued"]["price"], ACQUISITION["failed"]["price"])
+        self.assertGreater(ACQUISITION["rescued"]["bad_book"], ACQUISITION["failed"]["bad_book"])
+        self.assertTrue(0 < BRANCH_WEIGHT < 1 and 0 < COURT_CONTEST < 1)
+
+    def test_provenance_and_source(self):
+        for r in RIVALS:
+            self.assertEqual(r["provenance"], "HISTORICAL", r["id"])
+            self.assertTrue(r["source"], r["id"])
 
 
 class BuildTests(unittest.TestCase):
