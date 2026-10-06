@@ -1,0 +1,764 @@
+<title>The Long Ledger</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --plane:#F2F5F8; --surface:#FFFFFF; --sunk:#E8EDF3;
+  --ink:#0F1720; --ink-2:#4E5B6B; --ink-3:#8593A3;
+  --rule:#DDE3EA; --rule-strong:#C3CDD8;
+  --accent:#8A6417; --accent-soft:#F3EAD6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#7a5cc9;
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --good-wash:#E6F5E6; --warning-wash:#FDF3DC; --critical-wash:#FAE6E6;
+  --shadow:0 1px 2px rgba(15,23,32,.06), 0 6px 20px rgba(15,23,32,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0C1014; --surface:#161B22; --sunk:#1E252E;
+    --ink:#EEF2F6; --ink-2:#9FADBC; --ink-3:#6E7D8D;
+    --rule:#262E38; --rule-strong:#36404C;
+    --accent:#D9A93F; --accent-soft:#2B2417;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#8f72e0;
+    --good-wash:#12291A; --warning-wash:#2C2412; --critical-wash:#2E1618;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0C1014; --surface:#161B22; --sunk:#1E252E;
+  --ink:#EEF2F6; --ink-2:#9FADBC; --ink-3:#6E7D8D;
+  --rule:#262E38; --rule-strong:#36404C;
+  --accent:#D9A93F; --accent-soft:#2B2417;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#8f72e0;
+  --good-wash:#12291A; --warning-wash:#2C2412; --critical-wash:#2E1618;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{background:var(--plane); color:var(--ink); margin:0;
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; font-size:14px; line-height:1.5}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 60px}
+h1,h2,h3,h4{margin:0; text-wrap:balance}
+a{color:inherit}
+button{font:inherit}
+.serif{font-family:"IBM Plex Serif",Georgia,serif}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+.small{font-size:12px}
+
+/* rail */
+.rail{position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+  background:color-mix(in srgb,var(--plane) 90%,transparent); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1180px; margin:0 auto; padding:10px 16px; display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+.rail .year{font-family:"IBM Plex Serif",Georgia,serif; font-size:26px; font-weight:600; letter-spacing:-.01em; min-width:72px}
+.rail .era{font-size:12px; color:var(--ink-2); line-height:1.25}
+.rail .era b{display:block; color:var(--ink); font-weight:500}
+.rail .spacer{flex:1}
+.btn{cursor:pointer; border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+  border-radius:8px; padding:7px 13px; font-weight:500; transition:background .12s,border-color .12s}
+.btn:hover{border-color:var(--rule-strong)}
+.btn.primary{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.btn.primary:hover{opacity:.9}
+.btn.accent{background:var(--accent); color:#fff; border-color:var(--accent)}
+.btn.danger{color:var(--critical); border-color:color-mix(in srgb,var(--critical) 50%,var(--rule))}
+.btn[disabled]{opacity:.4; cursor:default}
+.btn.sm{padding:4px 9px; font-size:12px; border-radius:6px}
+.btn:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* header */
+header.page{padding-block:26px 14px}
+.eyebrow{font-family:"IBM Plex Serif",Georgia,serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+h1{font-family:"IBM Plex Serif",Georgia,serif; font-size:clamp(26px,4vw,36px); font-weight:600; margin-top:4px; letter-spacing:-.01em}
+.lede{color:var(--ink-2); max-width:66ch; margin-top:8px}
+.banner{margin-top:14px; border:1px solid var(--rule); border-left:3px solid var(--accent); background:var(--accent-soft);
+  border-radius:4px; padding:10px 14px; font-size:12.5px; color:var(--ink-2)}
+.banner strong{color:var(--ink)}
+
+/* layout */
+.grid{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:16px; align-items:start}
+@media (max-width:880px){.grid{grid-template-columns:1fr}}
+.col{display:flex; flex-direction:column; gap:16px; min-width:0}
+.card{background:var(--surface); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); padding:14px 16px; min-width:0}
+.card h2{font-family:"IBM Plex Serif",Georgia,serif; font-size:16px; font-weight:600; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.card h2 .sub{font-family:"IBM Plex Sans",sans-serif; font-weight:400; font-size:12px; color:var(--ink-3)}
+.card > p{margin:6px 0 0; color:var(--ink-2); font-size:12.5px}
+
+/* tiles */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px}
+.tile{background:var(--sunk); border-radius:8px; padding:10px 12px}
+.tile-k{font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3)}
+.tile-v{font-size:21px; font-weight:600; margin-top:3px; letter-spacing:-.02em; line-height:1.1; font-variant-numeric:tabular-nums}
+.tile-sub{font-size:11.5px; color:var(--ink-2); margin-top:3px}
+.tile[data-state="good"] .tile-v{color:var(--good)}
+.tile[data-state="warning"] .tile-v{color:#b07d00}
+.tile[data-state="critical"] .tile-v{color:var(--critical)}
+
+/* verdict */
+.verdict{display:flex; gap:12px; align-items:flex-start; border-radius:10px; padding:12px 14px; border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow)}
+.verdict[data-state="good"]{background:var(--good-wash); border-color:color-mix(in srgb,var(--good) 30%,var(--rule))}
+.verdict[data-state="warning"]{background:var(--warning-wash); border-color:color-mix(in srgb,var(--warning) 40%,var(--rule))}
+.verdict[data-state="critical"]{background:var(--critical-wash); border-color:color-mix(in srgb,var(--critical) 40%,var(--rule))}
+.verdict .t{font-weight:600}
+.verdict .x{font-size:12.5px; color:var(--ink-2); margin-top:2px}
+
+/* allocation */
+.alloc{display:flex; flex-direction:column; gap:8px; margin-top:10px}
+.arow{display:grid; grid-template-columns:minmax(120px,1.2fr) minmax(0,2fr) 58px; gap:10px; align-items:center}
+.arow .nm{font-weight:500; font-size:13px; line-height:1.2}
+.arow .nm small{display:block; font-weight:400; color:var(--ink-3); font-size:11px; font-variant-numeric:tabular-nums}
+.arow input[type=range]{width:100%; accent-color:var(--accent); margin:0}
+.arow .pct{text-align:right; font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums}
+.arow.off{opacity:.45}
+.bar{height:8px; border-radius:4px; background:var(--sunk); overflow:hidden; display:flex; margin-top:10px}
+.bar i{display:block; height:100%}
+.legend{display:flex; flex-wrap:wrap; gap:6px 12px; margin-top:6px; font-size:11.5px; color:var(--ink-2)}
+.legend i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:5px; vertical-align:-1px}
+.ctl{display:grid; grid-template-columns:minmax(120px,1.2fr) minmax(0,2fr) 58px; gap:10px; align-items:center; margin-top:8px}
+.ctl .nm{font-weight:500; font-size:13px}
+.ctl .nm small{display:block; font-weight:400; color:var(--ink-3); font-size:11px}
+.ctl input[type=range]{width:100%; accent-color:var(--ink); margin:0}
+.ctl .pct{text-align:right; font-family:"IBM Plex Mono",monospace; font-size:12.5px}
+
+/* map */
+.cities{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px; margin-top:10px}
+.city{border:1px solid var(--rule); border-radius:8px; padding:9px 10px; background:var(--surface); position:relative}
+.city.seat{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+.city.branch{background:color-mix(in srgb,var(--accent-soft) 60%,var(--surface))}
+.city.sacked{opacity:.45}
+.city .cn{font-weight:600; font-size:13px; display:flex; justify-content:space-between; gap:6px; align-items:baseline}
+.city .cn .tag{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:500}
+.city .cn .tag.centre{color:var(--s1)}
+.city .meter{height:4px; border-radius:2px; background:var(--sunk); margin:6px 0; overflow:hidden}
+.city .meter i{display:block; height:100%; background:var(--s1); border-radius:2px}
+.city .cb{font-size:11px; color:var(--ink-2); line-height:1.35}
+.city .acts{display:flex; gap:5px; margin-top:7px; flex-wrap:wrap}
+
+/* techs */
+.techs{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; margin-top:10px}
+.tech{border:1px solid var(--rule); border-radius:8px; padding:9px 10px; background:var(--surface)}
+.tech.have{background:var(--good-wash); border-color:color-mix(in srgb,var(--good) 30%,var(--rule))}
+.tech.locked{opacity:.5}
+.tech .tn{font-weight:600; font-size:13px; display:flex; justify-content:space-between; gap:6px}
+.tech .tn .yr{font-weight:400; color:var(--ink-3); font-family:"IBM Plex Mono",monospace; font-size:11px}
+.tech .tx{font-size:11.5px; color:var(--ink-2); margin-top:3px; line-height:1.35}
+.tech .acts{display:flex; gap:6px; align-items:center; margin-top:7px; font-size:11.5px; color:var(--ink-3)}
+
+/* court / offers */
+.offer{border:1px solid color-mix(in srgb,var(--accent) 45%,var(--rule)); background:var(--accent-soft); border-radius:8px; padding:10px 12px; margin-top:8px}
+.offer .ot{font-weight:600}
+.offer .ox{font-size:12.5px; color:var(--ink-2); margin-top:2px}
+.offer .acts{display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap}
+.offer input[type=range]{accent-color:var(--accent); flex:1; min-width:120px}
+
+/* chronicle */
+.chron{display:flex; flex-direction:column; gap:10px; margin-top:8px; max-height:560px; overflow:auto; padding-right:4px}
+.entry{border-left:2px solid var(--rule); padding-left:10px}
+.entry .ey{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+.entry .et{font-weight:600; font-size:13px}
+.entry .ex{font-size:12.5px; color:var(--ink-2); margin-top:2px}
+.entry.bad{border-left-color:var(--critical)}
+.entry.good{border-left-color:var(--good)}
+.entry.hist{border-left-color:var(--accent)}
+.entry .prov{font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3); margin-left:6px}
+
+/* table */
+table{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px}
+th{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); text-align:left; padding:4px 6px; border-bottom:1px solid var(--rule)}
+td{padding:5px 6px; border-bottom:1px solid var(--rule); font-variant-numeric:tabular-nums}
+td.n,th.n{text-align:right; font-family:"IBM Plex Mono",monospace}
+tr.total td{font-weight:600; border-top:1px solid var(--rule-strong)}
+
+/* chart */
+.chart{width:100%; height:auto; display:block; margin-top:8px}
+.chart text{font-family:"IBM Plex Mono",monospace; font-size:10px; fill:var(--ink-3)}
+.chart .ax{stroke:var(--rule); stroke-width:1}
+.chart .ln{fill:none; stroke:var(--s1); stroke-width:1.6}
+.chart .ln2{fill:none; stroke:var(--s2); stroke-width:1.2; stroke-dasharray:3 3}
+.chart .mark{fill:var(--critical)}
+
+/* ladder (modern capital) */
+.ladder{display:flex; flex-direction:column-reverse; gap:2px; margin-top:8px}
+.lad{display:flex; justify-content:space-between; padding:5px 8px; border-radius:4px; font-size:12px; background:var(--sunk)}
+.lad b{font-family:"IBM Plex Mono",monospace; font-weight:500}
+.lad.req{background:color-mix(in srgb,var(--s1) 18%,var(--sunk))}
+.lad.buf{background:color-mix(in srgb,var(--s4) 18%,var(--sunk))}
+.lad.gsib{background:color-mix(in srgb,var(--s6) 20%,var(--sunk))}
+.lad.pos{background:color-mix(in srgb,var(--good) 20%,var(--sunk)); font-weight:600}
+.lad.pos.bad{background:color-mix(in srgb,var(--critical) 22%,var(--sunk))}
+
+/* modal */
+.modal-bg{position:fixed; inset:0; background:rgba(8,12,16,.55); z-index:100; display:none; align-items:center; justify-content:center; padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:var(--surface); color:var(--ink); border-radius:12px; max-width:640px; width:100%; max-height:88vh; overflow:auto; padding:22px 24px; box-shadow:0 20px 60px rgba(0,0,0,.35); border:1px solid var(--rule)}
+.modal .eyebrow{margin-bottom:4px}
+.modal h2{font-family:"IBM Plex Serif",Georgia,serif; font-size:24px; font-weight:600}
+.modal .sub{color:var(--ink-2); margin-top:2px}
+.modal p{color:var(--ink-2); font-size:14px; line-height:1.6}
+.modal .acts{display:flex; gap:8px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap}
+.modal .kv{display:grid; grid-template-columns:auto 1fr; gap:3px 14px; font-size:13px; margin-top:10px}
+.modal .kv b{font-family:"IBM Plex Mono",monospace; font-weight:500}
+
+/* footer */
+footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid var(--rule); padding-top:12px}
+.pillrow{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+.pill{font-size:11.5px; border:1px solid var(--rule); border-radius:999px; padding:2px 9px; color:var(--ink-2)}
+.pill.on{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.kbd{font-family:"IBM Plex Mono",monospace; font-size:11px; border:1px solid var(--rule); border-radius:4px; padding:0 5px; color:var(--ink-2)}
+</style>
+
+<div class="rail"><div class="rail-inner">
+  <div class="year" id="r-year">1300</div>
+  <div class="era" id="r-era"><b>—</b><span></span></div>
+  <div class="spacer"></div>
+  <span class="small faint" id="r-turn"></span>
+  <button class="btn" id="b-save" title="Save to this browser">Save</button>
+  <button class="btn" id="b-new">New game</button>
+  <button class="btn primary" id="b-end">End turn ▸</button>
+</div></div>
+
+<div class="wrap">
+<header class="page">
+  <div class="eyebrow">banksim · the long ledger</div>
+  <h1 id="h-title">The Long Ledger</h1>
+  <p class="lede" id="h-lede">A banking house from a bench on the Rialto in 1300 to the FSB's list of the banks that matter. Lend, open branches, adopt what the age invents, follow the money, and do not lend the king more than you can lose.</p>
+  <div class="banner"><strong>The house is fictional; the history is not.</strong> Dates, crises and rule changes are real and sourced. Yields, loss rates and city prosperity are stylised dials tuned for play, tagged <span class="kbd">STYLISED</span> in the data. No real bank's figures appear anywhere. Built <span id="h-built"></span>.</div>
+</header>
+
+<div class="grid">
+<div class="col">
+  <div class="verdict" id="verdict" data-state="good"><div><div class="t" id="v-t">A new ledger</div><div class="x" id="v-x"></div></div></div>
+
+  <div class="card">
+    <h2>The ledger <span class="sub" id="l-cur"></span></h2>
+    <div class="tiles" id="tiles"></div>
+    <table id="bs"></table>
+  </div>
+
+  <div class="card">
+    <h2>Lending <span class="sub">where the money goes, by weight</span></h2>
+    <p>Weights set the target mix of earning assets. Illiquid books cannot be cut quickly: a class only shrinks by what it can realise in a turn.</p>
+    <div class="alloc" id="alloc"></div>
+    <div class="bar" id="alloc-bar"></div>
+    <div class="legend" id="alloc-legend"></div>
+    <div class="ctl"><div class="nm">Coin in the till<small>share of runnable funding held liquid</small></div><input type="range" id="c-reserve" min="0" max="60" step="1"><div class="pct" id="c-reserve-v"></div></div>
+    <div class="ctl"><div class="nm">Partners' drawings<small>share of profit paid out</small></div><input type="range" id="c-payout" min="0" max="100" step="5"><div class="pct" id="c-payout-v"></div></div>
+    <div class="ctl" id="row-notes" hidden><div class="nm">Notes in circulation<small>as a share of deposits — cheap, and runnable</small></div><input type="range" id="c-notes" min="0" max="80" step="5"><div class="pct" id="c-notes-v"></div></div>
+    <div class="ctl" id="row-wholesale" hidden><div class="nm">Wholesale funding<small>interbank and Euromarket, as a share of deposits</small></div><input type="range" id="c-wholesale" min="0" max="150" step="5"><div class="pct" id="c-wholesale-v"></div></div>
+    <div class="ctl" id="row-raise" hidden><div class="nm">Raise equity<small>from outside shareholders, this turn</small></div><input type="range" id="c-raise" min="0" max="100" step="5"><div class="pct" id="c-raise-v"></div></div>
+  </div>
+
+  <div class="card" id="card-court">
+    <h2>The court <span class="sub">who wants your money</span></h2>
+    <div id="offers"></div>
+  </div>
+
+  <div class="card" id="card-capital" hidden>
+    <h2>Capital <span class="sub" id="cap-regime"></span></h2>
+    <p id="cap-text"></p>
+    <div class="ladder" id="ladder"></div>
+    <div class="tiles" id="cap-tiles" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card" id="card-gsib" hidden>
+    <h2>Systemic importance <span class="sub">the FSB's five categories</span></h2>
+    <p>Designation at 130 basis points. 20% each: size, interconnectedness, substitutability, complexity, cross-jurisdictional activity.</p>
+    <table id="gsib-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Capital through the ages <span class="sub">partners' capital, log scale</span></h2>
+    <svg class="chart" id="chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Equity over time"></svg>
+  </div>
+</div>
+
+<div class="col">
+  <div class="card">
+    <h2>Branches <span class="sub">the map</span></h2>
+    <p id="map-text"></p>
+    <div class="cities" id="cities"></div>
+  </div>
+
+  <div class="card">
+    <h2>Innovations <span class="sub">what the age makes possible</span></h2>
+    <div class="techs" id="techs"></div>
+  </div>
+
+  <div class="card">
+    <h2>Chronicle</h2>
+    <div class="chron" id="chron"></div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <div>Seed <span class="mono" id="f-seed"></span> · Turn length <span id="f-turn"></span> · Rules in force: <span id="f-rules"></span></div>
+  <div style="margin-top:6px">Sources for every dated event are in <span class="mono">banksim/saga/events.py</span>; the design notes in <span class="mono">banksim/docs/SAGA.md</span>. Part of <a href="https://github.com/rongsnake/Claude-code">rongsnake/Claude-code</a>.</div>
+</footer>
+</div>
+
+<div class="modal-bg" id="modal"><div class="modal" id="modal-box"></div></div>
+
+<script>
+'use strict';
+const D = /*__SAGA_DATA__*/null;
+
+/* ------------------------------------------------------------------ utils */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const sum=o=>Object.values(o).reduce((a,b)=>a+(typeof b==='number'?b:sum(b)),0);
+const byId=(arr,id)=>arr.find(x=>x.id===id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fmtMoney(v){ // v in thousands of display currency
+  const sym=era().currency_symbol; const neg=v<0; v=Math.abs(v);
+  let s;
+  if(v>=1e6) s=(v/1e6).toFixed(v>=1e7?0:1)+'bn';
+  else if(v>=1e3) s=(v/1e3).toFixed(v>=1e4?0:1)+'m';
+  else if(v>=100) s=Math.round(v)+'k';
+  else s=Math.round(v*1000).toLocaleString('en-GB');
+  return (neg?'−':'')+sym+s;
+}
+const pct=(v,d=1)=>(v*100).toFixed(d)+'%';
+const pp=(v,d=1)=>(v*100).toFixed(d)+'pp';
+
+/* ------------------------------------------------------------------ state */
+let S=null, rng=null;
+const SOV_SCALAR=['princes','foreign_bonds','syndicated_loans']; // classes tracked by sovereign
+
+function era(){ return D.eras.find(e=>S.year>=e.start&&S.year<e.end)||D.eras[D.eras.length-1]; }
+function city(id){ return byId(D.cities,id); }
+function seatSovereign(){ return city(S.seat).sovereign; }
+function prosperity(cid){ const c=city(cid), cs=S.cityState[cid]||{}; if(cs.sacked) return 0.05;
+  return (c.prosperity[era().id]||0)*(cs.prosperity_mult||1); }
+function branchIds(){ return Object.keys(S.branches); } // includes seat
+function pool(year){ const ks=Object.keys(D.pool).map(Number).sort((a,b)=>a-b); if(year<=ks[0]) return D.pool[ks[0]]; for(let i=1;i<ks.length;i++){ if(year<=ks[i]){ const a=ks[i-1],b=ks[i]; const f=(year-a)/(b-a); return D.pool[a]*Math.pow(D.pool[b]/D.pool[a],f); } } return D.pool[ks[ks.length-1]]; }
+function hasTech(t){ return !!S.techs[t]; }
+
+function rules(){
+  const r=Object.assign({},era().rules);
+  for(const o of S.ruleOverrides){ if(o.year<=S.year&&(!o.scope||o.scope===seatSovereign())) r[o.field]=o.value; }
+  if(S.regime) r.capital_regime=S.regime;
+  return r;
+}
+function techFx(){ // aggregate effects of adopted techs
+  const fx={agency:1,fraud:1,panic:1,branch_cost:1,capital_raise:0,liquidity:{},yield:{},loss:{},liability:null,branch_liability:null,unlocked:{},funding:{},capital_relief:0};
+  for(const t of D.techs){ if(!S.techs[t.id]) continue; const e=t.effects;
+    for(const k of ['agency','fraud','panic','branch_cost']) if(e[k]!=null) fx[k]*=e[k];
+    if(e.capital_raise) fx.capital_raise=Math.max(fx.capital_raise,e.capital_raise);
+    if(e.capital_relief) fx.capital_relief=Math.max(fx.capital_relief,e.capital_relief);
+    if(e.liability) fx.liability=e.liability; if(e.branch_liability) fx.branch_liability=e.branch_liability;
+    if(e.unlock_class) fx.unlocked[e.unlock_class]=true; if(e.unlock_funding) fx.funding[e.unlock_funding]=true;
+    for(const k of ['liquidity','yield','loss']) if(e[k]) for(const c in e[k]) fx[k][c]=(fx[k][c]??(k==='loss'?1:0))*(k==='loss'?1:0)+(k==='loss'?(fx[k][c]??1)*e[k][c]:(fx[k][c]??0)+e[k][c]);
+  }
+  return fx;
+}
+function classAvailable(b){
+  if(S.year<b.from) return false; if(b.until&&S.year>=b.until) return false;
+  if(b.id==='commodities'&&rules().own_account_trade===false) return false;
+  if(b.requires_tech&&!hasTech(b.requires_tech)) return false;
+  return b.yield[era().id]!=null||b.id==='cash';
+}
+function classes(){ return D.borrowers.filter(b=>b.id!=='cash'&&classAvailable(b)); }
+function amount(cid){ const a=S.assets[cid]; return typeof a==='number'?a:sum(a||{}); }
+function totalAssets(){ return Object.keys(S.assets).reduce((s,k)=>s+amount(k),0); }
+function liabilities(){ return S.funding.deposits+S.funding.notes+S.funding.wholesale; }
+function liquidityOf(cid){ const b=byId(D.borrowers,cid); return clamp(b.liquidity+(techFx().liquidity[cid]||0),0,1); }
+function yieldOf(cid){ const b=byId(D.borrowers,cid), r=rules(); let y=(b.yield[era().id]??0)+(techFx().yield[cid]||0);
+  if(b.usury_exposed){ if(r.usury==='ban') y*=hasTech('bill_of_exchange')?0.75:0.4; else if(r.usury==='cap'&&r.usury_cap) y=Math.min(y,r.usury_cap); }
+  if(cid==='princes') y+=0.0; return y; }
+function lossOf(cid){ const b=byId(D.borrowers,cid); return (b.loss[era().id]??0)*(techFx().loss[cid]??1); }
+function sovereignsReachable(){ const s=new Set(); for(const c of branchIds()) s.add(city(c).sovereign); s.add('emerging'); return s; }
+function cityAttribution(){ // share of the house's business attributed to each city
+  const w={}; let t=0; for(const c of branchIds()){ const p=Math.max(0.05,prosperity(c))*(c===S.seat?1.5:1); w[c]=p; t+=p; }
+  for(const c in w) w[c]/=t; return w; }
+
+/* ------------------------------------------------------------------ new game */
+function newGame(seed){
+  seed=seed>>>0; rng=mulberry32(seed);
+  S={ seed, year:1300, turn:0, seat:'venice', centre:'venice', alive:true, dead:null, won:null, designated:null,
+    funding:{deposits:30,notes:0,wholesale:0},
+    assets:{cash:10,merchants:18,commodities:8,state_bonds:6,trade_bills:0,princes:{},foreign_bonds:{},syndicated_loans:{},
+            discount_market:0,acceptances:0,mortgages:0,industry:0,retail:0,trading_book:0},
+    branches:{venice:{opened:1300,control:1}},
+    techs:{giro:true},
+    standing:{crown:{},merchants:50,regulator:50},
+    cityState:{},
+    ruleOverrides:[], techGates:{}, regime:null, gsibOn:false, wholesaleFreeze:false,
+    weights:{merchants:5,trade_bills:0,commodities:2,state_bonds:2,princes:0},
+    reserve:0.25, payout:0.60, notesShare:0, wholesaleShare:0, raise:0,
+    offers:[], log:[], series:[], eraSeen:{}, lastProfit:0, lastLoss:0, warnings:0, lifeboatUsed:false,
+    fired:{}, lolrUses:0,
+  };
+  for(const s in D.sovereigns) S.standing.crown[s]=40;
+  for(const c of D.cities){ S.cityState[c.id]={open:c.opens<=1300,sacked:false,prosperity_mult:1}; }
+  log(1300,'A bench on the Rialto','The house opens its ledger at San Giacomo: twelve thousand ducats of the partners\' own, thirty thousand on deposit, and a reputation to make.','hist','STYLISED');
+  snapshot();
+}
+function log(year,title,text,kind,prov){ S.log.unshift({year,title,text,kind:kind||'',prov:prov||''}); if(S.log.length>400) S.log.length=400; }
+function snapshot(){ S.series.push({year:S.year,equity:equity(),assets:totalAssets(),deposits:S.funding.deposits}); }
+function equity(){ return totalAssets()-liabilities(); }
+
+/* ------------------------------------------------------------------ player actions */
+function spend(amt){ // take coin, then liquid assets pro rata
+  if(amt<=0) return 0; let left=amt; const take=Math.min(S.assets.cash,left); S.assets.cash-=take; left-=take;
+  if(left>0){ const liq={}; let tot=0; for(const b of D.borrowers){ if(b.id==='cash'||SOV_SCALAR.includes(b.id)) continue;
+      const a=S.assets[b.id]||0, l=a*liquidityOf(b.id); if(l>0){liq[b.id]=l; tot+=l;} }
+    if(tot<=0) return amt-left; const use=Math.min(left,tot);
+    for(const k in liq){ S.assets[k]-=use*liq[k]/tot; } left-=use; }
+  return amt-left;
+}
+function liquidCapacity(panic){ panic=panic||0; const mkt=Math.pow(1-clamp(panic,0,0.95),2); let c=S.assets.cash; for(const b of D.borrowers){ if(b.id==='cash') continue;
+  const a=amount(b.id); c+=a*liquidityOf(b.id)*(SOV_SCALAR.includes(b.id)?0.5:1)*mkt; } return c; }
+function canAfford(cost){ return liquidCapacity()>=cost && equity()>cost; }
+
+function adoptTech(id){ const t=byId(D.techs,id); if(S.techs[id]) return false;
+  if(!techAvailable(t)) return false; const cost=t.cost*equity(); if(!canAfford(cost)) return false;
+  spend(cost); S.techs[id]=true; log(S.year,'Adopted: '+t.name,t.text,'good',t.provenance); render(); return true; }
+function techAvailable(t){ if(S.year<t.available) return false; if(S.techGates[t.id]===false&&(!S.techGateScope[t.id]||S.techGateScope[t.id]===seatSovereign())) return false;
+  return t.requires.every(r=>S.techs[r]); }
+function branchCost(cid){ return 0.10*equity()*techFx().branch_cost*(0.6+prosperity(cid)); }
+function openBranch(cid){ if(S.branches[cid]) return false; const cs=S.cityState[cid]; const c=city(cid);
+  if(!cs.open||cs.sacked||S.year<c.opens) return false; const cost=branchCost(cid); if(!canAfford(cost)) return false;
+  spend(cost); S.branches[cid]={opened:S.year,control:0.3}; S.standing.crown[c.sovereign]=clamp(S.standing.crown[c.sovereign]+5,0,100);
+  log(S.year,'Branch opened in '+c.name,c.blurb,'good'); render(); return true; }
+function closeBranch(cid){ if(!S.branches[cid]||cid===S.seat) return false; const att=cityAttribution()[cid]||0;
+  // winding up costs a share of the business there
+  const loss=0.15*att*totalAssets(); spend(loss); delete S.branches[cid]; log(S.year,'Branch closed in '+city(cid).name,'Wound up; '+fmtMoney(loss)+' of local business lost in the winding-up.','bad'); render(); return true; }
+function moveSeat(cid){ if(!S.branches[cid]||cid===S.seat) return false; const cost=0.12*equity(); if(!canAfford(cost)) return false;
+  spend(cost); const old=S.seat; S.seat=cid; S.branches[cid].control=1; S.standing.crown[city(old).sovereign]=clamp(S.standing.crown[city(old).sovereign]-20,0,100);
+  S.standing.crown[city(cid).sovereign]=clamp(S.standing.crown[city(cid).sovereign]+10,0,100);
+  log(S.year,'The seat moves to '+city(cid).name,'The partners, the books and the cassa go with it. '+city(old).name+' becomes a branch; its prince remembers.','hist','STYLISED'); render(); return true; }
+function acceptOffer(i,shareOfMax){ const o=S.offers[i]; if(!o) return false; const amt=o.amount*clamp(shareOfMax??1,0.1,1);
+  if(liquidCapacity()<amt) return false; spend(amt);
+  const cls=o.cls||'princes'; S.assets[cls][o.sovereign]=(S.assets[cls][o.sovereign]||0)+amt; S.offerYield=S.offerYield||{}; S.offerYield[o.sovereign]=o.yield;
+  S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]+15,0,100); S.offers.splice(i,1);
+  log(S.year,'Lent to '+D.sovereigns[o.sovereign].name,fmtMoney(amt)+' at '+pct(o.yield,0)+' a year. '+D.sovereigns[o.sovereign].title+' is pleased.','','STYLISED'); render(); return true; }
+function declineOffer(i){ const o=S.offers[i]; if(!o) return false; S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]-8,0,100); S.offers.splice(i,1);
+  log(S.year,'Declined '+D.sovereigns[o.sovereign].title,'Standing at that court falls. Houses that said no to Edward III are still in business.','','STYLISED'); render(); return true; }
+
+/* ------------------------------------------------------------------ turn engine */
+function advance(){
+  if(!S.alive) return; const E=era(), years=E.turn_years, R=rules(), FX=techFx();
+  const notes=[]; let losses=0, shockLoss=0;
+  S.wholesaleFreeze=false;
+  // 1. raise equity if allowed
+  if(S.raise>0&&FX.capital_raise>0&&R.joint_stock){ const amt=Math.min(Math.min(S.raise,FX.capital_raise)*equity(),0.004*pool(S.year)*prosperity(S.seat)*years); S.assets.cash+=amt; S.standing.merchants=clamp(S.standing.merchants-3,0,100); notes.push('Raised '+fmtMoney(amt)+' of new equity.'); S.raise=0; }
+  // 2. events of this turn
+  const evs=D.events.filter(e=>e.year>=S.year&&e.year<S.year+years&&!S.fired[e.id]);
+  let panic=0, panicCities=null; const shocks=[]; const defaults=[];
+  for(const e of evs){ S.fired[e.id]=true; applyEvent(e,{shocks,defaults,addPanic:(p,c)=>{panic+=p; if(c) panicCities=(panicCities||[]).concat(c);}}); }
+  // 3. funding. Deposits follow capital and standing — a house attracts
+  //    deposits in proportion to what its partners have at risk, faster at the
+  //    centre of gravity — with an era leverage target (STYLISED) and inertia.
+  //    Every change on the liability side arrives or leaves as coin.
+  const before=liabilities();
+  const Ltarget={rialto:2.5,medici:3.0,princes:3.2,northern:3.5,country:5.0,lombard:8.0,basel:14.0}[E.id];
+  const att=cityAttribution();
+  const centreF=S.seat===S.centre?1.2:(prosperity(S.seat)<0.2?0.6:0.9);
+  const standF=0.6+S.standing.merchants/125;
+  const eq0=Math.max(equity(),1); const P=pool(S.year);
+  // each branch takes what its capital and name can attract, up to a share of its city's pool
+  let target=0; for(const c in att){ const cap=D.max_pool_share*P*prosperity(c)*(c===S.seat?1:0.5);
+    const demand=Ltarget*eq0*att[c]*(0.5+prosperity(c))*standF*centreF; target+=Math.min(cap,demand); }
+  const pull=1-Math.pow(0.80,years);
+  S.funding.deposits=S.funding.deposits*(1+E.nominal_drift*years)+(target-S.funding.deposits)*pull;
+  S.funding.deposits=Math.max(0,S.funding.deposits);
+  const notesAllowed=R.notes_allowed&&hasTech('banknotes'), wsAllowed=hasTech('eurodollar')&&E.id==='basel';
+  S.funding.notes=notesAllowed?S.notesShare*S.funding.deposits:S.funding.notes*0.7; if(!notesAllowed&&S.funding.notes<1) S.funding.notes=0;
+  S.funding.wholesale=wsAllowed?S.wholesaleShare*S.funding.deposits:0;
+  const diff=liabilities()-before; if(diff>=0) S.assets.cash+=diff; else spend(-diff);
+  // 4. rebalance assets toward weights
+  rebalance(years);
+  // 5. income and costs
+  let income=0, fcost=0;
+  for(const b of D.borrowers){ const a=amount(b.id); if(a<=0) continue; let y=yieldOf(b.id);
+    if(SOV_SCALAR.includes(b.id)){ for(const s in S.assets[b.id]){ const oy=(S.offerYield||{})[s]; income+=S.assets[b.id][s]*(oy??y)*years; } }
+    else income+=a*y*years; }
+  for(const f of D.funding){ const a=S.funding[f.id]||0; fcost+=a*(f.cost[E.id]||0)*years; }
+  let bcost=0; for(const c of branchIds()){ if(c===S.seat) continue; bcost+=0.012*att[c]*totalAssets()*years*FX.branch_cost; }
+  const OVERHEAD={rialto:0.040,medici:0.037,princes:0.034,northern:0.030,country:0.024,lombard:0.018,basel:0.015}[E.id];
+  const overhead=OVERHEAD*totalAssets()*years;
+  // 6. base losses with noise
+  for(const b of D.borrowers){ if(b.id==='cash') continue; const a=amount(b.id); if(a<=0) continue;
+    const noise=Math.exp(0.45*(gauss()-0.1)); let l=lossOf(b.id)*years*noise;
+    // random sovereign defaults (STYLISED): the scripted ones carry the story
+    if(SOV_SCALAR.includes(b.id)){ for(const s in S.assets[b.id]){ const rel=(D.sovereigns[s]||{reliability:.7}).reliability;
+        if(rel<0.6&&(E.id!=='basel'||s==='emerging')&&rng()<(1-rel)*0.03*years){ const h=0.2+0.3*rng(); const dl=S.assets[b.id][s]*h; S.assets[b.id][s]-=dl; losses+=dl;
+          log(S.year,D.sovereigns[s].name+' reschedules','Payments stop; what comes back is '+pct(1-h,0)+' of the principal, late.','bad','STYLISED'); } }
+    }
+    const dl=Math.min(a,a*l); losses+=dl; reduceClass(b.id,dl);
+  }
+  // 7. shocks from events
+  for(const sh of shocks){ const exp=exposure(sh.cities); for(const b of D.borrowers){ const sens=(b.shock||{})[sh.kind]; if(!sens) continue; const a=amount(b.id); if(a<=0) continue;
+      const dl=Math.min(a,a*sh.size*sens*exp*0.18); shockLoss+=dl; reduceClass(b.id,dl); } }
+  // 8. scripted sovereign defaults
+  for(const d of defaults){ let hit=0; for(const cls of SOV_SCALAR){ const a=(S.assets[cls]||{})[d.sovereign]||0; if(a>0){ const h=d.haircut*(hasTech('sovereign_syndicate')?0.75:1); const dl=a*h; S.assets[cls][d.sovereign]-=dl; hit+=dl; } }
+    if(hit>0){ shockLoss+=hit; notes.push('Lost '+fmtMoney(hit)+' on '+D.sovereigns[d.sovereign].name+'.'); S.standing.merchants=clamp(S.standing.merchants-10,0,100); } }
+  // 9. agency losses at branches
+  for(const c of branchIds()){ if(c===S.seat) continue; const br=S.branches[c]; const capCtl=0.5+(hasTech('double_entry')?0.2:0)+(hasTech('telegraph')?0.2:0)+(hasTech('holding')?0.1:0);
+    br.control=Math.min(capCtl,br.control+0.08*years/5*2);
+    const p=0.045*years*(1-br.control)*FX.agency; if(rng()<p){ const share=att[c]*totalAssets()*(0.15+0.35*rng()); const dl=Math.min(share,FX.branch_liability==='limited'?share*0.5:share);
+      shockLoss+=dl; takeFromAll(dl); log(S.year,'Your manager in '+city(c).name+' has been lending on his own account','Unsecured advances to the local court and his own ventures, found in the books '+years+' years late. Loss '+fmtMoney(dl)+(FX.branch_liability==='limited'?'; the accomandita stopped the rest at the branch door.':'.'),'bad','STYLISED'); } }
+  // 10. profit, tax, payout
+  losses+=shockLoss; const gross=income-fcost-bcost-overhead-losses;
+  const tax=(S.year>=1965&&gross>0)?gross*0.25:0; let profit=gross-tax;
+  // modern MDA cap on payout
+  let payout=S.payout; const cap=capitalPosition(); if(cap&&cap.mda!=null) payout=Math.min(payout,cap.mda);
+  const draw=profit>0?profit*payout:0;
+  // book: profit lands in cash (income received), losses already removed from classes
+  S.assets.cash+=income-fcost-bcost-overhead-tax-draw;
+  S.lastProfit=profit; S.lastLoss=losses; S.lastDraw=draw;
+  // 11. panic and the run
+  const eq=equity();
+  if(losses>0.25*Math.max(eq,1)) panic+=0.3; if(eq<=0) panic+=0.8;
+  if(S.assets.cash<0) panic+=0.4;
+  panic*=FX.panic; if(R.deposit_insurance) panic*=0.35; if(R.lolr) panic*=0.8;
+  const pexp=panicCities?exposure(panicCities):1; panic*=pexp;
+  if(panic>0.02){ const W=panic*(0.6*S.funding.deposits+0.8*S.funding.notes+(S.wholesaleFreeze?1:0.9)*S.funding.wholesale);
+    const L=liquidCapacity(panic); const cash0=S.assets.cash; const fireRate=0.12+0.35*clamp(panic,0,1);
+    if(W<=cash0){ S.assets.cash-=W; S.funding.deposits-=W*(0.6*S.funding.deposits)/(0.6*S.funding.deposits+0.8*S.funding.notes+0.9*S.funding.wholesale+1e-9); notes.push('A run: '+fmtMoney(W)+' withdrawn; the till held.'); withdrawFunding(W); }
+    else if(W<=L){ const fire=(W-Math.max(cash0,0))*fireRate; spend(W); withdrawFunding(W); takeFromAll(fire); losses+=fire; notes.push('A run: '+fmtMoney(W)+' withdrawn. Bills and bonds sold at a loss of '+fmtMoney(fire)+' to meet it.'); }
+    else { // cannot meet withdrawals
+      if(R.lolr&&eq>0){ const gap=W-L; const pen=gap*0.10*years; spend(L); withdrawFunding(W); S.funding.deposits+=gap; // the Bank lends the gap; booked as funding
+        S.assets.cash+=gap; S.assets.cash-=pen; S.lolrUses++; S.standing.regulator=clamp(S.standing.regulator-12,0,100);
+        notes.push('The Bank of England lent '+fmtMoney(gap)+' against your paper at a penalty rate. Bagehot\'s rule: solvent, so saved.'); }
+      else if(S.lifeboatOffer&&eq>0){ const gap=W-L; spend(L); withdrawFunding(W); S.funding.deposits+=gap; S.assets.cash+=gap-gap*0.08; S.lifeboatOffer=false; S.lifeboatUsed=true;
+        notes.push('The Lifeboat: the clearers lent '+fmtMoney(gap)+' at a price. You are a secondary bank that lived.'); }
+      else { die('run','A run on the house','Withdrawals of '+fmtMoney(W)+' against '+fmtMoney(L)+' that could be found. The bench is broken'+(FX.liability==='limited'||R.liability==='limited'?'; the shareholders lose their shares.':'; the partners are liable to the last coin.')); }
+    }
+  }
+  if(!S.alive) { finishTurn(years,notes,evs); return; }
+  // 12. expulsion
+  const ss=seatSovereign(); if(S.standing.crown[ss]<8&&rng()<0.5){ die('expelled','Expelled','The prince whose city holds your seat has had enough of your refusals. Your goods are seized and the partners leave with what they carry.'); finishTurn(years,notes,evs); return; }
+  // 13. solvency
+  if(equity()<=0){ die('bankrupt','Bankrupt','Assets no longer cover deposits. '+(profit<0?'The turn lost '+fmtMoney(-profit)+(losses>0?', of which bad debts and write-downs '+fmtMoney(losses):'')+'. ':'')+(R.lolr?'A lender of last resort lends to the solvent; you are not.':'In an age without a lender of last resort, that is the end.')); finishTurn(years,notes,evs); return; }
+  // 14. supervision / modern capital
+  if(cap){ if(cap.breach){ S.warnings++; if(S.warnings>=2){ die('resolved','Placed in resolution','CET1 of '+pct(cap.ratio)+' against a minimum of '+pct(cap.min)+' for a second year. The PRA invokes the Banking Act 2009; the bank is resolved over a weekend.'); finishTurn(years,notes,evs); return; }
+      notes.push('Warning: CET1 '+pct(cap.ratio)+' is below the minimum of '+pct(cap.min)+'. One more year and you are resolved.'); } else S.warnings=0;
+    if(cap.lev!=null&&cap.lev<0.03){ notes.push('Leverage ratio '+pct(cap.lev,2)+' is below 3%.'); S.standing.regulator=clamp(S.standing.regulator-5,0,100); } }
+  else if(R.reserve_floor>0&&S.assets.cash<R.reserve_floor*liabilities()){ S.standing.regulator=clamp(S.standing.regulator-6,0,100); notes.push('Below the required liquid-asset ratio; the authorities notice.'); }
+  // 15. standing drift
+  if(profit>0) S.standing.merchants=clamp(S.standing.merchants+2,0,100); else S.standing.merchants=clamp(S.standing.merchants-4,0,100);
+  for(const s in S.standing.crown) S.standing.crown[s]=clamp(S.standing.crown[s]+(S.standing.crown[s]<40?1:-1)*0.5,0,100);
+  S.standing.regulator=clamp(S.standing.regulator+1,0,100);
+  // 16. G-SIB
+  if(S.gsibOn){ const g=gsibScore(); if(g.total>=D.gsib.designation_score&&!S.designated){ S.designated=S.year; S.won={year:S.year,score:g.total,bucket:g.bucket}; } }
+  // 17. random offers
+  if(rng()<0.35*Math.min(1,years/3)) makeOffer();
+  S.offers=S.offers.filter(o=>{o.turns--; return o.turns>0;});
+  finishTurn(years,notes,evs);
+}
+function finishTurn(years,notes,evs){
+  const y0=S.year; S.year+=years; S.turn++;
+  if(notes.length) log(y0,'The turn of '+y0+'–'+(S.year-1),notes.join(' '),S.lastProfit<0?'bad':'');
+  snapshot(); save(); render();
+  const E=era(); if(!S.eraSeen[E.id]){ S.eraSeen[E.id]=true; if(S.year>1300) showEra(E); }
+  if(!S.alive) showDeath(); else if(S.won&&!S.wonShown){ S.wonShown=true; showWin(); } else if(S.year>=2027) showEnd();
+}
+function die(reason,title,text){ S.alive=false; S.dead={reason,title,text,year:S.year}; log(S.year,title,text,'bad'); }
+function gauss(){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function exposure(cities){ if(!cities) return 1; const ids=branchIds(); const n=cities.filter(c=>ids.includes(c)).length; return clamp((cities.includes(S.seat)?0.7:0.12)+0.3*n/Math.max(1,ids.length),0,1); }
+function reduceClass(cid,dl){ if(dl<=0) return; if(SOV_SCALAR.includes(cid)){ const m=S.assets[cid]; const t=sum(m); if(t<=0) return; for(const s in m) m[s]-=dl*m[s]/t; } else S.assets[cid]=Math.max(0,S.assets[cid]-dl); }
+function takeFromAll(dl){ const t=totalAssets(); if(t<=0||dl<=0) return; for(const b of D.borrowers){ const a=amount(b.id); if(a>0) reduceClass(b.id,dl*a/t); } }
+function withdrawFunding(W){ const tot=0.6*S.funding.deposits+0.8*S.funding.notes+0.9*S.funding.wholesale+1e-9;
+  S.funding.deposits=Math.max(0,S.funding.deposits-W*0.6*S.funding.deposits/tot); S.funding.notes=Math.max(0,S.funding.notes-W*0.8*S.funding.notes/tot); S.funding.wholesale=Math.max(0,S.funding.wholesale-W*0.9*S.funding.wholesale/tot); }
+function rebalance(years){
+  const total=totalAssets(); const runnable=liabilities(); const cashT=S.reserve*runnable;
+  const cls=classes(); let wsum=0; for(const b of cls) wsum+=(S.weights[b.id]||0);
+  let sovTot=0; for(const k of SOV_SCALAR) sovTot+=amount(k);
+  // the lending market is a share of the economy: beyond it, money sits in state debt
+  const att=cityAttribution(); const P=pool(S.year); let capacity=0; for(const c in att) capacity+=D.max_pool_share*P*prosperity(c)*(c===S.seat?1:0.5);
+  capacity*=D.lending_market; const surplus=Math.max(0,total-cashT-sovTot-capacity);
+  const earn=Math.max(0,total-cashT-sovTot-surplus);
+  // desired per class; sovereign-tracked classes are only filled by offers, never by weight
+  const desired={}; for(const b of cls){ if(SOV_SCALAR.includes(b.id)){ desired[b.id]=amount(b.id); continue; } desired[b.id]=wsum>0?earn*(S.weights[b.id]||0)/wsum:0; if(b.id==='state_bonds') desired[b.id]+=surplus; }
+  // classes no longer available run off at their liquidity
+  for(const b of D.borrowers){ if(b.id==='cash'||cls.includes(b)) continue; const a=amount(b.id); if(a>0){ const cut=Math.min(a,a*Math.max(liquidityOf(b.id),0.25)*years/3); reduceClass(b.id,cut); S.assets.cash+=cut; } }
+  // reductions limited by liquidity; increases funded from cash
+  let cash=S.assets.cash; const plan=[];
+  for(const b of cls){ if(SOV_SCALAR.includes(b.id)) continue; const a=S.assets[b.id]||0, d=desired[b.id]; if(d<a){ const cut=Math.min(a-d,a*liquidityOf(b.id)); S.assets[b.id]=a-cut; cash+=cut; } else plan.push([b.id,d-a]); }
+  // the sovereign books, if over their share, also run off slowly
+  let need=0; for(const [,x] of plan) need+=x; const avail=Math.max(0,cash-cashT);
+  const f=need>0?Math.min(1,avail/need):0; for(const [id,x] of plan){ S.assets[id]+=x*f; cash-=x*f; }
+  // surplus beyond the lending market into state debt (it is always available)
+  const extra=Math.max(0,cash-cashT); if(extra>0&&surplus>0){ const m=Math.min(extra,surplus); S.assets.state_bonds=(S.assets.state_bonds||0)+m; cash-=m; }
+  S.assets.cash=cash;
+}
+function makeOffer(){ const reach=[...sovereignsReachable()].filter(s=>D.sovereigns[s]); if(!reach.length) return; const s=reach[Math.floor(rng()*reach.length)];
+  const E=era(); const size=(0.15+0.35*rng())*Math.max(equity(),1)*(1+S.standing.crown[s]/100); const base=yieldOf('princes'); const y=base*(0.8+0.5*rng())*(1.4-D.sovereigns[s].reliability*0.6);
+  S.offers.push({sovereign:s,amount:size,yield:clamp(y,0.03,0.30),turns:2,cls:E.id==='basel'?'syndicated_loans':(S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':'princes'),
+    text:D.sovereigns[s].title+' asks for '+fmtMoney(size)+' at '+pct(clamp(y,0.03,0.3),0)+'. Standing at court: '+Math.round(S.standing.crown[s])+'.',prov:'STYLISED'}); }
+function applyEvent(e,ctx){
+  const f=e.effect; const scoped=f.scope&&f.scope!==seatSovereign();
+  log(e.year,e.title,e.text,'hist',e.provenance);
+  switch(f.type){
+    case 'flavour': break;
+    case 'sovereign_default': ctx.defaults.push(f); break;
+    case 'forced_loan': if(f.sovereign===seatSovereign()||S.branches[Object.keys(S.branches).find(c=>city(c).sovereign===f.sovereign)||'']){ const amt=f.share*S.funding.deposits; spend(amt); S.assets.state_bonds=(S.assets.state_bonds||0)+amt; ctx.addPanic(0.1); } break;
+    case 'shock': ctx.shocks.push(f); if(f.panic) ctx.addPanic(f.panic,f.cities); if(f.wholesale_freeze) S.wholesaleFreeze=true; break;
+    case 'panic': ctx.addPanic(f.size,f.cities); break;
+    case 'rule': S.ruleOverrides.push({year:e.year,field:f.field,value:f.value,scope:f.scope||null}); if(f.panic&&!scoped) ctx.addPanic(f.panic,f.cities); if(f.also) applyEvent({year:e.year,title:e.title,text:'',effect:f.also,provenance:e.provenance},{...ctx,quiet:true}); break;
+    case 'centre': S.centre=f.city; break;
+    case 'city': { const cs=S.cityState[f.city]; if(f.field==='open') cs.open=f.value; else if(f.field==='sacked'){ cs.sacked=f.value; if(S.branches[f.city]){ const dl=cityAttribution()[f.city]*totalAssets()*0.6; takeFromAll(dl); log(e.year,'Your house in '+city(f.city).name+' is looted',fmtMoney(dl)+' lost.','bad','STYLISED'); if(S.seat===f.city) ctx.addPanic(0.5); } } else if(f.field==='prosperity_mult') cs.prosperity_mult=f.value; break; }
+    case 'regime': S.regime=f.id; break;
+    case 'tech_gate': S.techGates[f.tech]=f.available; S.techGateScope=S.techGateScope||{}; S.techGateScope[f.tech]=f.scope||null; break;
+    case 'offer': { const s=f.sovereign; if(sovereignsReachable().has(s)||S.year<1500){ const amt=f.size*Math.max(equity(),1)*2; S.offers.push({sovereign:s,amount:amt,yield:f.yield,turns:f.turns,cls:S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':(era().id==='basel'?'syndicated_loans':'princes'),text:D.sovereigns[s].title+' asks for '+fmtMoney(amt)+' at '+pct(f.yield,0)+'.',prov:'HISTORICAL',hist:e.title}); } break; }
+    case 'lifeboat': if(f.shock) ctx.shocks.push(Object.assign({cities:f.cities},f.shock)); if(seatSovereign()==='england') S.lifeboatOffer=true; break;
+    case 'gsib_on': S.gsibOn=true; break;
+    case 'fraud_check': if(S.branches[f.city]&&S.assets.trading_book>0&&!hasTech('var')&&rng()<0.5*techFx().fraud*2){ const dl=Math.min(S.assets.trading_book*f.size,equity()*0.95); reduceClass('trading_book',dl); ctx.shocks.push({kind:'none',size:0}); log(e.year,'Account 88888','A trader in '+city(f.city).name+' has been hiding losses in an error account. '+fmtMoney(dl)+' gone. Your controls were his.','bad','STYLISED'); } break;
+  }
+}
+/* ------------------------------------------------------------------ modern capital */
+function capitalPosition(){ const R=rules(); if(!R.capital_regime) return null; const reg=D.regimes[R.capital_regime]; const FX=techFx();
+  let rwaSA=0; for(const b of D.borrowers){ const a=amount(b.id); rwaSA+=a*(reg.rw[b.id]??1); }
+  let rwa=rwaSA; if(FX.capital_relief>0){ rwa=rwaSA*(1-FX.capital_relief); const fl=reg.output_floor?Math.min(0.725,0.60+0.025*(S.year-2027)):0; if(fl) rwa=Math.max(rwa,fl*rwaSA); }
+  const eq=equity(); const ratio=rwa>0?eq/rwa:1; const p2a=S.year>=2007?0.015:0; const ccyb=S.year>=2018&&S.year<2020?0.01:(S.year>=2023?0.02:0); const buf=reg.buffers; const g=S.gsibOn?gsibScore():null; const gsb=g&&g.bucket?g.surcharge:0;
+  const min=reg.cet1_min+p2a; const withBuf=min+buf+ccyb+gsb; let mda=null; if(buf>0&&ratio<withBuf){ const q=(ratio-min)/(withBuf-min); mda=q<0?0:q<0.25?0:q<0.5?0.2:q<0.75?0.4:0.6; }
+  return {reg,rwa,rwaSA,ratio,min,p2a,buf,ccyb,gsb,withBuf,mda,breach:ratio<min,lev:S.year>=2014?eq/Math.max(1,totalAssets()):null,headroom:ratio-withBuf}; }
+function gsibScore(){ const T=totalAssets(); const att=cityAttribution(); let foreign=0; for(const c in att) if(city(c).sovereign!==seatSovereign()) foreign+=att[c];
+  const bn=x=>x/1e6; // thousands → billions
+  const size=bn(T)/9; const inter=(S.funding.wholesale/Math.max(1,liabilities()))*250+(amount('trading_book')/Math.max(1,T))*120+bn(T)/40;
+  const subs=bn(S.funding.deposits)/6+bn(amount('trade_bills')+amount('acceptances'))/2; const comp=bn(amount('trading_book'))/2+(hasTech('securitisation')?bn(amount('mortgages'))/6:0); const cross=foreign*300*Math.min(1,bn(T)/300);
+  const cats={size,interconnectedness:inter,substitutability:subs,complexity:comp,cross_jurisdictional:cross}; const total=Object.values(cats).reduce((a,b)=>a+b,0)/5;
+  let bucket=0,surcharge=0; D.gsib.buckets.forEach(([th,s],i)=>{ if(total>=th){bucket=i+1; surcharge=s;} }); return {cats,total,bucket,surcharge}; }
+
+/* ------------------------------------------------------------------ persistence */
+function save(){ try{ localStorage.setItem('longledger.v1',JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const s=localStorage.getItem('longledger.v1'); if(!s) return false; S=JSON.parse(s); rng=mulberry32((S.seed+S.turn*7919)>>>0); return true; }catch(e){ return false; } }
+
+/* ------------------------------------------------------------------ render */
+const $=id=>document.getElementById(id);
+function render(){
+  const E=era(), R=rules(), eq=equity(), T=totalAssets();
+  $('r-year').textContent=S.year; $('r-era').innerHTML='<b>'+esc(E.name)+'</b><span>'+esc(E.subtitle)+'</span>';
+  $('r-turn').textContent='Turn '+(S.turn+1)+' · '+E.turn_years+'-year turns · seat '+city(S.seat).name;
+  $('b-end').disabled=!S.alive||S.year>=2027; $('l-cur').textContent='in '+E.currency+', thousands';
+  $('f-seed').textContent=S.seed; $('f-turn').textContent=E.turn_years+' years'; $('h-built').textContent=D.built;
+  $('f-rules').textContent=Object.entries(R).filter(([k,v])=>v!==false&&v!=null&&v!=='none'&&v!==0).map(([k,v])=>k+(v===true?'':'='+v)).join(' · ');
+  // verdict
+  let st='good', vt='', vx='';
+  if(!S.alive){ st='critical'; vt=S.dead.title; vx=S.dead.text; }
+  else if(S.won){ st='good'; vt='Designated a G-SIB in '+S.won.year; vx='Score '+Math.round(S.won.score)+' bps, bucket '+S.won.bucket+'. Play on to 2027.'; }
+  else { const cashR=S.assets.cash/Math.max(1,liabilities()); const cap=capitalPosition();
+    if(cap&&cap.breach){ st='critical'; vt='Below the capital minimum'; vx='CET1 '+pct(cap.ratio)+' against '+pct(cap.min)+'. The PRA is in the building.'; }
+    else if(cap&&cap.mda!=null){ st='warning'; vt='Inside the buffers'; vx='CET1 '+pct(cap.ratio)+'; the MDA caps your payout at '+pct(cap.mda,0)+' of profit.'; }
+    else if(cashR<0.06){ st='warning'; vt='The till is thin'; vx='Coin of '+pct(cashR)+' of runnable funding. One bad rumour and you cannot pay out.'; }
+    else if(S.lastProfit<0){ st='warning'; vt='A losing turn'; vx='Loss of '+fmtMoney(-S.lastProfit)+'. The partners are not drawing.'; }
+    else { vt=S.turn===0?'A new ledger':'Solvent and liquid'; vx=S.turn===0?'Set your lending, keep coin for the run, and end the turn.':'Profit '+fmtMoney(S.lastProfit)+' last turn; partners drew '+fmtMoney(S.lastDraw||0)+'.'; } }
+  $('verdict').dataset.state=st; $('v-t').textContent=vt; $('v-x').textContent=vx;
+  // tiles
+  const cashR=S.assets.cash/Math.max(1,liabilities()); const lev=eq/Math.max(1,T);
+  $('tiles').innerHTML=[
+    tile('Partners\' capital',fmtMoney(eq),'equity / assets '+pct(lev),lev<0.05?'critical':lev<0.08?'warning':'good'),
+    tile('Total assets',fmtMoney(T),'deposits '+fmtMoney(S.funding.deposits)),
+    tile('Coin in the till',fmtMoney(S.assets.cash),pct(cashR)+' of runnable funding',cashR<0.06?'critical':cashR<0.12?'warning':'good'),
+    tile('Profit last turn',fmtMoney(S.lastProfit),'losses '+fmtMoney(S.lastLoss||0),S.lastProfit<0?'critical':'good'),
+    tile('Standing',Math.round(S.standing.merchants)+' / '+Math.round(S.standing.crown[seatSovereign()]),'merchants / '+D.sovereigns[seatSovereign()].title),
+  ].join('');
+  // balance sheet
+  let rows=''; const have=D.borrowers.filter(b=>amount(b.id)>0.5);
+  for(const b of have){ const a=amount(b.id); rows+=`<tr><td>${esc(b.name)}${SOV_SCALAR.includes(b.id)?' <span class="faint small">'+sovList(S.assets[b.id])+'</span>':''}</td><td class="n">${fmtMoney(a)}</td><td class="n">${pct(a/T,0)}</td><td class="n">${b.id==='cash'?'—':pct(yieldOf(b.id))}</td><td class="n">${b.id==='cash'?'—':pct(lossOf(b.id))}</td><td class="n">${pct(liquidityOf(b.id),0)}</td></tr>`; }
+  $('bs').innerHTML=`<tr><th>Assets</th><th class="n">Amount</th><th class="n">Share</th><th class="n">Yield</th><th class="n">Loss p.a.</th><th class="n">Liquid</th></tr>${rows}<tr class="total"><td>Total</td><td class="n">${fmtMoney(T)}</td><td class="n">100%</td><td colspan="3"></td></tr>
+  <tr><th>Funding</th><th class="n">Amount</th><th class="n">Share</th><th colspan="3"></th></tr>
+  <tr><td>Deposits</td><td class="n">${fmtMoney(S.funding.deposits)}</td><td class="n">${pct(S.funding.deposits/T,0)}</td><td colspan="3"></td></tr>
+  ${S.funding.notes>0.5?`<tr><td>Banknotes</td><td class="n">${fmtMoney(S.funding.notes)}</td><td class="n">${pct(S.funding.notes/T,0)}</td><td colspan="3"></td></tr>`:''}
+  ${S.funding.wholesale>0.5?`<tr><td>Wholesale</td><td class="n">${fmtMoney(S.funding.wholesale)}</td><td class="n">${pct(S.funding.wholesale/T,0)}</td><td colspan="3"></td></tr>`:''}
+  <tr class="total"><td>Partners' capital</td><td class="n">${fmtMoney(eq)}</td><td class="n">${pct(eq/T,1)}</td><td colspan="3"></td></tr>`;
+  renderAlloc(); renderCourt(); renderMap(); renderTechs(); renderChron(); renderChart(); renderCapital();
+}
+function sovList(m){ const e=Object.entries(m).filter(([,v])=>v>0.5).sort((a,b)=>b[1]-a[1]); const top=e.slice(0,3).map(([s,v])=>esc((D.sovereigns[s]?.name||s).replace(/^the /,''))+' '+fmtMoney(v)); return top.join(', ')+(e.length>3?' +'+(e.length-3)+' more':''); }
+function tile(k,v,sub,state){ return `<div class="tile" data-state="${state||''}"><div class="tile-k">${esc(k)}</div><div class="tile-v">${esc(v)}</div><div class="tile-sub">${esc(sub||'')}</div></div>`; }
+const COLORS=['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)','#6b8aa5','#c08a5c','#5fa8a0','#9a6fb0','#a0a0a0','#7fb069'];
+function renderAlloc(){
+  const cls=classes(); const R=rules(); let html='';
+  cls.forEach((b,i)=>{ const sov=SOV_SCALAR.includes(b.id); const w=S.weights[b.id]||0;
+    html+=`<div class="arow ${sov?'off':''}"><div class="nm"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${COLORS[i%COLORS.length]};margin-right:6px;vertical-align:-1px"></i>${esc(b.short)}<small>yield ${pct(yieldOf(b.id))} · loss ${pct(lossOf(b.id))} · liquid ${pct(liquidityOf(b.id),0)}</small></div>
+      ${sov?'<div class="small faint">filled by the court, not by weight</div>':`<input type="range" min="0" max="10" step="1" value="${w}" data-w="${b.id}">`}<div class="pct">${sov?fmtMoney(amount(b.id)):w}</div></div>`; });
+  $('alloc').innerHTML=html; for(const el of $('alloc').querySelectorAll('input[data-w]')) el.addEventListener('input',ev=>{ S.weights[ev.target.dataset.w]=+ev.target.value; renderAlloc(); });
+  // bar of current mix
+  const T=totalAssets(); let bar='', leg='';
+  D.borrowers.forEach((b,i)=>{ const a=amount(b.id); if(a<=0.5) return; const c=b.id==='cash'?'var(--ink-3)':COLORS[cls.indexOf(b)%COLORS.length]; bar+=`<i style="width:${100*a/T}%;background:${c}"></i>`; leg+=`<span><i style="background:${c}"></i>${esc(b.short)} ${pct(a/T,0)}</span>`; });
+  $('alloc-bar').innerHTML=bar; $('alloc-legend').innerHTML=leg;
+  $('c-reserve').value=Math.round(S.reserve*100); $('c-reserve-v').textContent=pct(S.reserve,0);
+  $('c-payout').value=Math.round(S.payout*100); $('c-payout-v').textContent=pct(S.payout,0);
+  const notesOk=R.notes_allowed&&hasTech('banknotes'); $('row-notes').hidden=!notesOk; $('c-notes').value=Math.round(S.notesShare*100); $('c-notes-v').textContent=pct(S.notesShare,0);
+  const wsOk=hasTech('eurodollar')&&era().id==='basel'; $('row-wholesale').hidden=!wsOk; $('c-wholesale').value=Math.round(S.wholesaleShare*100); $('c-wholesale-v').textContent=pct(S.wholesaleShare,0);
+  const raiseOk=techFx().capital_raise>0&&R.joint_stock; $('row-raise').hidden=!raiseOk; $('c-raise').max=Math.round(techFx().capital_raise*100); $('c-raise').value=Math.round(S.raise*100); $('c-raise-v').textContent=pct(S.raise,0)+(S.raise>0?' ('+fmtMoney(S.raise*equity())+')':'');
+}
+function renderCourt(){ if(!S.offers.length){ $('offers').innerHTML='<p class="muted small">No one is asking. Princes come to houses with branches in their cities; standing at court brings them back.</p>'; return; }
+  $('offers').innerHTML=S.offers.map((o,i)=>`<div class="offer"><div class="ot">${esc(o.hist||D.sovereigns[o.sovereign].name)} <span class="prov">${esc(o.prov||'')}</span></div><div class="ox">${esc(o.text)} Expires in ${o.turns} turn${o.turns>1?'s':''}. You can find ${fmtMoney(liquidCapacity())}.</div>
+    <div class="acts"><input type="range" min="10" max="100" step="10" value="100" id="off-${i}"><span class="small mono" id="offv-${i}">${fmtMoney(o.amount)}</span><button class="btn sm accent" data-acc="${i}">Lend</button><button class="btn sm" data-dec="${i}">Decline</button></div></div>`).join('');
+  S.offers.forEach((o,i)=>{ $('off-'+i).addEventListener('input',ev=>{ $('offv-'+i).textContent=fmtMoney(o.amount*ev.target.value/100); }); });
+  for(const b of $('offers').querySelectorAll('[data-acc]')) b.addEventListener('click',()=>{ const i=+b.dataset.acc; if(!acceptOffer(i,$('off-'+i).value/100)) toast('Not enough that can be found in coin.'); });
+  for(const b of $('offers').querySelectorAll('[data-dec]')) b.addEventListener('click',()=>declineOffer(+b.dataset.dec));
+}
+function renderMap(){ const E=era(); $('map-text').textContent='The centre of gravity is '+city(S.centre).name+(S.seat===S.centre?' — where you sit.':'; you sit in '+city(S.seat).name+'. A seat at the centre grows deposits a third faster.')+' Opening a branch costs about a tenth of capital; lending to a prince needs a branch in his city.';
+  const list=D.cities.filter(c=>S.cityState[c.id].open&&S.year>=c.opens&&(c.prosperity[E.id]!=null||S.branches[c.id])).sort((a,b)=>prosperity(b.id)-prosperity(a.id));
+  $('cities').innerHTML=list.map(c=>{ const br=S.branches[c.id], cs=S.cityState[c.id], p=prosperity(c.id), isSeat=c.id===S.seat;
+    return `<div class="city ${isSeat?'seat':br?'branch':''} ${cs.sacked?'sacked':''}"><div class="cn"><span>${esc(c.name)}</span><span class="tag ${c.id===S.centre?'centre':''}">${isSeat?'seat':c.id===S.centre?'centre':br?'branch':''}</span></div>
+      <div class="meter"><i style="width:${Math.round(p*100)}%"></i></div><div class="cb">${esc(c.blurb)}${br&&!isSeat?' Control '+pct(br.control,0)+'.':''}${cs.sacked?' Sacked.':''}</div>
+      <div class="acts">${!br&&!cs.sacked?`<button class="btn sm" data-open="${c.id}">Open · ${fmtMoney(branchCost(c.id))}</button>`:''}${br&&!isSeat?`<button class="btn sm" data-seat="${c.id}">Move seat · ${fmtMoney(0.12*equity())}</button><button class="btn sm danger" data-close="${c.id}">Close</button>`:''}</div></div>`; }).join('');
+  for(const b of $('cities').querySelectorAll('[data-open]')) b.addEventListener('click',()=>{ if(!openBranch(b.dataset.open)) toast('Cannot afford to open there.'); });
+  for(const b of $('cities').querySelectorAll('[data-seat]')) b.addEventListener('click',()=>{ if(!moveSeat(b.dataset.seat)) toast('Cannot afford the move.'); });
+  for(const b of $('cities').querySelectorAll('[data-close]')) b.addEventListener('click',()=>closeBranch(b.dataset.close));
+}
+function renderTechs(){ const list=D.techs.filter(t=>t.id!=='giro').sort((a,b)=>(S.techs[b.id]?1:0)-(S.techs[a.id]?1:0)||a.available-b.available);
+  $('techs').innerHTML=list.map(t=>{ const have=!!S.techs[t.id], avail=techAvailable(t), future=S.year<t.available, cost=t.cost*equity();
+    if(future&&t.available>S.year+era().turn_years*4) return '';
+    return `<div class="tech ${have?'have':avail?'':'locked'}"><div class="tn"><span>${esc(t.name)}</span><span class="yr">${t.available}</span></div><div class="tx">${esc(t.text)}</div>
+      <div class="acts">${have?'<span>Adopted</span>':avail?`<button class="btn sm" data-tech="${t.id}">Adopt · ${fmtMoney(cost)}</button>`:future?`<span>Not yet</span>`:S.techGates[t.id]===false?'<span>Forbidden by law here</span>':`<span>Needs ${t.requires.filter(r=>!S.techs[r]).map(r=>byId(D.techs,r).name).join(', ')}</span>`}</div></div>`; }).join('');
+  for(const b of $('techs').querySelectorAll('[data-tech]')) b.addEventListener('click',()=>{ if(!adoptTech(b.dataset.tech)) toast('Cannot afford it this turn.'); });
+}
+function renderChron(){ $('chron').innerHTML=S.log.slice(0,60).map(e=>`<div class="entry ${e.kind}"><div class="ey">${e.year}${e.prov?'<span class="prov">'+esc(e.prov)+'</span>':''}</div><div class="et">${esc(e.title)}</div><div class="ex">${esc(e.text)}</div></div>`).join(''); }
+function renderChart(){ const s=S.series; const W=640,H=220,L=48,R=10,T=12,B=26; const xs=s.map(p=>p.year), ys=s.map(p=>Math.max(1,p.equity)); const x0=1300,x1=2030;
+  const lmin=Math.log10(1), lmax=Math.log10(Math.max(100,...ys)*1.5); const X=y=>L+(y-x0)/(x1-x0)*(W-L-R), Y=v=>T+(1-(Math.log10(Math.max(1,v))-lmin)/(lmax-lmin))*(H-T-B);
+  let g=''; for(let d=0;d<=Math.ceil(lmax);d++){ const v=Math.pow(10,d); g+=`<line class="ax" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L-4}" y="${Y(v)+3}" text-anchor="end">${v>=1e6?(v/1e6)+'bn':v>=1e3?(v/1e3)+'m':v+'k'}</text>`; }
+  for(let y=1300;y<=2000;y+=100) g+=`<text x="${X(y)}" y="${H-8}" text-anchor="middle">${y}</text>`;
+  const path='M'+s.map(p=>X(p.year).toFixed(1)+' '+Y(p.equity).toFixed(1)).join(' L');
+  const path2='M'+s.map(p=>X(p.year).toFixed(1)+' '+Y(p.assets).toFixed(1)).join(' L');
+  const marks=D.events.filter(e=>['sovereign_default','panic'].includes(e.effect.type)&&e.year<=S.year).map(e=>`<circle class="mark" cx="${X(e.year)}" cy="${H-B+4}" r="1.8"><title>${esc(e.year+' '+e.title)}</title></circle>`).join('');
+  $('chart').innerHTML=g+`<path class="ln2" d="${path2}"/><path class="ln" d="${path}"/>`+marks+`<text x="${W-R}" y="${T+8}" text-anchor="end">capital — · assets ┈</text>`; }
+function renderCapital(){ const cap=capitalPosition(); $('card-capital').hidden=!cap; $('card-gsib').hidden=!S.gsibOn; if(cap){ const r=cap.reg; $('cap-regime').textContent=r.name+' · from '+r.from; $('cap-text').textContent=r.text;
+    const lad=[['Pillar 1 CET1 minimum',r.cet1_min,'req'],['Pillar 2A',cap.p2a,'req'],['Conservation buffer',cap.buf,'buf'],['Countercyclical buffer',cap.ccyb,'buf'],['G-SIB surcharge',cap.gsb,'gsib']].filter(([,v])=>v>0);
+    let cum=0; $('ladder').innerHTML=lad.map(([n,v,c])=>{cum+=v; return `<div class="lad ${c}"><span>${esc(n)}</span><b>${pct(v)} → ${pct(cum)}</b></div>`;}).join('')+`<div class="lad pos ${cap.breach?'bad':''}"><span>Your CET1 ratio</span><b>${pct(cap.ratio)}</b></div>`;
+    $('cap-tiles').innerHTML=tile('RWA',fmtMoney(cap.rwa),'density '+pct(cap.rwa/Math.max(1,totalAssets()),0)+(techFx().capital_relief?' · IRB':''))+tile('Headroom to buffers',pp(cap.headroom),cap.mda!=null?'MDA cap '+pct(cap.mda,0):'clear',cap.headroom<0?'warning':'good')+(cap.lev!=null?tile('Leverage ratio',pct(cap.lev,2),'minimum 3%',cap.lev<0.03?'critical':'good'):'')+tile('LCR proxy',pct((S.assets.cash+amount('state_bonds'))/Math.max(1,0.3*liabilities()),0),'liquid assets / 30-day outflow',(S.assets.cash+amount('state_bonds'))<0.3*liabilities()?'warning':'good'); }
+  if(S.gsibOn){ const g=gsibScore(); $('gsib-table').innerHTML='<tr><th>Category</th><th class="n">Score (bps)</th></tr>'+Object.entries(g.cats).map(([k,v])=>`<tr><td>${esc(k.replace('_',' '))}</td><td class="n">${Math.round(v)}</td></tr>`).join('')+`<tr class="total"><td>Total${g.bucket?' · bucket '+g.bucket+' · surcharge '+pct(g.surcharge)+'':' · not designated'}</td><td class="n">${Math.round(g.total)}</td></tr>`; } }
+
+/* ------------------------------------------------------------------ modals */
+function modal(html){ $('modal-box').innerHTML=html; $('modal').classList.add('show'); for(const b of $('modal-box').querySelectorAll('[data-close]')) b.addEventListener('click',()=>$('modal').classList.remove('show')); }
+function showEra(E){ modal(`<div class="eyebrow">${E.start}–${E.end} · ${E.turn_years}-year turns</div><h2>${esc(E.name)}</h2><div class="sub">${esc(E.subtitle)}</div><p>${esc(E.intro)}</p><p class="small faint">${esc(E.source)}</p><div class="acts"><button class="btn primary" data-close>Open the ledger</button></div>`); }
+function showDeath(){ const d=S.dead; modal(`<div class="eyebrow">${d.year} · game over</div><h2>${esc(d.title)}</h2><p>${esc(d.text)}</p><div class="kv"><span>Turns survived</span><b>${S.turn}</b><span>Capital at the peak</span><b>${fmtMoney(Math.max(...S.series.map(p=>p.equity)))}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b></div><p class="small faint">Permadeath, as you asked. The seed is ${S.seed}; the same seed replays the same history.</p><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); startNew(); }); }
+function showWin(){ const w=S.won; modal(`<div class="eyebrow">${w.year} · the FSB's November list</div><h2>Designated</h2><p>Score ${Math.round(w.score)} basis points: bucket ${w.bucket}, a surcharge of ${pct(D.gsib.buckets[w.bucket-1][1])} of risk-weighted assets on top of everything else. Seven centuries from a bench on the Rialto to a bank whose failure would matter everywhere. Play on to 2027 and the output floor.</p><div class="acts"><button class="btn primary" data-close>Carry on</button></div>`); }
+function showEnd(){ const g=S.gsibOn?gsibScore():null; modal(`<div class="eyebrow">2027 · Basel 3.1</div><h2>${S.won?'A G-SIB':'Survived'}</h2><p>${S.won?'Designated in '+S.won.year+', and still standing at the output floor.':'Seven hundred and twenty-seven years without a fatal run, default or regulator — and not systemically important. Score '+(g?Math.round(g.total):0)+' of 130. Bigger, more cross-border, more complex next time; or safer. The two pull against each other, which is the point.'}</p><div class="kv"><span>Capital</span><b>${fmtMoney(equity())}</b><span>Assets</span><b>${fmtMoney(totalAssets())}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b></div><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); startNew(); }); }
+function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:8px;font-size:13px;z-index:200;box-shadow:var(--shadow)'; document.body.appendChild(t); setTimeout(()=>t.remove(),1800); }
+function startNew(seed){ newGame(seed??(Date.now()&0xffffffff)); save(); render(); showEra(era()); }
+
+/* ------------------------------------------------------------------ wire up */
+$('b-end').addEventListener('click',()=>advance());
+$('b-save').addEventListener('click',()=>{ save(); toast('Saved to this browser.'); });
+$('b-new').addEventListener('click',()=>{ const s=prompt('New game. Enter a seed (number) or leave blank for a fresh one:',''); startNew(s?(+s>>>0):undefined); });
+$('c-reserve').addEventListener('input',e=>{ S.reserve=+e.target.value/100; $('c-reserve-v').textContent=pct(S.reserve,0); });
+$('c-payout').addEventListener('input',e=>{ S.payout=+e.target.value/100; $('c-payout-v').textContent=pct(S.payout,0); });
+$('c-notes').addEventListener('input',e=>{ S.notesShare=+e.target.value/100; $('c-notes-v').textContent=pct(S.notesShare,0); });
+$('c-wholesale').addEventListener('input',e=>{ S.wholesaleShare=+e.target.value/100; $('c-wholesale-v').textContent=pct(S.wholesaleShare,0); });
+$('c-raise').addEventListener('input',e=>{ S.raise=+e.target.value/100; $('c-raise-v').textContent=pct(S.raise,0); });
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.target.closest('input,button,textarea')&&!$('modal').classList.contains('show')) advance(); });
+
+if(!load()){ startNew(); } else { render(); }
+
+/* test hook: a scripted player for headless runs */
+window.Saga={get S(){return S}, newGame:startNew, advance, adoptTech, openBranch, moveSeat, acceptOffer, declineOffer, era, rules, techFx, capitalPosition, gsibScore, classes, equity, totalAssets,
+  autoplay(turns,opts){ opts=opts||{}; const out=[]; for(let i=0;i<turns&&S.alive&&S.year<2027;i++){
+    // a plain strategy: keep a fifth in coin, lend by yield/loss, adopt what is affordable, follow the centre, lend the court half of what it asks
+    S.reserve=opts.reserve??0.2; S.payout=opts.payout??0.35;
+    for(const b of classes()){ if(SOV_SCALAR.includes(b.id)) continue; const y=yieldOf(b.id), l=lossOf(b.id); S.weights[b.id]=clamp(Math.round((y-l)/0.012),0,b.id==='trading_book'?2:10); }
+    for(const t of D.techs){ if(!S.techs[t.id]&&techAvailable(t)&&t.cost*equity()<0.4*liquidCapacity()) adoptTech(t.id); }
+    if(S.centre!==S.seat){ if(!S.branches[S.centre]) openBranch(S.centre); else moveSeat(S.centre); }
+    const top=D.cities.filter(c=>S.cityState[c.id].open&&!S.cityState[c.id].sacked&&S.year>=c.opens&&!S.branches[c.id]).sort((a,b)=>prosperity(b.id)-prosperity(a.id)).slice(0,opts.branches??2);
+    for(const c of top) if(prosperity(c.id)>0.5&&branchIds().length<(opts.maxBranches??5)) openBranch(c.id);
+    while(S.offers.length){ if(rng()<(opts.lendCourt??0.5)) { if(!acceptOffer(0,0.5)) declineOffer(0); } else declineOffer(0); }
+    if(era().id==='basel'){ S.wholesaleShare=opts.wholesale??0.3; S.raise=opts.raise??0; }
+    S.notesShare=opts.notes??0.3;
+    advance(); out.push({year:S.year,equity:Math.round(equity()),assets:Math.round(totalAssets()),alive:S.alive,dead:S.dead&&S.dead.reason,seat:S.seat,techs:Object.keys(S.techs).length,branches:branchIds().length,gsib:S.gsibOn?Math.round(gsibScore().total):null,cap:capitalPosition()&&+capitalPosition().ratio.toFixed(3)});
+  } return out; } };
+</script>

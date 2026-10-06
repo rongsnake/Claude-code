@@ -35,6 +35,12 @@ are already implemented as published. It makes the model's behaviour defensible
 rather than merely plausible, which is a different and harder claim, and the one
 `DESIGN.md` currently declines to make.
 
+## The Long Ledger (added 6 October 2026)
+
+The game's own roadmap is at the end of `SAGA.md`: competitors, exchange rates
+between branches, a partners' council, a successor-house difficulty, and running
+the last forty turns on the Kingsgate engines rather than a risk-weight table.
+
 ## Next
 
 1. **Import the Bank of England's published stress scenario.** The single

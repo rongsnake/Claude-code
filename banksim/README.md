@@ -35,6 +35,23 @@ policy. The requirement stack and everything downstream of it — buffers, the
 MDA test, the leverage requirement, MREL, which constraint binds — recomputes
 in the browser, which is what makes it a simulator rather than a report.
 
+## The game: The Long Ledger
+
+`banksim/saga.html` is a turn-based game in the manner of *Colonization*: one
+banking house from a bench on the Rialto in 1300 to the FSB's list of global
+systemically important banks. 257 era-scaled turns; a tech tree of financial
+innovations from the bill of exchange to stress testing; branches in nineteen
+cities; Edward III, Charles the Bold, Philip II, the Ayr Bank, Overend Gurney
+and Lehman landing on whoever is exposed; permadeath. The modern era runs the
+Basel regimes and the G-SIB score. Build it with:
+
+```bash
+python -m banksim.saga.build
+```
+
+The history is data (`banksim/saga/*.py`), tested; the page plays the turns.
+Design, calibration and what is historical versus a dial: [`docs/SAGA.md`](docs/SAGA.md).
+
 ## Quick start
 
 ```bash
@@ -44,7 +61,7 @@ python -m banksim.cli run --scenario acs_severe --detail
 python -m banksim.cli stress                      # every scenario, compared
 python -m banksim.cli stress --json out.json      # machine-readable
 
-python -m unittest discover -s banksim/tests -t . # 119 tests
+python -m unittest discover -s banksim/tests -t . # 150 tests
 ```
 
 ## What it produces

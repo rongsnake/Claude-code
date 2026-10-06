@@ -44,6 +44,13 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
 - `python -m banksim.build_dashboard` → `banksim/dashboard.html`, an interactive
   simulator (scenario, year, Pillar 2A, buffers, leverage regime, payout), plus
   `dashboard_artifact.html` for platforms supplying their own head/body.
+- `python -m banksim.saga.build` → `banksim/saga.html`, **The Long Ledger**: a
+  turn-based game (Colonization-style) of one house from the Rialto in 1300 to
+  G-SIB designation. History is data in `banksim/saga/` (eras, cities, techs,
+  borrowers, events — each with a provenance), tested by
+  `tests/test_saga_data.py`; the page's JS plays the turns. Design and
+  calibration in `banksim/docs/SAGA.md`. Headless regression: Playwright with
+  `window.Saga.autoplay` (see SAGA.md; not part of the stdlib test suite).
 - Same honesty rule as the CDS data: every input carries a `Provenance`, and
   every report banners that the bank is fictional. Never present a simulated
   capital ratio as a real firm's.
