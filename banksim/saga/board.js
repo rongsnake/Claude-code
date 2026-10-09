@@ -232,6 +232,7 @@ function pulseAt(x,y,tone){ const c=sel('circle',{class:'fx-ring '+(tone||''),cx
 function flyAt(sym,a,b,size,dur,lift){ const u=spriteAt(sym,a[0],a[1],size); const mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2-Math.hypot(b[0]-a[0],b[1]-a[1])*(lift??0.22);
   sprite(u,dur,f=>{ const e=f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2, v=1-e; const x=v*v*a[0]+2*v*e*mx+e*e*b[0], y=v*v*a[1]+2*v*e*my+e*e*b[1]; u.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${(MAP.px*size).toFixed(4)})`); u.style.opacity=f>0.9?((1-f)*10).toFixed(2):1; }); }
 function spawnFx(f){ const p=locOf(f);
+  soundFor(f);
   switch(f.k){
     case 'news': showNews([f]); if(f.cities&&f.cities.length) f.cities.slice(0,4).forEach(c=>{ const q=cxy(c); if(q&&isKnown(c)) pulseAt(q[0],q[1],f.tone); }); else if(p) pulseAt(p[0],p[1],f.tone); break;
     case 'burst': if(!p) break; { const u=spriteAt('burst',p[0],p[1],1); sprite(u,1.4,g=>{ u.setAttribute('transform',`translate(${p[0]} ${p[1]}) scale(${(MAP.px*(0.4+1.1*Math.min(1,g*3))).toFixed(4)}) rotate(${(g*40).toFixed(1)})`); u.style.opacity=(g<0.7?1:1-(g-0.7)/0.3).toFixed(2); }); } if(f.text) floatText(p[0],p[1],f.text,'bad',2); break;

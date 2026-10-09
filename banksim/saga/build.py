@@ -24,6 +24,10 @@ TEMPLATE = HERE / "saga_template.html"
 BOARD_JS = HERE / "board.js"
 #: the era decks, rumours, council, cards and the drawn seat, spliced after the board
 DECK_JS = HERE / "deck.js"
+#: procedural music and sound (window.LedgerSound), period art (window.LedgerArt), and their wiring
+MUSIC_JS = HERE / "music.js"
+ART_JS = HERE / "art.js"
+AMBIENCE_JS = HERE / "ambience.js"
 OUT_HTML = HERE.parent / "saga.html"
 OUT_FRAGMENT = HERE.parent / "saga_artifact.html"
 OUT_JSON = HERE.parent / "data" / "saga.json"
@@ -73,12 +77,17 @@ def build() -> dict:
     template = TEMPLATE.read_text(encoding="utf-8")
     board = BOARD_JS.read_text(encoding="utf-8")
     deckjs = DECK_JS.read_text(encoding="utf-8")
-    for name, js in (("board.js", board), ("deck.js", deckjs)):
+    extra = {n: (p.read_text(encoding="utf-8") if p.exists() else "") for n, p in
+             (("music.js", MUSIC_JS), ("art.js", ART_JS), ("ambience.js", AMBIENCE_JS))}
+    for name, js in (("board.js", board), ("deck.js", deckjs), *extra.items()):
         if "</script" in js.lower():
             raise ValueError(name + " must not contain a closing script tag")
     fragment = (template
                 .replace("/*__BOARD_JS__*/", board, 1)
                 .replace("/*__DECK_JS__*/", deckjs, 1)
+                .replace("/*__MUSIC_JS__*/", extra["music.js"], 1)
+                .replace("/*__ART_JS__*/", extra["art.js"], 1)
+                .replace("/*__AMBIENCE_JS__*/", extra["ambience.js"], 1)
                 .replace("/*__SAGA_DATA__*/null", blob, 1))
     OUT_FRAGMENT.write_text(fragment, encoding="utf-8")
     OUT_HTML.write_text(STANDALONE_HEAD + fragment + STANDALONE_TAIL, encoding="utf-8")

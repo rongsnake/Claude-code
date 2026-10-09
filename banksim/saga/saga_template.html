@@ -159,6 +159,7 @@ h1{font-family:"IBM Plex Serif",Georgia,serif; font-size:clamp(26px,4vw,36px); f
 #map .rhumb.r0{stroke:var(--m-ink)} #map .rhumb.r1{stroke:#3d7a3a} #map .rhumb.r2{stroke:#a0281e}
 #map .rose{color:var(--m-ink); opacity:.75; display:none}
 #board[data-style="portolan"] #map .rhumb, #board[data-style="portolan"] #map .rose{display:inline}
+#map .pt-deco{display:none; color:var(--m-ink); opacity:.85; pointer-events:none} #board[data-style="portolan"] #map .pt-deco{display:inline}
 #map .land{fill:var(--m-land); stroke:var(--m-coast); stroke-width:.9; stroke-linejoin:round; vector-effect:non-scaling-stroke}
 #board[data-style="portolan"] #map .land{stroke-width:1.3}
 #map .halo{pointer-events:none; transition:opacity .6s}
@@ -414,7 +415,7 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
   <span class="small faint" id="r-turn"></span>
   <button class="btn" id="b-save" title="Save to this browser">Save</button>
   <button class="btn" id="b-new">New game</button>
-  <button class="btn" id="b-anim" title="Turn the moving pieces on or off" aria-pressed="true">Motion</button>
+  <button class="btn" id="b-anim" title="Turn the moving pieces on or off" aria-pressed="true">Motion</button><span id="sound-ctl"></span>
   <button class="btn primary" id="b-end"><span class="lbl-end">End turn ▸</span><span class="lbl-skip">Skip ▸</span></button>
 </div></div>
 
@@ -1074,6 +1075,12 @@ function startNew(seed,mode){ flushPlay(); closePop(); newGame(seed??(Date.now()
 
 /*__DECK_JS__*/
 
+/*__MUSIC_JS__*/
+
+/*__ART_JS__*/
+
+/*__AMBIENCE_JS__*/
+
 /* ------------------------------------------------------------------ wire up */
 function endTurn(){ if(MAP.playing){ flushPlay(); return; } if($('modal').classList.contains('show')) return; closePop(); if(S.choices&&S.choices.length){ S.dispatch=S.choices.map(c=>({id:c.id,t:c.t,year:c.year,choice:true})); showDispatches(()=>{}); return; } advance(); }
 $('b-end').addEventListener('click',endTurn);
@@ -1089,7 +1096,7 @@ $('c-raise').addEventListener('input',e=>{ S.raise=+e.target.value/100; $('c-rai
 document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.target.closest('input,button,textarea,.city')&&!$('modal').classList.contains('show')) endTurn(); });
 
 const resumed=load(); if(resumed) ensureDeckState(); else { newGame(Date.now()&0xffffffff,'deck'); save(); }
-buildBoard(); syncAnim(); render(); if(!resumed) showEra(era());
+buildBoard(); syncAnim(); render(); if(!resumed) showEra(era()); LedgerUI.boot(resumed);
 
 /* test hook: a scripted player for headless runs */
 window.Saga={get S(){return S}, newGame:(seed,mode)=>{ AUTOPLAY=true; try{ startNew(seed,mode); } finally { AUTOPLAY=false; } }, resolveChoice, deckPredraw, cardById, advance, adoptTech, openBranch, moveSeat, acceptOffer, declineOffer, era, rules, techFx, capitalPosition, gsibScore, classes, equity, totalAssets,

@@ -51,7 +51,10 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
   (default) draws events from per-era decks (`saga/deck/*.json`, loaded by
   `saga/deck.py`, played by `saga/deck.js` with rumours, a four-seat council,
   period-styled cards and the drawn seat); *As it happened* keeps every event on
-  its date. Tested by `tests/test_saga_deck.py`. History is data in `banksim/saga/`
+  its date. Tested by `tests/test_saga_deck.py`. Sound and art: `saga/music.js`
+  (procedural Web Audio, one theme per era, tunes original or pre-1929), `saga/art.js`
+  (card motifs, title page, era cards, chart decorations) and `saga/ambience.js` (wiring;
+  never touches the game's RNG), checked by `tests/test_saga_sound_art.py`. History is data in `banksim/saga/`
   (eras, cities, techs, borrowers, events, rivals, `geo.py` positions and sea
   lanes — each with a provenance), tested by `tests/test_saga_data.py` and
   `tests/test_saga_geo.py` (sea lanes must stay off the coastline). The
