@@ -3,7 +3,8 @@ Build the Long Ledger page.
 
 Same pattern as the Kingsgate dashboard: the history lives in Python, is
 validated by the tests, and is baked as JSON into a single self-contained HTML
-file. The page's JavaScript plays the turns. No server, no build step beyond
+file. The page's JavaScript plays the turns; the map board's script lives in
+`board.js` and is spliced into the template at `/*__BOARD_JS__*/`. No server, no build step beyond
 this script, deploys by copying one file.
 
     python -m banksim.saga.build
@@ -15,10 +16,12 @@ import json
 from datetime import date
 from pathlib import Path
 
-from . import borrowers, cities, eras, events, rivals, techs
+from . import borrowers, cities, eras, events, geo, rivals, techs
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE = HERE / "saga_template.html"
+#: the map board's script, spliced into the template's script block
+BOARD_JS = HERE / "board.js"
 OUT_HTML = HERE.parent / "saga.html"
 OUT_FRAGMENT = HERE.parent / "saga_artifact.html"
 OUT_JSON = HERE.parent / "data" / "saga.json"
@@ -52,6 +55,7 @@ def data() -> dict:
         "branch_weight": rivals.BRANCH_WEIGHT,
         "court_contest": rivals.COURT_CONTEST,
         "turns": eras.total_turns(),
+        "geo": geo.payload(),
     }
 
 
@@ -60,7 +64,13 @@ def build() -> dict:
     blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     # keep the JSON safe inside a <script> block
     blob = blob.replace("</", "<\\/")
-    fragment = TEMPLATE.read_text(encoding="utf-8").replace("/*__SAGA_DATA__*/null", blob, 1)
+    template = TEMPLATE.read_text(encoding="utf-8")
+    board = BOARD_JS.read_text(encoding="utf-8")
+    if "</script" in board.lower():
+        raise ValueError("board.js must not contain a closing script tag")
+    fragment = (template
+                .replace("/*__BOARD_JS__*/", board, 1)
+                .replace("/*__SAGA_DATA__*/null", blob, 1))
     OUT_FRAGMENT.write_text(fragment, encoding="utf-8")
     OUT_HTML.write_text(STANDALONE_HEAD + fragment + STANDALONE_TAIL, encoding="utf-8")
     OUT_JSON.parent.mkdir(exist_ok=True)

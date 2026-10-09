@@ -120,19 +120,144 @@ h1{font-family:"IBM Plex Serif",Georgia,serif; font-size:clamp(26px,4vw,36px); f
 .ctl input[type=range]{width:100%; accent-color:var(--ink); margin:0}
 .ctl .pct{text-align:right; font-family:"IBM Plex Mono",monospace; font-size:12.5px}
 
-/* map */
-.cities{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px; margin-top:10px}
-.city{border:1px solid var(--rule); border-radius:8px; padding:9px 10px; background:var(--surface); position:relative}
-.city.seat{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
-.city.branch{background:color-mix(in srgb,var(--accent-soft) 60%,var(--surface))}
-.city.sacked{opacity:.45}
-.city .cn{font-weight:600; font-size:13px; display:flex; justify-content:space-between; gap:6px; align-items:baseline}
-.city .cn .tag{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:500}
-.city .cn .tag.centre{color:var(--s1)}
-.city .meter{height:4px; border-radius:2px; background:var(--sunk); margin:6px 0; overflow:hidden}
-.city .meter i{display:block; height:100%; background:var(--s1); border-radius:2px}
-.city .cb{font-size:11px; color:var(--ink-2); line-height:1.35}
-.city .acts{display:flex; gap:5px; margin-top:7px; flex-wrap:wrap}
+/* places (the list beside the map) */
+.places{display:flex; flex-direction:column; gap:4px; margin-top:10px}
+.place{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; align-items:center; padding:6px 8px; border-radius:6px; background:var(--sunk)}
+.place.seat{box-shadow:inset 3px 0 0 var(--accent)}
+.place.branch{background:color-mix(in srgb,var(--accent-soft) 70%,var(--sunk))}
+.place.sacked{opacity:.45}
+.place .pn{font-weight:600; font-size:13px; cursor:pointer; background:none; border:0; padding:0; color:inherit; text-align:left}
+.place .pn:hover{text-decoration:underline}
+.place .pn small{font-weight:400; color:var(--ink-3); font-size:11px; margin-left:6px}
+.place .meter{grid-column:1/-1; height:3px; border-radius:2px; background:color-mix(in srgb,var(--ink) 8%,transparent); overflow:hidden; display:flex}
+.place .meter i{display:block; height:100%; background:var(--s1)}
+.place .meter i.com{background:var(--accent)}
+.place .acts{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+
+/* ------------------------------------------------------------- the board */
+#board{
+  --m-sea:#dfe9ef; --m-land:#f4eedd; --m-coast:#6f7f86; --m-ink:#2b3338; --m-paper:#f4eedd;
+  --m-fog:#c9d3d8; --m-route:#4f6670; --m-mine:#a0281e; --m-neutral:#556a74; --m-sail:#fbf7ec; --m-halo:#e0a526; --m-grat:#7d8f99;
+  position:relative; height:clamp(360px,64vh,700px); margin-top:14px; border-radius:12px; overflow:hidden;
+  border:1px solid var(--rule-strong); box-shadow:var(--shadow); background:var(--m-sea); user-select:none; -webkit-user-select:none}
+#board[data-style="portolan"]{--m-sea:#efe3c4; --m-land:#e6d3a3; --m-coast:#7a5a2e; --m-ink:#3b2a14; --m-paper:#efe3c4; --m-fog:#dccb9e; --m-route:#7a5a2e; --m-mine:#a0281e; --m-neutral:#6a5636; --m-sail:#fbf3dc; --m-halo:#d68a1c; --m-grat:#7a5a2e}
+#board[data-style="modern"]{--m-sea:#dbe6f1; --m-land:#f6f7f9; --m-coast:#9aabbd; --m-ink:#1f2b37; --m-paper:#f6f7f9; --m-fog:#c7d2de; --m-route:#5b7590; --m-mine:#b02a37; --m-neutral:#5b7590; --m-sail:#ffffff; --m-halo:#e3a21a; --m-grat:#8da0b3}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) #board{--m-sea:#0f1b24; --m-land:#25313a; --m-coast:#5d7380; --m-ink:#e4ebef; --m-paper:#0f1b24; --m-fog:#0a1218; --m-route:#7d97a5; --m-mine:#f0735f; --m-neutral:#8aa1ad; --m-sail:#d7e0e5; --m-halo:#f0b43a; --m-grat:#4b5f6b}
+  :root:not([data-theme="light"]) #board[data-style="portolan"]{--m-sea:#1c170f; --m-land:#3a2f1c; --m-coast:#a8834a; --m-ink:#f0dfb8; --m-paper:#1c170f; --m-fog:#100c07; --m-route:#b8935a; --m-mine:#f0735f; --m-neutral:#bfa57a; --m-sail:#f0e2c0; --m-halo:#f0a83a; --m-grat:#a8834a}
+  :root:not([data-theme="light"]) #board[data-style="modern"]{--m-sea:#0c1622; --m-land:#1e2833; --m-coast:#4f6478; --m-ink:#e8eef4; --m-paper:#0c1622; --m-fog:#070c12; --m-route:#7b93ab; --m-mine:#ff7a6b; --m-neutral:#7b93ab; --m-sail:#e8eef4; --m-halo:#f2b440; --m-grat:#3b4b5b}
+}
+:root[data-theme="dark"] #board{--m-sea:#0f1b24; --m-land:#25313a; --m-coast:#5d7380; --m-ink:#e4ebef; --m-paper:#0f1b24; --m-fog:#0a1218; --m-route:#7d97a5; --m-mine:#f0735f; --m-neutral:#8aa1ad; --m-sail:#d7e0e5; --m-halo:#f0b43a; --m-grat:#4b5f6b}
+:root[data-theme="dark"] #board[data-style="portolan"]{--m-sea:#1c170f; --m-land:#3a2f1c; --m-coast:#a8834a; --m-ink:#f0dfb8; --m-paper:#1c170f; --m-fog:#100c07; --m-route:#b8935a; --m-mine:#f0735f; --m-neutral:#bfa57a; --m-sail:#f0e2c0; --m-halo:#f0a83a; --m-grat:#a8834a}
+:root[data-theme="dark"] #board[data-style="modern"]{--m-sea:#0c1622; --m-land:#1e2833; --m-coast:#4f6478; --m-ink:#e8eef4; --m-paper:#0c1622; --m-fog:#070c12; --m-route:#7b93ab; --m-mine:#ff7a6b; --m-neutral:#7b93ab; --m-sail:#e8eef4; --m-halo:#f2b440; --m-grat:#3b4b5b}
+#map{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab}
+#map:active{cursor:grabbing}
+#map .sea{fill:var(--m-sea)}
+#map .grat{fill:none; stroke:var(--m-grat); stroke-width:.6; opacity:.28; vector-effect:non-scaling-stroke}
+#board[data-style="portolan"] #map .grat{display:none}
+#map .rhumb{fill:none; stroke-width:.6; vector-effect:non-scaling-stroke; opacity:.2; display:none}
+#map .rhumb.r0{stroke:var(--m-ink)} #map .rhumb.r1{stroke:#3d7a3a} #map .rhumb.r2{stroke:#a0281e}
+#map .rose{color:var(--m-ink); opacity:.75; display:none}
+#board[data-style="portolan"] #map .rhumb, #board[data-style="portolan"] #map .rose{display:inline}
+#map .land{fill:var(--m-land); stroke:var(--m-coast); stroke-width:.9; stroke-linejoin:round; vector-effect:non-scaling-stroke}
+#board[data-style="portolan"] #map .land{stroke-width:1.3}
+#map .halo{pointer-events:none; transition:opacity .6s}
+#map .route{fill:none; stroke:var(--m-route); vector-effect:non-scaling-stroke; stroke-linecap:round; pointer-events:none}
+#map .route.off{display:none}
+#map .route.sea{stroke-width:1.1; stroke-dasharray:1 4; opacity:.55}
+#map .route.land{stroke-width:1; stroke-dasharray:5 4; opacity:.5}
+#map .route.air{stroke-width:1; stroke-dasharray:2 6; opacity:.45}
+#map .route.reach{opacity:.85}
+#map .route.mine{stroke:var(--m-mine); opacity:.85; stroke-width:1.7}
+#map .fog{fill:var(--m-fog); opacity:.88; pointer-events:none}
+#map .fog-hatch{pointer-events:none}
+#map .L-hints,#map .L-tokens,#map .L-fx,#map .L-fog,#map .L-halo{pointer-events:none}
+#map .hint-t{font:italic 500 12px "IBM Plex Serif",Georgia,serif; fill:var(--m-ink); opacity:.62; paint-order:stroke; stroke:var(--m-fog); stroke-width:3px}
+#map .hint-d{fill:var(--m-ink); opacity:.45}
+#map .city{cursor:pointer; outline:none}
+#map .city .dot{fill:var(--m-ink); opacity:.8}
+#map .city .ring{fill:none; stroke:#2a78d6; stroke-width:1.6; display:none}
+#map .city.centre .ring{display:inline}
+#map .city .bld{color:var(--m-mine)}
+#map .city .seatflag{color:var(--m-ink)}
+#map .city .lbl{font:500 11.5px "IBM Plex Sans",system-ui,sans-serif; fill:var(--m-ink); paint-order:stroke; stroke:var(--m-paper); stroke-width:3px; stroke-linejoin:round}
+#board[data-style="portolan"] #map .city .lbl{font:italic 500 12.5px "IBM Plex Serif",Georgia,serif}
+#board[data-style="engraved"] #map .city .lbl{font:500 12px "IBM Plex Serif",Georgia,serif; letter-spacing:.02em}
+#map .city.mine .lbl{font-weight:700}
+#map .city.dim{opacity:.42}
+#map .city.sacked .dot{fill:#d03b3b}
+#map .city:hover .lbl,#map .city:focus-visible .lbl{fill:var(--m-mine)}
+#map .city:focus-visible .ring{display:inline; stroke:var(--m-mine)}
+#map .rival{cursor:default}
+#map .rival-t{font:700 7px "IBM Plex Sans",sans-serif; fill:#fff; pointer-events:none}
+#map .tok.tk-mine{color:var(--m-mine)}
+#map .tok.tk-neutral{color:var(--m-neutral); opacity:.55}
+#map .tok.tk-rival{opacity:.8}
+#map .fx-t{font:700 12.5px "IBM Plex Sans",sans-serif; fill:var(--m-ink); paint-order:stroke; stroke:var(--m-paper); stroke-width:3.5px; stroke-linejoin:round}
+#map .fx-t.good{fill:#0a8a0a} #map .fx-t.bad{fill:#c62828} #map .fx-t.hist{fill:var(--m-mine)}
+#map .fx-ring{fill:none; stroke:var(--m-ink)}
+#map .fx-ring.good{stroke:#0ca30c} #map .fx-ring.bad{stroke:#d03b3b} #map .fx-ring.hist{stroke:var(--m-mine)}
+#map .fx-person{color:var(--m-ink)}
+
+.cartouche{position:absolute; top:12px; left:12px; z-index:3; pointer-events:none; padding:8px 14px 9px; border-radius:6px;
+  background:color-mix(in srgb,var(--m-paper) 86%,transparent); border:1px solid color-mix(in srgb,var(--m-ink) 30%,transparent); color:var(--m-ink); max-width:min(330px,62%)}
+#board[data-style="portolan"] .cartouche{border:2px double color-mix(in srgb,var(--m-ink) 55%,transparent)}
+.cartouche .cy{font:600 30px/1 "IBM Plex Serif",Georgia,serif; letter-spacing:-.01em}
+.cartouche .ce{font:500 13px/1.25 "IBM Plex Serif",Georgia,serif; margin-top:4px}
+.cartouche .cs{font-size:11.5px; opacity:.75; line-height:1.3}
+.mapctl{position:absolute; top:12px; right:12px; z-index:3; display:flex; flex-direction:column; gap:6px}
+.mapctl button{width:34px; height:34px; border-radius:8px; border:1px solid color-mix(in srgb,var(--m-ink) 25%,transparent); background:color-mix(in srgb,var(--m-paper) 90%,transparent);
+  color:var(--m-ink); font-size:17px; line-height:1; cursor:pointer; display:grid; place-items:center; padding:0}
+.mapctl button:hover{border-color:var(--m-ink)}
+.mapctl button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.map-key{position:absolute; left:12px; bottom:12px; z-index:3; font-size:11.5px; color:var(--m-ink); border-radius:6px; padding:5px 10px;
+  background:color-mix(in srgb,var(--m-paper) 90%,transparent); border:1px solid color-mix(in srgb,var(--m-ink) 25%,transparent); max-width:250px}
+.map-key summary{cursor:pointer; font-weight:600; list-style:none}
+.map-key summary::-webkit-details-marker{display:none}
+.map-key summary::before{content:"▸ "} .map-key[open] summary::before{content:"▾ "}
+.map-key div{display:flex; align-items:center; gap:7px; margin-top:4px}
+.map-key svg{width:20px; height:20px; flex:none; overflow:visible}
+.map-key .lg-mine{color:var(--m-mine)} .map-key .lg-neutral{color:var(--m-neutral)}
+.map-key .lg-ring{fill:none; stroke:#2a78d6; stroke-width:1.6} .map-key .lg-dot{fill:var(--m-ink)}
+.map-key .lg-halo{fill:var(--m-halo); opacity:.45} .map-key .lg-fog{fill:var(--m-fog); stroke:color-mix(in srgb,var(--m-ink) 30%,transparent)}
+#news{position:absolute; left:50%; bottom:14px; transform:translate(-50%,8px); z-index:4; max-width:min(560px,calc(100% - 300px)); min-width:200px;
+  background:color-mix(in srgb,var(--m-paper) 94%,transparent); color:var(--m-ink); border:1px solid color-mix(in srgb,var(--m-ink) 25%,transparent);
+  border-left:4px solid var(--m-mine); border-radius:6px; padding:7px 12px; font:500 13px/1.35 "IBM Plex Serif",Georgia,serif; opacity:0; transition:opacity .3s,transform .3s; pointer-events:none}
+#news.show{opacity:1; transform:translate(-50%,0)}
+#news[data-tone="bad"]{border-left-color:#d03b3b} #news[data-tone="good"]{border-left-color:#0ca30c}
+#news .news-y{font-family:"IBM Plex Mono",monospace; font-size:11.5px; opacity:.7; margin-right:4px}
+#edges{position:absolute; inset:0; pointer-events:none; z-index:2}
+#edges .edge{position:absolute; transform:translate(-50%,-50%); white-space:nowrap; font:italic 500 12px "IBM Plex Serif",Georgia,serif; color:var(--m-ink); opacity:.7;
+  background:color-mix(in srgb,var(--m-paper) 70%,transparent); padding:1px 6px; border-radius:4px}
+#pop{position:absolute; z-index:5; width:300px; background:var(--surface); color:var(--ink); border:1px solid var(--rule-strong); border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:12px 14px; font-size:12.5px}
+#pop[hidden]{display:none}
+#pop .pop-h{display:flex; justify-content:space-between; gap:8px; align-items:flex-start}
+#pop .pop-h b{font:600 16px "IBM Plex Serif",Georgia,serif; display:block}
+#pop .pop-h span{font-size:11.5px; color:var(--ink-3)}
+#pop .pop-x{border:0; background:none; font-size:20px; line-height:1; cursor:pointer; color:var(--ink-2); padding:0 2px}
+#pop .pop-b{margin:6px 0 0; color:var(--ink-2); line-height:1.45}
+#pop .pop-bars{display:flex; flex-direction:column; gap:4px; margin-top:8px}
+#pop .pop-bars div{display:grid; grid-template-columns:76px 1fr 44px; gap:8px; align-items:center; font-size:11.5px}
+#pop .pop-bars i{display:block; height:6px; border-radius:3px; background:var(--sunk); overflow:hidden}
+#pop .pop-bars i b{display:block; height:100%; background:var(--s1)}
+#pop .pop-bars i b.com{background:var(--accent)}
+#pop .pop-bars em{font-style:normal; font-family:"IBM Plex Mono",monospace; text-align:right}
+#pop .pop-m{margin-top:8px; line-height:1.5}
+#pop .pop-rv{display:inline-block; padding:0 6px; border-radius:3px; color:#fff; background:var(--rv); font-size:11px; margin-right:2px}
+#pop .pop-a{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+#board.playing .cartouche{box-shadow:0 0 0 2px color-mix(in srgb,var(--m-mine) 40%,transparent)}
+.lbl-skip{display:none} body.playing .lbl-end{display:none} body.playing .lbl-skip{display:inline}
+@media (max-width:640px){
+  .rail-inner{gap:8px; padding:8px 12px} .rail .year{font-size:22px; min-width:0} #r-turn,#b-save{display:none}
+  .rail .btn{padding:6px 10px} .rail .era{display:none}
+  header.page{padding-block:14px 4px} .lede{display:none} .banner{margin-top:8px; padding:8px 10px; font-size:12px}
+  #board{height:min(70vh,560px); margin-inline:-16px; border-radius:0; border-left:0; border-right:0}
+  .cartouche{max-width:58%; padding:6px 10px} .cartouche .cy{font-size:24px} .cartouche .cs{display:none}
+  #news{max-width:calc(100% - 24px); bottom:52px}
+  #pop{left:8px !important; right:8px; bottom:8px; top:auto !important; width:auto; max-height:62%; overflow:auto}
+  .map-key{max-width:calc(100% - 24px)}
+}
+@media (prefers-reduced-motion: reduce){ #news,.halo{transition:none} }
 
 /* techs */
 .techs{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; margin-top:10px}
@@ -214,7 +339,8 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
   <span class="small faint" id="r-turn"></span>
   <button class="btn" id="b-save" title="Save to this browser">Save</button>
   <button class="btn" id="b-new">New game</button>
-  <button class="btn primary" id="b-end">End turn ▸</button>
+  <button class="btn" id="b-anim" title="Turn the moving pieces on or off" aria-pressed="true">Motion</button>
+  <button class="btn primary" id="b-end"><span class="lbl-end">End turn ▸</span><span class="lbl-skip">Skip ▸</span></button>
 </div></div>
 
 <div class="wrap">
@@ -224,6 +350,16 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
   <p class="lede" id="h-lede">A banking house from a bench on the Rialto in 1300 to the FSB's list of the banks that matter. Lend, open branches, adopt what the age invents, follow the money, and do not lend the king more than you can lose.</p>
   <div class="banner"><strong>The house is fictional; the history is not.</strong> Dates, crises and rule changes are real and sourced. Yields, loss rates and city prosperity are stylised dials tuned for play, tagged <span class="kbd">STYLISED</span> in the data. No real bank's figures appear anywhere. Built <span id="h-built"></span>.</div>
 </header>
+
+<section id="board" data-style="portolan" aria-label="The map">
+  <svg id="map" role="img" aria-label="A chart of the known world, with your house's branches, its trade and its rivals"></svg>
+  <div id="edges" aria-hidden="true"></div>
+  <div class="cartouche" aria-live="polite"><div class="cy" id="c-year">1300</div><div class="ce" id="c-era"></div><div class="cs" id="c-sub"></div></div>
+  <div class="mapctl"><button id="z-in" aria-label="Zoom in">+</button><button id="z-out" aria-label="Zoom out">−</button><button id="z-frame" aria-label="Fit the map to your house" title="Fit to your house">⌖</button></div>
+  <details class="map-key" id="legend"></details>
+  <div id="news" role="status"></div>
+  <div id="pop" hidden></div>
+</section>
 
 <div class="grid">
 <div class="col">
@@ -274,9 +410,9 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
 
 <div class="col">
   <div class="card">
-    <h2>Branches <span class="sub">the map</span></h2>
+    <h2>Places <span class="sub">tap a city on the map, or a name here</span></h2>
     <p id="map-text"></p>
-    <div class="cities" id="cities"></div>
+    <div class="places" id="cities"></div>
   </div>
 
   <div class="card">
@@ -300,6 +436,7 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
 <footer>
   <div>Seed <span class="mono" id="f-seed"></span> · Turn length <span id="f-turn"></span> · Rules in force: <span id="f-rules"></span></div>
   <div style="margin-top:6px">Sources for every dated event are in <span class="mono">banksim/saga/events.py</span>; the design notes in <span class="mono">banksim/docs/SAGA.md</span>. Part of <a href="https://github.com/rongsnake/Claude-code">rongsnake/Claude-code</a>.</div>
+  <div style="margin-top:6px">Coastlines: Natural Earth 1:50m, public domain, via world-atlas 2.0.2. Sea lanes follow the period's routes through waypoints; positions are approximate.</div>
 </footer>
 </div>
 
@@ -333,9 +470,14 @@ const SOV_SCALAR=['princes','foreign_bonds','syndicated_loans']; // classes trac
 
 function era(){ return D.eras.find(e=>S.year>=e.start&&S.year<e.end)||D.eras[D.eras.length-1]; }
 function city(id){ return byId(D.cities,id); }
-function seatSovereign(){ return city(S.seat).sovereign; }
-function prosperity(cid){ const c=city(cid), cs=S.cityState[cid]||{}; if(cs.sacked) return 0.05;
+function seatSovereign(){ return citySov(S.seat); }
+/* a city's prosperity is history's (the era's level, events' multipliers) times
+   the commerce the house's own lending has grown there */
+function baseProsperity(cid){ const c=city(cid), cs=S.cityState[cid]||{}; if(cs.sacked) return 0.05;
   return (c.prosperity[era().id]||0)*(cs.prosperity_mult||1); }
+function prosperity(cid){ return baseProsperity(cid)*((S.commerce&&S.commerce[cid])||1); }
+function courtActive(s){ const v=D.sovereigns[s]; return !!v&&(v.from==null||S.year>=v.from)&&(v.until==null||S.year<v.until); }
+function distFromSeat(cid){ const a=D.geo.cities[S.seat], b=D.geo.cities[cid]; return a&&b?Math.hypot(a[0]-b[0],a[1]-b[1]):0; }
 function branchIds(){ return Object.keys(S.branches); } // includes seat
 function pool(year){ const ks=Object.keys(D.pool).map(Number).sort((a,b)=>a-b); if(year<=ks[0]) return D.pool[ks[0]]; for(let i=1;i<ks.length;i++){ if(year<=ks[i]){ const a=ks[i-1],b=ks[i]; const f=(year-a)/(b-a); return D.pool[a]*Math.pow(D.pool[b]/D.pool[a],f); } } return D.pool[ks[ks.length-1]]; }
 function hasTech(t){ return !!S.techs[t]; }
@@ -348,7 +490,7 @@ function competition(cid){ // share of a city's pool left to you after the rival
   let taken=0, bought=0; for(const r of D.rivals){ if(!r.cities.includes(cid)) continue; const w=cid===r.home?1:D.branch_weight;
     if(rivalActive(r)) taken+=rivalSize(r)*w; else if(rivalState(r.id).acquired) bought+=(r.size[era().id]||0)*w*0.5; }
   return {factor:Math.max(0.35,1-taken), bonus:bought}; }
-function rivalsAtCourt(sov){ return D.rivals.filter(r=>rivalActive(r)&&r.cities.some(c=>city(c).sovereign===sov)); }
+function rivalsAtCourt(sov){ return D.rivals.filter(r=>rivalActive(r)&&r.cities.some(c=>citySov(c)===sov||c===sovSeat(sov))); }
 function techDiscount(t){ return D.rivals.some(r=>rivalState(r.id).acquired&&r.techs.includes(t.id))?0.5:1; }
 
 function rules(){
@@ -384,7 +526,9 @@ function yieldOf(cid){ const b=byId(D.borrowers,cid), r=rules(); let y=(b.yield[
   if(b.usury_exposed){ if(r.usury==='ban') y*=hasTech('bill_of_exchange')?0.75:0.4; else if(r.usury==='cap'&&r.usury_cap) y=Math.min(y,r.usury_cap); }
   if(cid==='princes') y+=0.0; return y; }
 function lossOf(cid){ const b=byId(D.borrowers,cid); return (b.loss[era().id]??0)*(techFx().loss[cid]??1); }
-function sovereignsReachable(){ const s=new Set(); for(const c of branchIds()) s.add(city(c).sovereign); s.add('emerging'); return s; }
+function sovereignsReachable(){ // the courts of the cities you sit in, and any court whose seat you have a branch in (the EIC from London)
+  const s=new Set(); for(const c of branchIds()) s.add(citySov(c)); for(const k in D.sovereigns) if(S.branches[sovSeat(k)]) s.add(k); s.add('emerging');
+  for(const k of [...s]) if(!courtActive(k)) s.delete(k); return s; }
 function cityAttribution(){ // share of the house's business attributed to each city
   const w={}; let t=0; for(const c of branchIds()){ const p=Math.max(0.05,prosperity(c))*(c===S.seat?1.5:1); w[c]=p; t+=p; }
   for(const c in w) w[c]/=t; return w; }
@@ -404,11 +548,12 @@ function newGame(seed){
     weights:{merchants:5,trade_bills:0,commodities:2,state_bonds:2,princes:0},
     reserve:0.25, payout:0.60, notesShare:0, wholesaleShare:0, raise:0,
     offers:[], log:[], series:[], eraSeen:{}, lastProfit:0, lastLoss:0, warnings:0, lifeboatUsed:false,
-    fired:{}, lolrUses:0, rivals:{},
+    fired:{}, lolrUses:0, rivals:{}, commerce:{},
   };
   for(const r of D.rivals) S.rivals[r.id]={alive:true,size_mult:1,acquired:false,fates:{}};
   for(const s in D.sovereigns) S.standing.crown[s]=40;
-  for(const c of D.cities){ S.cityState[c.id]={open:c.opens<=1300,sacked:false,prosperity_mult:1}; }
+  // a city takes branches from its `opens` year; an event may still close it (open:false) or mark the day it opened
+  for(const c of D.cities){ S.cityState[c.id]={open:true,sacked:false,prosperity_mult:1}; S.commerce[c.id]=1; }
   log(1300,'A bench on the Rialto','The house opens its ledger at San Giacomo: twelve thousand ducats of the partners\' own, thirty thousand on deposit, and a reputation to make.','hist','STYLISED');
   snapshot();
 }
@@ -431,34 +576,39 @@ function canAfford(cost){ return liquidCapacity()>=cost && equity()>cost; }
 
 function adoptTech(id){ const t=byId(D.techs,id); if(S.techs[id]) return false;
   if(!techAvailable(t)) return false; const cost=t.cost*equity()*techDiscount(t); if(!canAfford(cost)) return false;
-  spend(cost); S.techs[id]=true; log(S.year,'Adopted: '+t.name,t.text,'good',t.provenance); render(); return true; }
+  spend(cost); S.techs[id]=true; log(S.year,'Adopted: '+t.name,t.text,'good',t.provenance); render(); flash({k:'open',city:S.seat,text:t.name}); return true; }
 function techAvailable(t){ if(S.year<t.available) return false; if(S.techGates[t.id]===false&&(!S.techGateScope[t.id]||S.techGateScope[t.id]===seatSovereign())) return false;
   return t.requires.every(r=>S.techs[r]); }
-function branchCost(cid){ return 0.10*equity()*techFx().branch_cost*(0.6+prosperity(cid)); }
+function branchCost(cid){ // a factor sent far away costs more to set up: a tenth more per 200 map units (about 20° of latitude) from the seat. STYLISED
+  return 0.10*equity()*techFx().branch_cost*(0.6+prosperity(cid))*(1+distFromSeat(cid)/2000); }
 function openBranch(cid){ if(S.branches[cid]) return false; const cs=S.cityState[cid]; const c=city(cid);
   if(!cs.open||cs.sacked||S.year<c.opens) return false; const cost=branchCost(cid); if(!canAfford(cost)) return false;
-  spend(cost); S.branches[cid]={opened:S.year,control:0.3}; S.standing.crown[c.sovereign]=clamp(S.standing.crown[c.sovereign]+5,0,100);
-  log(S.year,'Branch opened in '+c.name,c.blurb,'good'); render(); return true; }
+  spend(cost); S.branches[cid]={opened:S.year,control:0.3}; const sv=citySov(cid); S.standing.crown[sv]=clamp(S.standing.crown[sv]+5,0,100);
+  log(S.year,'Branch opened in '+c.name,c.blurb,'good'); render(); flash({k:'chest',from:S.seat,to:cid}); flash({k:'open',city:cid,text:'A new house'}); return true; }
 function closeBranch(cid){ if(!S.branches[cid]||cid===S.seat) return false; const att=cityAttribution()[cid]||0;
   // winding up costs a share of the business there
-  const loss=0.15*att*totalAssets(); spend(loss); delete S.branches[cid]; log(S.year,'Branch closed in '+city(cid).name,'Wound up; '+fmtMoney(loss)+' of local business lost in the winding-up.','bad'); render(); return true; }
+  const loss=0.15*att*totalAssets(); spend(loss); delete S.branches[cid]; log(S.year,'Branch closed in '+city(cid).name,'Wound up; '+fmtMoney(loss)+' of local business lost in the winding-up.','bad'); render(); flash({k:'fall',city:cid,text:'Closed'}); return true; }
 function moveSeat(cid){ if(!S.branches[cid]||cid===S.seat) return false; const cost=0.12*equity(); if(!canAfford(cost)) return false;
-  spend(cost); const old=S.seat; S.seat=cid; S.branches[cid].control=1; S.standing.crown[city(old).sovereign]=clamp(S.standing.crown[city(old).sovereign]-20,0,100);
-  S.standing.crown[city(cid).sovereign]=clamp(S.standing.crown[city(cid).sovereign]+10,0,100);
-  log(S.year,'The seat moves to '+city(cid).name,'The partners, the books and the cassa go with it. '+city(old).name+' becomes a branch; its prince remembers.','hist','STYLISED'); render(); return true; }
+  spend(cost); const old=S.seat; S.seat=cid; S.branches[cid].control=1; const so=citySov(old), sn=citySov(cid); S.standing.crown[so]=clamp(S.standing.crown[so]-20,0,100);
+  S.standing.crown[sn]=clamp(S.standing.crown[sn]+10,0,100);
+  log(S.year,'The seat moves to '+city(cid).name,'The partners, the books and the cassa go with it. '+city(old).name+' becomes a branch; its prince remembers.','hist','STYLISED'); render(); flash({k:'chest',from:old,to:cid}); flash({k:'open',city:cid,text:'The seat'}); return true; }
 function acceptOffer(i,shareOfMax){ const o=S.offers[i]; if(!o) return false; if(o.kind==='acquire'){ const res=acquire(i); if(res==='branch') toast('You need a branch where they are.'); else if(res==='money') toast('Not enough that can be found in coin.'); return res==='ok'; }
   const amt=o.amount*clamp(shareOfMax??1,0.1,1);
   if(liquidCapacity()<amt) return false; spend(amt);
   const cls=o.cls||'princes'; S.assets[cls][o.sovereign]=(S.assets[cls][o.sovereign]||0)+amt; S.offerYield=S.offerYield||{}; S.offerYield[o.sovereign]=o.yield;
   S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]+15,0,100); S.offers.splice(i,1);
-  log(S.year,'Lent to '+D.sovereigns[o.sovereign].name,fmtMoney(amt)+' at '+pct(o.yield,0)+' a year. '+D.sovereigns[o.sovereign].title+' is pleased.','','STYLISED'); render(); return true; }
+  log(S.year,'Lent to '+D.sovereigns[o.sovereign].name,fmtMoney(amt)+' at '+pct(o.yield,0)+' a year. '+D.sovereigns[o.sovereign].title+' is pleased.','','STYLISED'); render(); flash({k:'chest',from:S.seat,to:sovSeat(o.sovereign)}); flash({k:'float',sov:o.sovereign,text:'+'+fmtMoney(amt)+' lent',tone:'hist'}); return true; }
 function declineOffer(i){ const o=S.offers[i]; if(!o) return false; if(o.kind==='acquire'){ S.offers.splice(i,1); render(); return true; } S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]-8,0,100); S.offers.splice(i,1);
   log(S.year,'Declined '+D.sovereigns[o.sovereign].title,'Standing at that court falls. Houses that said no to Edward III are still in business.','','STYLISED'); render(); return true; }
 
 /* ------------------------------------------------------------------ turn engine */
+/* what happened this turn, in order, for the map to play back: never saved,
+   never read by the engine */
+let TURN_FX=[];
+function fx(o){ TURN_FX.push(o); }
 function advance(){
   if(!S.alive) return; const E=era(), years=E.turn_years, R=rules(), FX=techFx();
-  const notes=[]; let losses=0, shockLoss=0;
+  const notes=[]; let losses=0, shockLoss=0; TURN_FX=[];
   S.wholesaleFreeze=false;
   // 1. raise equity if allowed
   if(S.raise>0&&FX.capital_raise>0&&R.joint_stock){ const amt=Math.min(Math.min(S.raise,FX.capital_raise)*equity(),0.004*pool(S.year)*prosperity(S.seat)*years); S.assets.cash+=amt; S.standing.merchants=clamp(S.standing.merchants-3,0,100); notes.push('Raised '+fmtMoney(amt)+' of new equity.'); S.raise=0; }
@@ -487,8 +637,9 @@ function advance(){
   S.funding.notes=notesAllowed?S.notesShare*S.funding.deposits:S.funding.notes*0.7; if(!notesAllowed&&S.funding.notes<1) S.funding.notes=0;
   S.funding.wholesale=wsAllowed?S.wholesaleShare*S.funding.deposits:0;
   const diff=liabilities()-before; if(diff>=0) S.assets.cash+=diff; else spend(-diff);
-  // 4. rebalance assets toward weights
+  // 4. rebalance assets toward weights, and the commerce that lending grows
   rebalance(years);
+  shockLoss+=updateCommerce(years,shocks);
   // 5. income and costs
   let income=0, fcost=0;
   for(const b of D.borrowers){ const a=amount(b.id); if(a<=0) continue; let y=yieldOf(b.id);
@@ -503,22 +654,25 @@ function advance(){
     const noise=Math.exp(0.45*(gauss()-0.1)); let l=lossOf(b.id)*years*noise;
     // random sovereign defaults (STYLISED): the scripted ones carry the story
     if(SOV_SCALAR.includes(b.id)){ for(const s in S.assets[b.id]){ const rel=(D.sovereigns[s]||{reliability:.7}).reliability;
-        if(rel<0.6&&(E.id!=='basel'||s==='emerging')&&rng()<(1-rel)*0.03*years){ const h=0.2+0.3*rng(); const dl=S.assets[b.id][s]*h; S.assets[b.id][s]-=dl; losses+=dl;
+        if(rel<0.6&&(E.id!=='basel'||s==='emerging')&&courtActive(s)&&S.assets[b.id][s]>0.01*Math.max(equity(),1)&&rng()<(1-rel)*0.03*years){ const h=0.2+0.3*rng(); const dl=S.assets[b.id][s]*h; S.assets[b.id][s]-=dl; losses+=dl;
           log(S.year,D.sovereigns[s].name+' reschedules','Payments stop; what comes back is '+pct(1-h,0)+' of the principal, late.','bad','STYLISED'); } }
     }
     const dl=Math.min(a,a*l); losses+=dl; reduceClass(b.id,dl);
   }
   // 7. shocks from events
-  for(const sh of shocks){ const exp=exposure(sh.cities); for(const b of D.borrowers){ const sens=(b.shock||{})[sh.kind]; if(!sens) continue; const a=amount(b.id); if(a<=0) continue;
-      const dl=Math.min(a,a*sh.size*sens*exp*0.18); shockLoss+=dl; reduceClass(b.id,dl); } }
+  for(const sh of shocks){ const exp=exposure(sh.cities); let hit=0; for(const b of D.borrowers){ const sens=(b.shock||{})[sh.kind]; if(!sens) continue; const a=amount(b.id); if(a<=0) continue;
+      const dl=Math.min(a,a*sh.size*sens*exp*0.18); shockLoss+=dl; hit+=dl; reduceClass(b.id,dl); }
+    if(hit>0.5){ const at=(sh.cities||[]).find(c=>S.branches[c])||S.seat; fx({k:'burst',city:at,text:'−'+fmtMoney(hit)}); } }
   // 8. scripted sovereign defaults
   for(const d of defaults){ let hit=0; for(const cls of SOV_SCALAR){ const a=(S.assets[cls]||{})[d.sovereign]||0; if(a>0){ const h=d.haircut*(hasTech('sovereign_syndicate')?0.75:1); const dl=a*h; S.assets[cls][d.sovereign]-=dl; hit+=dl; } }
-    if(hit>0){ shockLoss+=hit; notes.push('Lost '+fmtMoney(hit)+' on '+D.sovereigns[d.sovereign].name+'.'); S.standing.merchants=clamp(S.standing.merchants-10,0,100); } }
+    if(hit>0){ shockLoss+=hit; notes.push('Lost '+fmtMoney(hit)+' on '+D.sovereigns[d.sovereign].name+'.'); S.standing.merchants=clamp(S.standing.merchants-10,0,100); fx({k:'burst',sov:d.sovereign,text:'−'+fmtMoney(hit)}); } }
   // 9. agency losses at branches
   for(const c of branchIds()){ if(c===S.seat) continue; const br=S.branches[c]; const capCtl=0.5+(hasTech('double_entry')?0.2:0)+(hasTech('telegraph')?0.2:0)+(hasTech('holding')?0.1:0);
     br.control=Math.min(capCtl,br.control+0.08*years/5*2);
-    const p=0.045*years*(1-br.control)*FX.agency; if(rng()<p){ const share=att[c]*totalAssets()*(0.15+0.35*rng()); const dl=Math.min(share,FX.branch_liability==='limited'?share*0.5:share);
-      shockLoss+=dl; takeFromAll(dl); log(S.year,'Your manager in '+city(c).name+' has been lending on his own account','Unsecured advances to the local court and his own ventures, found in the books '+years+' years late. Loss '+fmtMoney(dl)+(FX.branch_liability==='limited'?'; the accomandita stopped the rest at the branch door.':'.'),'bad','STYLISED'); } }
+    // before the telegraph a far factor answers to letters months old: agency risk grows with distance from the seat. STYLISED
+    const far=hasTech('telegraph')?1:1+distFromSeat(c)/700;
+    const p=Math.min(0.9,0.045*years*(1-br.control)*FX.agency*far); if(rng()<p){ const share=att[c]*totalAssets()*(0.15+0.35*rng()); const dl=Math.min(share,FX.branch_liability==='limited'?share*0.5:share);
+      shockLoss+=dl; takeFromAll(dl); log(S.year,'Your manager in '+city(c).name+' has been lending on his own account','Unsecured advances to the local court and his own ventures, found in the books '+years+' years late. Loss '+fmtMoney(dl)+(FX.branch_liability==='limited'?'; the accomandita stopped the rest at the branch door.':'.'),'bad','STYLISED'); fx({k:'smoke',city:c,text:'−'+fmtMoney(dl)}); } }
   // 10. profit, tax, payout
   losses+=shockLoss; const gross=income-fcost-bcost-overhead-losses;
   const tax=(S.year>=1965&&gross>0)?gross*0.25:0; let profit=gross-tax;
@@ -536,15 +690,15 @@ function advance(){
   const pexp=panicCities?exposure(panicCities):1; panic*=pexp;
   if(panic>0.02){ const W=panic*(0.6*S.funding.deposits+0.8*S.funding.notes+(S.wholesaleFreeze?1:0.9)*S.funding.wholesale);
     const L=liquidCapacity(panic); const cash0=S.assets.cash; const fireRate=0.12+0.35*clamp(panic,0,1);
-    if(W<=cash0){ S.assets.cash-=W; S.funding.deposits-=W*(0.6*S.funding.deposits)/(0.6*S.funding.deposits+0.8*S.funding.notes+0.9*S.funding.wholesale+1e-9); notes.push('A run: '+fmtMoney(W)+' withdrawn; the till held.'); withdrawFunding(W); }
-    else if(W<=L){ const fire=(W-Math.max(cash0,0))*fireRate; spend(W); withdrawFunding(W); takeFromAll(fire); losses+=fire; notes.push('A run: '+fmtMoney(W)+' withdrawn. Bills and bonds sold at a loss of '+fmtMoney(fire)+' to meet it.'); }
+    if(W<=cash0){ S.assets.cash-=W; S.funding.deposits-=W*(0.6*S.funding.deposits)/(0.6*S.funding.deposits+0.8*S.funding.notes+0.9*S.funding.wholesale+1e-9); notes.push('A run: '+fmtMoney(W)+' withdrawn; the till held.'); withdrawFunding(W); fx({k:'crowd',city:S.seat,held:true,text:'A run — the till held'}); }
+    else if(W<=L){ const fire=(W-Math.max(cash0,0))*fireRate; spend(W); withdrawFunding(W); takeFromAll(fire); losses+=fire; notes.push('A run: '+fmtMoney(W)+' withdrawn. Bills and bonds sold at a loss of '+fmtMoney(fire)+' to meet it.'); fx({k:'crowd',city:S.seat,held:true,text:'A run — met at a loss'}); }
     else { // cannot meet withdrawals
       if(R.lolr&&eq>0){ const gap=W-L; const pen=gap*0.10*years; spend(L); withdrawFunding(W); S.funding.deposits+=gap; // the Bank lends the gap; booked as funding
         S.assets.cash+=gap; S.assets.cash-=pen; S.lolrUses++; S.standing.regulator=clamp(S.standing.regulator-12,0,100);
-        notes.push('The Bank of England lent '+fmtMoney(gap)+' against your paper at a penalty rate. Bagehot\'s rule: solvent, so saved.'); }
+        notes.push('The Bank of England lent '+fmtMoney(gap)+' against your paper at a penalty rate. Bagehot\'s rule: solvent, so saved.'); fx({k:'crowd',city:S.seat,held:true,text:'Saved by the Bank'}); }
       else if(S.lifeboatOffer&&eq>0){ const gap=W-L; spend(L); withdrawFunding(W); S.funding.deposits+=gap; S.assets.cash+=gap-gap*0.08; S.lifeboatOffer=false; S.lifeboatUsed=true;
-        notes.push('The Lifeboat: the clearers lent '+fmtMoney(gap)+' at a price. You are a secondary bank that lived.'); }
-      else { die('run','A run on the house','Withdrawals of '+fmtMoney(W)+' against '+fmtMoney(L)+' that could be found. The bench is broken'+(FX.liability==='limited'||R.liability==='limited'?'; the shareholders lose their shares.':'; the partners are liable to the last coin.')); }
+        notes.push('The Lifeboat: the clearers lent '+fmtMoney(gap)+' at a price. You are a secondary bank that lived.'); fx({k:'crowd',city:S.seat,held:true,text:'The Lifeboat'}); }
+      else { fx({k:'crowd',city:S.seat,held:false,text:'The bench is broken'}); die('run','A run on the house','Withdrawals of '+fmtMoney(W)+' against '+fmtMoney(L)+' that could be found. The bench is broken'+(FX.liability==='limited'||R.liability==='limited'?'; the shareholders lose their shares.':'; the partners are liable to the last coin.')); }
     }
   }
   if(!S.alive) { finishTurn(years,notes,evs); return; }
@@ -563,6 +717,7 @@ function advance(){
   S.standing.regulator=clamp(S.standing.regulator+1,0,100);
   // 16. G-SIB
   if(S.gsibOn){ const g=gsibScore(); if(g.total>=D.gsib.designation_score&&!S.designated){ S.designated=S.year; S.won={year:S.year,score:g.total,bucket:g.bucket}; } }
+  fx({k:'float',city:S.seat,text:(profit>=0?'+':'−')+fmtMoney(Math.abs(profit)),tone:profit>=0?'good':'bad'});
   // 17. random offers
   if(rng()<0.35*Math.min(1,years/3)) makeOffer();
   S.offers=S.offers.filter(o=>{o.turns--; return o.turns>0;});
@@ -571,10 +726,34 @@ function advance(){
 function finishTurn(years,notes,evs){
   const y0=S.year; S.year+=years; S.turn++;
   if(notes.length) log(y0,'The turn of '+y0+'–'+(S.year-1),notes.join(' '),S.lastProfit<0?'bad':'');
+  // the charts grow: places first reached by Europeans this turn come out of the fog
+  for(const c of D.cities){ const k=D.geo.known[c.id]; if(k!=null&&k>y0&&k<=S.year) fx({k:'open',city:c.id,text:'Charted: '+c.name}); }
   snapshot(); save(); render();
-  const E=era(); if(!S.eraSeen[E.id]){ S.eraSeen[E.id]=true; if(S.year>1300) showEra(E); }
-  if(!S.alive) showDeath(); else if(S.won&&!S.wonShown){ S.wonShown=true; showWin(); } else if(S.year>=2027) showEnd();
+  const E=era(), newEra=!S.eraSeen[E.id]; if(newEra) S.eraSeen[E.id]=true;
+  play(TURN_FX,()=>{ if(newEra&&S.year>1300) showEra(E);
+    if(!S.alive) showDeath(); else if(S.won&&!S.wonShown){ S.wonShown=true; showWin(); } else if(S.year>=2027) showEnd(); });
 }
+/* Commerce: lending grows a city's trade. Each city's multiplier on its
+   historical prosperity drifts toward 1 + 0.4·tanh(1.1·r), where r is the
+   house's private credit there over three-tenths of the city's share of the
+   deposit pool. Lend beyond 1.6 of that and it is a bubble, which bursts at
+   about 4% a year. Shocks that strike a city knock its commerce back. Bounds
+   0.5–1.45. All STYLISED. Returns the losses from any bust. */
+function updateCommerce(years,shocks){
+  const att=cityAttribution(), P=pool(S.year); let pc=0; for(const k of PRIVATE) pc+=amount(k);
+  const pull=1-Math.pow(0.82,years); let best=null, bestUp=0, bust=0;
+  for(const c of D.cities){ const cid=c.id, base=baseProsperity(cid), cur=S.commerce[cid]||1, cs=S.cityState[cid]; let target=1, ratio=0;
+    if(att[cid]&&base>0.02){ ratio=pc*att[cid]/(0.3*P*base); target=1+0.4*Math.tanh(1.1*ratio); }
+    let v=cur+(target-cur)*pull;
+    for(const sh of shocks) if(sh.cities&&sh.cities.includes(cid)) v*=1-0.35*Math.min(1,sh.size||0.5);
+    if(ratio>1.6&&rng()<1-Math.pow(0.96,years)){ const dl=pc*att[cid]*0.22; bust+=dl; v*=0.7;
+      for(const k of PRIVATE){ const a=amount(k); if(a>0&&pc>0) reduceClass(k,dl*a/pc); }
+      log(S.year,'The boom in '+c.name+' breaks','You lent '+c.name+' more than its trade could carry. Commerce falls by a third; '+fmtMoney(dl)+' of your loans there go bad.','bad','STYLISED');
+      fx({k:'burst',city:cid,text:'Bust −'+fmtMoney(dl)}); }
+    S.commerce[cid]=clamp(v,0.5,1.45);
+    if(S.branches[cid]&&v-cur>bestUp){ bestUp=v-cur; best=cid; } }
+  if(best&&bestUp>0.03) fx({k:'float',city:best,text:'Trade grows ×'+S.commerce[best].toFixed(2),tone:'good'});
+  return bust; }
 function die(reason,title,text){ S.alive=false; S.dead={reason,title,text,year:S.year}; log(S.year,title,text,'bad'); }
 function gauss(){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
 function exposure(cities){ if(!cities) return 1; const ids=branchIds(); const n=cities.filter(c=>ids.includes(c)).length; return clamp((cities.includes(S.seat)?0.7:0.12)+0.3*n/Math.max(1,ids.length),0,1); }
@@ -605,19 +784,19 @@ function rebalance(years){
   S.assets.cash=cash;
 }
 function makeOffer(){ const reach=[...sovereignsReachable()].filter(s=>D.sovereigns[s]); if(!reach.length) return; const s=reach[Math.floor(rng()*reach.length)];
-  const rivals=rivalsAtCourt(s); if(rivals.length&&rng()<D.court_contest*(1-S.standing.crown[s]/150)){ const r=rivals[Math.floor(rng()*rivals.length)]; log(S.year,r.name.replace(/^the /,'The ')+' took '+D.sovereigns[s].title+'\'s business','A loan you never saw. Standing at that court brings the next one to you first.','','STYLISED'); return; }
+  const rivals=rivalsAtCourt(s); if(rivals.length&&rng()<D.court_contest*(1-S.standing.crown[s]/150)){ const r=rivals[Math.floor(rng()*rivals.length)]; log(S.year,r.name.replace(/^the /,'The ')+' took '+D.sovereigns[s].title+'\'s business','A loan you never saw. Standing at that court brings the next one to you first.','','STYLISED'); fx({k:'float',sov:s,text:r.short+' took the loan',tone:'bad'}); return; }
   const E=era(); const size=(0.15+0.35*rng())*Math.max(equity(),1)*(1+S.standing.crown[s]/100); const base=yieldOf('princes'); const y=base*(0.8+0.5*rng())*(1.4-D.sovereigns[s].reliability*0.6);
   S.offers.push({sovereign:s,amount:size,yield:clamp(y,0.03,0.30),turns:2,cls:E.id==='basel'?'syndicated_loans':(S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':'princes'),
-    text:D.sovereigns[s].title+' asks for '+fmtMoney(size)+' at '+pct(clamp(y,0.03,0.3),0)+'. Standing at court: '+Math.round(S.standing.crown[s])+'.',prov:'STYLISED'}); }
+    text:D.sovereigns[s].title+' asks for '+fmtMoney(size)+' at '+pct(clamp(y,0.03,0.3),0)+'. Standing at court: '+Math.round(S.standing.crown[s])+'.',prov:'STYLISED'}); fx({k:'float',sov:s,text:'asks '+fmtMoney(size),tone:'hist'}); }
 function processRivals(years,addPanic){
   for(const r of D.rivals){ const st=rivalState(r.id); if(st.acquired||!st.alive) continue;
     for(const f of r.fates){ if(st.fates[f.year]) continue;
       if(f.year>=S.year&&f.year<S.year+years){ st.fates[f.year]=true;
         if(f.kind==='failed'||f.kind==='absorbed'){ st.alive=false; st.fell=f.year; st.how=f.kind;
-          log(f.year,(f.kind==='failed'?'Failed: ':'Absorbed: ')+r.name,f.text,'hist',r.provenance);
+          log(f.year,(f.kind==='failed'?'Failed: ':'Absorbed: ')+r.name,f.text,'hist',r.provenance); fx({k:'fall',city:r.home,text:(f.kind==='failed'?'Fell: ':'Absorbed: ')+r.short});
           if(f.kind==='failed'){ const near=r.cities.filter(c=>S.branches[c]); if(near.length) addPanic(0.12,near); }
           if(!S.offers.some(o=>o.kind==='acquire'&&o.rival===r.id)) S.offers.push(acquisitionOffer(r,f.kind)); }
-        else { st.size_mult*=f.size_mult||0.5; log(f.year,(f.kind==='rescued'?'Rescued: ':'Gutted: ')+r.name,f.text,'hist',r.provenance); }
+        else { st.size_mult*=f.size_mult||0.5; log(f.year,(f.kind==='rescued'?'Rescued: ':'Gutted: ')+r.name,f.text,'hist',r.provenance); fx({k:'burst',city:r.home,text:r.short+' shaken'}); }
       } else if(f.year>=S.year+years&&f.year<S.year+2*years&&(f.kind==='failed'||f.kind==='rescued')&&!st.distressOffered){
         st.distressOffered=true; if(r.cities.some(c=>S.branches[c])) S.offers.push(acquisitionOffer(r,'rescued',f.year)); }
     } }
@@ -631,26 +810,33 @@ function acquire(i){ const o=S.offers[i]; const r=byId(D.rivals,o.rival); if(!r.
   if(liquidCapacity()<o.amount) return 'money'; spend(o.amount); S.funding.deposits+=o.deposits; S.assets.cash+=o.deposits; takeFromAll(o.bad);
   const st=rivalState(r.id); st.acquired=true; st.alive=false; for(const f of r.fates) st.fates[f.year]=true;
   S.standing.merchants=clamp(S.standing.merchants+8,0,100); S.standing.regulator=clamp(S.standing.regulator+5,0,100); S.offers.splice(i,1);
-  log(S.year,(o.mode==='rescued'?'Rescued ':'Bought ')+r.name,'For '+fmtMoney(o.amount)+'. Their share of the pool is yours'+(r.techs.length?'; their people know '+r.techs.map(t=>byId(D.techs,t).name).join(', ')+', which is now half the price to adopt.':'.'),'good','STYLISED'); render(); return 'ok'; }
+  log(S.year,(o.mode==='rescued'?'Rescued ':'Bought ')+r.name,'For '+fmtMoney(o.amount)+'. Their share of the pool is yours'+(r.techs.length?'; their people know '+r.techs.map(t=>byId(D.techs,t).name).join(', ')+', which is now half the price to adopt.':'.'),'good','STYLISED'); render(); flash({k:'chest',from:S.seat,to:r.home}); flash({k:'open',city:r.home,text:'Bought: '+r.short}); return 'ok'; }
+const EVENT_TONE={sovereign_default:'bad',shock:'bad',panic:'bad',forced_loan:'bad',fraud_check:'bad',lifeboat:'bad',offer:'hist',centre:'hist'};
 function applyEvent(e,ctx){
   const f=e.effect; const scoped=f.scope&&f.scope!==seatSovereign();
-  log(e.year,e.title,e.text,'hist',e.provenance);
+  if(!ctx.quiet){ log(e.year,e.title,e.text,'hist',e.provenance);
+    fx({k:'news',year:e.year,title:e.title,tone:EVENT_TONE[f.type]||'',cities:f.cities,city:f.city,sov:f.sovereign||f.scope}); }
   switch(f.type){
     case 'flavour': break;
     case 'sovereign_default': ctx.defaults.push(f); break;
-    case 'forced_loan': if(f.sovereign===seatSovereign()||S.branches[Object.keys(S.branches).find(c=>city(c).sovereign===f.sovereign)||'']){ const amt=f.share*S.funding.deposits; spend(amt); S.assets.state_bonds=(S.assets.state_bonds||0)+amt; ctx.addPanic(0.1); } break;
+    case 'forced_loan': if(f.sovereign===seatSovereign()||S.branches[Object.keys(S.branches).find(c=>citySov(c)===f.sovereign)||'']){ const amt=f.share*S.funding.deposits; spend(amt); S.assets.state_bonds=(S.assets.state_bonds||0)+amt; ctx.addPanic(0.1); } break;
     case 'shock': ctx.shocks.push(f); if(f.panic) ctx.addPanic(f.panic,f.cities); if(f.wholesale_freeze) S.wholesaleFreeze=true; break;
     case 'panic': ctx.addPanic(f.size,f.cities); break;
-    case 'rule': S.ruleOverrides.push({year:e.year,field:f.field,value:f.value,scope:f.scope||null}); if(f.panic&&!scoped) ctx.addPanic(f.panic,f.cities); if(f.also) applyEvent({year:e.year,title:e.title,text:'',effect:f.also,provenance:e.provenance},{...ctx,quiet:true}); break;
-    case 'centre': S.centre=f.city; break;
-    case 'city': { const cs=S.cityState[f.city]; if(f.field==='open') cs.open=f.value; else if(f.field==='sacked'){ cs.sacked=f.value; if(S.branches[f.city]){ const dl=cityAttribution()[f.city]*totalAssets()*0.6; takeFromAll(dl); log(e.year,'Your house in '+city(f.city).name+' is looted',fmtMoney(dl)+' lost.','bad','STYLISED'); if(S.seat===f.city) ctx.addPanic(0.5); } } else if(f.field==='prosperity_mult') cs.prosperity_mult=f.value; break; }
+    case 'rule': S.ruleOverrides.push({year:e.year,field:f.field,value:f.value,scope:f.scope||null}); if(f.panic&&!scoped) ctx.addPanic(f.panic,f.cities); break;
+    case 'centre': S.centre=f.city; fx({k:'float',city:f.city,text:'The centre of the money',tone:'hist'}); break;
+    case 'city': { const cs=S.cityState[f.city]; if(f.field==='open'){ cs.open=f.value; if(f.value) fx({k:'open',city:f.city,text:'Opens'}); }
+      else if(f.field==='sovereign'){ cs.sovereign=f.value; fx({k:'float',city:f.city,text:'Now '+D.sovereigns[f.value].name.replace(/^the /,''),tone:'hist'}); }
+      else if(f.field==='sacked'){ cs.sacked=f.value; if(f.value) fx({k:'smoke',city:f.city}); if(S.branches[f.city]){ const dl=cityAttribution()[f.city]*totalAssets()*0.6; takeFromAll(dl); log(e.year,'Your house in '+city(f.city).name+' is looted',fmtMoney(dl)+' lost.','bad','STYLISED'); fx({k:'smoke',city:f.city,text:'−'+fmtMoney(dl)}); if(S.seat===f.city) ctx.addPanic(0.5); } }
+      else if(f.field==='prosperity_mult') cs.prosperity_mult=f.value; break; }
     case 'regime': S.regime=f.id; break;
     case 'tech_gate': S.techGates[f.tech]=f.available; S.techGateScope=S.techGateScope||{}; S.techGateScope[f.tech]=f.scope||null; break;
-    case 'offer': { const s=f.sovereign; if(sovereignsReachable().has(s)||S.year<1500){ const amt=f.size*Math.max(equity(),1)*2; S.offers.push({sovereign:s,amount:amt,yield:f.yield,turns:f.turns,cls:S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':(era().id==='basel'?'syndicated_loans':'princes'),text:D.sovereigns[s].title+' asks for '+fmtMoney(amt)+' at '+pct(f.yield,0)+'.',prov:'HISTORICAL',hist:e.title}); } break; }
+    case 'offer': { const s=f.sovereign; if(sovereignsReachable().has(s)||(S.year<1500&&courtActive(s))){ const amt=f.size*Math.max(equity(),1)*2; S.offers.push({sovereign:s,amount:amt,yield:f.yield,turns:f.turns,cls:S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':(era().id==='basel'?'syndicated_loans':'princes'),text:D.sovereigns[s].title+' asks for '+fmtMoney(amt)+' at '+pct(f.yield,0)+'.',prov:'HISTORICAL',hist:e.title}); } break; }
     case 'lifeboat': if(f.shock) ctx.shocks.push(Object.assign({cities:f.cities},f.shock)); if(seatSovereign()==='england') S.lifeboatOffer=true; break;
     case 'gsib_on': S.gsibOn=true; break;
-    case 'fraud_check': if(S.branches[f.city]&&S.assets.trading_book>0&&!hasTech('var')&&rng()<0.5*techFx().fraud){ const dl=Math.min(S.assets.trading_book*f.size,equity()*0.7); reduceClass('trading_book',dl); ctx.shocks.push({kind:'none',size:0}); log(e.year,'Account 88888','A trader in '+city(f.city).name+' has been hiding losses in an error account. '+fmtMoney(dl)+' gone. Your controls were his.','bad','STYLISED'); } break;
+    case 'fraud_check': if(S.branches[f.city]&&S.assets.trading_book>0&&!hasTech('var')&&rng()<0.5*techFx().fraud){ const dl=Math.min(S.assets.trading_book*f.size,equity()*0.7); reduceClass('trading_book',dl); ctx.shocks.push({kind:'none',size:0}); log(e.year,'Account 88888','A trader in '+city(f.city).name+' has been hiding losses in an error account. '+fmtMoney(dl)+' gone. Your controls were his.','bad','STYLISED'); fx({k:'smoke',city:f.city,text:'−'+fmtMoney(dl)}); } break;
   }
+  // a nested effect (a default that also hands a city to a new court) applies quietly under the same headline
+  if(f.also) applyEvent({year:e.year,title:e.title,text:'',effect:f.also,provenance:e.provenance},{...ctx,quiet:true});
 }
 /* ------------------------------------------------------------------ modern capital */
 function capitalPosition(){ const R=rules(); if(!R.capital_regime) return null; const reg=D.regimes[R.capital_regime]; const FX=techFx();
@@ -659,7 +845,7 @@ function capitalPosition(){ const R=rules(); if(!R.capital_regime) return null; 
   const eq=equity(); const ratio=rwa>0?eq/rwa:1; const p2a=S.year>=2007?0.015:0; const ccyb=S.year>=2018&&S.year<2020?0.01:(S.year>=2023?0.02:0); const buf=reg.buffers; const g=S.gsibOn?gsibScore():null; const gsb=g&&g.bucket?g.surcharge:0;
   const min=reg.cet1_min+p2a; const withBuf=min+buf+ccyb+gsb; let mda=null; if(buf>0&&ratio<withBuf){ const q=(ratio-min)/(withBuf-min); mda=q<0?0:q<0.25?0:q<0.5?0.2:q<0.75?0.4:0.6; }
   return {reg,rwa,rwaSA,ratio,min,p2a,buf,ccyb,gsb,withBuf,mda,breach:ratio<min,lev:S.year>=2014?eq/Math.max(1,totalAssets()):null,headroom:ratio-withBuf}; }
-function gsibScore(){ const T=totalAssets(); const att=cityAttribution(); let foreign=0; for(const c in att) if(city(c).sovereign!==seatSovereign()) foreign+=att[c];
+function gsibScore(){ const T=totalAssets(); const att=cityAttribution(); let foreign=0; for(const c in att) if(citySov(c)!==seatSovereign()) foreign+=att[c];
   const bn=x=>x/1e6; // thousands → billions
   const size=bn(T)/9; const inter=(S.funding.wholesale/Math.max(1,liabilities()))*250+(amount('trading_book')/Math.max(1,T))*120+bn(T)/40;
   const subs=bn(S.funding.deposits)/6+bn(amount('trade_bills')+amount('acceptances'))/2; const comp=bn(amount('trading_book'))/2+(hasTech('securitisation')?bn(amount('mortgages'))/6:0); const cross=foreign*300*Math.min(1,bn(T)/300);
@@ -667,8 +853,8 @@ function gsibScore(){ const T=totalAssets(); const att=cityAttribution(); let fo
   let bucket=0,surcharge=0; D.gsib.buckets.forEach(([th,s],i)=>{ if(total>=th){bucket=i+1; surcharge=s;} }); return {cats,total,bucket,surcharge}; }
 
 /* ------------------------------------------------------------------ persistence */
-function save(){ try{ localStorage.setItem('longledger.v1',JSON.stringify(S)); }catch(e){} }
-function load(){ try{ const s=localStorage.getItem('longledger.v1'); if(!s) return false; S=JSON.parse(s); rng=mulberry32((S.seed+S.turn*7919)>>>0); return true; }catch(e){ return false; } }
+function save(){ try{ localStorage.setItem('longledger.v2',JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const s=localStorage.getItem('longledger.v2'); if(!s) return false; S=JSON.parse(s); rng=mulberry32((S.seed+S.turn*7919)>>>0); return true; }catch(e){ return false; } }
 
 /* ------------------------------------------------------------------ render */
 const $=id=>document.getElementById(id);
@@ -708,7 +894,8 @@ function render(){
   ${S.funding.notes>0.5?`<tr><td>Banknotes</td><td class="n">${fmtMoney(S.funding.notes)}</td><td class="n">${pct(S.funding.notes/T,0)}</td><td colspan="3"></td></tr>`:''}
   ${S.funding.wholesale>0.5?`<tr><td>Wholesale</td><td class="n">${fmtMoney(S.funding.wholesale)}</td><td class="n">${pct(S.funding.wholesale/T,0)}</td><td colspan="3"></td></tr>`:''}
   <tr class="total"><td>Partners' capital</td><td class="n">${fmtMoney(eq)}</td><td class="n">${pct(eq/T,1)}</td><td colspan="3"></td></tr>`;
-  renderAlloc(); renderCourt(); renderMap(); renderHouses(); renderTechs(); renderChron(); renderChart(); renderCapital();
+  renderAlloc(); renderCourt(); renderMap(); renderHouses(); renderTechs(); renderChron(); renderChart(); renderCapital(); renderBoard();
+  save(); // every action is kept, not only the end of a turn
 }
 function sovList(m){ const e=Object.entries(m).filter(([,v])=>v>0.5).sort((a,b)=>b[1]-a[1]); const top=e.slice(0,3).map(([s,v])=>esc((D.sovereigns[s]?.name||s).replace(/^the /,''))+' '+fmtMoney(v)); return top.join(', ')+(e.length>3?' +'+(e.length-3)+' more':''); }
 function tile(k,v,sub,state){ return `<div class="tile" data-state="${state||''}"><div class="tile-k">${esc(k)}</div><div class="tile-v">${esc(v)}</div><div class="tile-sub">${esc(sub||'')}</div></div>`; }
@@ -736,12 +923,15 @@ function renderCourt(){ if(!S.offers.length){ $('offers').innerHTML='<p class="m
   for(const b of $('offers').querySelectorAll('[data-acc]')) b.addEventListener('click',()=>{ const i=+b.dataset.acc; const o=S.offers[i]; if(o.kind==='acquire'){ acceptOffer(i); return; } if(!acceptOffer(i,$('off-'+i).value/100)) toast('Not enough that can be found in coin.'); });
   for(const b of $('offers').querySelectorAll('[data-dec]')) b.addEventListener('click',()=>declineOffer(+b.dataset.dec));
 }
-function renderMap(){ const E=era(); $('map-text').textContent='The centre of gravity is '+city(S.centre).name+(S.seat===S.centre?' — where you sit.':'; you sit in '+city(S.seat).name+'. A seat at the centre grows deposits a third faster.')+' Opening a branch costs about a tenth of capital; lending to a prince needs a branch in his city.';
-  const list=D.cities.filter(c=>S.cityState[c.id].open&&S.year>=c.opens&&(c.prosperity[E.id]!=null||S.branches[c.id])).sort((a,b)=>prosperity(b.id)-prosperity(a.id));
-  $('cities').innerHTML=list.map(c=>{ const br=S.branches[c.id], cs=S.cityState[c.id], p=prosperity(c.id), isSeat=c.id===S.seat;
-    return `<div class="city ${isSeat?'seat':br?'branch':''} ${cs.sacked?'sacked':''}"><div class="cn"><span>${esc(c.name)}</span><span class="tag ${c.id===S.centre?'centre':''}">${isSeat?'seat':c.id===S.centre?'centre':br?'branch':''}</span></div>
-      <div class="meter"><i style="width:${Math.round(p*100)}%"></i></div><div class="cb">${esc(c.blurb)}${br&&!isSeat?' Control '+pct(br.control,0)+'.':''}${cs.sacked?' Sacked.':''}</div>
-      <div class="acts">${!br&&!cs.sacked?`<button class="btn sm" data-open="${c.id}">Open · ${fmtMoney(branchCost(c.id))}</button>`:''}${br&&!isSeat?`<button class="btn sm" data-seat="${c.id}">Move seat · ${fmtMoney(0.12*equity())}</button><button class="btn sm danger" data-close="${c.id}">Close</button>`:''}</div></div>`; }).join('');
+function renderMap(){ const E=era(); $('map-text').textContent='The centre of gravity is '+city(S.centre).name+(S.seat===S.centre?' — where you sit.':'; you sit in '+city(S.seat).name+'. A seat at the centre grows deposits a third faster.')+' A branch costs about a tenth of capital, more the farther it is from the seat. Lending in a city grows its commerce, and so the business you can do there; lend past what its trade can carry and it bursts.';
+  const list=D.cities.filter(c=>isKnown(c.id)&&S.cityState[c.id].open&&S.year>=c.opens&&(c.prosperity[E.id]!=null||S.branches[c.id]))
+    .sort((a,b)=>(S.branches[b.id]?1:0)-(S.branches[a.id]?1:0)||prosperity(b.id)-prosperity(a.id));
+  $('cities').innerHTML=list.map(c=>{ const br=S.branches[c.id], cs=S.cityState[c.id], base=baseProsperity(c.id), com=S.commerce[c.id]||1, isSeat=c.id===S.seat;
+    const tag=isSeat?'seat':br?'branch':c.id===S.centre?'centre':'';
+    return `<div class="place ${isSeat?'seat':br?'branch':''} ${cs.sacked?'sacked':''}"><button class="pn" data-go="${c.id}">${esc(c.name)}<small>${tag}${tag?' · ':''}${esc(D.sovereigns[citySov(c.id)].name.replace(/^the /,''))}</small></button>
+      <div class="acts">${!br&&!cs.sacked?`<button class="btn sm" data-open="${c.id}">Open · ${fmtMoney(branchCost(c.id))}</button>`:''}${br&&!isSeat?`<button class="btn sm" data-seat="${c.id}">Seat · ${fmtMoney(0.12*equity())}</button><button class="btn sm danger" data-close="${c.id}" aria-label="Close the ${esc(c.name)} branch">×</button>`:''}</div>
+      <div class="meter" title="Prosperity ${Math.round(base*100)} · commerce ×${com.toFixed(2)}"><i style="width:${Math.round(Math.min(1,base)*60)}%"></i><i class="com" style="width:${Math.round(Math.max(0,com-1)*90)}%"></i></div></div>`; }).join('');
+  for(const b of $('cities').querySelectorAll('[data-go]')) b.addEventListener('click',()=>focusCity(b.dataset.go));
   for(const b of $('cities').querySelectorAll('[data-open]')) b.addEventListener('click',()=>{ if(!openBranch(b.dataset.open)) toast('Cannot afford to open there.'); });
   for(const b of $('cities').querySelectorAll('[data-seat]')) b.addEventListener('click',()=>{ if(!moveSeat(b.dataset.seat)) toast('Cannot afford the move.'); });
   for(const b of $('cities').querySelectorAll('[data-close]')) b.addEventListener('click',()=>closeBranch(b.dataset.close));
@@ -783,10 +973,15 @@ function showDeath(){ const d=S.dead; modal(`<div class="eyebrow">${d.year} · g
 function showWin(){ const w=S.won; modal(`<div class="eyebrow">${w.year} · the FSB's November list</div><h2>Designated</h2><p>Score ${Math.round(w.score)} basis points: bucket ${w.bucket}, a surcharge of ${pct(D.gsib.buckets[w.bucket-1][1])} of risk-weighted assets on top of everything else. Seven centuries from a bench on the Rialto to a bank whose failure would matter everywhere. Play on to 2027 and the output floor.</p><div class="acts"><button class="btn primary" data-close>Carry on</button></div>`); }
 function showEnd(){ const g=S.gsibOn?gsibScore():null; modal(`<div class="eyebrow">2027 · Basel 3.1</div><h2>${S.won?'A G-SIB':'Survived'}</h2><p>${S.won?'Designated in '+S.won.year+', and still standing at the output floor.':'Seven hundred and twenty-seven years without a fatal run, default or regulator — and not systemically important. Score '+(g?Math.round(g.total):0)+' of 130. Bigger, more cross-border, more complex next time; or safer. The two pull against each other, which is the point.'}</p><div class="kv"><span>Capital</span><b>${fmtMoney(equity())}</b><span>Assets</span><b>${fmtMoney(totalAssets())}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b></div><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); startNew(); }); }
 function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:8px;font-size:13px;z-index:200;box-shadow:var(--shadow)'; document.body.appendChild(t); setTimeout(()=>t.remove(),1800); }
-function startNew(seed){ newGame(seed??(Date.now()&0xffffffff)); save(); render(); showEra(era()); }
+function startNew(seed){ flushPlay(); closePop(); newGame(seed??(Date.now()&0xffffffff)); save(); MAP.follow=true; render(); showEra(era()); }
+
+/*__BOARD_JS__*/
 
 /* ------------------------------------------------------------------ wire up */
-$('b-end').addEventListener('click',()=>advance());
+function endTurn(){ if(MAP.playing){ flushPlay(); return; } if($('modal').classList.contains('show')) return; closePop(); advance(); }
+$('b-end').addEventListener('click',endTurn);
+function syncAnim(){ const b=$('b-anim'); b.setAttribute('aria-pressed',MAP.anim?'true':'false'); b.textContent=MAP.anim?'Motion on':'Motion off'; }
+$('b-anim').addEventListener('click',()=>{ MAP.anim=!MAP.anim; try{ localStorage.setItem('longledger.anim',MAP.anim?'on':'off'); }catch(e){} if(!MAP.anim) flushPlay(); syncAnim(); });
 $('b-save').addEventListener('click',()=>{ save(); toast('Saved to this browser.'); });
 $('b-new').addEventListener('click',()=>{ const s=prompt('New game. Enter a seed (number) or leave blank for a fresh one:',''); startNew(s?(+s>>>0):undefined); });
 $('c-reserve').addEventListener('input',e=>{ S.reserve=+e.target.value/100; $('c-reserve-v').textContent=pct(S.reserve,0); });
@@ -794,13 +989,14 @@ $('c-payout').addEventListener('input',e=>{ S.payout=+e.target.value/100; $('c-p
 $('c-notes').addEventListener('input',e=>{ S.notesShare=+e.target.value/100; $('c-notes-v').textContent=pct(S.notesShare,0); });
 $('c-wholesale').addEventListener('input',e=>{ S.wholesaleShare=+e.target.value/100; $('c-wholesale-v').textContent=pct(S.wholesaleShare,0); });
 $('c-raise').addEventListener('input',e=>{ S.raise=+e.target.value/100; $('c-raise-v').textContent=pct(S.raise,0); });
-document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.target.closest('input,button,textarea')&&!$('modal').classList.contains('show')) advance(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.target.closest('input,button,textarea,.city')&&!$('modal').classList.contains('show')) endTurn(); });
 
-if(!load()){ startNew(); } else { render(); }
+const resumed=load(); if(!resumed){ newGame(Date.now()&0xffffffff); save(); }
+buildBoard(); syncAnim(); render(); if(!resumed) showEra(era());
 
 /* test hook: a scripted player for headless runs */
 window.Saga={get S(){return S}, newGame:startNew, advance, adoptTech, openBranch, moveSeat, acceptOffer, declineOffer, era, rules, techFx, capitalPosition, gsibScore, classes, equity, totalAssets,
-  autoplay(turns,opts){ opts=opts||{}; const out=[]; for(let i=0;i<turns&&S.alive&&S.year<2027;i++){
+  autoplay(turns,opts){ opts=opts||{}; const out=[]; AUTOPLAY=true; try{ for(let i=0;i<turns&&S.alive&&S.year<2027;i++){
     // a plain strategy: keep a fifth in coin, lend by yield/loss, adopt what is affordable, follow the centre, lend the court half of what it asks
     S.reserve=opts.reserve??0.2; S.payout=opts.payout??0.35;
     for(const b of classes()){ if(SOV_SCALAR.includes(b.id)) continue; const y=yieldOf(b.id), l=lossOf(b.id); S.weights[b.id]=clamp(Math.round((y-l)/0.012),0,b.id==='trading_book'?2:10); }
@@ -811,6 +1007,8 @@ window.Saga={get S(){return S}, newGame:startNew, advance, adoptTech, openBranch
     while(S.offers.length){ const o=S.offers[0]; if(o.kind==='acquire'){ if(opts.buy!==false&&(o.amount+o.bad)<0.2*equity()&&o.amount<0.3*liquidCapacity()&&acquire(0)==='ok') continue; declineOffer(0); continue; } if(rng()<(opts.lendCourt??0.5)) { if(!acceptOffer(0,0.5)) declineOffer(0); } else declineOffer(0); }
     if(era().id==='basel'){ S.wholesaleShare=opts.wholesale??0.3; S.raise=opts.raise??0; }
     S.notesShare=opts.notes??0.3;
-    advance(); out.push({year:S.year,equity:Math.round(equity()),assets:Math.round(totalAssets()),alive:S.alive,dead:S.dead&&S.dead.reason,seat:S.seat,techs:Object.keys(S.techs).length,branches:branchIds().length,gsib:S.gsibOn?Math.round(gsibScore().total):null,bought:D.rivals.filter(r=>rivalState(r.id).acquired).map(r=>r.short),cap:capitalPosition()&&+capitalPosition().ratio.toFixed(3)});
-  } return out; } };
+    advance(); out.push({year:S.year,equity:Math.round(equity()),assets:Math.round(totalAssets()),alive:S.alive,dead:S.dead&&S.dead.reason,seat:S.seat,techs:Object.keys(S.techs).length,branches:branchIds().length,gsib:S.gsibOn?Math.round(gsibScore().total):null,bought:D.rivals.filter(r=>rivalState(r.id).acquired).map(r=>r.short),cap:capitalPosition()&&+capitalPosition().ratio.toFixed(3),
+      far:branchIds().filter(c=>!['venice','florence','genoa','rome','bruges','london','avignon','lyon','antwerp','augsburg','seville','amsterdam','frankfurt','paris','edinburgh','zurich','lisbon','hamburg'].includes(c)),
+      com:Math.max(...branchIds().map(c=>S.commerce[c]||1)).toFixed(2)});
+  } } finally { AUTOPLAY=false; } return out; } };
 </script>

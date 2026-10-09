@@ -46,9 +46,13 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
   `dashboard_artifact.html` for platforms supplying their own head/body.
 - `python -m banksim.saga.build` → `banksim/saga.html`, **The Long Ledger**: a
   turn-based game (Colonization-style) of one house from the Rialto in 1300 to
-  G-SIB designation. History is data in `banksim/saga/` (eras, cities, techs,
-  borrowers, events — each with a provenance), tested by
-  `tests/test_saga_data.py`; the page's JS plays the turns. Design and
+  G-SIB designation, played on an SVG map board (`saga/board.js`, spliced into
+  `saga_template.html` by the build). History is data in `banksim/saga/`
+  (eras, cities, techs, borrowers, events, rivals, `geo.py` positions and sea
+  lanes — each with a provenance), tested by `tests/test_saga_data.py` and
+  `tests/test_saga_geo.py` (sea lanes must stay off the coastline). The
+  coastline `saga/land.json` is Natural Earth, regenerated only by hand with
+  `saga/tools/make_coastline.py`. Design and
   calibration in `banksim/docs/SAGA.md`. Headless regression: Playwright with
   `window.Saga.autoplay` (see SAGA.md; not part of the stdlib test suite).
 - Same honesty rule as the CDS data: every input carries a `Provenance`, and

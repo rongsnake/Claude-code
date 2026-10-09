@@ -39,12 +39,19 @@ in the browser, which is what makes it a simulator rather than a report.
 
 `banksim/saga.html` is a turn-based game in the manner of *Colonization*: one
 banking house from a bench on the Rialto in 1300 to the FSB's list of global
-systemically important banks. 257 era-scaled turns; a tech tree of financial
-innovations from the bill of exchange to stress testing; branches in nineteen
-cities; Edward III, Charles the Bold, Philip II, the Ayr Bank, Overend Gurney
-and Lehman landing on whoever is exposed; twenty-two rival houses from the
-Bardi to Lehman that take the pool and the court while they live, fall on
-their dates, and can be bought or rescued when they do; permadeath. The modern era runs the
+systemically important banks, played on a map. It opens as a portolan chart
+of Europe with Calicut, Cathay and Cipangu as rumours at its edge, and widens
+as the centuries and the house's branches reach out. Galleys, carracks,
+steamers and container ships carry the trade the house finances; letters and
+then telegraph pulses run between its branches; each turn plays back on the
+chart. Lending grows a city's commerce, and too much of it bursts. 257
+era-scaled turns; a tech tree of financial innovations from the bill of
+exchange to stress testing; branches in thirty-two cities from Bruges to
+Batavia; the East India Company and the VOC as courts to lend to; Edward III,
+Charles the Bold, Philip II, the Ayr Bank, Overend Gurney and Lehman landing
+on whoever is exposed; twenty-six rival houses from the Bardi to Lehman that
+take the pool and the court while they live, fall on their dates, and can be
+bought or rescued when they do; permadeath. The modern era runs the
 Basel regimes and the G-SIB score. Build it with:
 
 ```bash

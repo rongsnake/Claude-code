@@ -13,7 +13,8 @@ the inside. This is the seven centuries that lead up to it.
 | Question | Choice | Consequence |
 |---|---|---|
 | Play style | Turn-based strategy | Each turn you set the lending mix, the coin kept in the till, the partners' drawings; open branches; adopt innovations; answer the court. Then history happens. |
-| Where it runs | One HTML page | The Python side owns the history (`banksim/saga/*.py`) and the tests; the page's JavaScript plays the turns. Same pattern as the dashboard. |
+| Where it runs | One HTML page | The Python side owns the history (`banksim/saga/*.py`) and the tests; the page's JavaScript plays the turns (`saga_template.html` for the engine, `board.js` for the map, spliced in by the build). Same pattern as the dashboard. |
+| What you see | A chart, not a spreadsheet | The game is played on a map that starts as a portolan of Europe with rumours at its edges and widens as the centuries and the house's branches reach out. Ships, letters and planes carry the trade; each turn plays back on it. See *The board*. |
 | World | Fictional house, real history | Edward III, Charles the Bold, Philip II, Charles II, the Ayr Bank, Overend Gurney, Lehman — all land on whoever is exposed. Your house is invented; nothing else is. |
 | Pacing | Era-scaled turns | 5-year turns to 1600, then 3, 2, and annual from 1950: 257 turns. History is densest where the rules change fastest. |
 | Innovations | Civ-style tree | Bill of exchange, double-entry, *accomandita*, exchange fairs, joint-stock, banknotes, discounting, acceptance, telegraph, limited liability, Eurodollars, derivatives, securitisation, VaR, IRB, stress testing. Available from their historical date, bought with capital, with prerequisites. |
@@ -55,11 +56,90 @@ the inside. This is the seven centuries that lead up to it.
 10. **G-SIB score** from 2011: size, interconnectedness, substitutability,
     complexity, cross-jurisdictional activity, 20% each; 130 bps designates.
 
+## The board
+
+The map is the game board (`board.js`, drawn as SVG in the page).
+
+- **The chart changes with the age.** Before 1700 it is a portolan: parchment,
+  rhumb lines from three wind-roses, italic place names. To 1950 it is an
+  engraved chart with a graticule; after that, a modern map. Each has a dark
+  palette too.
+- **The known world grows.** In 1300 the chart is clear only round
+  Europe, the Mediterranean and the known lanes. Calicut, Cathay, Cipangu, the
+  Spice Islands, Antillia and Terra Australis are rumours at the chart's
+  edge, pointing the way. Each becomes a place on the map in the year
+  Europeans first reached it (`geo.KNOWN`, HISTORICAL), and the fog clears
+  wider round every branch the house opens. The fog thins with the centuries
+  and is a light haze by the jet age.
+- **Moving pieces.** Ships sail the sea lanes in use that year: galleys to
+  1500, carracks and East Indiamen to 1850, steamers to 1950, container ships
+  after. The house's ships are in its colour, more of them the more trade it
+  finances on a lane; others' trade is grey; the rivals' ships fly their
+  colours. Before 1850 sealed letters (bills of exchange) travel the overland
+  roads between the house's branches; after, telegraph pulses; after 1950,
+  planes on the air routes.
+- **The house's buildings.** A striped bench on the Rialto, a merchant's house
+  in the age of princes, a pillared bank from 1700, a tower in the Basel
+  era, sized by each branch's share of the business. A flag marks the seat; a
+  blue ring the centre of gravity of the age. Rival houses fly banners at
+  their homes.
+- **Commerce glows.** A gold halo round each city shows its prosperity and
+  the commerce the house's lending has grown there.
+- **The turn plays back.** Events break as headlines on the chart and pulse
+  where they strike. Losses burst over the branch that took them, and a
+  cheating factor's branch smokes. A run draws a crowd at the seat, which
+  scatters if the till holds. Houses fall, courts ask for money, profit
+  rises from the seat. The modals (a new era, death, designation) wait until
+  the playback ends. **Skip** (the End turn button while it plays, or Enter)
+  cuts it short; **Motion** turns the pieces off; reduced-motion settings are
+  honoured. The animation uses its own random numbers, never the game's, so
+  it cannot change an outcome; the headless autoplay skips it.
+- **Tap a city** for its card: its history, prosperity and commerce, its
+  court, the rivals there, your branch's share and control, and the actions:
+  open a branch, move the seat, close, or go to the court's offer. The Places
+  list beside the ledger does the same and centres the map.
+
+**Geography.** Coastlines are Natural Earth 1:50m land (public domain, via
+world-atlas 2.0.2), projected equirectangular with longitude scaled by
+cos 40° and simplified more finely in Europe than elsewhere
+(`saga/tools/make_coastline.py` → `saga/land.json`). Sea lanes are waypoint
+chains for the routes of each period: the Mediterranean galley lines, the
+Flanders galleys, the Carreira da Índia from 1498, the companies' Cape routes,
+the Atlantic, the Suez routes from 1869, and the air routes from 1950.
+`tests/test_saga_geo.py` samples every sea leg against the coastline the page
+draws, so no ship can be drawn crossing land without a test failing.
+
+**Commerce** (STYLISED). Lending grows a city's trade. Each city's prosperity
+is the era's historical level times a commerce multiplier. The multiplier
+drifts toward 1 + 0.4·tanh(1.1·r), where r is the house's private credit
+there over three-tenths of the city's share of the deposit pool. Bounds are
+0.5 to 1.45. Higher prosperity raises the deposits and the lending market the
+house can reach there, so lending compounds. Lend past 1.6 of that measure
+and the city is in a bubble, which bursts at about 4% a year: commerce falls
+by a third and a fifth of the loans there go bad. Shocks that strike a city
+knock its commerce back.
+
+**Distance** (STYLISED). A branch costs a tenth more to open for every 200
+map units (about 20° of latitude) from the seat. Before the telegraph, a far
+factor answers to letters months old, so agency risk is multiplied by
+1 + distance/700: Bombay from London roughly doubles it.
+
+**Courts and the trading companies.** Each court has a seat city where its
+banner stands; a house with a branch in that city can reach it. So a London
+branch reaches the East India Company's Court of Directors (1600–1874) and an
+Amsterdam branch the VOC's Heeren XVII (1602–1800), as London and Amsterdam
+houses did. Cities change courts on their dates: Bruges to the Habsburgs in
+1482; Batavia to the Dutch state when the VOC's charter lapses in 1799;
+Calcutta and Bombay to the Government of India in 1858. A court that has
+ended no longer asks, lends or defaults.
+
 ## The rival houses
 
-Twenty-two real banks share the table (`rivals.py`): the Peruzzi and the
+Twenty-six real banks share the table (`rivals.py`): the Peruzzi and the
 Bardi, the Medici, the Lippomano and the Pisani–Tiepolo on the Rialto, the
-Fuggers and the Welsers, the Genoese, Backwell and Vyner, Hoare's, Hope & Co.,
+Fuggers and the Welsers, the Genoese and the Casa di San Giorgio, Berenberg
+of Hamburg, Backwell and Vyner, Hoare's, Palmer & Co. of Calcutta, Jardine
+Matheson of Canton and Hong Kong, Hope & Co.,
 Barings, Rothschild, Overend Gurney, the City of Glasgow Bank, the Midland,
 J.P. Morgan, the Hongkong and Shanghai Bank, Warburg, BCCI, Northern Rock and
 Lehman. Each has a home city, a founding year, a size by era (a share of its
@@ -105,11 +185,16 @@ house's deposits: 300k ducats on the Rialto in 1300, £25m in London in 1700,
 £3 trillion in 2027); the lending market as 1.3× the deposits reachable; the
 running costs of the house (4% of assets a year in 1300, 1.5% now); offer
 sizes and yields; panic magnitudes; the G-SIB indicator scalings. These were
-tuned by headless playthroughs so that a prudent house survives seven
-centuries and ends at the Kingsgate scale (£10–18bn of capital), an ambitious
-one with nine branches and wholesale funding is designated in the 2020s at
-about 135 bps, and a reckless one (4% in the till, lends every prince) dies at
-the Ayr Bank, 1793, 1811 or Overend Gurney.
+tuned by headless playthroughs. As of the map board (October 2026): a prudent
+house survives seven centuries in eight seeds of nine and ends with £0.7–3.5bn
+of capital; an ambitious one with up to ten branches and wholesale funding is
+designated in 2017–2020 at 133–137 bps and ends near £150bn; a reckless one
+(4% in the till, lends every prince) dies, at the Bardi crash of 1345, 1850,
+the First World War or 1958. The prudent band is lower than before the board
+(£10–18bn) because the board fixed a bug that had kept every city without a
+scripted opening event closed. Antwerp, Amsterdam, Paris and every port
+outside Europe could never take a branch, and the prudent strategy now pays
+to follow the centre through them.
 
 **The currency is displayed, not modelled.** One internal unit runs through;
 eras name it ducats, guilders, pounds. The ducat and the florin were close
@@ -173,25 +258,36 @@ them is in the session log. Short form:
 Open `saga.html`. Set weights across the books you can lend to; keep a share
 of runnable funding in coin — a fifth is prudent on the Rialto, more before a
 war; decide the partners' drawings. Open branches where the prosperity bar is
-high and the centre is going; lending to a prince needs a branch in his city.
+high and the centre is going: tap a city on the map. Lending to a prince
+needs a branch in his city or in the city where his court sits. Lending grows
+a city's commerce; past what its trade can carry it bursts. Far branches cost
+more and, before the telegraph, cheat more.
 Adopt what the age invents when you can afford it. When a court asks, decide
 how much of what it asks. End the turn. Read the chronicle.
 
-`Enter` ends the turn. The game saves itself to the browser; **New game**
-takes a seed. The footer lists the rules in force.
+`Enter` ends the turn, or skips the playback. Drag to pan, wheel or pinch to
+zoom; ⌖ re-frames the map on the house. The game saves itself to the browser
+after every action; **New game** takes a seed. The footer lists the rules in force.
 
 ## Testing
 
-`banksim/tests/test_saga_data.py` — 39 tests on the data: eras tile the
+`banksim/tests/test_saga_data.py` — 40 tests on the data: eras tile the
 timeline and turns shorten; cities' sovereigns exist and each era's centre is
 prosperous; the tech tree is acyclic, monotone in time, and refers to real
 classes; every class has numbers for every era it is live in and princes pay
 most; every scripted default is preceded by a way of being exposed to that
-sovereign; the spine of the story is present; the rivals' fates fall on the dates of scripted events and the famous ones on the right years; the build produces a page.
+sovereign; the spine of the story is present; the rivals' fates fall on the dates of scripted events and the famous ones on the right years; a court with a life span (Burgundy, the VOC, the EIC) only acts inside it and hands its cities on before it ends; the build produces a page.
+
+`banksim/tests/test_saga_geo.py` — 12 tests on the map: the projection round
+trips; every city has a position on or near land; every court's seat is a
+city; waypoints are at sea; and every sea lane, sampled every 0.3°, stays off
+the coastline the page draws.
 
 The engine is exercised headlessly with Playwright (`Saga.autoplay(turns,
 opts)` is exposed on `window` for the purpose); the three strategies above are
-the regression. That harness lives outside the repo's tests because the tests
+the regression. Screenshots of the board at 1300, 1790 and 2027, on desktop,
+phone and in dark mode, and a click-through of a turn's playback, are part of
+the same check. That harness lives outside the repo's tests because the tests
 are stdlib-only by rule.
 
 ## Roadmap

@@ -66,6 +66,28 @@ class CityTests(unittest.TestCase):
         for c in CITIES:
             self.assertIn(c["sovereign"], SOVEREIGNS, c["id"])
 
+    def test_company_courts_only_act_while_chartered(self):
+        # a court with a life span (Burgundy, the VOC, the EIC) can only ask for money,
+        # default or hold a city inside it
+        for sid, s in SOVEREIGNS.items():
+            if "from" not in s and "until" not in s:
+                continue
+            start, end = s.get("from", 1300), s.get("until", 2028)
+            self.assertLess(start, end, sid)
+            for e in EVENTS:
+                f = e["effect"]
+                if f.get("sovereign") == sid and f["type"] in ("offer", "sovereign_default", "forced_loan"):
+                    self.assertTrue(start <= e["year"] < end, e["id"])
+            for c in CITIES:
+                if c["sovereign"] != sid:
+                    continue
+                self.assertGreaterEqual(c["opens"], start, c["id"])
+                if "until" in s:
+                    # a court that ends must hand its cities to another before it does
+                    handed = [e["year"] for e in EVENTS for g in (e["effect"], e["effect"].get("also") or {})
+                              if g.get("type") == "city" and g.get("city") == c["id"] and g.get("field") == "sovereign"]
+                    self.assertTrue(handed and min(handed) <= end, c["id"])
+
     def test_prosperity_in_range_and_keyed_by_era(self):
         for c in CITIES:
             for era_id, p in c["prosperity"].items():
@@ -76,8 +98,9 @@ class CityTests(unittest.TestCase):
         for c in CITIES:
             first = min(ERAS[ERA_IDS.index(k)]["start"] for k in c["prosperity"])
             self.assertLess(c["opens"], ERAS[ERA_IDS.index(max(c["prosperity"], key=ERA_IDS.index))]["end"], c["id"])
-            # a city must be openable in or before its first prosperous era
-            self.assertLessEqual(c["opens"], first + 100, c["id"])
+            # a city must be openable before its first prosperous era ends
+            first_era = min(c["prosperity"], key=ERA_IDS.index)
+            self.assertLess(c["opens"], ERAS[ERA_IDS.index(first_era)]["end"], c["id"])
 
     def test_start_city_is_venice_and_open(self):
         v = next(c for c in CITIES if c["id"] == "venice")
@@ -211,6 +234,15 @@ class EventTests(unittest.TestCase):
                 self.assertIn(c, CITY_IDS, (e["id"], c))
             if "scope" in f:
                 self.assertIn(f["scope"], SOVEREIGNS, e["id"])
+            if f["type"] == "city" and f.get("field") == "sovereign":
+                self.assertIn(f["value"], SOVEREIGNS, e["id"])
+            if "also" in f:
+                g = f["also"]
+                self.assertIn(g["type"], EFFECT_TYPES, e["id"])
+                if g["type"] == "city":
+                    self.assertIn(g["city"], CITY_IDS, e["id"])
+                    if g.get("field") == "sovereign":
+                        self.assertIn(g["value"], SOVEREIGNS, e["id"])
             self.assertIn(e["provenance"], ("HISTORICAL", "STYLISED"), e["id"])
             self.assertTrue(e["text"], e["id"])
 
