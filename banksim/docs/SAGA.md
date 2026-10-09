@@ -18,6 +18,7 @@ the inside. This is the seven centuries that lead up to it.
 | World | Fictional house, real history | Edward III, Charles the Bold, Philip II, Charles II, the Ayr Bank, Overend Gurney, Lehman — all land on whoever is exposed. Your house is invented; nothing else is. |
 | Pacing | Era-scaled turns | 5-year turns to 1600, then 3, 2, and annual from 1950: 257 turns. History is densest where the rules change fastest. |
 | Innovations | Civ-style tree | Bill of exchange, double-entry, *accomandita*, exchange fairs, joint-stock, banknotes, discounting, acceptance, telegraph, limited liability, Eurodollars, derivatives, securitisation, VaR, IRB, stress testing. Available from their historical date, bought with capital, with prerequisites. |
+| History | Two modes, decks by default (October 2026) | *As it might have been*: each era deals cards from its own deck, like Civ, so you know what the age can do but not when. *As it happened*: every crisis on its real date. Structural changes and six epoch anchors keep their dates in both. See *The era decks*. |
 | Failure | Permadeath | A run you cannot meet, assets below deposits, a prince who has had enough, or two years under the capital minimum. You see what killed you and start again; the seed replays the same history. |
 | The seat | Follow the money | Each era one city is the centre of gravity (Venice → Antwerp → Genoa → Amsterdam → London → New York → London). Sitting there grows deposits a fifth faster; moving costs 12% of capital and the old prince's goodwill. The seat may end anywhere: the win is designation, not London. |
 
@@ -55,6 +56,70 @@ the inside. This is the seven centuries that lead up to it.
    with results and choices and feeds back into deposits, offers and mercy.
 10. **G-SIB score** from 2011: size, interconnectedness, substitutability,
     complexity, cross-jurisdictional activity, 20% each; 130 bps designates.
+
+## The era decks
+
+Chosen with Gareth on 9 October 2026, by quiz. Events now behave as they do
+in Civ: possible in an age, not scheduled. The decisions:
+
+| Question | Choice |
+|---|---|
+| What stays on its date | Everything that changes the rules (a city opens or changes hands, the centre moves, a law, a capital regime, a technology gate, the Lifeboat, the G-SIB list) and six **anchors**: the Black Death (1348), Constantinople (1453), the South Sea (1720), August 1914, 1929 and Lehman (2008). |
+| Everything else | Drawn from the era's **deck**: royal defaults, offers, forced loans, runs, lost fleets, manias, frauds, windfalls and dilemmas. |
+| Names | **Archetypes.** No named ruler on a card ("a king at war stops paying"); the court it falls on is real and named by its institution ("the Crown of England"). |
+| History | Every card carries a **precedent**, the real episode it echoes, with a source: printed on the card as *History remembers*, and in the chronicle. |
+| Player's sway | **State-driven odds.** A card's yearly hazard is multiplied by (1 + weight × signal) for the signals it names: lending to the court that defaults, a city lent past its trade, leverage, a thin till, far branches before the telegraph, the trading book, a poor name, fame, many branches. |
+| Foresight | **Rumours.** Next turn's cards are drawn at the end of this one; a true card with a rumour is posted on the map (a pulsing **?**) and in the council about three times in five, and false rumours are posted too. You get a turn to act. |
+| Council | **Four seats, biased and sometimes wrong:** growth (senior partner → head of markets), prudence (cashier → CRO), the court (the prince's man → the regulator's liaison), conscience (the confessor → compliance). Faces and names change with each era. They comment on the state of the house every turn and argue each card. |
+| Look | **Period-shifting:** woodcut and blackletter to 1600, copperplate engraving to 1850, newsprint to 1970, then the terminal. Cards, portraits and the drawn seat follow the age. |
+
+**How a turn draws.** At the end of each turn, for every card of the era
+that is eligible (inside its window, not used if `once`, past its
+`cooldown`), the engine picks the card's target (a court lent to in
+proportion to the lending, a reachable court, the seat's court, a branch
+city in proportion to the business there, the seat, or one of a list of
+cities), works out the odds from the house as it stands, and draws with
+probability 1 − (1 − hazard × odds)^years. At most three cards land per turn
+and at most one dilemma. The next turn applies them to the house as it then
+stands. A dilemma waits for an answer before the turn can end. The headless
+player answers at random.
+
+**What a card can do** (`deck.py` lists the vocabulary): the engine's
+existing effects (sovereign default, offer, forced loan, shock, panic) plus
+windfall, deposits, standing, commerce and control.
+
+**Where it came from.** The decks (about 30 cards an era) and the council
+were written by Claude Opus 5.5 from each era's context: its courts, cities,
+lending books and the historical events they replace. Every historical event
+that moved into the deck is cited by at least one card. A second pass
+reviewed precedents, sources, anachronism and balance, and
+`tests/test_saga_deck.py` checks the shape. Hazards and magnitudes are
+STYLISED; precedents and sources are HISTORICAL. The prompts and raw outputs
+are not in the repo; the cards are, in `saga/deck/`.
+
+**Calibration** (`DECK_TUNE` in `deck.js`, STYLISED). The first draw made
+dilemmas too frequent (one every other turn) and, with the extra loan
+requests, every refusal at court slowly got a prudent house expelled. Now:
+dilemmas are scaled by 0.55 and come at most every other turn; offers by
+0.7; defaults by 1.6 and panics by 1.4, with their damage scaled by 1.15 and
+1.25; every odds weight is scaled by 1.6, so conduct matters more than luck;
+a refused deck offer costs 4 points at court, not 8; and with the decks a
+prince forgets at half a point a year rather than a turn. Headless results
+(October 2026): the prudent strategy survives to 2027 in nine seeds of nine
+with £5–34bn of capital, which is Kingsgate's order of size; the ambitious
+one survives four or five of six and is designated in one (2013, 130 bps);
+the reckless one dies in two of three (bankrupt or resolved). On the same
+seeds the dated history designates none of the ambitious runs, so the decks
+are not harsher than the chronicle. The headless player answers dilemmas at
+random, avoiding any answer that would leave the seat's court below 25.
+
+**The reviewer's notes** are kept in each deck file under `review` (94
+corrections across the seven decks: dates, sources, anachronisms, a few
+mechanics, one named person). One of them bears on the dated chronicle too:
+the reviewer doubts that a wave of Rialto bank failures in the 1340s is
+securely attested (the documented landmark is the 1374 debate), which is
+the premise of the `venice_1340s` event in `events.py`. Worth checking
+against Mueller before it is relied on in teaching.
 
 ## The board
 
@@ -270,6 +335,14 @@ zoom; ⌖ re-frames the map on the house. The game saves itself to the browser
 after every action; **New game** takes a seed. The footer lists the rules in force.
 
 ## Testing
+
+`banksim/tests/test_saga_deck.py`: every era has a deck of at least 20 cards
+with dilemmas and good news; ids are unique; targets, signals, art, effect
+types and parameters are ones the engine knows; hazards and windows sit
+inside their era; catastrophes are rare; every card has a precedent, a source
+and the council's advice; rumours are well formed; the anchors exist; every
+era seats a council of four with remarks for the usual situations.
+
 
 `banksim/tests/test_saga_data.py` — 40 tests on the data: eras tile the
 timeline and turns shorten; cities' sovereigns exist and each era's centre is

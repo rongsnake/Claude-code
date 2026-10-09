@@ -1,0 +1,1945 @@
+{
+ "era": "basel",
+ "cards": [
+  {
+   "id": "basel_eastern_dollars",
+   "title": "An Eastern state bank parks its dollars in London",
+   "text": "A Soviet-owned bank with a London address would rather not keep its dollars in New York, where a Senate committee might freeze them. It asks to place them with you for thirty and ninety days and lend them on. The Bank of England, sterling being short, looks the other way.",
+   "art": "letter",
+   "target": "seat",
+   "hazard": 0.06,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1955,
+    1972
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.08
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Dollars nobody else will take at a rate nobody else offers. Lend them to Italian industry by Friday.",
+    "prudence": "Short dollar deposits lent long are a maturity gap in a currency the Bank cannot print for us.",
+    "court": "The Governor wants London to be a dollar centre and has not asked whose dollars they are.",
+    "conscience": "A deposit is not a sin. Know the customer, keep the ledgers straight, and the Cold War is not our affair."
+   },
+   "precedent": "Moscow Narodny Bank in London and the Banque Commerciale pour l'Europe du Nord in Paris placed Soviet dollar balances in Europe in the 1950s, and Midland took swapped dollar deposits in 1955, seeding the Eurodollar market",
+   "source": "Schenk, 'The origins of the Eurodollar market in London: 1955–1963', Explorations in Economic History (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_sterling_crisis",
+   "title": "A run on the pound",
+   "text": "The reserves are bleeding, the Chancellor swears there will be no devaluation, and Bank Rate goes up on a Thursday. Gilts fall, the forward discount widens and customers with dollar contracts want cover at any price. By the weekend the parity may not exist.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "london"
+   ],
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 8,
+   "window": [
+    1950,
+    1995
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.1,
+      "panic": 0.05
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the Treasury's knocking on the Fed's door again and the Governor has cancelled his holiday.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "Sell sterling forward for the clients and take the spread; a crisis is a dealing room's harvest.",
+    "prudence": "Square the book and shorten the gilts. A devaluation marks down whatever we hold in pounds.",
+    "court": "Do not be seen speculating against the pound; the Bank keeps a list, and it is not a short one.",
+    "conscience": "Advise customers honestly on cover. Telling them all is well when we are hedged ourselves is a lie."
+   },
+   "precedent": "Sterling devalued from $2.80 to $2.40 on 18 November 1967; forced out of the ERM on Black Wednesday, 16 September 1992",
+   "source": "Cairncross & Eichengreen, Sterling in Decline (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_oil_shock",
+   "title": "The oil producers turn off the tap",
+   "text": "A war in the Middle East and an embargo: the posted price of crude quadruples in three months. Petrol queues, a three-day week, and every borrower whose margins depended on cheap fuel—shipping, airlines, chemicals—comes to see you about his covenants.",
+   "art": "factory",
+   "target": "none",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1970,
+    1990
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The tanker men say the Gulf states have met in Kuwait and nobody is chartering for next month.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The producers will drown in dollars and they must bank them somewhere. Be that somewhere.",
+    "prudence": "Inflation at twenty per cent eats fixed-rate loans alive. Reprice what we can and reserve the rest.",
+    "court": "Government will want the banks to carry industry through the winter. Showing willing costs little now.",
+    "conscience": "Do not call loans on firms that were sound a month ago merely because we can."
+   },
+   "precedent": "The October 1973 Arab–Israeli war and the OAPEC embargo, with OPEC's posted-price rises of October and December 1973, quadrupled the price of oil by January 1974; the Iranian revolution roughly doubled it again in 1979–80",
+   "source": "Yergin, The Prize (1991)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_petrodollar_deposits",
+   "title": "A Gulf central bank places its surplus with you",
+   "text": "The oil money has to go somewhere, and the producers prefer London's banks to Washington's Treasury. A monetary agency places a block of call and seven-day dollars with your money desk. Short, cheap, enormous, and every penny of it will want to be lent.",
+   "art": "gold",
+   "target": "seat",
+   "hazard": 0.07,
+   "once": false,
+   "cooldown": 3,
+   "window": [
+    1974,
+    1983
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Fifty million at call: the most profitable telephone call this house has ever taken.",
+    "prudence": "Hot money from one depositor at seven days. If they pull it, what do we sell?",
+    "court": "The Treasury wants the surpluses recycled through London. They will be glad it came to a British name.",
+    "conscience": "Take the deposit, but do not let its size bully our credit committee into lending it badly."
+   },
+   "precedent": "OPEC current-account surpluses of some $60bn in 1974 were placed largely as short deposits with Eurobanks in London and New York",
+   "source": "Spiro, The Hidden Hand of American Hegemony: Petrodollar Recycling (1999)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_sovereign_jumbo",
+   "title": "{court} wants a jumbo syndicated loan",
+   "text": "A finance minister and his advisers are in town for a jumbo: seven years, floating at a spread over six-month LIBOR, cross-default to everything. The lead managers have the petrodollars; they need participants. Your share would be a large one, and the fee is paid up front.",
+   "art": "ledger",
+   "target": "reachable_sovereign",
+   "hazard": 0.07,
+   "once": false,
+   "cooldown": 3,
+   "window": [
+    1973,
+    1982
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.45,
+      "yield": 0.09,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Countries do not go bust; they have assets, oil and a central bank. Take the biggest ticket offered.",
+    "prudence": "Floating rate means they carry the rate risk, and they cannot carry it. Their risk becomes our credit risk.",
+    "court": "The Bank of England is relaxed about country lending; it has said so in every speech this year.",
+    "conscience": "A loan the borrower can only repay by borrowing again is not prudent lending, however handsome the fee."
+   },
+   "precedent": "Bank syndicates lent heavily to Mexico, Brazil and Argentina at floating rates in 1974–81, Citicorp's chairman declaring that countries don't go bust",
+   "source": "Devlin, Debt and Crisis in Latin America: The Supply Side of the Story (1989)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_settlement_failure",
+   "title": "A counterparty is closed in the middle of the day",
+   "text": "At half past four a foreign regulator withdraws a bank's licence. You paid your marks to it this morning in Frankfurt; the dollars it owed you were due in New York this afternoon and will never come. Every dealer in town is now refusing to pay first.",
+   "art": "telegraph",
+   "target": "cities",
+   "cities": [
+    "frankfurt",
+    "new_york"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1970,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 1
+    },
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.1,
+      "panic": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Keep dealing; spreads have tripled and we have lines to the names that are still standing.",
+    "prudence": "Cut settlement limits to every second-tier bank now. Principal risk on an FX leg is the whole amount.",
+    "court": "The central bank governors will meet in Basel about this. Give them our numbers before they ask.",
+    "conscience": "Honour every payment we owe on time, even as others hold back. Our word is the settlement system."
+   },
+   "precedent": "Bankhaus Herstatt was closed by the German authorities on 26 June 1974 after receiving Deutsche Mark legs but before paying dollars, prompting the founding of the Basel Committee",
+   "source": "Goodhart, The Basel Committee on Banking Supervision: A History of the Early Years 1974–1997 (2011)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_ldc_moratorium",
+   "title": "{court} cannot pay",
+   "text": "The finance minister flies to Washington and announces he cannot meet principal on the syndicated loans. Every other borrower in the region follows within months. The loans will be rescheduled, rolled and re-rolled; your auditors will be asked, politely, not to look too hard at what they are worth.",
+   "art": "scales",
+   "target": "lent_sovereign",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1978,
+    1992
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.45
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The rate on the next rollover is four hundred over, and the central bank's reserves report is late again.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Join the advisory committee and lend the new money; walking away crystallises the loss we can still defer.",
+    "prudence": "Provision now, honestly. A loss deferred for seven years is still a loss, and the capital is not there.",
+    "court": "Washington and the IMF want concerted lending. The supervisors will be lenient with banks who cooperate.",
+    "conscience": "A people should not starve to pay our interest; yet depositors trusted us not to gamble their money."
+   },
+   "precedent": "Mexico's moratorium of 20 August 1982 began the Latin American debt crisis, resolved only by the Brady Plan from 1989",
+   "source": "Boughton, Silent Revolution: The International Monetary Fund 1979–1989 (2001)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_wire_rumour_run",
+   "title": "A wire story says the house is in trouble",
+   "text": "A newswire in Tokyo runs a story that a foreign bank is seeking a buyer; by the London open it has your name in it. The money brokers' screens show your certificates of deposit at a quarter over everyone else, then unquotable. Wholesale money does not queue outside; it simply fails to roll.",
+   "art": "screen",
+   "target": "seat",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1970,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2
+    },
+    {
+     "signal": "low_standing",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.25
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -8
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A broker on the eurodollar desk says a big Japanese bank has quietly cut its line to someone in London.",
+    "false_rate": 0.5
+   },
+   "advice": {
+    "growth": "Deny it loudly and pay up for term money. Rumours die when a bank is seen borrowing confidently.",
+    "prudence": "We fund a third of the book overnight. Sell liquid assets now, before the market prices our distress.",
+    "court": "Call the central bank this morning; a quiet line of liquidity is worth more than any press release.",
+    "conscience": "Say nothing that is untrue. A denial later contradicted would finish us faster than the rumour."
+   },
+   "precedent": "Continental Illinois lost billions of wholesale deposits in days after rumours on Japanese and Reuters newswires in May 1984, and was rescued by the FDIC",
+   "source": "FDIC, History of the Eighties—Lessons for the Future (1997)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_hk_bank_run",
+   "title": "Queues outside the Chinese banks of {city}",
+   "text": "Two small banks have shut their doors and the queues have moved to the biggest local bank in the colony, which has lent long on property and cannot pay out at the counter. Its family owners come to you after dark: buy control, or lend against the deeds, or watch them close.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "hong_kong"
+   ],
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1955,
+    1990
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.12
+     }
+    }
+   ],
+   "choice": [
+    {
+     "label": "Buy a controlling stake",
+     "result": "Its depositors become yours and the run stops, but you inherit a management you do not yet control.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.12
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.1
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend against the title deeds",
+     "result": "You earn a fat margin on secured money and the bank survives, still its owners'.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Stand aside",
+     "result": "The bank closes, the run spreads, and the colony remembers who kept its doors shut.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      },
+      {
+       "kind": "panic",
+       "params": {
+        "size": 0.1
+       }
+      }
+     ]
+    }
+   ],
+   "rumour": {
+    "text": "The tea-house talk is that a bank in Wanchai has been paying out in small notes only.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "A franchise like this comes up once a generation. Buy it at panic prices and own the colony's savings.",
+    "prudence": "Its loans are concrete on a hillside. We would be buying a run, not ending one—stay out entirely.",
+    "court": "Government House wants the run stopped by a sound bank, and will remember which one did it.",
+    "conscience": "Ordinary families queue for their savings. Whatever we choose, do not profit by prolonging their fear."
+   },
+   "precedent": "After runs on Ming Tak and Canton Trust in February 1965, Hang Seng Bank suffered a run in April and sold 51% to the Hongkong and Shanghai Bank",
+   "source": "King, The History of the Hongkong and Shanghai Banking Corporation, vol. IV (1991)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_lifeboat_call",
+   "title": "The central bank passes the hat",
+   "text": "A bullion-dealing bank has lent recklessly through its banking arm and will not open on Monday. The Governor summons the senior bankers on Sunday evening: the bank will take it over, but wants an indemnity shared among the houses at the table. Nobody is obliged. Everybody will remember.",
+   "art": "seal",
+   "target": "seat_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1975,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe your share of the indemnity",
+     "result": "Money tied up at a poor return, and a seat at the table when the rules are next written.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.04,
+        "yield": 0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 12
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline politely",
+     "result": "Capital preserved; the Governor's eyebrows noted in every supervisory meeting for a decade.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Offer to buy its sound book instead",
+     "result": "A modest bargain and some goodwill, with clients and staff of uncertain quality.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 5
+       }
+      },
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.1
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Buy the good loans cheap. Rescues are where franchises change hands at a discount.",
+    "prudence": "An open-ended indemnity on a book nobody has audited. Cap our share or decline.",
+    "court": "Say yes before he finishes the sentence. The Bank's favour is the cheapest capital we will ever raise.",
+    "conscience": "Our depositors did not consent to underwrite another bank's folly—but a collapse would harm them more."
+   },
+   "precedent": "The Bank of England rescued Johnson Matthey Bankers on 1 October 1984, buying it for £1 with an indemnity shared by the clearers and others",
+   "source": "Bank of England, Report and Accounts 1985; Moran, The Politics of Banking (1986)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_privatisation_mandate",
+   "title": "A nationalised utility is to be sold to the public",
+   "text": "The government is selling a state telephone company to anybody with a few hundred pounds and a coupon from the newspaper. The issue needs receiving banks, underwriters and sub-underwriters, and the fees are fixed in advance. Every branch counter will be busy for a month.",
+   "art": "coin",
+   "target": "seat",
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 4,
+   "window": [
+    1979,
+    2000
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Underwrite as much as they will give us; the issue is priced to go to a premium.",
+    "prudence": "Fine, but remember underwriting is a put sold to the Treasury. Ask what happens in a crash week.",
+    "court": "Ministers want the sale to succeed visibly. Being on the tombstone is worth more than the fee.",
+    "conscience": "Do not tell small savers that shares cannot fall. Explain the risk at the counter, even if it slows the queue."
+   },
+   "precedent": "British Telecom was floated in November 1984 and British Gas in December 1986, with the clearing banks as receiving banks and underwriters",
+   "source": "Florio, The Great Divestiture: Evaluating the Welfare Impact of the British Privatizations 1979–1997 (2004)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_crash_in_a_day",
+   "title": "The market falls a fifth in a single day",
+   "text": "No war, no default: just portfolio insurance selling into a falling market, specialists who will not make prices and a futures pit in Chicago that runs ahead of New York. By the close the index is down more than a fifth. Your market-making arm has positions it could not get out of.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "new_york",
+    "london",
+    "tokyo"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1983,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 1.5
+    },
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.2,
+      "panic": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Buy tomorrow morning. Nothing has changed in the economy but prices, and prices come back.",
+    "prudence": "Count the margin calls our clients cannot meet before counting bargains. That is where the loss is.",
+    "court": "The central banks will flood the market with liquidity by breakfast. Be ready to say we need none.",
+    "conscience": "Brokers who forget to execute client sell orders while dumping our own are committing fraud, not making markets."
+   },
+   "precedent": "Black Monday, 19 October 1987: the Dow Jones fell 22.6% in one session, with London and Tokyo following",
+   "source": "Report of the Presidential Task Force on Market Mechanisms (Brady Commission, 1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_tin_council",
+   "title": "A commodity buffer stock runs out of money",
+   "text": "An intergovernmental council that props up a metal price has been buying forward on the exchange with borrowed money. Its manager tells the ring he can no longer pay. Trading is suspended; brokers and their banks hold contracts with a body owned by two dozen states, none of whom admit they must pay.",
+   "art": "scales",
+   "target": "cities",
+   "cities": [
+    "london"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1975,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The ring dealers say the buffer stock manager's cheques are clearing slower than his warrants.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Lending to a body backed by twenty governments is as safe as lending to the governments.",
+    "prudence": "Read the constitution: a separate legal person. Our claim is against it, not against its members.",
+    "court": "Ministers will not let the exchange fail. Wait for the settlement they are bound to arrange.",
+    "conscience": "Brokers ruined by this are our customers. Do not squeeze them harder than the default already has."
+   },
+   "precedent": "The International Tin Council's buffer stock stopped paying on 24 October 1985; the House of Lords held member states not liable (J.H. Rayner v DTI, 1989)",
+   "source": "J.H. Rayner (Mincing Lane) Ltd v Department of Trade and Industry [1990] 2 AC 418",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_council_swaps_void",
+   "title": "The Lords say councils could never write swaps",
+   "text": "A London borough ran an interest-rate swap book larger than its budget, and rates moved against it. The auditor went to court; the House of Lords holds that local authorities had no power to enter swaps at all. Every swap your desk wrote with a council is void ab initio, and the restitution claims begin.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1985,
+    1995
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.08
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "regulator",
+      "delta": -3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The District Auditor has been asking a borough treasurer why his swap book is ten times his capital programme.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "A council is as good as the Treasury. Write them all the swaps they want—local government cannot default.",
+    "prudence": "Capacity is the first question on any counterparty. Where is the statutory power? Nobody on the desk knows.",
+    "court": "The Bank of England will press for legislation to validate the trades. Lobby, and hope.",
+    "conscience": "We sold speculation to ratepayers dressed as hedging. The courts are telling us what our lawyers should have."
+   },
+   "precedent": "Hazell v Hammersmith and Fulham LBC, decided 24 January 1991, held council swaps ultra vires, leading to years of restitution claims (Westdeutsche v Islington, 1996)",
+   "source": "Hazell v Hammersmith and Fulham LBC [1992] 2 AC 1",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_frozen_dollars",
+   "title": "Washington freezes a client's dollars—in your London branch",
+   "text": "A presidential order freezes all property of a foreign state's bank held by American persons, overseas branches included. That state's bank keeps a large call account in dollars at your London office, governed by English law, and demands payment today—in cash if need be. New York is telling you not to pay.",
+   "art": "seal",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    1979,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Pay out in London as English law requires",
+     "result": "The client is satisfied and London's name as a deposit centre with it, but Washington is not amused.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 8
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Honour the freeze worldwide",
+     "result": "You keep the Americans sweet and get sued in the Commercial Court for the whole deposit.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -12
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Hold the funds and let a judge decide",
+     "result": "A year of litigation and interest accruing, but nobody can say you chose a side.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -4
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "This client keeps a hundred million with us. Lose it and every Gulf depositor reads the lesson.",
+    "prudence": "Whichever way we go we are sued somewhere. Choose the court whose judgment we can actually satisfy.",
+    "court": "An American order binds a branch wherever it sits. Freeze it all—London law has no say over dollars.",
+    "conscience": "We promised to repay on demand in London. A foreign executive order does not unwrite our contract."
+   },
+   "precedent": "The US froze Iranian assets on 14 November 1979 and Libyan assets on 8 January 1986; in Libyan Arab Foreign Bank v Bankers Trust an English court held the London dollar deposit payable",
+   "source": "Libyan Arab Foreign Bank v Bankers Trust Co [1989] QB 728",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_land_bubble",
+   "title": "The land bubble in {city} bursts",
+   "text": "The stock index peaked at the year-end party; by summer it is down a third, and the land in the city centre is no longer worth more than whole foreign countries. Developers stop paying, and the local banks, holding shares in each other and land as collateral, begin a decade of not admitting it.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "tokyo",
+    "hong_kong"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1985,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 4
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.4,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The ministry has told the banks to cap property lending, and the golf-club memberships are not selling.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Land here has not fallen since the war. The banks are the biggest in the world; lend alongside them.",
+    "prudence": "Collateral valued at the peak, loans sized to the collateral. Cut the book before the valuations are redone.",
+    "court": "The Finance Ministry will not let its banks fail, but it will not protect foreign lenders either.",
+    "conscience": "If we roll loans we know are bad to avoid booking losses, we are lying in our accounts."
+   },
+   "precedent": "The Nikkei peaked at 38,915 on 29 December 1989 and fell some 39% in 1990, with land prices following; Hong Kong property fell by two-thirds 1997–2003",
+   "source": "Wood, The Bubble Economy: Japan's Extraordinary Speculative Boom of the '80s (1992)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_reformed_debtor_bonds",
+   "title": "{court} issues new bonds, a model reformer",
+   "text": "The old bank loans have been swapped for collateralised bonds, the currency is pegged one-for-one to the dollar by law, and the IMF holds the country up as its best pupil. The new bonds trade in every emerging-markets fund and yield three times Treasuries. The lead manager has an allocation for you.",
+   "art": "ledger",
+   "target": "reachable_sovereign",
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 4,
+   "window": [
+    1989,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.4,
+      "yield": 0.1,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A currency board cannot devalue; it is written into law. This is dollar risk at peso spreads.",
+    "prudence": "A peg that needs a law to hold it is a peg that will break the day the law is changed.",
+    "court": "The Treasury and the Fund both endorse the programme. Declining would look like disloyalty to the plan.",
+    "conscience": "We should tell the clients we sell these to that a yield of ten per cent is paying them for something."
+   },
+   "precedent": "Argentina completed its Brady exchange in April 1993 under the 1991 Convertibility Law pegging the peso to the dollar",
+   "source": "Cline, International Debt Reexamined (1995)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_bond_massacre",
+   "title": "A surprise rise in rates routs the bond market",
+   "text": "The central bank moves a quarter point when nobody expected it, then keeps going. Long yields rise by two and a half points in months; mortgage-backed hedgers sell into the fall, a county treasurer's leveraged fund implodes, and every bond desk on the Street marks down its carry trades.",
+   "art": "screen",
+   "target": "cities",
+   "cities": [
+    "new_york",
+    "london"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1975,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 2
+    },
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Fed chairman's testimony is next week and he is said to be worried about inflation he can't see yet.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Yields at these levels are a gift. Add duration and carry while others are being stopped out.",
+    "prudence": "Measure the convexity in the mortgage book. Duration that lengthens as rates rise is a short option.",
+    "court": "The supervisors will want our interest-rate risk numbers by the end of the month. Have them ready.",
+    "conscience": "We sold leveraged notes to public treasurers as safe. Their losses will be our lawsuits."
+   },
+   "precedent": "The Fed's surprise tightening from 4 February 1994 drove the 'great bond massacre' and Orange County's bankruptcy in December 1994; echoed in the UK gilt crisis of September 2022",
+   "source": "Borio & McCauley, 'The economics of recent bond yield volatility', BIS Economic Papers 45 (1996)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_peg_breaks",
+   "title": "A currency peg breaks and the region follows",
+   "text": "One central bank spends its reserves defending the peg, then floats. Its neighbours go down with it. Companies that borrowed in dollars to build towers and factories now owe twice as much in local money, and the short interbank lines that funded them are not rolled.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "hong_kong",
+    "singapore"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    1990,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.3,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Forward points on the baht are flashing, and they say the central bank has sold most of its reserves forward defending the peg.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Tigers grow at eight per cent a year. A dip is a chance to take market share from timid lenders.",
+    "prudence": "Dollar loans to borrowers with local revenues are FX options we wrote for free. Reduce them.",
+    "court": "The IMF will defend these pegs with whatever it takes. No floating rate regime will be allowed here.",
+    "conscience": "When we cut lines, real firms and their workers fail. Cut where the risk is, not where it is easiest."
+   },
+   "precedent": "Thailand floated the baht on 2 July 1997, followed by Indonesia, Malaysia and Korea; Mexico's peso crisis of December 1994 had the same shape",
+   "source": "Radelet & Sachs, 'The East Asian Financial Crisis', Brookings Papers on Economic Activity (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_rogue_trader",
+   "title": "A trader in {city} has been hiding losses",
+   "text": "A bond trader who also runs his own back office has been booking fictitious trades for years to cover a loss that started small. The reconciliations were his to do. He confesses in a letter to the chairman; the regulators learn of it from the newspapers, which is worse.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1985,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 2
+    },
+    {
+     "signal": "many_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.3
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "He was our best earner for three years. One bad trade should not shake confidence in the desk.",
+    "prudence": "No one who books trades may confirm or settle them. Segregate the back office today, everywhere.",
+    "court": "Tell the regulator before the press does. Concealment of a loss is now a second, larger problem.",
+    "conscience": "His managers rewarded profits nobody understood. The fraud is his; the blindness was ours."
+   },
+   "precedent": "Daiwa Bank's New York bond trader concealed $1.1bn over eleven years, disclosed September 1995; Société Générale €4.9bn (January 2008); UBS $2.3bn (September 2011)",
+   "source": "Société Générale, General Inspection Department, Mission Green: Summary Report (2008)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_tech_mania_bursts",
+   "title": "The new-economy shares collapse",
+   "text": "Companies with no profits and a website were worth more than steel mills. Then the index peaks, the IPO window shuts, and in two years three-quarters of the technology board's value is gone. Your advisory fees halve and the loans to telecom carriers that bought spectrum at auction look very different.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "new_york",
+    "london"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1995,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.25
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Analysts are marking their own IPOs 'strong buy' and the shoeshine boy is asking about options.",
+    "false_rate": 0.5
+   },
+   "advice": {
+    "growth": "The internet has abolished the business cycle. Valuations reflect a new economy; old metrics no longer apply.",
+    "prudence": "We hold lockup stock and telecom loans whose only collateral is spectrum. Hedge both, now.",
+    "court": "Regulators are asking about research conflicts. Separate analysts from bankers before they insist.",
+    "conscience": "Our analysts privately call these stocks junk while publicly rating them buys. That is fraud on investors."
+   },
+   "precedent": "The NASDAQ peaked at 5,048 on 10 March 2000 and fell 78% by October 2002; the 2003 Global Research Analyst Settlement followed",
+   "source": "Shiller, Irrational Exuberance (2000)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_currency_board_default",
+   "title": "{court} defaults and freezes the banks",
+   "text": "Four presidents in a fortnight, deposits frozen, pots and pans banged in the streets. The peg is gone and the government stops paying on its bonds—the largest sovereign default yet recorded. There will be an exchange offer, in some years, at a fraction of par; holdouts will sue in New York for a decade.",
+   "art": "riot",
+   "target": "lent_sovereign",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1995,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 4
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.7
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The IMF's mission has left early and there are queues at the cash machines in the capital.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Buy the defaulted bonds at twenty cents. The exchange offer will pay thirty; the courts may pay par.",
+    "prudence": "Write it down to what the market pays today, not what a judge in New York might award a decade from now.",
+    "court": "The G7 will not finance another bailout. Expect no help from any official sector this time.",
+    "conscience": "Suing a bankrupt nation for par while its pensioners lose savings is lawful. Whether it is right is another question."
+   },
+   "precedent": "Argentina defaulted on about $90bn in December 2001, settling at around 30 cents in 2005; Russia's GKO default of 17 August 1998 had the same shape",
+   "source": "Sturzenegger & Zettelmeyer, Debt Defaults and Lessons from a Decade of Crises (2006)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_china_opens",
+   "title": "The mainland opens across the border",
+   "text": "A special economic zone is declared across the river: factories, joint ventures and letters of credit for everything from toys to televisions. Exporters need trade finance, the colony's banks are the only door, and the volume of documentary credits passing through {city} doubles in a few years.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "hong_kong",
+    "canton"
+   ],
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1979,
+    2010
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A billion customers and the cheapest factories on earth. Open branches before the Americans arrive.",
+    "prudence": "Joint-venture accounts are not audited to any standard we know. Lend against the letters of credit, not the balance sheets.",
+    "court": "Beijing rewards early friends. Be patient, polite and present at every trade fair in Canton.",
+    "conscience": "Know which factories we finance and how their workers are treated; one day the press will ask."
+   },
+   "precedent": "The Shenzhen Special Economic Zone was established in August 1980; China acceded to the WTO on 11 December 2001",
+   "source": "Vogel, Deng Xiaoping and the Transformation of China (2011)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_gulf_megaproject",
+   "title": "A state developer of {court} wants a syndicated loan",
+   "text": "Ports, islands shaped like palm trees, a tower half a mile high. The state-owned holding company wants a large syndicated loan, unsecured, priced as if the ruler's guarantee were written down. It is not. Everyone says the emirate is good for it; the arrangers say the book is already oversubscribed.",
+   "art": "harbour",
+   "target": "reachable_sovereign",
+   "hazard": 0.06,
+   "once": false,
+   "cooldown": 3,
+   "window": [
+    2002,
+    2014
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.35,
+      "yield": 0.06,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Ruling families do not let flagship companies fail. Implied sovereign support at a corporate spread.",
+    "prudence": "Implied is not express. Read the documents: no guarantee, no security, and assets that are sand.",
+    "court": "Turning down the emirate's flagship would close the door to every future mandate in the Gulf.",
+    "conscience": "Ask who built the tower and on what terms. Financing a project is not neutral about how it is built."
+   },
+   "precedent": "Dubai World and its property arm Nakheel borrowed heavily from international bank syndicates in 2005–08 without an express sovereign guarantee",
+   "source": "IMF, United Arab Emirates: 2009 Article IV Consultation, IMF Country Report No. 10/42 (2010)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_standstill",
+   "title": "{court}'s flagship company asks for a standstill",
+   "text": "On the eve of a holiday the state holding company asks creditors to stand still on its debt for six months. The government says it never guaranteed anything. Then a richer neighbour lends ten billion, and the creditors are paid in full—eventually, after a rescheduling that stretches maturities by years.",
+   "art": "harbour",
+   "target": "lent_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    2000,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2
+    },
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Contractors on the islands haven't been paid since spring and the CDS on the emirate has doubled.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Sign the standstill fast. Banks that cooperate will be first in line for the next decade's mandates.",
+    "prudence": "Mark the loan to where it trades, then wait. Rescheduled at par is not the same as paid at par.",
+    "court": "The federal neighbour will not let the name fall. Quiet patience will be rewarded.",
+    "conscience": "Do not sell our stake to retail funds as 'temporarily delayed' when we privately expect losses."
+   },
+   "precedent": "Dubai World requested a standstill on some $26bn on 25 November 2009; Abu Dhabi lent Dubai $10bn on 14 December 2009 and creditors were repaid in full over extended maturities",
+   "source": "IMF, United Arab Emirates: 2009 Article IV Consultation, IMF Country Report No. 10/42 (2010)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_trophy_bidding",
+   "title": "A trophy bank is for sale in a bidding war",
+   "text": "An activist investor has put a large continental bank in play. A rival is bidding in shares; you could bid mostly in cash, with a consortium to break it up afterwards. Due diligence would be a few weeks of public documents and no data room. The Board likes the idea of becoming the largest in Europe.",
+   "art": "crown",
+   "target": "none",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1995,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Win it, in cash, at the top of the market",
+     "result": "You are vast overnight, with a balance sheet you cannot see into and capital stretched thin.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.15
+       }
+      },
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Bid only for the division you understand",
+     "result": "A modest, digestible acquisition; the press calls you timid.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -2
+       }
+      }
+     ]
+    },
+    {
+     "label": "Walk away",
+     "result": "The rival wins and grows; your shareholders grumble at the AGM.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Scale is the game. The winner will be among the top five banks in the world; the loser a target.",
+    "prudence": "No data room, cash consideration, at peak valuations, funded short. Every one of those is a red flag.",
+    "court": "The supervisor will ask how our core capital looks after paying cash. Have a good answer ready.",
+    "conscience": "Ambition is not a strategy. A Board that cannot say why it wants this should not buy it."
+   },
+   "precedent": "The RBS-led consortium won ABN AMRO in October 2007 for some €71bn, largely in cash; RBS required state rescue in October 2008",
+   "source": "FSA, The Failure of the Royal Bank of Scotland (2011)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_structured_swap_sale",
+   "title": "A corporate treasurer wants to 'cut his funding cost'",
+   "text": "A consumer-goods company's treasurer wants to beat his budget. Your structurers have a swap that pays him a lower rate if rates stay put—and a leveraged spread that ruins him if they rise. He cannot price it himself and will rely on your marks. The margin hidden in it would fund the desk's bonuses.",
+   "art": "screen",
+   "target": "seat",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1985,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 1.5
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Sell him the leveraged swap",
+     "result": "A fat day-one profit; if rates rise, a lawsuit, taped calls and a regulator's order.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Offer a plain vanilla hedge instead",
+     "result": "A modest fee and a client who stays a client.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.015
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline and tell him why",
+     "result": "He takes the trade to a competitor who will sell it to him.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 2
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "He is a sophisticated counterparty dealing at arm's length. Caveat emptor; it is his budget, not ours.",
+    "prudence": "If he loses big, he sues and we hold an uncollateralised receivable from a hostile client.",
+    "court": "Regulators are starting to treat 'reliance on our marks' as an advisory duty. Do not create one.",
+    "conscience": "If our desk would be embarrassed hearing its own telephone tapes read in court, the trade is wrong."
+   },
+   "precedent": "Procter & Gamble and Gibson Greetings lost heavily on Bankers Trust leveraged swaps in 1994; taped calls led to an SEC/CFTC settlement in December 1994",
+   "source": "SEC, In the Matter of BT Securities Corporation, Release No. 33-7124 (22 December 1994)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_libor_lowball",
+   "title": "The derivatives desk wants the fixing nudged",
+   "text": "Every morning a junior in treasury submits the rate at which the house thinks it could borrow. The swaps desk, sitting near enough to shout, would like it a basis point lower on certain days. In a panic, a high submission tells the world you are in trouble. No statute governs the fixing.",
+   "art": "screen",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1995,
+    2012
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 2
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Let the desks lean on the submitters",
+     "result": "Steady trading profits for years, then fines, prosecutions and a chief executive's resignation.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -20
+       }
+      }
+     ]
+    },
+    {
+     "label": "Wall off the submitters and submit honestly",
+     "result": "Your high honest fixes in a panic are read as weakness by the press.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -4
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Submit low only during the panic",
+     "result": "You avoid looking weak in the crisis, and later find your excuse in the regulator's final notice.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 4
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -10
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Everyone does it, and a basis point on a trillion notional is real money. Keep up.",
+    "prudence": "Write down who may speak to submitters, and keep the e-mails. Chat logs last forever.",
+    "court": "The central bank wants rates low in a crisis. A word from Threadneedle Street means no one will mind.",
+    "conscience": "The fixing settles mortgages and swaps worldwide. Moving it for profit is market manipulation."
+   },
+   "precedent": "Barclays was fined £290m by UK and US authorities on 27 June 2012 for LIBOR misconduct, including lowballing in 2007–08; UBS was fined $1.5bn in December 2012",
+   "source": "FSA, Final Notice to Barclays Bank plc (27 June 2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_sanctions_clearing",
+   "title": "A sanctioned client wants dollar clearing in {city}",
+   "text": "A long-standing commodity client sells crude from a country under American sanctions. Your branch could clear the dollars through New York if the payment messages omitted the client's name—'stripping', as the operations manual quietly calls it. Elsewhere it is lawful; in New York it is a felony.",
+   "art": "seal",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1995,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Clear it with the messages stripped",
+     "result": "Good fees for years, then a guilty plea, a multi-billion-dollar penalty and a ban on dollar clearing.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -20
+       }
+      }
+     ]
+    },
+    {
+     "label": "Exit the client",
+     "result": "Revenue and a relationship lost; a clean file when the investigators come.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Clear transparently only under a licence",
+     "result": "Slow, expensive and mostly refused; the client takes most of its business elsewhere.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.01
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.02
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "These sanctions are American, not ours. Our branch is not in America, and the client is not ours to judge.",
+    "prudence": "Every dollar payment touches New York. If America can reach it, America can fine us for it.",
+    "court": "Our own regulator will not protect us from the Department of Justice. Assume extraterritorial reach.",
+    "conscience": "Altering payment messages to deceive a correspondent is dishonest whatever jurisdiction one stands in."
+   },
+   "precedent": "BNP Paribas pleaded guilty on 30 June 2014 to processing dollar payments for sanctioned countries and paid about $8.9bn",
+   "source": "US Department of Justice, press release 'BNP Paribas Agrees to Plead Guilty' (30 June 2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_misselling_redress",
+   "title": "The regulator orders redress for mis-sold insurance",
+   "text": "For years branch staff sold payment protection insurance with every loan, on commission, often to borrowers who could never claim. The industry challenged the regulator in judicial review and lost. Now every sale must be reviewed, and the claims-management firms are cold-calling your customers.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    2001,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    },
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "standing",
+     "params": {
+      "who": "regulator",
+      "delta": -10
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -8
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.03
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The ombudsman's complaint numbers have trebled and a consumer magazine is running a campaign.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Fight every claim. Most customers knew what they were buying and the commission was disclosed.",
+    "prudence": "Provision generously and early. Every half-year we under-reserve, the market punishes us twice.",
+    "court": "The regulator wants visible contrition. Pay fast, apologise, and the enforcement team will be gentler.",
+    "conscience": "We paid staff to sell cover to people who could not claim on it. Repaying them is not generosity."
+   },
+   "precedent": "The British Bankers' Association lost its judicial review of PPI rules in April 2011; UK banks paid some £38bn in PPI redress before the August 2019 deadline",
+   "source": "R (British Bankers Association) v Financial Services Authority [2011] EWHC 999 (Admin)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_it_outage",
+   "title": "A systems upgrade leaves customers locked out",
+   "text": "A software update to the overnight batch fails; nobody can roll it back. For days salaries are not credited, mortgages not paid, and customers see other people's accounts on their phones. Parliament calls the chief executive; the regulator calls the auditors.",
+   "art": "screen",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    2010,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -8
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.03
+     }
+    },
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Waive fees, offer compensation and move on; customers forget faster than the papers.",
+    "prudence": "We outsourced the batch to a firm that outsourced it again. Know who touches the ledger.",
+    "court": "Operational resilience is now a supervisory priority. Expect a skilled person's review.",
+    "conscience": "Tell customers the truth about what went wrong and how long it will take. Do not over-promise."
+   },
+   "precedent": "A failed batch-software update locked RBS and NatWest customers out in June 2012 (fined £56m in 2014); TSB's migration failed in April 2018",
+   "source": "Slaughter and May, Independent Review of the TSB IT Migration (2019)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_challenger_banks",
+   "title": "A phone-app bank takes your young customers",
+   "text": "A new bank with a banking licence, a coral-coloured card and no branches signs up a million customers in a year. Open banking rules let it read your customers' accounts, with their consent. It pays them nothing much, but it sends a notification every time they spend.",
+   "art": "screen",
+   "target": "seat",
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 5,
+   "window": [
+    2017,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.04
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Buy one. A licence and a million users are cheaper than building the app ourselves.",
+    "prudence": "These banks lose money on every account and will never be granted a full licence. Ignore them.",
+    "court": "Competition is the regulator's priority. Do not be seen to obstruct open banking data access.",
+    "conscience": "Our overdraft charges are why customers leave. Fix those before blaming the app."
+   },
+   "precedent": "The CMA's retail banking market investigation (final report August 2016) and its Retail Banking Market Investigation Order 2017 mandated open banking from January 2018; Monzo obtained a full banking licence in April 2017",
+   "source": "Competition and Markets Authority, Retail Banking Market Investigation: Final Report (2016)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_pandemic",
+   "title": "A pandemic closes the world",
+   "text": "Cities lock down. In March the markets seize—even government bonds cannot be sold—and the central banks buy almost everything. Governments guarantee loans to firms through the banks. The stress test the house has run for years against a deep recession turns out to have been worth running.",
+   "art": "plague",
+   "target": "none",
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    2000,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Volatility is volume. Trading revenues will be the best in a decade once the dust settles.",
+    "prudence": "Draw on nothing, hoard liquidity, and assume the credit losses arrive late.",
+    "court": "The supervisor will ask us to cancel dividends and lend under the state schemes. Volunteer both.",
+    "conscience": "State-guaranteed lending invites fraud. Check borrowers properly even when Whitehall says speed matters."
+   },
+   "precedent": "COVID-19: the 'dash for cash' of March 2020 disrupted even US Treasury and gilt markets, met by central bank asset purchases",
+   "source": "BIS, Annual Economic Report 2020",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_trading_bonanza",
+   "title": "A trading bonanza after the panic",
+   "text": "Competitors have pulled out, spreads are wide, and the central bank's purchases lift everything you own. The fixed-income desks have their best year on record. Shareholders ask why bonuses are rising; politicians ask louder.",
+   "art": "gold",
+   "target": "none",
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 5,
+   "window": [
+    2008,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "trading_book",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Pay the traders well; they will be poached otherwise, and next year can be bigger still.",
+    "prudence": "Bank the profit as capital. Windfalls from a rate rally reverse when rates normalise.",
+    "court": "Public opinion is volatile. A restrained bonus round now saves a bank levy later.",
+    "conscience": "Profits earned on public money should not be distributed as if they were earned by genius."
+   },
+   "precedent": "Wall Street's record trading revenues in 2009, after the 2008 crisis and the Fed's asset purchases; repeated in 2020",
+   "source": "Goldman Sachs, Annual Report 2009",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "basel_flight_to_size",
+   "title": "A rival's depositors walk in",
+   "text": "A smaller lender has queues on the evening news and its savers want somewhere that looks too big to fail. They arrive at your branches with building-society passbooks and cheques for the deposit-insurance limit and a bit over. Your staff open accounts until midnight.",
+   "art": "coin",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 8,
+   "window": [
+    1984,
+    2027
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take them all and cross-sell mortgages. This is a decade's marketing in a week.",
+    "prudence": "Deposits that arrive in a panic leave in a panic. Keep them in gilts until they settle.",
+    "court": "Don't be seen gloating or advertising against a failing rival—the authorities hate it.",
+    "conscience": "Be honest about deposit insurance limits; do not let customers believe we are a sovereign."
+   },
+   "precedent": "The run on Northern Rock from 14 September 2007 sent retail deposits to the largest banks",
+   "source": "House of Commons Treasury Committee, The Run on the Rock (2008)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "basel_oil_shock",
+   "field": "precedent",
+   "why": "The embargo cut volumes; the quadrupling came from OPEC posted-price decisions, and the second doubling ran across 1979–80."
+  },
+  {
+   "id": "basel_crash_in_a_day",
+   "field": "window",
+   "why": "Portfolio insurance and a Chicago stock-index futures pit leading New York only exist after S&P 500 futures began in 1982."
+  },
+  {
+   "id": "basel_land_bubble",
+   "field": "text",
+   "why": "The Imperial Palace detail is Tokyo-specific but the card also targets Hong Kong."
+  },
+  {
+   "id": "basel_peg_breaks",
+   "field": "rumour",
+   "why": "The original line was garbled: the Bank of Thailand had built a large forward book selling dollars; a hedge fund did not sell that book."
+  },
+  {
+   "id": "basel_currency_board_default",
+   "field": "advice",
+   "why": "Naming the 2016 holdout settlement in the advice is foreknowledge the advisers could not have."
+  },
+  {
+   "id": "basel_gulf_megaproject",
+   "field": "source",
+   "why": "Country Report 10/42 is the 2009 Article IV, published in 2010."
+  },
+  {
+   "id": "basel_standstill",
+   "field": "source",
+   "why": "Country Report 10/42 is the 2009 Article IV, published in 2010."
+  },
+  {
+   "id": "basel_challenger_banks",
+   "field": "precedent",
+   "why": "The CMA Order dates from 2017, not 2016; the 2016 document was the final report."
+  },
+  {
+   "id": "basel_challenger_banks",
+   "field": "window",
+   "why": "Open banking data access and app-only licensed banks with a million customers postdate 2016."
+  },
+  {
+   "id": "basel_misselling_redress",
+   "field": "window",
+   "why": "The FSA regime, the ombudsman and claims-management cold-calling do not fit the 1990s; the judicial review was decided in 2011."
+  },
+  {
+   "id": "basel_it_outage",
+   "field": "window",
+   "why": "Phone banking apps, the 'operational resilience' agenda and skilled person's reviews are anachronistic in 1985."
+  },
+  {
+   "id": "basel_trading_bonanza",
+   "field": "window",
+   "why": "Central bank asset purchases lifting bank holdings, and talk of a bank levy, are post-2008 phenomena."
+  },
+  {
+   "id": "basel_flight_to_size",
+   "field": "window",
+   "why": "The UK Deposit Protection Scheme dates from 1982 and the phrase 'too big to fail' from 1984."
+  }
+ ]
+}

@@ -1,0 +1,1743 @@
+{
+ "era": "northern",
+ "cards": [
+  {
+   "id": "northern_fleet_bonds",
+   "title": "{court} borrows against its returning fleets",
+   "text": "{court} wants money for six or twelve months at a fixed rate, secured on the returns and duties of the next ships home, and says plainly that it will renew at maturity. The burghers call such paper as good as a house on the canal. Your cashier calls it short paper that will never be short.",
+   "art": "ship",
+   "target": "reachable_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1610,
+    1700
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.4,
+      "yield": 0.06,
+      "turns": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Six per cent on paper the whole Exchange will buy back from us tomorrow. It is the till's best friend.",
+    "prudence": "Short paper rolled for ever is long paper in disguise. Take only a slice we could hold if nobody renews.",
+    "court": "The men who govern this paper govern the city. To hold it is to sit at their table.",
+    "conscience": "A fixed rate on a lawful loan to a public body. The ministers' own widows buy it. No sin here."
+   },
+   "precedent": "The VOC began borrowing on short obligaties in Amsterdam against its returning fleets, rolled over for generations, 1622 onward",
+   "source": "Gelderblom, de Jong & Jonker, 'The Formative Years of the Modern Corporation: The Dutch East India Company VOC, 1602–1623', Journal of Economic History (2013)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_charter_loan",
+   "title": "{court} sells a charter for a loan",
+   "text": "The Treasury will grant a monopoly to whoever lends it two millions. Subscribers are borrowing in order to subscribe, and the subscription receipts will trade in Exchange Alley before the new company's first ship sails. You are asked to take a line in the book, at a rate Parliament has blessed above the legal one.",
+   "art": "seal",
+   "target": "reachable_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1680,
+    1700
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.45,
+      "yield": 0.07,
+      "turns": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Whoever lends the state its millions owns a trade for twenty years. Our name belongs on the book's first page.",
+    "prudence": "These subscribers borrowed to subscribe. When the calls come they will sell, and the price will fall in our hands.",
+    "court": "Ministers remember who filled the book. A refusal now shuts the door on every contract after it.",
+    "conscience": "The statute sets the rate, so the usury laws are silent. Ask only whether we can bear the loss."
+   },
+   "precedent": "The New East India Company won its charter through the General Society's £2m loan to the Crown at 8%, raised by public subscription in the City, 1698",
+   "source": "Dickson, The Financial Revolution in England (1967); Chaudhuri, The Trading World of Asia and the English East India Company, 1660–1760 (1978)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_mania",
+   "title": "The wind trade breaks in {city}",
+   "text": "For a season the back rooms of the inns of {city} have traded promises to deliver things not yet in the ground or not yet in being, each changing hands ten times between the pipe and the jug. One morning a seller finds no buyer. By the week's end nobody will honour a contract, and your depositors want their money to cover theirs.",
+   "art": "bubble",
+   "target": "branch_city",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 3
+    },
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.22,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "In the colleges at the taverns they say prices doubled again this week, and a bulb went for a house.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Our depositors are making fortunes. Lend them more against their contracts and share the gain.",
+    "prudence": "Nothing changes hands but paper and wine. Call in every loan secured on these contracts before the music stops.",
+    "court": "The magistrates call it a gamblers' quarrel and the courts won't enforce wind trades, so it cannot touch us.",
+    "conscience": "Selling what one does not own for a delivery one cannot make is gaming, and gaming debts poison honest ones."
+   },
+   "precedent": "Tulip mania collapsed in Haarlem and Amsterdam in February 1637; London's joint-stock promotion boom broke in 1696",
+   "source": "Goldgar, Tulipmania: Money, Honor, and Knowledge in the Dutch Golden Age (2007); Scott, The Constitution and Finance of English, Scottish and Irish Joint-Stock Companies to 1720 (1910–12)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_tax_orders",
+   "title": "{court} sells orders on next year's taxes",
+   "text": "{court}'s treasury is selling numbered orders on two years of voted revenue, to be repaid strictly in course, with interest at the legal rate. The great shops of the street are taking the lion's share and lending their depositors' money to do it. A little extra is paid as a 'gratuity', which nobody writes down.",
+   "art": "crown",
+   "target": "reachable_sovereign",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1665,
+    1700
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.5,
+      "yield": 0.1,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Ten per cent, numbered, repaid in strict course out of voted taxes. It is the safest paper in the kingdom.",
+    "prudence": "We would lend money payable on demand to a king who pays when he pleases. Keep it small.",
+    "court": "The Treasury keeps lists. A goldsmith who declines this year is not asked next year.",
+    "conscience": "Six is the legal rate and the rest is a 'gratuity'. Call it what it is before a jury does."
+   },
+   "precedent": "Downing's Treasury Orders under the Additional Aid, bought largely by the Lombard Street goldsmiths, 1665–71",
+   "source": "Roseveare, The Treasury, 1660–1870 (1973); Richards, The Early History of Banking in England (1929)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_stop",
+   "title": "{court} stops payment on its orders",
+   "text": "A proclamation suspends repayment of the Crown's orders for a year 'for the urgent occasions of the State'. Interest is promised, though nobody believes it will come. Every depositor in the street knows where his goldsmith put his money, and the street fills by noon.",
+   "art": "seal",
+   "target": "lent_sovereign",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.75
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the Council sat past midnight on the revenue, and the Treasury clerks have stopped paying orders in course.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "It is a suspension, not a repudiation. The orders will trade at sixty within the year. Buy more.",
+    "prudence": "Pay every depositor at the counter without a word of complaint. A house that pays outlives a king who doesn't.",
+    "court": "Petition the Council humbly. Those who rail in print will be the last paid, if they are paid at all.",
+    "conscience": "We lent poor men's deposits to a prince's pleasures. Whatever we save belongs to them first."
+   },
+   "precedent": "Charles II's Stop of the Exchequer, January 1672, which ruined the goldsmith-bankers Backwell and Vyner",
+   "source": "Horsefield, 'The \"Stop of the Exchequer\" Revisited', Economic History Review (1982); Roseveare, The Financial Revolution 1660–1760 (1991)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_medio_general",
+   "title": "{court} suspends its asientos",
+   "text": "A decree suspends payment on the Crown's short contracts. The bankers are told they will be settled 'by a general means': their silver advances become long juros at a lower rate, assigned on revenues already pledged twice. Juros trade at a discount, and you have become an annuitant against your will.",
+   "art": "crown",
+   "target": "lent_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 4
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.35
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Council of Finance has asked the bankers to show all their contracts by Saturday. Nobody asks that kindly.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Juros at five per cent are still income. Hold them and wait for the next asiento at fat margins.",
+    "prudence": "Sell the juros at the discount while there is a buyer, and stop lending this Crown short.",
+    "court": "The Council rewards bankers who accept the medio quietly with the next contract. Accept it.",
+    "conscience": "A debtor who rewrites his debts by decree has broken faith. We may lawfully refuse him more credit."
+   },
+   "precedent": "Spanish Crown decrees suspending asiento payments in 1607, 1627, 1647, 1652 and 1662, each settled by a medio general in juros",
+   "source": "Álvarez Nogal, El crédito de la Monarquía Hispánica en el reinado de Felipe IV (1997)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_invasion",
+   "title": "Invaded on every frontier at once",
+   "text": "Four enemies cross the borders in a single spring. Company shares fall by half in a month, the dykes are cut to drown the approaches, and crowds outside the town hall look for someone to hang. Holders queue at the exchange bank for coin. It pays every one of them, and its paying is the only good news of the year.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "amsterdam",
+    "hamburg",
+    "antwerp"
+   ],
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 40,
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.28,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Letters from the Rhine say the enemy's horse has been seen past the forts, and the bourse is quiet as a church.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Shares are at half. When the water saves the Republic again, we will have bought the Company at a gift.",
+    "prudence": "Pay out every guilder asked for. A bank that pays in a panic is how the panic ends.",
+    "court": "The burghers are lynching their own rulers. Keep the shutters down and stay out of the politics.",
+    "conscience": "The mob wants someone to blame. Let nobody say this house sold short against its own country."
+   },
+   "precedent": "The Dutch Rampjaar of 1672: the exchange halved, and the Amsterdam Wisselbank met a run and paid in full",
+   "source": "Israel, The Dutch Republic: Its Rise, Greatness and Fall 1477–1806 (1995)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1609,
+    1700
+   ]
+  },
+  {
+   "id": "northern_debasement",
+   "title": "Light coin and a crying-down",
+   "text": "The princes' mints strike small coin with less silver every month, and changers buy up good thalers at the town gates for the melting-pot. Prices run ahead of wages, and the bakers riot. Then the edict comes, crying the small coin down by half, and every debt written in it becomes a fresh quarrel.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "augsburg",
+    "frankfurt",
+    "seville"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The changers at the gate are paying a premium for old thalers, and nobody will say why.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Buy good coin at the gate and pay creditors in the light stuff. Every changer in town is doing it.",
+    "prudence": "Keep our books in good thalers or bank money. Every debt in small coin is a loss waiting to happen.",
+    "court": "The prince's mintmaster swears to me the crying-down is years away.",
+    "conscience": "Paying a creditor in coin you know is false is theft, whatever the edict tolerates."
+   },
+   "precedent": "The German Kipper- und Wipperzeit debasements of 1619–23, and the halving of Castilian vellón by decree in August 1628",
+   "source": "Kindleberger, 'The Economic Crisis of 1619 to 1623', Journal of Economic History (1991); Hamilton, American Treasure and the Price Revolution in Spain (1934)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_plague",
+   "title": "The plague returns to {city}",
+   "text": "The health office has shut the gates and marked the doors. Those who can have fled to their villas, taking their custom and leaving their debts. Two of your clerks are dead and a third is in the lazaretto, along with half the parish you lent to. Nobody will be paid this season.",
+   "art": "plague",
+   "target": "branch_city",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.18,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Sailors off a ship in quarantine are said to be sick with swellings, and the health magistrates are meeting daily.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The rich flee, but they flee with their bills. Follow them to the country and keep the book alive.",
+    "prudence": "Debtors will die and clerks with them. Hold coin, call short loans and expect nothing paid for a season.",
+    "court": "The health magistrates want a loan for the lazaretto. Lend it. They decide whose goods are burned.",
+    "conscience": "Do not foreclose on widows this year. God and the street both keep accounts."
+   },
+   "precedent": "The Italian plague of 1629–31, which killed about a third of Venice; Seville in 1649; London in 1665",
+   "source": "Cipolla, Fighting the Plague in Seventeenth-Century Italy (1981); Slack, The Impact of Plague in Tudor and Stuart England (1985)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_fire",
+   "title": "Fire in {city}",
+   "text": "It began in a baker's yard and ran four days on an east wind. The goldsmiths carted their running cash and ledgers out ahead of it, and the street where they kept shop is ash. Your vaults held, but half your borrowers' warehouses did not, and their leases are now matters for the courts.",
+   "art": "fire",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Half the town must be rebuilt. Lend to the builders and own the new street.",
+    "prudence": "Debts survive only if the books do. Get the ledgers and cash out by cart tonight.",
+    "court": "The authorities promise a special court to settle leases. Our claims will wait their turn.",
+    "conscience": "Do not raise the rate on the burnt-out. Charity now is credit later."
+   },
+   "precedent": "The Great Fire of London, 2–6 September 1666, which burned Lombard Street; the great fire of Constantinople, 1660",
+   "source": "Porter, The Great Fire of London (1996)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_ship_lost",
+   "title": "An Indiaman lost",
+   "text": "The news comes on a later ship. The outward fleet's largest hull struck an uncharted reef off a desert coast, and her chests of silver, her trade goods and many of her people are gone. The bottomry you wrote on her was lent at the sea's risk, which is to say at yours.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "batavia",
+    "goa",
+    "lisbon",
+    "amsterdam",
+    "london"
+   ],
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 5,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "One ship in twenty or thirty never comes home, and the others pay for her. Send the next.",
+    "prudence": "We lent on bottomry at sea risk. The loss is ours and no court will say otherwise.",
+    "court": "The Company's governors will want to hear we stood by them. Renew on the next fleet.",
+    "conscience": "Bottomry is lawful because we bear the sea's risk. Bearing it honestly is the price."
+   },
+   "precedent": "The VOC ship Batavia wrecked on the Houtman Abrolhos on her maiden voyage, June 1629",
+   "source": "Drake-Brockman, Voyage to Disaster (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_prize_fleet",
+   "title": "The enemy's silver fleet is taken",
+   "text": "A Company admiral has caught the enemy's treasure fleet aground in a Cuban bay and taken it almost without a fight. The directors promise a dividend of half the capital, and every shareholder on your books is suddenly liquid, generous and looking for somewhere to put the money.",
+   "art": "gold",
+   "target": "cities",
+   "cities": [
+    "amsterdam",
+    "london",
+    "hamburg"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.05
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Half the capital back as a dividend! Put it to work before the shareholders drink it.",
+    "prudence": "A prize is not a trade. Bank it, and do not expect the admiral to do it twice.",
+    "court": "The losing king is ruined this year. Whoever lends to him next names his own price.",
+    "conscience": "Booty from a just war is lawful, they tell me. Give a tithe to the poor anyway."
+   },
+   "precedent": "Piet Heyn took the Spanish silver fleet at Matanzas in 1628, and the WIC paid a 50% dividend",
+   "source": "Den Heijer, Geschiedenis van de WIC (1994)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1621,
+    1700
+   ]
+  },
+  {
+   "id": "northern_agent_usurps",
+   "title": "Your agent at {city} refuses to be recalled",
+   "text": "You recalled your agent at {city} over his private trade and unpaid debts. He has locked up his successor, kept the books and the strongroom keys, and writes that he holds the place 'for the service of the house' until better instructions come. The letter took nine months to reach you.",
+   "art": "letter",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.3
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "He still trades for us, after his fashion. Write him a sharp letter and keep the business running.",
+    "prudence": "A man who jails his successor will never render accounts. Write off his ledger and send ships.",
+    "court": "Petition for a royal warrant. Only the king's name will open those gates.",
+    "conscience": "We sent a man too far with nobody watching. That is our fault before it is his."
+   },
+   "precedent": "Sir Edward Winter deposed and imprisoned the EIC's appointed agent at Fort St George, Madras, and held it 1665–68",
+   "source": "Love, Vestiges of Old Madras 1640–1800 (1913)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_medway_run",
+   "title": "The enemy is in the river",
+   "text": "Enemy ships have broken the chain, burned the fleet at its moorings and towed away the flagship. Before nightfall the street is full of men with notes and running-cash receipts, all wanting coin, all at once. Clerks are sending their wives into the country with gold in the luggage.",
+   "art": "riot",
+   "target": "seat",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 3
+    },
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.25
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the enemy's fleet lies off the river mouth and our ships have no men aboard to fight them.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Panics pass. Ask depositors to give a week's notice and they'll be back by Michaelmas.",
+    "prudence": "Pay on demand, at once and in plain sight. Stack coin on the counter where the queue can see it.",
+    "court": "The Council will not let the City break. A word with the Lord Mayor is worth a cartload of coin.",
+    "conscience": "The people in that queue are not our enemies. They are owed their own money."
+   },
+   "precedent": "The Dutch raid on the Medway in June 1667 set off a run on the London goldsmiths, recorded by Pepys",
+   "source": "Pepys, Diary, 12–13 June 1667; Richards, The Early History of Banking in England (1929)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_refugees",
+   "title": "Refugee merchants arrive with their capital",
+   "text": "A neighbouring king has revoked his toleration of his Protestant subjects. His silk-weavers, clockmakers and merchant houses are slipping over the borders with bills drawn on Lyon and jewels sewn into their hems. They need a house that knows their correspondents and asks few questions about how they came.",
+   "art": "letter",
+   "target": "cities",
+   "cities": [
+    "amsterdam",
+    "london",
+    "hamburg"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.1
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Merchants with Lyon connections and gold in their hems. Take every account and the bills that come with it.",
+    "prudence": "Refugee money leaves as fast as it came. Do not lend it long.",
+    "court": "Our own court will kindly remember who sheltered its co-religionists.",
+    "conscience": "These are strangers fleeing for their faith. We take them in first and count their money second."
+   },
+   "precedent": "The Revocation of the Edict of Nantes, October 1685, drove Huguenot merchants and capital to Amsterdam and London",
+   "source": "Scoville, The Persecution of Huguenots and French Economic Development, 1680–1720 (1960)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1685,
+    1700
+   ]
+  },
+  {
+   "id": "northern_consistory",
+   "title": "The pulpit names the lenders",
+   "text": "The consistory has ruled that keepers of lending tables and takers of interest may not come to the Lord's Supper. The minister preached on it on Sunday, looking at your pew. The magistrates license interest and the preachers forbid it, and your more devout clients are moving their accounts to the house across the canal.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1600,
+    1660
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -8
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.03
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The pulpit thunders, but its deacons bank with us. Ride it out.",
+    "prudence": "Clients desert a house the minister names. Keep our rates modest and our heads down until it passes.",
+    "court": "Ask the magistrates to remind the consistory who licenses whom. Burgomasters have little love for preachers.",
+    "conscience": "The state permits interest and the church forbids it. Better to be modest than right in public."
+   },
+   "precedent": "Dutch Reformed consistories barred bankers of lending houses from communion until the States of Holland overruled them, 1658",
+   "source": "De Vries & van der Woude, The First Modern Economy: Success, Failure, and Perseverance of the Dutch Economy, 1500–1815 (1997)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_recoinage",
+   "title": "The clipped silver is called in",
+   "text": "The hammered silver has been clipped to half its weight, and a gold guinea fetches thirty shillings of it. Parliament has called in the old money for recoinage. For months there is no coin to pay wages, rents or notes. Even the new bank pays its notes by instalments, and the goldsmiths stop paying their own notes in specie.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "london",
+    "edinburgh"
+   ],
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1695,
+    1699
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The coffee-houses say the guinea will go to thirty-two shillings, and the Commons talk of nothing but clipping.",
+    "false_rate": 0.25
+   },
+   "advice": {
+    "growth": "Guineas at thirty shillings! Pay out in clipped silver and keep the gold.",
+    "prudence": "There will be no coin for months. Keep every lawful piece and lend nothing we cannot recall.",
+    "court": "The Treasury's new interest-bearing bills will pass as money. Take them, and the Treasury will remember.",
+    "conscience": "Take the poor's clipped coin at its tale. The clipping is the Crown's shame, not theirs."
+   },
+   "precedent": "The English Great Recoinage of 1696–99, during which the Bank of England paid its notes by instalments in 1696",
+   "source": "Li Ming-Hsun, The Great Recoinage of 1696 to 1699 (1963); Clapham, The Bank of England: A History (1944)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_land_bank",
+   "title": "A projector's land bank wants your name",
+   "text": "A projector with friends at court proposes a bank that lends to country gentlemen on mortgage at low rates and issues notes against their acres. It is meant to rival the new bank of the moneyed men, and Parliament has authorised it to lend the Crown millions if the subscription fills. He wants your house on the list of receivers.",
+   "art": "ledger",
+   "target": "none",
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1695,
+    1697
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe and act as receiver",
+     "result": "The subscription raises a pittance, the scheme dies within the summer, and the coffee-houses remember whose name was on the list.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline and stand with the moneyed men",
+     "result": "The country party at court calls you a Whig usurer, but the City notes which side you took in a hard year.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Discount the scheme's promises quietly to the hopeful",
+     "result": "You buy subscription receipts cheap from nervous squires and sell them to hopeful ones, a small and unlovely profit.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -5
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Cheap loans to every squire on the security of his acres: a bank with the land's own credit!",
+    "prudence": "Land cannot be sold in a week, so a bank built on it cannot pay a note in a week.",
+    "court": "The court party wants this to beat the rival bank. Backing it buys their favour.",
+    "conscience": "Do not lend our name to a promise we believe is hollow, however useful the patron."
+   },
+   "precedent": "The National Land Bank's subscription of 1696 raised barely £2,100 of the £2.56m sought, and collapsed",
+   "source": "Dickson, The Financial Revolution in England (1967); Horsefield, British Monetary Experiments 1650–1710 (1960)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_mint_seizure",
+   "title": "{court} 'borrows' the bullion at the mint",
+   "text": "Merchants have long lodged their bullion at the royal mint for safekeeping. This morning {court} sealed the strongroom and declared the silver a loan to the Crown, to be repaid when the realm is quieter. Your share is under seal with the rest. Every merchant in the city is now asking whose strongroom is safe.",
+   "art": "seal",
+   "target": "seat_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.12,
+      "yield": 0.02
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Bullion at the mint was a fool's deposit. Merchants will bring theirs to our strongroom now.",
+    "prudence": "Treat what they took as lost and argue about the interest later.",
+    "court": "Accept with thanks. The merchants who protested are being named in Council.",
+    "conscience": "A deposit seized is not a loan, whatever the warrant calls it."
+   },
+   "precedent": "Charles I seized about £130,000 of merchants' bullion at the Tower mint in July 1640, releasing it only for a £40,000 loan",
+   "source": "Richards, The Early History of Banking in England (1929); Ashton, The Crown and the Money Market 1603–1640 (1960)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_forced_loan",
+   "title": "{court} levies a loan without consent",
+   "text": "Commissioners have arrived with a list of names and a sum against each. {court} calls it a loan, though no assembly has voted it, no interest is promised and no date is set. Gentlemen who refused last month have been pressed as soldiers or sent to gaol. Yours is the next name on the list.",
+   "art": "crown",
+   "target": "seat_sovereign",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Pay the full sum",
+     "result": "The commissioners thank you, the money vanishes into the war, and the court counts you among the loyal.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.08,
+        "yield": 0.01
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Pay half and plead poverty",
+     "result": "They take the half and write 'reluctant' beside your name.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.04,
+        "yield": 0.01
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse, standing on the law",
+     "result": "A partner spends a winter in the Fleet, and the merchants who admire you for it bring you their accounts.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -20
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 10
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Pay it and book it as the price of doing business in this realm.",
+    "prudence": "We will never see this money again. Give the least that keeps us out of prison.",
+    "court": "Refusers are being pressed for soldiers. Pay, and smile while you do it.",
+    "conscience": "A loan taken without the assembly's consent is against the law of the land. Many good men refuse."
+   },
+   "precedent": "Charles I's Forced Loan of 1626–27 and the imprisonment of refusers tested in the Five Knights' Case, 1627",
+   "source": "Cust, The Forced Loan and English Politics 1626–1628 (1987)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_famine",
+   "title": "The harvest fails around {city}",
+   "text": "A cold spring and a wet summer have left the fields black, and bread has tripled in price. Peasants are eating bran and grass, the tax-farmers bring in half their quota, and the Crown's rentes are paid late. Your borrowers in the cloth trade have no customers, because nobody buys cloth when they cannot buy bread.",
+   "art": "grain",
+   "target": "cities",
+   "cities": [
+    "paris",
+    "lyon",
+    "seville"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Carters say the rye in the river valleys is rotting in the ear, and the grain merchants have stopped quoting.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Grain dealers need bills to buy in the Baltic. Lend at harvest rates and they'll pay double.",
+    "prudence": "When peasants starve, taxes fail and rentes go unpaid. Shorten everything we lend to this Crown.",
+    "court": "The intendants want advances to buy grain for the cities. Refuse them and you will be remembered.",
+    "conscience": "Lending to forestallers who hoard grain is complicity. Lend to the city granaries instead."
+   },
+   "precedent": "The French famine of 1693–94, in which some 1.3 million died and royal revenues collapsed",
+   "source": "Lachiver, Les années de misère: la famine au temps du Grand Roi (1991)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_light_reales",
+   "title": "The pieces of eight are found light",
+   "text": "Assayers report that silver from one of the great colonial mints has run short of fine for years, with the mint officials pocketing the difference. The mints of Europe cry the suspect pieces down by a quarter, and every chest of reales in your strongroom must now be weighed and assayed coin by coin.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "seville",
+    "genoa",
+    "amsterdam",
+    "lisbon"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Genoese changers are said to be refusing reales of one stamp and weighing every other.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The cry-down is a buying chance. Take suspect pieces at a discount and assay them ourselves.",
+    "prudence": "Weigh every piece of eight that comes in, and count nothing by tale until the assays are known.",
+    "court": "The Spanish Crown's silver has always been good and it promises an inquiry. Take them at face value.",
+    "conscience": "If we know a coin is light, passing it on at full value is fraud."
+   },
+   "precedent": "The Potosí mint fraud, uncovered 1648–49, led to Peruvian reales being cried down across Europe in 1650",
+   "source": "Lane, Potosí: The Silver City That Changed the World (2019)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_fairs_split",
+   "title": "The exchange fairs split in two",
+   "text": "The bankers who meet four times a year to settle Europe's bills have quarrelled over who sets the rates. One nation has taken its men to a fair in a town of its own choosing, and the others stay where they were. Each fair clears half the paper it used to, and bills are carried over at rates nobody trusts.",
+   "art": "scales",
+   "target": "cities",
+   "cities": [
+    "genoa",
+    "florence"
+   ],
+   "hazard": 0.01,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1618,
+    1630
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.1
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Two fairs mean two sets of spreads. Send factors to both and arbitrage the quarrel.",
+    "prudence": "A split fair clears half as much. Expect bills carried over and settlements late.",
+    "court": "The Republic wants its men at its own fair. Send ours where the Senate tells us.",
+    "conscience": "Exchange is lawful only as a true exchange. Bills merely rolled from fair to fair become dry exchange."
+   },
+   "precedent": "The schism of the Piacenza exchange fairs in 1622, when the Genoese moved to Novi",
+   "source": "Da Silva, Banque et crédit en Italie au XVIIe siècle (1969)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_war_loan",
+   "title": "{court}, at war without end, asks for a loan",
+   "text": "{court} is in the fifth year of a war it expected to win in one. It has sold admission to its ruling council to rich commoners, sold offices, sold tax farms, and is now asking for you. The rate is generous and secured on the customs. What it cannot offer is a date when the war will end.",
+   "art": "war",
+   "target": "reachable_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.35,
+      "yield": 0.08,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A state at war pays well and long. There is no better customer than one who cannot stop.",
+    "prudence": "Wars last longer than anyone promises. Lend for two years and plan on six.",
+    "court": "They sell seats in their council for less than we're asked. Lending opens the same doors.",
+    "conscience": "If the war is just, a loan to wage it is lawful. If not, no rate will make it clean."
+   },
+   "precedent": "Venice sold admission to the Great Council for 100,000 ducats a family from 1646 to fund the War of Candia",
+   "source": "Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_army_banker",
+   "title": "The general's banker seeks partners",
+   "text": "A great military contractor raises whole armies for the Emperor on credit and pays them from 'contributions' levied on occupied towns. His banker wants partners to advance the soldiers' pay against those levies, with good bills on the imperial mint as security. The profits are princely, and so is the risk if the general falls from favour.",
+   "art": "war",
+   "target": "none",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1618,
+    1660
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Join the syndicate in full",
+     "result": "Fees pour in while the general rides high, and the merchants of the burned towns curse your name.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -12
+       }
+      }
+     ]
+    },
+    {
+     "label": "Discount only his best bills, at short date",
+     "result": "A modest commission and a modest share of the opprobrium.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline",
+     "result": "The general's people call you timid. The Emperor's treasury forgets you for a while.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "His armies are the largest in the Empire and his levies come in silver. Join.",
+    "prudence": "His only security is plunder and the general's favour, and both vanish if he falls.",
+    "court": "The Emperor's favour now runs through the general. Refuse him and we lose the Empire.",
+    "conscience": "His contributions are wrung from burnt villages. That money is blood."
+   },
+   "precedent": "Hans de Witte, Wallenstein's banker, financed the imperial armies against contributions; he was ruined and drowned himself in Prague, 1630",
+   "source": "Ernstberger, Hans de Witte, Finanzmann Wallensteins (1954)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_converso",
+   "title": "A New Christian financier seeks a hiding place",
+   "text": "A Portuguese New Christian banker who holds the Crown's asientos believes the Holy Office has his name. His agent comes at night and asks you to take his silver on deposit off the books and remit it by bill to his cousins in the north. The fee he offers is handsome. If the tribunal found out, the penalty would be ruinous.",
+   "art": "cross",
+   "target": "none",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1625,
+    1700
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Take the silver and remit it north",
+     "result": "His silver reaches the north and his gratitude reaches you, but the court has long ears.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse politely",
+     "result": "He finds another house, and the nation's merchants mark you as fair-weather friends.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Inform the tribunal",
+     "result": "The Holy Office thanks you, the Crown takes note, and no New Christian merchant will cross your threshold again.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -15
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "His silver is good and he will pay well to keep it safe. Take it and send it north quietly.",
+    "prudence": "If the Holy Office finds his money in our books, it will want to see the rest of them too.",
+    "court": "Sheltering the tribunal's quarry offends the Crown. Report it and we gain a powerful friend.",
+    "conscience": "He is a man in fear of the fire. Shelter is a work of mercy, whatever the tribunal says."
+   },
+   "precedent": "The Inquisition's prosecutions of Portuguese New Christian asentistas at the court of Philip IV, 1630s–1650s",
+   "source": "Boyajian, Portuguese Bankers at the Court of Spain, 1626–1650 (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_interloper",
+   "title": "An interloper wants credit for an Indies voyage",
+   "text": "A captain who has served in the East plans to sail to the Indies without the Company's licence and buy pepper and calico on his own account. He wants your bills on his correspondents and a loan on bottomry. The Company holds a royal charter, has lawyers at the Admiralty and lends to the king.",
+   "art": "ship",
+   "target": "none",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1640,
+    1700
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Finance the voyage",
+     "result": "The ship comes home fat and the margins are glorious, but the Company's governors now know your name.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline quietly",
+     "result": "The captain finds money in Hamburg, and nothing more is said.",
+     "effects": [
+      {
+       "kind": "flavour",
+       "params": {}
+      }
+     ]
+    },
+    {
+     "label": "Warn the Company",
+     "result": "The ship is seized before she clears the Downs, and the Company is grateful while the free traders are not.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 6
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The Company makes a hundred per cent and shares none of it. Finance the interloper and take the margin.",
+    "prudence": "The Company seizes ships and the courts uphold its charter. Our capital could rot in an Admiralty suit.",
+    "court": "The Company lends to the king and the king protects the Company. Cross neither.",
+    "conscience": "A monopoly granted by prerogative is no law of God. Trading freely is no sin."
+   },
+   "precedent": "English interlopers, among them Thomas Pitt, challenged the EIC monopoly, upheld in East India Company v. Sandys, 1683–85",
+   "source": "Stern, The Company-State: Corporate Sovereignty and the Early Modern Foundations of the British Empire in India (2011)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_darien",
+   "title": "A nation subscribes to its colony",
+   "text": "The northern kingdom has chartered a company to plant a colony on the isthmus between the two oceans. A great part of its liquid wealth is in the subscription book, and the merchants of {city} have signed to a man. The king, who wears the southern crown as well, has disowned the scheme to please the English Indies company. The Spaniards say the isthmus is theirs.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "edinburgh"
+   ],
+   "hazard": 0.08,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1695,
+    1700
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe heavily",
+     "result": "Edinburgh calls you a patriot and brings you its accounts, while London marks you as a friend of its rivals.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Take a token share",
+     "result": "Your name is on the book but your capital is not.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Stay out",
+     "result": "Edinburgh's merchants call you an English creature and take their bills elsewhere.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -8
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 4
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "A colony at the hinge of two oceans, with all Scotland behind it. Get in before the book closes.",
+    "prudence": "A fever coast, no navy, and a company its own king has disowned. Count this money gone.",
+    "court": "The king has repudiated it to please the English Company. Every subscription will be read in London.",
+    "conscience": "A nation is pledging its savings to a shipload of hope. Do not urge widows to subscribe."
+   },
+   "precedent": "The Company of Scotland's Darien scheme, 1695–1700, which absorbed a large share of Scotland's liquid capital and failed",
+   "source": "Watt, The Price of Scotland: Darien, Union and the Wealth of Nations (2007)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_lottery_loan",
+   "title": "The Treasury floats a lottery loan",
+   "text": "The Treasury is raising a million by selling ten-pound tickets. Every ticket carries an annuity, and the lucky ones carry great prizes. Goldsmiths and booksellers are licensed to sell them, the coffee-houses talk of nothing else, and the distributors keep a fee on every ticket sold.",
+   "art": "ledger",
+   "target": "cities",
+   "cities": [
+    "london"
+   ],
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 5,
+   "window": [
+    1693,
+    1700
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.04
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The public will queue for these, and we take a fee on every one.",
+    "prudence": "Sell tickets for cash and never on credit. The fever cools once the draw is done.",
+    "court": "The Treasury rewards its distributors. This is how a goldsmith becomes a Treasury man.",
+    "conscience": "A lottery is gaming in a public wig. Take the fee, but do not lend anyone money to buy tickets."
+   },
+   "precedent": "The Million Adventure, the English state lottery loan of 1694",
+   "source": "Dickson, The Financial Revolution in England (1967)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_indies_return",
+   "title": "A great return from the Indies",
+   "text": "The fleet is home with every hull, holds full of pepper, cloves and mace bought for silver at prices the Exchange can hardly credit. The voyage account will pay its adventurers more than double their stake, and every merchant who held a share on your books is suddenly creditworthy beyond question.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "amsterdam",
+    "london",
+    "batavia",
+    "goa"
+   ],
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 8,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.07
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Put every penny into the next voyage. Fortune favours the bold, and the bold are buying now.",
+    "prudence": "A voyage pays like this once in a decade. Bank the gain and raise our reserve.",
+    "court": "The Company's governors will remember who held their stock through the lean years.",
+    "conscience": "Spice bought cheap and sold dear is honest trade. Remember the clerks who kept the books."
+   },
+   "precedent": "The English East India Company's third separate voyage, 1607–10, returned some 234 per cent on its capital",
+   "source": "Chaudhuri, The English East India Company: The Study of an Early Joint-Stock Company 1600–1640 (1965)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_island_trade",
+   "title": "A closed empire's silver flows through {city}",
+   "text": "The island empire has expelled every European nation but one company, and that company is penned on a small artificial island in a single harbour. Through that narrow gate come silver and copper in quantities that remake the whole Asian trade, and the bills now drawn on {city} are the best in the East.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "batavia"
+   ],
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1639,
+    1700
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Silver from a closed empire through one counter. Open a correspondent at {city} at once.",
+    "prudence": "A realm that expelled one nation can expel another. Don't let this trade carry our capital.",
+    "court": "The Company's directors hand out credit lines to their friends. Make sure we are one of them.",
+    "conscience": "They say Christians there are made to trample holy images. Profit from such a gate troubles me."
+   },
+   "precedent": "After the expulsion of the Portuguese in 1639, the VOC was confined to Dejima from 1641 as the only European traders in Japan",
+   "source": "Israel, Dutch Primacy in World Trade, 1585–1740 (1989)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_coast_cleared",
+   "title": "The coast of {city} is cleared by edict",
+   "text": "To starve a rebel fleet that holds the offshore islands, the new dynasty has ordered the coastal population to move ten miles and more inland. Villages are burned and seaborne trade is forbidden on pain of death. Your correspondents at {city} write that their bills cannot be met until the edict is lifted, and nobody knows when that will be.",
+   "art": "fire",
+   "target": "cities",
+   "cities": [
+    "canton"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1661,
+    1684
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The rebels' junks still sail, and the margin on silk has tripled. Lend to the smugglers.",
+    "prudence": "When an empire burns its own coast, every bill drawn on it is a hope. Shorten our tenors.",
+    "court": "The new dynasty will win. Whoever waits patiently will be first through the gate when the ports reopen.",
+    "conscience": "Villages are burning by edict. Let us not profit from contraband with their ruin."
+   },
+   "precedent": "The Qing coastal evacuation edicts against the Zheng regime, 1661–84",
+   "source": "Wills, Pepper, Guns and Parleys: The Dutch East India Company and China, 1662–1681 (1974)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "northern_embargo",
+   "title": "Enemy ships seized in the ports of {city}",
+   "text": "The truce has expired and the embargo has fallen. Every ship of the rebel provinces in the harbour of {city} has been seized, with crews gaoled and cargoes inventoried by the admiralty court. Bills drawn against those cargoes are coming back protested, and a new board of inspectors is checking every neutral hull for hidden enemy goods.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "seville",
+    "lisbon"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Masters in the river are hurrying their lading, and the admiralty's officers have been counting flags on the quay.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Our flag is neutral. Carry their cargoes under ours and charge them double.",
+    "prudence": "Goods in their ports belong to nobody until the lawyers finish. Value them at nothing.",
+    "court": "Their admiralty courts accept petitions with gifts. We could buy back a ship or two.",
+    "conscience": "Do not swear to a false flag. An oath given falsely before a prize court is perjury."
+   },
+   "precedent": "Spain's embargo on Dutch shipping when the Twelve Years' Truce expired in 1621, enforced by the Almirantazgo from 1624",
+   "source": "Israel, The Dutch Republic and the Hispanic World, 1606–1661 (1982)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1621,
+    1648
+   ]
+  }
+ ],
+ "review": [
+  {
+   "id": "northern_charter_loan",
+   "field": "text",
+   "why": "The 1698 loan was raised by instalment subscription to the General Society, whose receipts traded; it was not funded by a bond issue."
+  },
+  {
+   "id": "northern_charter_loan",
+   "field": "precedent",
+   "why": "Corrects the financing mechanism: subscription, not bond sales."
+  },
+  {
+   "id": "northern_charter_loan",
+   "field": "source",
+   "why": "Bowen covers 1756–1833 and is inapt for 1698."
+  },
+  {
+   "id": "northern_tax_orders",
+   "field": "window",
+   "why": "Numbered Treasury Orders repayable in course date from Downing's Additional Aid of 1665."
+  },
+  {
+   "id": "northern_invasion",
+   "field": "window",
+   "why": "The text requires an exchange bank (Amsterdam 1609) and traded Company shares."
+  },
+  {
+   "id": "northern_ship_lost",
+   "field": "title",
+   "why": "The Batavia was outward-bound, not homeward."
+  },
+  {
+   "id": "northern_ship_lost",
+   "field": "text",
+   "why": "The Batavia sank outbound carrying silver, not pepper; most aboard survived the wreck itself; respondentia is a later English usage."
+  },
+  {
+   "id": "northern_ship_lost",
+   "field": "advice",
+   "why": "VOC loss rates were a few per cent per voyage, not one in five."
+  },
+  {
+   "id": "northern_prize_fleet",
+   "field": "window",
+   "why": "The West India Company was chartered in 1621."
+  },
+  {
+   "id": "northern_prize_fleet",
+   "field": "text",
+   "why": "Matanzas Bay lies on Cuba's north coast, not in the Caribbean proper, and there was some resistance."
+  },
+  {
+   "id": "northern_refugees",
+   "field": "window",
+   "why": "The text describes the 1685 Revocation specifically."
+  },
+  {
+   "id": "northern_recoinage",
+   "field": "text",
+   "why": "Country banks did not exist until the mid-18th century."
+  },
+  {
+   "id": "northern_recoinage",
+   "field": "window",
+   "why": "The text requires the Bank of England (1694) and the 1695 guinea premium."
+  },
+  {
+   "id": "northern_land_bank",
+   "field": "window",
+   "why": "The rival bank existed from 1694, and the Land Bank scheme lived and died in 1696."
+  },
+  {
+   "id": "northern_fairs_split",
+   "field": "window",
+   "why": "Once-only card; it should fire near the 1622 Piacenza/Novi schism."
+  },
+  {
+   "id": "northern_darien",
+   "field": "text",
+   "why": "William III was King of Scotland too, not a 'neighbouring king'; 'half' overstates the capital share."
+  },
+  {
+   "id": "northern_darien",
+   "field": "precedent",
+   "why": "Estimates vary widely; avoids a spurious precise fraction."
+  },
+  {
+   "id": "northern_island_trade",
+   "field": "window",
+   "why": "The Portuguese were expelled in 1639, and the Dutch moved to Dejima in 1641."
+  },
+  {
+   "id": "northern_coast_cleared",
+   "field": "window",
+   "why": "Matches the dates of the Qing coastal evacuation edicts."
+  },
+  {
+   "id": "northern_coast_cleared",
+   "field": "text",
+   "why": "The prescribed distances were 30–50 li, roughly 10–17 miles, not thirty miles."
+  },
+  {
+   "id": "northern_embargo",
+   "field": "window",
+   "why": "The truce expired in 1621, and the embargo regime ended with the 1648 peace."
+  }
+ ]
+}

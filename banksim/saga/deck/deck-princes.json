@@ -1,0 +1,1783 @@
+{
+ "era": "princes",
+ "cards": [
+  {
+   "id": "princes_pepper_contract",
+   "title": "{court} wants silver against the next pepper fleet",
+   "text": "The crown holds the pepper monopoly but must pay for the spice in Cochin with silver it does not yet have. Its factor proposes an advance repayable from the sale of the next fleet's cargo in Antwerp, with a share of the pepper as security. If the carracks come home, the margin is handsome. If they do not, you own a claim on the sea.",
+   "art": "ship",
+   "target": "reachable_sovereign",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.35,
+      "yield": 0.14,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Pepper sells itself in Antwerp; a lien on the fleet is as good as coin in the chest.",
+    "prudence": "One storm off the Cape and our security lies on the seabed. Take a smaller share.",
+    "court": "A crown that owes us its spice will remember us when licences are handed out.",
+    "conscience": "Payment in kind at a fixed price may hide usury; have the contract read as a true purchase."
+   },
+   "precedent": "Welser, Fugger and Affaitati bought shares in the 1505 India fleet; Portuguese crown pepper contracts were let to German and Italian syndicates, 1505–1590s",
+   "source": "Hermann Kellenbenz, Die Fugger in Spanien und Portugal bis 1560 (1990)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_sultan_two_fronts",
+   "title": "{court} needs silver for wars on two fronts",
+   "text": "A new conquest has joined two great harbours under one master, and his treasury now pays armies in Persia and on the Danube at once. His agents offer a farm of customs revenues against an advance of silver: high returns, collected by men you have never met, under a law that is not yours.",
+   "art": "war",
+   "target": "reachable_sovereign",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1517,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.3,
+      "yield": 0.15,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Whoever holds the customs of the Levant holds the spice road. Bid before the Ragusans do.",
+    "prudence": "If the Sultan's treasurer changes, so does the farm. Our only remedy would be a petition.",
+    "court": "The Signoria trades with the Porte but does not love it. Lend, and be discreet about it.",
+    "conscience": "Lending to the infidel for war on Christians is forbidden outright; no confessor will absolve it."
+   },
+   "precedent": "Selim I's conquest of Mamluk Egypt, 1516–17; the Porte's revenues were afterwards farmed out (iltizam) against cash advances",
+   "source": "Halil İnalcık, The Ottoman Empire: The Classical Age 1300–1600 (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_election_for_sale",
+   "title": "A crown is for sale, and {court} must buy it",
+   "text": "Seven electors will choose the next Emperor, and every one of them has a price. {court} needs a vast sum within weeks, payable to the electors only if the vote goes the right way, and secured on mines, tolls and promises. Win and you are the empire's banker for a generation. That is the opportunity, and it is also the risk.",
+   "art": "crown",
+   "target": "reachable_sovereign",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1500,
+    1560
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.6,
+      "yield": 0.18,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A house that makes an Emperor is never again a mere lender. Take the whole loan.",
+    "prudence": "A prince's gratitude is payable at his convenience. This loan is bigger than our capital.",
+    "court": "Refuse, and his rival's banker will collect the mines, the tolls and the title.",
+    "conscience": "Bribing electors is simony in all but name. The house's soul is worth more than a mine."
+   },
+   "precedent": "Charles V's imperial election of 1519, bought with some 850,000 florins, about two-thirds of it lent by Jakob Fugger",
+   "source": "Mark Häberlein, The Fuggers of Augsburg (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_stop_of_payment",
+   "title": "{court} stops payment on its asientos",
+   "text": "A royal decree suspends every short-term contract with the crown's bankers. Arrears are to be converted into perpetual juros at a rate the crown chooses, and the silver already pledged to you is redirected to the army. The bankers will negotiate a settlement because they have no other option. Meanwhile your bills on the crown are worth roughly what a buyer will pay for them.",
+   "art": "seal",
+   "target": "lent_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1555,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3.0
+    },
+    {
+     "signal": "leverage",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.45
+     }
+    },
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The treasury has stopped answering letters, and the Genoese are selling juros at the fair below last quarter's price.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Kings never truly default; they reschedule at par. Buy more contracts while the timid sell.",
+    "prudence": "Every asiento carries a pledge on silver the king can take back. Shorten the book now.",
+    "court": "Stay at the table. Those who keep lending through the stop are the first paid in the settlement.",
+    "conscience": "A crown that breaks its word sins; a banker who sold its paper to widows sinned first."
+   },
+   "precedent": "Philip II's decretos of 1557, 1560, 1575 and 1596, converting asientos into juros; France and Portugal also suspended in 1558–60",
+   "source": "Mauricio Drelichman & Hans-Joachim Voth, Lending to the Borrower from Hell (2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_genoese_asiento",
+   "title": "A Genoese consortium offers a place in {court}'s asiento",
+   "text": "The Genoese will lend the crown a sum payable in Flanders, repayable in silver from the next fleet at Seville, with interest, exchange and commission all built into the price. They want partners to take a share and spread the risk. The paper settles at the fair, and they have learned to price a stop of payment into the rate. The question is whether you have.",
+   "art": "ledger",
+   "target": "reachable_sovereign",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1552,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.5,
+      "yield": 0.14,
+      "turns": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "This is the richest business in Christendom, and the Genoese are inviting us in. Nobody will ask twice.",
+    "prudence": "They keep the safest share and offer us the rest. Ask which silver repays our part.",
+    "court": "The king remembers who carried his army to Flanders. So do the Genoese, when they hand out shares.",
+    "conscience": "Interest dressed as exchange is still interest. At least insist the remittance is real."
+   },
+   "precedent": "Genoese bankers took over Philip II's short-term asientos after the 1557–60 stops, syndicating shares among partners",
+   "source": "Drelichman & Voth, Lending to the Borrower from Hell (2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_banco_run",
+   "title": "A banco di scritta fails in {city}",
+   "text": "A giro bank on the piazza had lent depositors' money to the Mint and to its partners' galleys. It closed its doors at noon, and by vespers every depositor in town wanted coin rather than book entries. The magistrates propped the bank once before. They will not do it again, and depositors are now asking the same questions of you.",
+   "art": "riot",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 3.0
+    },
+    {
+     "signal": "low_standing",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.35
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The banker's cashier was seen at the Mint twice this week, and he has stopped paying out in ducats.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Their depositors need somewhere to go. Open late and take every one of them.",
+    "prudence": "Fill the till before the bell. A bank that pays in coin all day survives the evening.",
+    "court": "The Mint will prop any bank on the piazza; it did so last time. We need not hoard.",
+    "conscience": "Pay small depositors first. The widows' accounts are a debt of honour as well as of law."
+   },
+   "precedent": "The failure in a run of the Pisani-Tiepolo bank, Venice's last private giro bank, in 1584, after earlier failures such as the Priuli bank's in 1552; the public Banco della Piazza di Rialto followed in 1587",
+   "source": "Frederic C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_fair_moved",
+   "title": "The bankers' fair leaves {city}",
+   "text": "Politics has turned, and the foreign bankers are no longer welcome where they used to settle their bills four times a year. They will hold their exchange fair in a frontier town under another prince. Bills already drawn on the old city must be rerouted, and the brokers there are already looking for new trades.",
+   "art": "scales",
+   "target": "cities",
+   "cities": [
+    "lyon"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1520,
+    1580
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.2
+     }
+    },
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The fair matters more than where it sits. Follow the Genoese to Besançon and keep the clearing.",
+    "prudence": "Settle every open bill on Lyon before the next payment date. Unsettled positions are where we lose money.",
+    "court": "The French king made this quarrel; side with him and he may give us the fair's privileges.",
+    "conscience": "A fair held in no place, netting paper against paper, is closer to dry exchange than ever."
+   },
+   "precedent": "After Genoa joined Charles V in 1528 its bankers lost Lyon, and their exchange fairs reopened at Besançon in 1535",
+   "source": "Luciano Pezzolo & Giovanni Tattara, 'Una fiera senza luogo', Journal of Economic History (2008)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_fair_prorogued",
+   "title": "The payments of the fair are postponed",
+   "text": "The crown, short of silver, orders that the payment days of the great Castilian fair be put off for another season. Every bill payable there is now in limbo. Acceptors will not pay, drawers will not refund, and the notaries are busy protesting bills that nobody can honour.",
+   "art": "letter",
+   "target": "branch_city",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1560,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1.5
+    },
+    {
+     "signal": "thin_till",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.1,
+      "panic": 0.08
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Letters from Medina say the cambistas have not set the payment day, and nobody will quote on the next fair.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Buy protested bills at a discount. The fair always pays in the end, and we will collect at par.",
+    "prudence": "Our bills on the fair are not cash. Write them down and keep coin to meet our own acceptances.",
+    "court": "The crown postponed the fair to pay its soldiers. Complaining will not move the payment day.",
+    "conscience": "Charging penalty interest on bills delayed by the king's act is damage we did not suffer."
+   },
+   "precedent": "Castile repeatedly postponed the payments of the Medina del Campo fairs during and after the 1575 suspension, 1575–78",
+   "source": "Henri Lapeyre, Une famille de marchands: les Ruiz (1955)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_coin_cried_down",
+   "title": "The coin of {city} is cried down",
+   "text": "After years of quietly adding copper to the silver, the crown proclaims that its own coin will pass at half its face value from next week. Debtors rush to pay in the old coin before the day, and creditors refuse it. The house's till, half-full of base testoons, has just lost value by royal decree.",
+   "art": "coin",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Mint has stopped striking, and the goldsmiths are buying old coin by weight above its tale.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Lend out the base coin before the day; let the borrowers take the loss at repayment.",
+    "prudence": "Value the till by weight, not tale, and accept nothing at face after this morning.",
+    "court": "Hold the coin. The crown must honour its own face value or no one will take its money.",
+    "conscience": "Passing coin you know will be cried down tomorrow is fraud upon your neighbour."
+   },
+   "precedent": "The English Great Debasement of 1544–51, ended by proclamations crying down the testoon in 1551",
+   "source": "C. E. Challis, The Tudor Coinage (1978)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_treasure_fleet_in",
+   "title": "The treasure fleet is in at {city}",
+   "text": "The galleons have crossed the bar with a record cargo of registered silver, and the Casa's vaults are full. Merchants are paying debts, bills on Seville are selling at a premium across Europe, and your correspondents' remittances have arrived on time for once.",
+   "art": "gold",
+   "target": "cities",
+   "cities": [
+    "seville"
+   ],
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 5,
+   "window": [
+    1530,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Silver is cheap and credit is easy. Lend it out before the next fleet makes it cheaper still.",
+    "prudence": "More silver means higher prices. Our fixed rents and old loans are worth less every year.",
+    "court": "The king will hear of the fleet too. Expect a request before the silver leaves Seville.",
+    "conscience": "Give thanks and pay your debts. Riches from the mines of the Indies carry their own reckoning."
+   },
+   "precedent": "Registered American bullion arriving at Seville peaked in the 1590s, the decade's remittances the highest of the century",
+   "source": "Earl J. Hamilton, American Treasure and the Price Revolution in Spain, 1501–1650 (1934)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_silver_sequestered",
+   "title": "The crown sequesters the merchants' silver",
+   "text": "The fleet came in, but before the silver reached its owners the crown's officers took the private consignments 'by way of loan' for the war. The owners will receive juros at a modest rate, eventually. Your correspondents in Seville cannot cover the bills you drew on them.",
+   "art": "seal",
+   "target": "cities",
+   "cities": [
+    "seville"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1520,
+    1560
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.12
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The officials of the Casa are counting chests by night, and the asentistas have gone to court.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Buy the juros they hand out at a discount; the crown always pays the interest eventually.",
+    "prudence": "Never draw on silver still at sea or in the Casa. It belongs to us only once it is in our vault.",
+    "court": "It is a loan, not a theft; the Emperor gives juros. Protest quietly and be paid first.",
+    "conscience": "Taking a subject's goods without consent is against natural law, whatever the paper calls it."
+   },
+   "precedent": "Charles V's seizures of private American bullion at Seville, notably 1523, 1535, 1553 and 1556, repaid in juros",
+   "source": "Ramón Carande, Carlos V y sus banqueros (1943–67)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_pay_ships_detained",
+   "title": "A prince detains the bankers' pay-ships",
+   "text": "Ships carrying a syndicate's silver to pay an army sheltered from privateers in a foreign port, and the local queen has decided to 'borrow' the money herself. Embargo and counter-embargo follow, and the wool and cloth trade with the Low Countries stops overnight. The lenders, who meant to finance only one side of the quarrel, now find themselves creditors of both.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "antwerp",
+    "genoa"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1560,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.12
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Sailors in Southampton say the bullion hulks are being unloaded under the Queen's guard.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "England needs the Antwerp trade; she will release the silver within a week. Keep shipping.",
+    "prudence": "Silver crossing the Channel belongs to whoever controls the harbour. Insure it or route it overland.",
+    "court": "Approach the Queen's secretary through her own merchants; she may repay us as a lender after all.",
+    "conscience": "We cannot blame a prince for seizing money sent to pay soldiers in an unjust war."
+   },
+   "precedent": "Elizabeth I's seizure of Genoese bullion bound for Alba's army, December 1568, and the Anglo-Netherlands embargo of 1569–73",
+   "source": "G. D. Ramsay, The Queen's Merchants and the Revolt of the Netherlands (1986)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_colony_governors",
+   "title": "The house's governors overseas go their own way",
+   "text": "The crown granted the house a province beyond the ocean in payment of debts, and the house sent out its own men to run it. They have spent its capital on expeditions in search of a golden city, chained the natives to work, and quarrelled with the crown's officials. Letters take six months to arrive, and the news in them is worse each time.",
+   "art": "ship",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1520,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.3
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": -5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "One find of gold repays everything. Send another ship with more men and more credit.",
+    "prudence": "We cannot steer from six months away. Cut what they may draw on us and recall the governor.",
+    "court": "The Council of the Indies wants an excuse to revoke the grant. Do not give it one.",
+    "conscience": "The friars report enslavement. A house that profits from it shares the sin."
+   },
+   "precedent": "The Welser company's Venezuela concession, 1528–46, ended in failed El Dorado expeditions and the murder of its governor",
+   "source": "Jörg Denzer, Die Konquista der Augsburger Welser-Gesellschaft (2005)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_quicksilver_corner",
+   "title": "A syndicate invites you into a corner",
+   "text": "A great merchant of the city is buying up every flask of quicksilver in Europe and wants your money to hold the stock until the price doubles. The Diet's commissioners are already petitioning against monopolies, and the man's depositors include half the town's servants. Last week he offered them five per cent.",
+   "art": "bubble",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1500,
+    1560
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Buy into the ring",
+     "result": "The corner pays for two seasons, and the town knows exactly whose money held up the price.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -12
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend against the stock, with a margin",
+     "result": "You earn a modest fee and keep a lien on the flasks in case he fails.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline and say so on the exchange",
+     "result": "When his credit wobbles, cautious depositors move their money to you.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 5
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Corners have made the great Augsburg houses. A share now costs less than regret later.",
+    "prudence": "A corner needs every flask in Europe. One new mine and he is selling at any price.",
+    "court": "The Emperor protects the great companies against the Diet. He wants their loans more than their virtue.",
+    "conscience": "Monopoly that raises the price of necessities is condemned by every doctor of the Church."
+   },
+   "precedent": "Ambrosius Höchstetter's attempted quicksilver corner collapsed in 1529, after the anti-monopoly agitation at the Nuremberg Diets of 1522–24",
+   "source": "Mark Häberlein, The Fuggers of Augsburg (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_plague_returns",
+   "title": "The plague returns to {city}",
+   "text": "The health office has closed the gates and burned the bedding, and the lazaretto is full. Nobles and merchants have fled to the countryside, and their debts went with them. The counting house operates with half its clerks, and nobody dares accept a letter that came from the infected quarter.",
+   "art": "plague",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.18,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Provveditori alla Sanità have ordered a house in the parish sealed, and the fishermen talk of fever.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "Plague is a disease of the poor quarters; trade carries on. Keep the bank open and lending.",
+    "prudence": "Call in loans to anyone likely to flee, and keep coin for those who stay and need it.",
+    "court": "The magistrates will need loans for the lazaretto. Be first to offer and they will remember it.",
+    "conscience": "The dying want their wills drawn and their debts forgiven. Do not press heirs this season."
+   },
+   "precedent": "The Venetian plague of 1575–77, which killed roughly a third of the city",
+   "source": "Paolo Preto, Peste e società a Venezia nel 1576 (1978)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_famine_grain",
+   "title": "Famine: {court} asks you to finance northern grain",
+   "text": "Two harvests have failed, and the poor are eating bread made with chaff. Baltic grain ships could reach the harbour in six weeks if someone pays the Dutch skippers in advance. The government asks the house to advance the money. Hoarders are already being hanged in the square.",
+   "art": "grain",
+   "target": "seat_sovereign",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 20,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Lend to the government at cost",
+     "result": "The grain arrives, the government is grateful, and the money comes back slowly at almost no interest.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.06,
+        "yield": 0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 12
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Charter the ships on your own account",
+     "result": "You sell the grain at famine prices and profit, and the crowd shouts your name at the bakers' doors.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse; the house is not a granary",
+     "result": "Others find the money, and the government notes who did not.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -8
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Grain bought in Danzig for one ducat sells here for four. This is the trade of the decade.",
+    "prudence": "An advance to skippers we do not know, for grain we have not seen, is a gamble. Lend to the state.",
+    "court": "Governments remember who fed them in a famine. They also remember who profited from it.",
+    "conscience": "To profit from a neighbour's hunger is the very sin the canonists name. Lend at cost."
+   },
+   "precedent": "The Italian famine of 1590–91, relieved by Baltic grain shipped by Dutch and Hanseatic carriers to Livorno, Genoa and Venice",
+   "source": "Fernand Braudel, The Mediterranean and the Mediterranean World in the Age of Philip II (English trans. 1972; French orig. 1949)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1586,
+    1600
+   ]
+  },
+  {
+   "id": "princes_dry_exchange",
+   "title": "Rome condemns the dry exchange",
+   "text": "A papal bull declares that an exchange bill drawn to a fair and redrawn back, with no real remittance, is usury in disguise, and confessors must refuse absolution to those who deal in it. Your ricorsa business, a quarter of the profit, is exactly that. The doctors at Salamanca are already debating which bills still pass.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1560,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Unwind the ricorsa bills",
+     "result": "You lose a profitable line of business, and your confessor and the magistrates approve.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Keep them, with a friendly theologian's opinion",
+     "result": "The profits continue, and so do the sermons about you.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Route them through a correspondent at the Genoese fair",
+     "result": "The business moves offshore, and with it some control over who signs in your name.",
+     "effects": [
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.1
+       }
+      },
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.02
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Every banker in Europe redraws bills. The Pope cannot excommunicate the whole Piazza.",
+    "prudence": "Ricorsa credit is short money that rolls each fair. Shrinking it lowers our leverage anyway.",
+    "court": "The Signoria guards its bankers against Rome. Let the state's lawyers answer the bull.",
+    "conscience": "A bill with no real remittance is a loan at interest. The bull only says what the doctors always said."
+   },
+   "precedent": "Pius V's bull In eam pro nostro, 28 January 1571, condemning cambium siccum (dry exchange)",
+   "source": "John T. Noonan, The Scholastic Analysis of Usury (1957)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_grand_parti_mania",
+   "title": "All {city} wants a piece of the king's loan",
+   "text": "The king's consolidated loan pays four per cent each fair, sixteen a year, and the subscription has become a fashion. Bankers, notaries, widows and servants are queuing to get in. Your depositors ask whether the house will subscribe, sell them shares, or explain why it does neither.",
+   "art": "bubble",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1540,
+    1570
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 2.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe heavily for the house",
+     "result": "The crown's paper sits on your books at sixteen per cent, for as long as the crown keeps paying.",
+     "effects": [
+      {
+       "kind": "offer",
+       "params": {
+        "size": 0.3,
+        "yield": 0.16,
+        "turns": 1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Broker shares to your depositors",
+     "result": "You collect the commission, and your name is on paper that small savers will not forget.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Stay out",
+     "result": "You miss the boom, and the king's treasurer crosses you off his list.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -8
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "A king paying four per cent a fair, with all Lyon behind him, cannot fail. Subscribe the limit.",
+    "prudence": "When servants are buying a crown's debt, it is time to sell it, not to buy more.",
+    "court": "The king's treasurer counts who subscribes. Silence costs us the next licence.",
+    "conscience": "Selling the poor a loan you would not hold yourself is not commerce. It is a snare."
+   },
+   "precedent": "The Grand Parti de Lyon, 1555, subscribed by bankers and small savers at 16%, suspended by the French crown in 1557–59",
+   "source": "Roger Doucet, 'Le Grand Parti de Lyon au XVIe siècle', Revue historique (1933)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_royal_agent_loan",
+   "title": "{court}'s agent on the Bourse wants a loan",
+   "text": "The crown keeps a factor on the Antwerp Bourse who borrows short, rolls the debt each quarter, and nudges the exchange rate in his master's favour. He proposes a year's loan at the going rate on the crown's bond, countersigned by the City of London. He pays on the day, and he will want to see what you know about the exchange.",
+   "art": "letter",
+   "target": "reachable_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1544,
+    1576
+   ],
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.25,
+      "yield": 0.12,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A punctual crown at twelve per cent is a better borrower than any duke in Flanders. Take it.",
+    "prudence": "He pays because he can roll the debt. If the Bourse shuts, he pays nobody.",
+    "court": "This agent has the ear of the Council. Lending to him is cheaper than buying a pension.",
+    "conscience": "A bond at fixed interest is plain usury, whatever the Bourse calls it. Confess it, at least."
+   },
+   "precedent": "Thomas Gresham's borrowing on the Antwerp Bourse as royal agent for Edward VI, Mary and Elizabeth, 1551–74",
+   "source": "Raymond de Roover, Gresham on Foreign Exchange (1949)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_forced_loan",
+   "title": "{court} levies a forced loan for the war",
+   "text": "The armies are in the field, and the treasury is empty. Every house in the city is assessed on its estimated wealth and must lend to the state at a nominal interest the state will pay when it can. The assessors have a good idea how large your deposits are.",
+   "art": "war",
+   "target": "seat_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.08,
+      "yield": 0.03
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Pay it gracefully; a seat on the war committee is worth the coupon we lose.",
+    "prudence": "Each forced loan comes with a promise that the next will be smaller. Keep the till full.",
+    "court": "Pay early and in full. The city remembers who haggled when the enemy was at the gates.",
+    "conscience": "Interest from the state's own levy is lawful: the loan is compelled, not sought."
+   },
+   "precedent": "Venice's forced loans after the defeat at Agnadello, 1509; Florence's accatti during the siege of 1529–30",
+   "source": "Luciano Pezzolo, 'The Venetian government debt, 1350–1650', in Urban Public Debts (2003)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_sack",
+   "title": "Unpaid soldiers sack {city}",
+   "text": "An army that has gone months without pay has broken discipline and stormed the walls. For a week they hold merchants for ransom, burn ledgers for warmth and torture cashiers for the keys. When the officers regain control, there is little left to lend against and nobody left to lend to.",
+   "art": "fire",
+   "target": "branch_city",
+   "hazard": 0.004,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.3,
+      "panic": 0.2
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.2
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The landsknechts have not been paid since spring, and their captains no longer answer to the general.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Armies always threaten and never sack. Keep the branch open; panic sells, and we buy.",
+    "prudence": "Send the coin and the ledgers to the country tonight. Buildings can be rebuilt; accounts cannot.",
+    "court": "The Emperor's soldiers would never sack a Christian capital. His honour forbids it.",
+    "conscience": "Pray, and open the chapel to the townsfolk. Mercy now will be remembered after."
+   },
+   "precedent": "The Sack of Rome by the unpaid imperial army, May 1527",
+   "source": "Judith Hook, The Sack of Rome, 1527 (1972)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_rival_fails",
+   "title": "A great house in {city} fails; its clients come to you",
+   "text": "An old rival over-lent to princes and to its own partners, and its balance shows more debts than assets. Its creditors have gone to the magistrates, its factors are looking for employment, and its best merchant clients are standing in your hall with their bills in hand.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1550,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.1
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Hire their factors, take their clients, and buy their good debts at forty per cent.",
+    "prudence": "Their clients' bills come with their clients' habits. Check each name before we accept it.",
+    "court": "The magistrates want an orderly liquidation. Offer to act as receiver; it pays and it pleases.",
+    "conscience": "Do not exult at a neighbour's ruin. His widow will need someone honest to settle the estate."
+   },
+   "precedent": "The failures of the Manlich and Haug-Langnauer firms of Augsburg, 1573–74",
+   "source": "Mark Häberlein, Brüder, Freunde und Betrüger (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_iconoclasm",
+   "title": "Riot and image-breaking in {city}",
+   "text": "After a hedge-preacher's sermon, crowds have stripped the churches bare and smashed altars and statues. The regent's troops are marching, the Calvinist merchants are packing their books, and nobody will discount a bill until they know which faith will rule the city next season.",
+   "art": "riot",
+   "target": "branch_city",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1550,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.12
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Field preachers drew thousands outside the walls on Sunday, and the guilds are arming.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Merchants leaving need cash for their goods. Buy their stock at half and be patient.",
+    "prudence": "Move the deposits of the anxious to a safer correspondent before the regent's army arrives.",
+    "court": "The regent will punish the city and reward the loyal. Lend him money for his troops.",
+    "conscience": "Heresy breeds disorder. Yet the men who fled are clients; we owe them honest accounts."
+   },
+   "precedent": "The Beeldenstorm, which reached Antwerp in August 1566, followed by Alba's repression from 1567",
+   "source": "Peter Arnade, Beggars, Iconoclasts, and Civic Patriots (2008)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_new_christian_deposits",
+   "title": "The Inquisitors ask about a New Christian's deposits",
+   "text": "One of your largest depositors, a converso spice merchant, is accused of secretly practising Judaism. The crown's officers demand his balances and his correspondence. His family asks you to remit what is left to a correspondent in Ferrara before the order is served. Both sides will remember what you do.",
+   "art": "cross",
+   "target": "seat_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1525,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Surrender the balances",
+     "result": "The crown is satisfied, and every converso merchant in Europe moves his account elsewhere.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -15
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.06
+       }
+      }
+     ]
+    },
+    {
+     "label": "Remit the funds quietly before the order",
+     "result": "The family is saved, the network trusts you, and the crown suspects what you did.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.05
+       }
+      }
+     ]
+    },
+    {
+     "label": "Plead that the books are in another city",
+     "result": "You gain a season, at the cost of a little goodwill everywhere.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -5
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The converso network carries half the spice trade. Lose their trust and we lose Lisbon.",
+    "prudence": "Disobeying the crown in its own city puts every partner here in its prisons.",
+    "court": "Comply fully. The crown rewards obedience and never forgets a banker who hid a heretic.",
+    "conscience": "A depositor's money is a trust. The officers want his wealth, not his soul."
+   },
+   "precedent": "Diogo Mendes's arrest in Antwerp on charges of Judaizing, 1532, and the Mendes house's flight with its capital, 1545",
+   "source": "Cecil Roth, Doña Gracia of the House of Nasi (1948)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_silver_road_east",
+   "title": "Silver finds a road to the East",
+   "text": "A trading post on the China coast now sends a great ship each year to Japan, carrying silk outward and bringing silver back. The Chinese price silver higher than any mint in Europe, and the factors of Goa can buy for less what the Cantonese will pay dearly for.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "goa",
+    "canton"
+   ],
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1557,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Silver bought cheap in Japan, sold dear in Canton. Open a correspondent in Macao now.",
+    "prudence": "A voyage of three years and one carrack a season. One loss would wipe out the margin.",
+    "court": "The Portuguese crown licenses the voyage. Lend to the captain-major and buy a place.",
+    "conscience": "The Jesuits are in Japan; a share for the mission would bless the cargo."
+   },
+   "precedent": "The Portuguese settlement at Macao, 1557, and the Macao–Nagasaki great ship trade from 1571",
+   "source": "C. R. Boxer, The Great Ship from Amacon (1959)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_medio_general",
+   "title": "{court} settles with its bankers",
+   "text": "After two years of empty fairs, the crown and its creditors have signed a general settlement. Arrears are paid partly in juros, partly in licences to export silver, and the bankers resume lending to the crown. It is less than you were owed, but more than you had written off.",
+   "art": "scales",
+   "target": "lent_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1560,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The settlement proves the crown pays in the end. Take a full share of the new asiento.",
+    "prudence": "Sell the juros while the settlement is news; they will be worth less after the next stop.",
+    "court": "The crown is grateful to those who signed without fuss. Sign and offer a new advance.",
+    "conscience": "Accept what is fairly offered. Squeezing a king in his weakness is its own sin."
+   },
+   "precedent": "The medio general of December 1577 ending Philip II's 1575 suspension; similar settlements in 1560 and 1597",
+   "source": "A. W. Lovett, 'The General Settlement of 1577', Historical Journal (1980)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_revenue_farm",
+   "title": "{court} offers a revenue farm in pledge",
+   "text": "In place of cash, the crown offers a lease on the revenues of the military orders, with the right to work their quicksilver mine as well. You will collect rents from shepherds in three provinces, run a mine worked by forced labour, and repay yourself out of the proceeds. The crown counts this as its debt repaid. You will find the business harder than that.",
+   "art": "seal",
+   "target": "reachable_sovereign",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1520,
+    1600
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.3,
+      "yield": 0.12,
+      "turns": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A pledge we collect ourselves beats a king's promise. Mines and rents do not stop payment.",
+    "prudence": "We are bankers, not stewards. Collecting from shepherds costs more than the interest.",
+    "court": "The crown will steer the profit of the farm through its own accountants. Lease it anyway.",
+    "conscience": "Revenue farming is lawful commerce, not usury. The forced labourers in the mine are another matter."
+   },
+   "precedent": "The Fugger lease of the maestrazgos, the revenues of the Spanish military orders, with the Almadén mines, from 1525",
+   "source": "Hermann Kellenbenz, Die Fugger in Spanien und Portugal bis 1560 (1990)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_mines_seized",
+   "title": "{court} seizes the mines pledged to the house",
+   "text": "Miners rioted over wages paid in debased coin, and the nobles of the diet blamed the foreign bankers. The court has confiscated the mines pledged for its loans, arrested the factors, and declared the house's contract void. The mines can perhaps be bought back, at a price.",
+   "art": "riot",
+   "target": "lent_sovereign",
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2.0
+    },
+    {
+     "signal": "far_branches",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.25
+     }
+    },
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The court cannot run the mines without us. Wait; they will beg us back within the year.",
+    "prudence": "A pledge of land and mines is worth what the lord of that land allows. Lend less there.",
+    "court": "Ask the Emperor to intercede with his brother-in-law. Royal pressure recovers what lawsuits cannot.",
+    "conscience": "Wages paid in base coin to miners were wrong. Settle with them and the anger fades."
+   },
+   "precedent": "The Hungarian diet's confiscation of the Fugger mines at Neusohl (Banská Bystrica) after the miners' revolt, 1525",
+   "source": "Mark Häberlein, The Fuggers of Augsburg (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_war_with_sultan",
+   "title": "War with the Sultan closes the Levant",
+   "text": "An Ottoman fleet has landed on a Venetian island, the Republic has seized Turkish goods on the Rialto, and the Sultan has seized Venetian ones in his ports. Ships in Alexandria are held, factors are imprisoned, and every bill drawn on the Levant comes back protested.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "alexandria",
+    "constantinople"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.25
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The bailo's letters speak of an arsenal working by night at Galata, and grain buyers have left Alexandria.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "War pushes up the price of spice. Our stock in Venice is worth half again what it was.",
+    "prudence": "Write off the factors' balances in Alexandria today, and hope to be pleasantly surprised.",
+    "court": "The Republic will keep peace with the Sultan, as always. This is a squall; keep trading.",
+    "conscience": "Ransom the imprisoned factors before the goods. Christian men come before pepper."
+   },
+   "precedent": "The Ottoman–Venetian war of 1570–73 and the loss of Cyprus, with Venetian goods seized in Ottoman ports",
+   "source": "Frederic C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_red_sea_pepper",
+   "title": "Pepper returns by the Red Sea",
+   "text": "Portuguese patrols cannot close the Red Sea, and Gujarati and Acehnese ships are bringing spice to Jeddah again. Caravans to Cairo are full, the bazaars of Alexandria are busy, and the Venetian galleys are loading pepper for the first time in years.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "alexandria",
+    "venice"
+   ],
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1540,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The old spice road is open again. Reopen the Alexandria account with full credit.",
+    "prudence": "A revival that depends on the Portuguese being weak lasts until the Portuguese grow strong.",
+    "court": "The Signoria will reward bankers who finance the galleys. Subscribe to the convoy.",
+    "conscience": "Fair trade with Muslim merchants in pepper is allowed. Selling them arms is not."
+   },
+   "precedent": "The revival of the Red Sea spice route to Alexandria and Venice in the 1540s–1560s",
+   "source": "Frederic C. Lane, 'The Mediterranean Spice Trade', American Historical Review (1940)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_title_for_loan",
+   "title": "{court} offers a title for a cheap loan",
+   "text": "The prince offers to make the senior partner a count, with arms, lands and the right to coin money, in return for a large loan at well below the market rate. The house would rank alongside princes. Its merchant clients would wonder whether it still keeps their accounts or the prince's.",
+   "art": "crown",
+   "target": "reachable_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Accept the title and the cheap loan",
+     "result": "The house is ennobled and its capital is locked in a prince's debt at four per cent.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.1,
+        "yield": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend at the full rate, no title",
+     "result": "The prince borrows, sulks, and pays market price.",
+     "effects": [
+      {
+       "kind": "offer",
+       "params": {
+        "size": 0.2,
+        "yield": 0.1,
+        "turns": 1
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline politely",
+     "result": "You remain merchants, and the court notes who refused its honours.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "A count's son marries a duke's daughter. That marriage is worth more than any coupon.",
+    "prudence": "Titles do not pay interest. Four per cent from a prince is a loss with a coat of arms.",
+    "court": "Ennoblement puts us in the room where loans and licences are decided. Accept with gratitude.",
+    "conscience": "Honours bought with money tempt pride, but a cheap loan at least is not usurious."
+   },
+   "precedent": "Jakob Fugger's ennoblement in 1511 and elevation to Imperial Count in 1514, amid lending to Maximilian I",
+   "source": "Mark Häberlein, The Fuggers of Augsburg (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_carrack_lost",
+   "title": "A laden carrack is lost off the Cape",
+   "text": "News arrives by a later ship. The carrack carrying the house's shipment was overloaded, sailed late in the season, and broke up on a southern African shore. Survivors are walking north through the bush. The underwriters on the Bourse dispute the policy, and the factor's pepper is lost.",
+   "art": "ship",
+   "target": "branch_city",
+   "hazard": 0.045,
+   "once": false,
+   "cooldown": 5,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "One lost carrack makes the survivors' cargo worth more. Our next shipment will sell dear.",
+    "prudence": "Never put more than a tenth of a factor's goods in one hull. Spread it across three ships.",
+    "court": "The crown will blame the captain, not the overloading. Do not expect compensation.",
+    "conscience": "Pay masses for the drowned and settle with the sailors' widows before the underwriters."
+   },
+   "precedent": "The wreck of the São João on the Natal coast, 1552, on the homeward Carreira da Índia",
+   "source": "Bernardo Gomes de Brito (comp.), História Trágico-Marítima (1735–36)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_royal_ransom",
+   "title": "A royal ransom passes through your hands",
+   "text": "Two kings have made peace, and one must pay a vast sum in gold to recover his sons, who are hostages. The money must be assembled from across a kingdom, counted, checked for clipping, and handed over at a river crossing. You are hired to collect and assay it, and you charge a commission on every crown.",
+   "art": "gold",
+   "target": "none",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1510,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Fees on a fortune, with no capital at risk. Bid low for the mandate and charge for the assay.",
+    "prudence": "Counted gold on a frontier road attracts thieves. Insure every chest before it moves.",
+    "court": "Both crowns will watch who handles this honestly. A good reputation here is worth the fee.",
+    "conscience": "Fees for honest labour are lawful. Do not shave a single crown, even for weighing."
+   },
+   "precedent": "The 1.2 million gold écus paid at the Bidassoa in 1530, under the Peace of Cambrai, to ransom Francis I's sons",
+   "source": "R. J. Knecht, Renaissance Warrior and Patron: The Reign of Francis I (1994)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "princes_genoese_fair_seat",
+   "title": "The Genoese offer you a seat at the fair",
+   "text": "The fair's consuls have voted to admit your house among the bankers who fix the conto, the fair's exchange rates, and net their bills in the fair's balance books. You will clear huge sums with almost no coin and see every flow of the European exchanges as it happens. In return you must honour your bills on the payment day, whatever happens.",
+   "art": "scales",
+   "target": "none",
+   "hazard": 0.025,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1535,
+    1600
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 8
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Inside the conto we see the rates first. That is worth more than any single asiento.",
+    "prudence": "Netting looks safe until a member fails. Then every bill we cleared is owed again.",
+    "court": "The Genoese are the King's bankers. Sitting beside them brings us closer to his business.",
+    "conscience": "A fair with real bills settled honestly is lawful exchange. Keep it that way."
+   },
+   "precedent": "The Genoese exchange fairs of Besançon and from 1579 Piacenza, where some sixty banchieri di conto fixed rates and cleared bills",
+   "source": "Luciano Pezzolo & Giovanni Tattara, 'Una fiera senza luogo', Journal of Economic History (2008)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "princes_stop_of_payment",
+   "field": "window",
+   "why": "Asiento-into-juro decretos began with the 1557 stop; no such suspension happened in the 1530s or 1540s."
+  },
+  {
+   "id": "princes_genoese_asiento",
+   "field": "advice",
+   "why": "Removes a named real person (Philip) and the modern term 'tranche'."
+  },
+  {
+   "id": "princes_banco_run",
+   "field": "precedent",
+   "why": "The claim that the Mint propped the bank in 1576 is unverified; this keeps only the secure facts."
+  },
+  {
+   "id": "princes_pay_ships_detained",
+   "field": "text",
+   "why": "The Genoese silver was a loan to Spain for Alba's army, so the lenders did finance one side."
+  },
+  {
+   "id": "princes_treasure_fleet_in",
+   "field": "advice",
+   "why": "Potosí was found in 1545, after the card window opens in 1530."
+  },
+  {
+   "id": "princes_famine_grain",
+   "field": "window",
+   "why": "Dutch and Baltic grain shipping to Italy belongs to the late 1580s and 1590s."
+  },
+  {
+   "id": "princes_famine_grain",
+   "field": "source",
+   "why": "The English title is dated to the French original; the two editions are now distinguished."
+  },
+  {
+   "id": "princes_royal_agent_loan",
+   "field": "window",
+   "why": "English crown borrowing at Antwerp ran from 1544; the Bourse lost its role after 1576."
+  },
+  {
+   "id": "princes_iconoclasm",
+   "field": "window",
+   "why": "Calvinist merchants and hedge-preaching are anachronistic in the 1520s."
+  },
+  {
+   "id": "princes_silver_road_east",
+   "field": "advice",
+   "why": "Nagasaki was founded in 1571, after the card window opens in 1557."
+  },
+  {
+   "id": "princes_revenue_farm",
+   "field": "text",
+   "why": "Galley convicts were sent to Almadén only from 1566."
+  },
+  {
+   "id": "princes_revenue_farm",
+   "field": "advice",
+   "why": "Keeps the advice consistent with the corrected text."
+  },
+  {
+   "id": "princes_mines_seized",
+   "field": "advice",
+   "why": "Louis II of Hungary was Charles V's brother-in-law, not his brother."
+  },
+  {
+   "id": "princes_carrack_lost",
+   "field": "source",
+   "why": "Boxer's 1959 volume covers wrecks of 1589–1622 and does not include the São João of 1552; Gomes de Brito's collection does."
+  }
+ ]
+}
