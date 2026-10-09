@@ -1,0 +1,803 @@
+<title>Kingsgate Capital Simulator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --plane:#F2F5F8; --surface:#FFFFFF; --sunk:#E8EDF3;
+  --ink:#0F1720; --ink-2:#4E5B6B; --ink-3:#8593A3;
+  --rule:#DDE3EA; --rule-strong:#C3CDD8;
+  --accent:#8A6417; --accent-soft:#F3EAD6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4;
+  --lad-1:#104281; --lad-2:#1c5cab; --lad-3:#2a78d6; --lad-4:#5598e7; --lad-5:#86b6ef;
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --good-wash:#E6F5E6; --warning-wash:#FDF3DC; --critical-wash:#FAE6E6;
+  --shadow:0 1px 2px rgba(15,23,32,.06), 0 6px 20px rgba(15,23,32,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0C1014; --surface:#161B22; --sunk:#1E252E;
+    --ink:#EEF2F6; --ink-2:#9FADBC; --ink-3:#6E7D8D;
+    --rule:#262E38; --rule-strong:#36404C;
+    --accent:#D9A93F; --accent-soft:#2B2417;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+    --lad-1:#184f95; --lad-2:#1c5cab; --lad-3:#2a78d6; --lad-4:#5598e7; --lad-5:#86b6ef;
+    --good-wash:#12291A; --warning-wash:#2C2412; --critical-wash:#2E1618;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0C1014; --surface:#161B22; --sunk:#1E252E;
+  --ink:#EEF2F6; --ink-2:#9FADBC; --ink-3:#6E7D8D;
+  --rule:#262E38; --rule-strong:#36404C;
+  --accent:#D9A93F; --accent-soft:#2B2417;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  --lad-1:#184f95; --lad-2:#1c5cab; --lad-3:#2a78d6; --lad-4:#5598e7; --lad-5:#86b6ef;
+  --good-wash:#12291A; --warning-wash:#2C2412; --critical-wash:#2E1618;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--plane); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:14px; line-height:1.5; margin:0;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 56px}
+h1,h2,h3{margin:0; text-wrap:balance}
+a{color:inherit}
+
+/* ---------- control rail ---------- */
+.rail{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+  background:color-mix(in srgb, var(--plane) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.rail-inner{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:10px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+.rail-group{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.rail-label{
+  font-family:"IBM Plex Serif",Georgia,serif; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3); margin-right:2px; white-space:nowrap;
+}
+.pill{
+  font:inherit; font-size:13px; font-weight:500; cursor:pointer;
+  background:var(--surface); color:var(--ink-2);
+  border:1px solid var(--rule); border-radius:999px; padding:5px 12px;
+  transition:background .12s, color .12s, border-color .12s;
+}
+.pill:hover{border-color:var(--rule-strong); color:var(--ink)}
+.pill[aria-pressed="true"]{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.pill:focus-visible,.step:focus-visible,select:focus-visible,input:focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px}
+.step{
+  font:inherit; cursor:pointer; background:var(--surface); border:1px solid var(--rule);
+  color:var(--ink); width:28px; height:28px; border-radius:7px; line-height:1;
+}
+.step[disabled]{opacity:.35; cursor:default}
+.yearnow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:15px; min-width:46px; text-align:center}
+
+/* ---------- header ---------- */
+header.page{padding-block:30px 20px}
+.eyebrow{
+  font-family:"IBM Plex Serif",Georgia,serif; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+h1{font-family:"IBM Plex Serif",Georgia,serif; font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-top:6px; letter-spacing:-.01em}
+.lede{color:var(--ink-2); max-width:62ch; margin-top:10px}
+.banner{
+  margin-top:18px; border:1px solid var(--rule); border-left:3px solid var(--accent);
+  background:var(--accent-soft); border-radius:4px; padding:11px 14px;
+  font-size:12.5px; color:var(--ink-2);
+}
+.banner strong{color:var(--ink)}
+
+/* ---------- verdict ---------- */
+.verdict{
+  display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;
+  border-radius:10px; padding:16px 18px; margin-bottom:18px;
+  border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow);
+}
+.verdict[data-state="good"]{background:var(--good-wash); border-color:color-mix(in srgb,var(--good) 30%,var(--rule))}
+.verdict[data-state="warning"]{background:var(--warning-wash); border-color:color-mix(in srgb,var(--warning) 40%,var(--rule))}
+.verdict[data-state="critical"]{background:var(--critical-wash); border-color:color-mix(in srgb,var(--critical) 40%,var(--rule))}
+.verdict-icon{flex:none; width:22px; height:22px; margin-top:1px}
+.verdict-body{flex:1 1 320px; min-width:0}
+.verdict-title{font-weight:600; font-size:15px}
+.verdict-text{color:var(--ink-2); font-size:13px; margin-top:3px}
+
+/* ---------- tiles ---------- */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:12px; margin-bottom:22px}
+.tile{background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:13px 14px; box-shadow:var(--shadow)}
+.tile-k{font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3)}
+.tile-v{font-size:27px; font-weight:600; margin-top:5px; letter-spacing:-.02em; line-height:1.1}
+.tile-sub{font-size:12px; color:var(--ink-2); margin-top:4px; display:flex; align-items:center; gap:5px}
+.dot{width:7px; height:7px; border-radius:50%; flex:none}
+.meter{height:4px; border-radius:2px; background:var(--sunk); margin-top:9px; overflow:hidden}
+.meter i{display:block; height:100%; border-radius:2px}
+
+/* ---------- panels ---------- */
+.grid2{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:16px; margin-bottom:16px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:16px 18px; box-shadow:var(--shadow)}
+.panel-h{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:4px; flex-wrap:wrap}
+.panel-t{font-family:"IBM Plex Serif",Georgia,serif; font-size:15px; font-weight:600}
+.panel-n{font-size:12px; color:var(--ink-3)}
+.panel-note{font-size:12px; color:var(--ink-2); margin-top:10px; padding-top:10px; border-top:1px solid var(--rule)}
+
+svg{display:block; width:100%; height:auto; max-width:100%}
+.ax{font-size:10.5px; fill:var(--ink-3); font-family:"IBM Plex Mono",ui-monospace,monospace}
+.lbl{font-size:11.5px; fill:var(--ink-2)}
+.lbl-s{font-size:11px; fill:var(--ink); font-weight:500}
+
+/* ---------- legend ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:12px; font-size:12px; color:var(--ink-2)}
+.legend span{display:flex; align-items:center; gap:6px}
+.swatch{width:10px; height:10px; border-radius:2px; flex:none}
+
+/* ---------- policy ---------- */
+.policy{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:16px 22px}
+.ctl-k{font-size:12px; font-weight:500; display:flex; justify-content:space-between; gap:8px; margin-bottom:6px}
+.ctl-v{font-family:"IBM Plex Mono",ui-monospace,monospace; color:var(--accent)}
+input[type=range]{width:100%; accent-color:var(--s1); background:transparent}
+select{
+  font:inherit; font-size:13px; width:100%; padding:6px 8px; border-radius:7px;
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+}
+.ctl-help{font-size:11.5px; color:var(--ink-3); margin-top:5px}
+
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto; margin-top:6px}
+table{border-collapse:collapse; width:100%; font-size:13px; min-width:460px}
+th,td{text-align:right; padding:7px 10px; border-bottom:1px solid var(--rule); white-space:nowrap}
+th:first-child,td:first-child{text-align:left; white-space:normal}
+thead th{
+  font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; border-bottom-color:var(--rule-strong);
+}
+td.num{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+tr.total td{font-weight:600; border-top:1px solid var(--rule-strong)}
+tr.sub td:first-child{padding-left:22px; color:var(--ink-2)}
+
+/* ---------- tooltip ---------- */
+.tip{
+  position:fixed; z-index:60; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--ink); color:var(--plane); border-radius:7px; padding:8px 10px;
+  font-size:12px; line-height:1.45; box-shadow:0 6px 22px rgba(0,0,0,.28); max-width:240px;
+}
+.tip b{font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:500}
+.tip[data-on="1"]{opacity:1}
+
+footer{margin-top:34px; padding-top:20px; border-top:1px solid var(--rule); color:var(--ink-2); font-size:12.5px}
+footer h3{font-family:"IBM Plex Serif",Georgia,serif; font-size:13px; margin-bottom:6px; color:var(--ink)}
+footer p{margin:0 0 10px; max-width:74ch}
+@media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<div class="rail">
+  <div class="rail-inner">
+    <div class="rail-group">
+      <span class="rail-label">Scenario</span>
+      <div id="scenarioPills" class="rail-group"></div>
+    </div>
+    <div class="rail-group">
+      <span class="rail-label">Year</span>
+      <button class="step" id="yearDown" aria-label="Previous year">&minus;</button>
+      <span class="yearnow" id="yearNow">2027</span>
+      <button class="step" id="yearUp" aria-label="Next year">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="page">
+    <div class="eyebrow">UK wholesale bank &middot; Basel 3.1 from 1 January 2027</div>
+    <h1 id="bankName">Kingsgate Bank plc</h1>
+    <p class="lede">
+      Set the economy, set the capital policy, and watch what binds. Every ratio
+      below is struck against the requirement stack on the left &mdash; and the
+      question a capital team actually asks is not &ldquo;what is our CET1
+      ratio&rdquo; but &ldquo;which of the three constraints runs out first&rdquo;.
+    </p>
+    <div class="banner" id="banner"></div>
+  </header>
+
+  <div class="verdict" id="verdict" data-state="good">
+    <svg class="verdict-icon" id="verdictIcon" viewBox="0 0 24 24" aria-hidden="true"></svg>
+    <div class="verdict-body">
+      <div class="verdict-title" id="verdictTitle"></div>
+      <div class="verdict-text" id="verdictText"></div>
+    </div>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-h">
+        <h2 class="panel-t">Capital ladder</h2>
+        <span class="panel-n">CET1 ratio against the stacked requirement</span>
+      </div>
+      <svg id="ladder" viewBox="0 0 430 452" role="img"
+           aria-label="CET1 ratio drawn against the stacked capital requirement"></svg>
+      <div class="panel-note" id="ladderNote"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-h">
+        <h2 class="panel-t">UK OV1 &mdash; risk-weighted exposure amounts</h2>
+        <span class="panel-n" id="rwaTotalNote"></span>
+      </div>
+      <svg id="rwaBar" viewBox="0 0 640 168" role="img"
+           aria-label="Risk-weighted assets by risk type, with the output floor comparator"></svg>
+      <div class="legend" id="rwaLegend"></div>
+      <div class="panel-note" id="floorNote"></div>
+    </section>
+  </div>
+
+  <section class="panel" style="margin-bottom:16px">
+    <div class="panel-h">
+      <h2 class="panel-t">CET1 ratio, 2027&ndash;2031</h2>
+      <span class="panel-n">Selected scenario in blue; the others in grey for context</span>
+    </div>
+    <svg id="proj" viewBox="0 0 860 300" role="img"
+         aria-label="Projected CET1 ratio by scenario against the requirement"></svg>
+    <div class="legend" id="projLegend"></div>
+  </section>
+
+  <section class="panel" style="margin-bottom:16px">
+    <div class="panel-h">
+      <h2 class="panel-t">Capital policy</h2>
+      <span class="panel-n">Requirements recompute live; the dividend path re-runs the projection</span>
+    </div>
+    <div class="policy">
+      <div>
+        <div class="ctl-k"><label for="p2a">Pillar 2A (gross)</label><span class="ctl-v" id="p2aV"></span></div>
+        <input type="range" id="p2a" min="0" max="6" step="0.1">
+        <div class="ctl-help">Firm-specific, set by the PRA. Met 56.25% in CET1.</div>
+      </div>
+      <div>
+        <div class="ctl-k"><label for="ccyb">Countercyclical buffer</label><span class="ctl-v" id="ccybV"></span></div>
+        <input type="range" id="ccyb" min="0" max="5" step="0.25">
+        <div class="ctl-help">The FPC has held the UK rate at its 2% neutral setting through 2026.</div>
+      </div>
+      <div>
+        <div class="ctl-k"><label for="sysb">Systemic buffer</label><span class="ctl-v" id="sysbV"></span></div>
+        <input type="range" id="sysb" min="0" max="3" step="0.25">
+        <div class="ctl-help">O-SII, G-SII or SRB. Kingsgate carries none, being neither.</div>
+      </div>
+      <div>
+        <div class="ctl-k"><label for="payout">Dividend payout</label><span class="ctl-v" id="payoutV"></span></div>
+        <input type="range" id="payout" min="0" max="4" step="1">
+        <div class="ctl-help">Capped by the MDA once the bank is inside its buffer.</div>
+      </div>
+      <div>
+        <div class="ctl-k"><label for="lev">Leverage regime</label></div>
+        <select id="lev">
+          <option value="current_uk">Current UK &mdash; 3.25% minimum</option>
+          <option value="fpc_2026">FPC 2026 proposal &mdash; 3% + 0.25% releasable</option>
+        </select>
+        <div class="ctl-help">The proposal drops the CCLB and recalibrates the ALRB to 50%.</div>
+      </div>
+      <div>
+        <div class="ctl-k"><label for="appr">Unrated corporates</label></div>
+        <select id="appr">
+          <option value="risk_sensitive">Risk-sensitive &mdash; 65% / 135%</option>
+          <option value="flat_100">Flat 100% &mdash; no PRA permission</option>
+        </select>
+        <div class="ctl-help">A UK divergence: Basel and the EU use a flat 100%.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-h">
+        <h2 class="panel-t">Where the profit goes</h2>
+        <span class="panel-n" id="plYear"></span>
+      </div>
+      <svg id="waterfall" viewBox="0 0 520 288" role="img"
+           aria-label="Revenue through costs, impairment and tax to profit after tax"></svg>
+    </section>
+    <section class="panel">
+      <div class="panel-h">
+        <h2 class="panel-t">UK KM1 &mdash; key metrics</h2>
+        <span class="panel-n" id="km1Year"></span>
+      </div>
+      <div class="scroll"><table id="km1"></table></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-h">
+      <h2 class="panel-t">UK CR1 &mdash; credit quality of the lending book</h2>
+      <span class="panel-n">IFRS 9 staging, excluding the liquidity portfolio</span>
+    </div>
+    <div class="scroll"><table id="cr1"></table></div>
+  </section>
+
+  <footer>
+    <h3>What is live and what is baked in</h3>
+    <p>
+      The risk engines run offline in Python and their results are baked into this
+      page across a grid of scenario, unrated-corporate approach and dividend
+      policy &mdash; those three change the projection path in ways arithmetic
+      cannot recover afterwards. Pillar 2A, the buffers and the leverage regime
+      recompute here in the browser, because they change the requirement rather
+      than the balance sheet. One consequence worth naming: moving Pillar 2A
+      shifts the ladder and the MDA test immediately, but the retained-earnings
+      path behind the projection still reflects the dividend policy as modelled,
+      not a second-round MDA cap.
+    </p>
+    <h3>Provenance</h3>
+    <p id="footProv"></p>
+    <p id="footGen"></p>
+  </footer>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = /*__BANKSIM_DATA__*/null;
+
+/* ---------- constants mirrored from banksim/capital.py ---------- */
+const P1_CET1=0.045, P1_T1=0.06, P1_TOTAL=0.08;
+const P2A_CET1_SHARE=0.5625, P2A_T1_SHARE=0.75;
+const CCOB=0.025;
+const MDA_QUARTILE=[0,0.20,0.40,0.60];
+
+const state={
+  scenario:'baseline', year:DATA.start_year, approach:'risk_sensitive', payoutIx:3,
+  p2a:DATA.requirements.pillar2a_gross,
+  ccyb:DATA.requirements.ccyb,
+  sysb:DATA.requirements.systemic_buffer,
+  lev:'current_uk'
+};
+
+const pct=(x,d=2)=>(x*100).toFixed(d)+'%';
+const gbp=x=>Math.abs(x)>=1000?'£'+(x/1000).toFixed(2)+'bn':'£'+Math.round(x).toLocaleString()+'m';
+const num=x=>Math.round(x).toLocaleString();
+const el=id=>document.getElementById(id);
+const SVGNS='http://www.w3.org/2000/svg';
+
+function mk(tag,attrs,text){
+  const n=document.createElementNS(SVGNS,tag);
+  for(const k in attrs) n.setAttribute(k,attrs[k]);
+  if(text!=null) n.textContent=text;
+  return n;
+}
+
+/* ---------- model ---------- */
+function runKey(){
+  return state.scenario+'|'+state.approach+'|'+DATA.payouts[state.payoutIx].toFixed(2);
+}
+function periods(){ return DATA.runs[runKey()]; }
+function current(){ return periods().find(p=>p.year===state.year) || periods()[0]; }
+
+function netP2A(){
+  const r=DATA.requirements;
+  return Math.max(0, state.p2a - r.sme_lending_adjustment - r.infrastructure_lending_adjustment);
+}
+function reqStack(){
+  const p2a=netP2A();
+  return {
+    p2a,
+    p1:P1_CET1,
+    p2aCet1:P2A_CET1_SHARE*p2a,
+    ccob:CCOB,
+    ccyb:state.ccyb,
+    sysb:state.sysb,
+    pra:DATA.requirements.pra_buffer,
+    get cbr(){return this.ccob+this.ccyb+this.sysb},
+    get minimum(){return this.p1+this.p2aCet1},
+    get withBuffers(){return this.minimum+this.cbr},
+    get withPra(){return this.withBuffers+this.pra},
+    get totalMin(){return P1_TOTAL+this.p2a}
+  };
+}
+function leverageReq(){
+  const r=reqStack();
+  return state.lev==='current_uk'
+    ? 0.0325 + 0.35*r.sysb + 0.35*r.ccyb
+    : 0.030 + 0.50*r.sysb + 0.0025;
+}
+function assess(p){
+  const r=reqStack(), rwa=p.rwa_total;
+  const cet1=p.cet1/rwa, at1=p.at1/rwa, t2=p.tier2/rwa;
+  const lev=p.cet1+p.at1>0 ? (p.cet1+p.at1)/p.exposure_measure : 0;
+  const levReq=leverageReq();
+  const mrelReq=Math.max(2*r.totalMin, 2*levReq*p.exposure_measure/rwa);
+  const mrel=p.mrel_resources/rwa;
+
+  const at1Short=Math.max(0,(P1_T1-P1_CET1+(P2A_T1_SHARE-P2A_CET1_SHARE)*r.p2a)-at1);
+  const t2Short=Math.max(0,(P1_TOTAL-P1_T1+(1-P2A_T1_SHARE)*r.p2a)-t2);
+  const available=cet1-r.minimum-at1Short-t2Short;
+  const inBuffer=available<r.cbr;
+  let mda=1;
+  if(inBuffer) mda = available<=0 ? 0 : MDA_QUARTILE[Math.min(Math.floor(available/r.cbr*4),3)];
+
+  const head={
+    risk_weighted:(cet1-r.withBuffers)*rwa,
+    leverage:(lev-levReq)*p.exposure_measure,
+    mrel:(mrel-mrelReq)*rwa
+  };
+  const binding=Object.keys(head).reduce((a,b)=>head[a]<head[b]?a:b);
+  return {r,cet1,at1,t2,lev,levReq,mrel,mrelReq,available,inBuffer,mda,head,binding,
+          t1:(p.cet1+p.at1)/rwa, total:(p.cet1+p.at1+p.tier2)/rwa};
+}
+
+/* ---------- tooltip ---------- */
+const tip=el('tip');
+function showTip(e,html){
+  tip.innerHTML=html; tip.dataset.on='1';
+  const r=tip.getBoundingClientRect();
+  let x=e.clientX+14, y=e.clientY-r.height-12;
+  if(x+r.width>window.innerWidth-8) x=e.clientX-r.width-14;
+  if(y<8) y=e.clientY+18;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){ tip.dataset.on='0'; }
+function hoverable(node,html){
+  node.style.cursor='default';
+  node.addEventListener('mousemove',e=>showTip(e,html));
+  node.addEventListener('mouseleave',hideTip);
+}
+
+/* ---------- capital ladder ---------- */
+function drawLadder(p,a){
+  const svg=el('ladder'); svg.textContent='';
+  const W=430,H=452, x0=74, bw=118, top=22, bot=H-40;
+  const ceiling=Math.max(a.cet1, a.r.withPra)*1.16;
+  const y=v=>bot-(v/ceiling)*(bot-top);
+
+  // axis
+  for(let t=0;t<=Math.ceil(ceiling*100);t+=2){
+    const v=t/100; if(v>ceiling) break;
+    svg.appendChild(mk('line',{x1:x0-6,x2:W-14,y1:y(v),y2:y(v),
+      stroke:'var(--rule)','stroke-width':1}));
+    svg.appendChild(mk('text',{x:x0-10,y:y(v)+3.5,'text-anchor':'end',class:'ax'},t+'%'));
+  }
+
+  const bands=[
+    ['Pillar 1',        a.r.p1,     'var(--lad-1)','4.5% CET1 minimum. Breaching this is a breach of a hard requirement.'],
+    ['Pillar 2A',       a.r.p2aCet1,'var(--lad-2)','Firm-specific, set by the PRA. 56.25% of it must be met in CET1.'],
+    ['Conservation',    a.r.ccob,   'var(--lad-3)','The capital conservation buffer, 2.5%, CET1 only.'],
+    ['Countercyclical', a.r.ccyb,   'var(--lad-4)','Set by the FPC. Releasable in a downturn.'],
+    ['Systemic',        a.r.sysb,   'var(--lad-5)','The higher of the G-SII, O-SII and systemic risk buffers.']
+  ].filter(b=>b[1]>0.0001);
+
+  let acc=0;
+  bands.forEach(([name,v,fill,why])=>{
+    const yTop=y(acc+v), h=Math.max(1,y(acc)-yTop);
+    const g=mk('g',{});
+    g.appendChild(mk('rect',{x:x0,y:yTop,width:bw,height:Math.max(0,h-2),fill,rx:2}));
+    if(h>15){
+      g.appendChild(mk('text',{x:x0+bw+10,y:yTop+h/2+3.6,class:'lbl'},name));
+      g.appendChild(mk('text',{x:x0+bw+10+(name.length*6.2)+8,y:yTop+h/2+3.6,class:'lbl-s'},pct(v,2)));
+    }
+    hoverable(g,`<b>${name}</b> ${pct(v,2)}<br>${why}`);
+    svg.appendChild(g); acc+=v;
+  });
+
+  // PRA buffer — hatched, because it sits above the CBR and is not an MDA trigger
+  if(a.r.pra>0){
+    const yTop=y(acc+a.r.pra), h=y(acc)-yTop;
+    const pat=mk('pattern',{id:'hatch',width:6,height:6,patternUnits:'userSpaceOnUse',
+      patternTransform:'rotate(45)'});
+    pat.appendChild(mk('rect',{width:6,height:6,fill:'var(--sunk)'}));
+    pat.appendChild(mk('line',{x1:0,y1:0,x2:0,y2:6,stroke:'var(--lad-5)','stroke-width':2.5}));
+    const defs=mk('defs',{}); defs.appendChild(pat); svg.appendChild(defs);
+    const g=mk('g',{});
+    g.appendChild(mk('rect',{x:x0,y:yTop,width:bw,height:Math.max(0,h-2),fill:'url(#hatch)',
+      stroke:'var(--lad-5)','stroke-width':1,rx:2}));
+    g.appendChild(mk('text',{x:x0+bw+10,y:yTop+h/2+3.6,class:'lbl'},'PRA buffer'));
+    hoverable(g,`<b>PRA buffer</b> ${pct(a.r.pra,2)}<br>Pillar 2B. Confidential in practice, and not an MDA trigger — but using it invites supervisory attention.`);
+    svg.appendChild(g); acc+=a.r.pra;
+  }
+
+  // the CET1 ratio itself
+  const yC=y(a.cet1);
+  const breach=a.cet1<a.r.withBuffers;
+  svg.appendChild(mk('line',{x1:x0-8,x2:W-14,y1:yC,y2:yC,
+    stroke:'var(--accent)','stroke-width':3,'stroke-linecap':'round'}));
+  // The tag sits above the right end of the rule, clear of both the axis ticks
+  // on the left and the band labels that run out from the bar.
+  const tagW=94, tagX=W-14-tagW;
+  svg.appendChild(mk('rect',{x:tagX,y:yC-25,width:tagW,height:20,rx:4,fill:'var(--accent)'}));
+  svg.appendChild(mk('text',{x:tagX+tagW/2,y:yC-10.5,'text-anchor':'middle',
+    'font-size':12,'font-weight':600,fill:'var(--plane)'},'CET1 '+pct(a.cet1)));
+
+  if(breach){
+    const yReq=y(a.r.withBuffers);
+    svg.appendChild(mk('rect',{x:x0,y:yReq,width:bw,height:Math.max(0,yC-yReq),
+      fill:'var(--critical)','fill-opacity':.17}));
+  }
+  svg.appendChild(mk('text',{x:x0+bw/2,y:bot+20,'text-anchor':'middle',class:'ax'},'Requirement'));
+
+  const gap=a.cet1-a.r.withBuffers;
+  el('ladderNote').innerHTML = breach
+    ? `Inside the combined buffer by <b>${pct(Math.abs(gap))}</b> of RWAs (${gbp(Math.abs(gap*p.rwa_total))}). Distributions are capped at <b>${(a.mda*100).toFixed(0)}%</b> of attributable profit.`
+    : `Headroom of <b>${pct(gap)}</b> over the ${pct(a.r.withBuffers)} requirement — ${gbp(gap*p.rwa_total)} of CET1.`;
+}
+
+/* ---------- RWA composition ---------- */
+const RWA_KEYS=[
+  ['credit','Credit risk','var(--s1)'],
+  ['counterparty','Counterparty (SA-CCR)','var(--s2)'],
+  ['cva','CVA (BA-CVA)','var(--s3)'],
+  ['market','Market risk (FRTB-SA)','var(--s4)'],
+  ['operational','Operational risk','var(--s5)']
+];
+function drawRwa(p){
+  const svg=el('rwaBar'); svg.textContent='';
+  const W=640, x0=8, w=W-16;
+  const scale=Math.max(p.rwa_live, p.floor_rate*p.rwa_sa, p.rwa_total)*1.02;
+
+  function row(yTop,h,total,segs,caption,muted){
+    let x=x0;
+    segs.forEach(([key,name,fill,v])=>{
+      const sw=(v/scale)*w;
+      const g=mk('g',{});
+      g.appendChild(mk('rect',{x,y:yTop,width:Math.max(0,sw-2),height:h,fill,rx:2,
+        'fill-opacity':muted?0.32:1}));
+      if(sw>46 && !muted){
+        g.appendChild(mk('text',{x:x+sw/2-1,y:yTop+h/2+4,'text-anchor':'middle',
+          'font-size':11,'font-weight':500,fill:'#fff'},num(v/1000*10)/10+'bn'));
+      }
+      hoverable(g,`<b>${name}</b><br>${gbp(v)} &middot; ${pct(v/total,1)} of RWAs`);
+      svg.appendChild(g); x+=sw;
+    });
+    svg.appendChild(mk('text',{x:x0,y:yTop-7,class:'lbl'},caption));
+  }
+
+  const segs=RWA_KEYS.map(([k,n,c])=>[k,n,c,p.rwa[k]]);
+  row(26,34,p.rwa_live,segs,'Live approaches — IRB credit, standardised elsewhere',false);
+
+  const saSegs=RWA_KEYS.map(([k,n,c])=>[k,n,c,(k==='credit'? p.rwa_sa-(p.rwa_live-p.rwa.credit) : p.rwa[k])]);
+  row(104,26,p.rwa_sa,saSegs.map(s=>[s[0],s[1]+' (all-standardised)',s[2],s[3]]),
+      'All-standardised comparator — what the output floor measures against',true);
+
+  // the floor line
+  const fx=x0+(p.floor_rate*p.rwa_sa/scale)*w;
+  svg.appendChild(mk('line',{x1:fx,x2:fx,y1:96,y2:140,stroke:'var(--accent)',
+    'stroke-width':2,'stroke-dasharray':'4 3'}));
+  svg.appendChild(mk('text',{x:fx+6,y:152,class:'lbl-s'},
+    (p.floor_rate*100).toFixed(1)+'% floor = '+gbp(p.floor_rate*p.rwa_sa)));
+
+  el('rwaTotalNote').textContent=gbp(p.rwa_total)+' total';
+  const bind=p.floor_addon>0;
+  el('floorNote').innerHTML = bind
+    ? `The output floor is <b>binding</b>, adding ${gbp(p.floor_addon)} of RWAs.`
+    : `The floor is not binding: modelled RWAs could fall a further <b>${gbp(p.floor_headroom)}</b> before it bit. It bites on IRB mortgage books, not on a wholesale bank whose other risk types are already standardised.`;
+
+  el('rwaLegend').innerHTML=RWA_KEYS.map(([k,n,c])=>
+    `<span><i class="swatch" style="background:${c}"></i>${n}</span>`).join('')
+    +`<span><i class="swatch" style="background:var(--accent)"></i>Output floor</span>`;
+}
+
+/* ---------- projection ---------- */
+function drawProj(){
+  const svg=el('proj'); svg.textContent='';
+  const W=860,H=300,L=52,R=92,T=18,B=40;
+  const r=reqStack();
+  const all=[];
+  Object.keys(DATA.scenarios).forEach(s=>{
+    const key=s+'|'+state.approach+'|'+DATA.payouts[state.payoutIx].toFixed(2);
+    DATA.runs[key].forEach(p=>all.push(p.cet1/p.rwa_total));
+  });
+  const lo=Math.min(...all,r.withBuffers)*0.92, hi=Math.max(...all,r.withBuffers)*1.05;
+  const years=DATA.runs[runKey()].map(p=>p.year);
+  const x=i=>L+(i/(years.length-1))*(W-L-R);
+  const y=v=>T+(1-(v-lo)/(hi-lo))*(H-T-B);
+
+  for(let t=Math.ceil(lo*100);t<=Math.floor(hi*100);t++){
+    if(t%2) continue;
+    svg.appendChild(mk('line',{x1:L,x2:W-R,y1:y(t/100),y2:y(t/100),stroke:'var(--rule)','stroke-width':1}));
+    svg.appendChild(mk('text',{x:L-9,y:y(t/100)+3.5,'text-anchor':'end',class:'ax'},t+'%'));
+  }
+  years.forEach((yr,i)=>svg.appendChild(mk('text',{x:x(i),y:H-16,'text-anchor':'middle',class:'ax'},yr)));
+
+  // requirement line
+  svg.appendChild(mk('line',{x1:L,x2:W-R,y1:y(r.withBuffers),y2:y(r.withBuffers),
+    stroke:'var(--accent)','stroke-width':2,'stroke-dasharray':'6 4'}));
+  svg.appendChild(mk('text',{x:W-R+8,y:y(r.withBuffers)+4,class:'lbl-s',
+    fill:'var(--accent)'},'Requirement'));
+
+  const path=ps=>ps.map((p,i)=>(i?'L':'M')+x(i)+' '+y(p.cet1/p.rwa_total)).join(' ');
+
+  Object.keys(DATA.scenarios).forEach(s=>{
+    if(s===state.scenario) return;
+    const key=s+'|'+state.approach+'|'+DATA.payouts[state.payoutIx].toFixed(2);
+    svg.appendChild(mk('path',{d:path(DATA.runs[key]),fill:'none',
+      stroke:'var(--ink-3)','stroke-width':1.5,'stroke-opacity':.45}));
+  });
+
+  const sel=DATA.runs[runKey()];
+  svg.appendChild(mk('path',{d:path(sel),fill:'none',stroke:'var(--s1)','stroke-width':2.5,
+    'stroke-linejoin':'round','stroke-linecap':'round'}));
+
+  sel.forEach((p,i)=>{
+    const cy=y(p.cet1/p.rwa_total), cx=x(i);
+    const on=p.year===state.year;
+    const c=mk('circle',{cx,cy,r:on?6:4.5,fill:'var(--s1)',
+      stroke:'var(--surface)','stroke-width':2});
+    hoverable(c,`<b>${p.year}</b> · ${state.scenario.replace('_',' ')}<br>CET1 <b>${pct(p.cet1/p.rwa_total)}</b><br>RWAs <b>${gbp(p.rwa_total)}</b><br>PBT <b>${gbp(p.pbt)}</b>`);
+    c.addEventListener('click',()=>{state.year=p.year; render();});
+    c.style.cursor='pointer';
+    svg.appendChild(c);
+  });
+
+  // direct label on the selected series
+  const last=sel[sel.length-1];
+  svg.appendChild(mk('text',{x:W-R+8,y:y(last.cet1/last.rwa_total)+4,class:'lbl-s',
+    fill:'var(--s1)'},state.scenario.replace('_',' ')));
+
+  el('projLegend').innerHTML=
+    `<span><i class="swatch" style="background:var(--s1)"></i>Selected scenario</span>`+
+    `<span><i class="swatch" style="background:var(--ink-3)"></i>Other scenarios</span>`+
+    `<span><i class="swatch" style="background:var(--accent)"></i>CET1 requirement including buffers</span>`;
+}
+
+/* ---------- P&L waterfall ---------- */
+function drawWaterfall(p){
+  const svg=el('waterfall'); svg.textContent='';
+  const W=520,H=288,L=128,R=16,T=12;
+  const rows=[
+    ['Total revenue',p.revenue,'var(--s1)',true],
+    ['Operating costs',-p.costs,'var(--ink-3)',false],
+    ['Impairment',-p.impairment,'var(--s2)',false],
+    ['Tax',-p.tax,'var(--ink-3)',false],
+    ['Profit after tax',p.pat,p.pat>=0?'var(--good)':'var(--critical)',true]
+  ];
+  const span=Math.max(p.revenue,Math.abs(p.pat),1)*1.06;
+  const w=W-L-R, h=34, gap=13;
+  let run=0;
+  rows.forEach(([name,v,fill,isTotal],i)=>{
+    const yT=T+i*(h+gap);
+    const from=isTotal?0:run, to=isTotal?v:run+v;
+    const xA=L+(Math.min(from,to)/span)*w, xB=L+(Math.max(from,to)/span)*w;
+    const g=mk('g',{});
+    g.appendChild(mk('rect',{x:xA,y:yT,width:Math.max(2,xB-xA),height:h,fill,rx:3}));
+    g.appendChild(mk('text',{x:L-10,y:yT+h/2+4,'text-anchor':'end',class:'lbl'},name));
+    g.appendChild(mk('text',{x:xB+8,y:yT+h/2+4,class:'lbl-s'},
+      (v<0?'−':'')+gbp(Math.abs(v))));
+    hoverable(g,`<b>${name}</b><br>${gbp(v)}`);
+    svg.appendChild(g);
+    if(!isTotal) run=to; else run=v;
+  });
+  svg.appendChild(mk('line',{x1:L,x2:L,y1:T-4,y2:T+rows.length*(h+gap)-gap+4,
+    stroke:'var(--rule-strong)','stroke-width':1}));
+  el('plYear').textContent=p.year+' · cost:income '+pct(p.cost_income,1);
+}
+
+/* ---------- tables ---------- */
+function drawKm1(p,a){
+  const rows=[
+    ['CET1 capital',gbp(p.cet1)],['Tier 1 capital',gbp(p.cet1+p.at1)],
+    ['Total capital',gbp(p.cet1+p.at1+p.tier2)],['Total RWAs',gbp(p.rwa_total)],
+    ['—',''],
+    ['CET1 ratio',pct(a.cet1)],['Tier 1 ratio',pct(a.t1)],['Total capital ratio',pct(a.total)],
+    ['—',''],
+    ['CET1 requirement incl. buffers',pct(a.r.withBuffers)],
+    ['CET1 headroom',pct(a.cet1-a.r.withBuffers)],
+    ['—',''],
+    ['Leverage ratio',pct(a.lev)],['Leverage requirement',pct(a.levReq)],
+    ['Total exposure measure',gbp(p.exposure_measure)],
+    ['—',''],
+    ['MREL resources / RWAs',pct(a.mrel)],['MREL requirement',pct(a.mrelReq)],
+    ['—',''],
+    ['Liquidity coverage ratio',pct(p.lcr,1)],['Net stable funding ratio',pct(p.nsfr,1)],
+    ['Return on tangible equity',pct(p.rote,1)]
+  ];
+  el('km1').innerHTML='<tbody>'+rows.map(([k,v])=>
+    k==='—' ? '<tr><td colspan="2" style="padding:3px 0;border:none"></td></tr>'
+            : `<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('')+'</tbody>';
+  el('km1Year').textContent=p.year;
+}
+function drawCr1(p){
+  const bal=p.stage_balances, ecl=p.stage_ecl;
+  const names={1:'Stage 1 — 12-month ECL',2:'Stage 2 — lifetime ECL',3:'Stage 3 — credit-impaired'};
+  let gross=0,tot=0;
+  const body=[1,2,3].map(s=>{
+    const b=bal[s]||0, e=ecl[s]||0; gross+=b; tot+=e;
+    return `<tr><td>${names[s]}</td><td class="num">${num(b)}</td><td class="num">${num(e)}</td><td class="num">${b?pct(e/b,2):'—'}</td></tr>`;
+  }).join('');
+  el('cr1').innerHTML=
+    '<thead><tr><th>Stage</th><th>Gross (£m)</th><th>ECL (£m)</th><th>Coverage</th></tr></thead>'+
+    '<tbody>'+body+`<tr class="total"><td>Total</td><td class="num">${num(gross)}</td><td class="num">${num(tot)}</td><td class="num">${gross?pct(tot/gross,2):'—'}</td></tr>`+
+    `<tr class="sub"><td>Impairment charge for the year</td><td class="num" colspan="3">${gbp(p.impairment)}</td></tr></tbody>`;
+}
+
+/* ---------- tiles and verdict ---------- */
+const ICONS={
+  good:'<circle cx="12" cy="12" r="9" fill="none" stroke="var(--good)" stroke-width="2"/><path d="M8 12.4l2.6 2.6L16 9.6" fill="none" stroke="var(--good)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  warning:'<path d="M12 3.8L21 19.5H3z" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.6v4.2" stroke="var(--warning)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.1" fill="var(--warning)"/>',
+  critical:'<circle cx="12" cy="12" r="9" fill="none" stroke="var(--critical)" stroke-width="2"/><path d="M12 7.4v5.4" stroke="var(--critical)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.3" r="1.1" fill="var(--critical)"/>'
+};
+const BINDING_NAME={risk_weighted:'the risk-weighted CET1 requirement',leverage:'the leverage ratio',mrel:'MREL'};
+
+function drawTiles(p,a){
+  const t=[
+    {k:'CET1 ratio',v:pct(a.cet1),sub:`requirement ${pct(a.r.withBuffers)}`,
+     ok:a.cet1>=a.r.withBuffers, frac:a.cet1/(a.r.withBuffers*1.5)},
+    {k:'Leverage ratio',v:pct(a.lev),sub:`requirement ${pct(a.levReq)}`,
+     ok:a.lev>=a.levReq, frac:a.lev/(a.levReq*2)},
+    {k:'MREL',v:pct(a.mrel),sub:`requirement ${pct(a.mrelReq)}`,
+     ok:a.mrel>=a.mrelReq, frac:a.mrel/(a.mrelReq*1.6)},
+    {k:'LCR',v:pct(p.lcr,0),sub:'minimum 100%',ok:p.lcr>=1, frac:p.lcr/2},
+    {k:'NSFR',v:pct(p.nsfr,0),sub:'minimum 100%',ok:p.nsfr>=1, frac:p.nsfr/2},
+    {k:'RoTE',v:pct(p.rote,1),sub:`PBT ${gbp(p.pbt)}`,ok:p.rote>0, frac:Math.max(0,p.rote)/0.2}
+  ];
+  el('tiles').innerHTML=t.map(x=>`
+    <div class="tile">
+      <div class="tile-k">${x.k}</div>
+      <div class="tile-v">${x.v}</div>
+      <div class="tile-sub"><i class="dot" style="background:${x.ok?'var(--good)':'var(--critical)'}"></i>${x.sub}</div>
+      <div class="meter"><i style="width:${Math.min(100,Math.max(2,x.frac*100))}%;background:${x.ok?'var(--good)':'var(--critical)'}"></i></div>
+    </div>`).join('');
+}
+
+function drawVerdict(p,a){
+  let sstate='good', title, text;
+  const bindGap=a.head[a.binding];
+  if(a.cet1<a.r.minimum){
+    sstate='critical';
+    title='Below the Pillar 1 and Pillar 2A minimum';
+    text=`CET1 of ${pct(a.cet1)} is beneath the ${pct(a.r.minimum)} minimum. This is a breach of a requirement, not a use of a buffer.`;
+  } else if(a.inBuffer){
+    sstate='warning';
+    title=`Inside the combined buffer — distributions capped at ${(a.mda*100).toFixed(0)}%`;
+    text=`CET1 available to meet buffers is ${pct(a.available)} against a ${pct(a.r.cbr)} combined buffer requirement. Pillar 1 is not threatened; this is what a buffer is for. Binding constraint: ${BINDING_NAME[a.binding]}.`;
+  } else {
+    title=`Above every requirement — ${BINDING_NAME[a.binding]} binds first`;
+    text=`Closest constraint is ${BINDING_NAME[a.binding]}, with ${gbp(bindGap)} of headroom. Compared in cash, because a percentage point of leverage headroom and a percentage point of CET1 headroom are different amounts of money.`;
+  }
+  el('verdict').dataset.state=sstate;
+  el('verdictIcon').innerHTML=ICONS[sstate];
+  el('verdictTitle').textContent=title;
+  el('verdictText').textContent=text;
+}
+
+/* ---------- render ---------- */
+function render(){
+  const p=current(), a=assess(p);
+  el('yearNow').textContent=p.year;
+  el('yearDown').disabled=p.year<=DATA.start_year;
+  el('yearUp').disabled=p.year>=DATA.start_year+DATA.years-1;
+  [...el('scenarioPills').children].forEach(b=>
+    b.setAttribute('aria-pressed',String(b.dataset.s===state.scenario)));
+  el('p2aV').textContent=pct(state.p2a,2);
+  el('ccybV').textContent=pct(state.ccyb,2);
+  el('sysbV').textContent=pct(state.sysb,2);
+  el('payoutV').textContent=(DATA.payouts[state.payoutIx]*100).toFixed(0)+'%';
+  drawVerdict(p,a); drawTiles(p,a); drawLadder(p,a); drawRwa(p);
+  drawProj(); drawWaterfall(p); drawKm1(p,a); drawCr1(p);
+}
+
+/* ---------- wiring ---------- */
+el('scenarioPills').innerHTML=Object.entries(DATA.scenarios).map(([k,v])=>
+  `<button class="pill" data-s="${k}" aria-pressed="false" title="${v.blurb}">${v.label}</button>`).join('');
+[...el('scenarioPills').children].forEach(b=>
+  b.addEventListener('click',()=>{state.scenario=b.dataset.s; render();}));
+el('yearUp').addEventListener('click',()=>{state.year=Math.min(DATA.start_year+DATA.years-1,state.year+1); render();});
+el('yearDown').addEventListener('click',()=>{state.year=Math.max(DATA.start_year,state.year-1); render();});
+
+el('p2a').value=state.p2a*100; el('ccyb').value=state.ccyb*100; el('sysb').value=state.sysb*100;
+el('payout').max=DATA.payouts.length-1; el('payout').value=state.payoutIx;
+el('lev').value=state.lev; el('appr').value=state.approach;
+el('p2a').addEventListener('input',e=>{state.p2a=+e.target.value/100; render();});
+el('ccyb').addEventListener('input',e=>{state.ccyb=+e.target.value/100; render();});
+el('sysb').addEventListener('input',e=>{state.sysb=+e.target.value/100; render();});
+el('payout').addEventListener('input',e=>{state.payoutIx=+e.target.value; render();});
+el('lev').addEventListener('change',e=>{state.lev=e.target.value; render();});
+el('appr').addEventListener('change',e=>{state.approach=e.target.value; render();});
+
+el('bankName').textContent=DATA.bank;
+el('banner').innerHTML=`<strong>${DATA.bank} is fictional.</strong> No figure on this page comes from any firm's accounts or regulatory returns. The regulatory parameters are the rules as published; the balance sheet, the P&amp;L and the scenarios are invented. Of ${DATA.provenance.registered} registered model inputs, ${(DATA.provenance.stylised_share*100).toFixed(0)}% are stylised.`;
+el('footProv').textContent=`Regulatory parameters follow the PRA's final Basel 3.1 rules (PS1/26, 20 January 2026), applying from 1 January 2027, with the Pillar 2A lending adjustments of PS7/25 and the FPC's 2% countercyclical setting. Sterling thresholds derive from the PRA's euro redenomination convention. Stylised inputs: ${DATA.provenance.stylised_names.join(', ')}.`;
+el('footGen').textContent=`Generated ${DATA.generated} by banksim/build_dashboard.py. The engines and their 116 tests live in the repository; this page is presentation only.`;
+
+render();
+</script>
