@@ -234,6 +234,36 @@ Glasgow fall on their days; Barings is rescued in 1890 and sold for £1 in
 their trader is yours); BCCI is closed; Northern Rock and Lehman fall in
 2007 and 2008.
 
+## Sound and art
+
+Three scripts are spliced in after the deck by `build.py`, so the page is still one offline file.
+
+- **Music** (`saga/music.js`, `window.LedgerSound`). Synthesised in the browser with Web Audio; no audio
+  files. One theme per age, each with two sections and variation: a modal estampie over a drone on the
+  Rialto, a basse danse for the Medici, Susato-style dances for the princes, a ground bass for the
+  Dutch century, a minuet for the country banks, a march then a rag then a swing hint on Lombard
+  Street, and cool jazz then ambient for the Basel years. It crossfades when the age changes. A mood
+  layer darkens under a run, a war or a plague, lifts on a good year, and goes sparse when the house
+  falls. Off until the player turns it on (the ♪ button or the M key); volume and the effects switch
+  sit beside it and are remembered in the browser.
+- **Effects**: coins, quill, seal on a decision, ship's bell on a new branch, a page turning (a
+  telegraph after 1850) when news breaks, a crowd at a run, cannon, storm, a gong when a house
+  falls.
+- **Tunes.** Every line is original or from a work published before 1929: *La Rotta* (14th c.),
+  Susato's *Danserye* (1551) and the romanesca bass are public domain; everything else is original
+  writing in the period's idiom. The list is at the top of `music.js` and a test checks it covers
+  every age.
+- **Art** (`saga/art.js`, `window.LedgerArt`). The 22 card motifs are redrawn as small scenes that
+  work in all four period styles (woodcut as white-line cutting, engraving hatch, newsprint
+  halftone, terminal strokes). A title page in the manner of an illuminated book with the house's
+  arms (an original design, motto *Fides et ratio*). Each new age opens with a card in its own
+  manner: illuminated leaf, woodcut title page, copperplate cartouche, Victorian masthead, terminal.
+  Sea monsters, a galleon, a compass rose and a cartouche decorate the chart before 1700.
+- **Wiring** (`saga/ambience.js`) connects them to the game without touching its state. Sound and
+  art use their own seeded random numbers, never the game's: autoplay of seeds 1–3 gives identical
+  results before and after. `tests/test_saga_sound_art.py` checks the files load nothing from
+  outside, never call the game's dice, and account for every tune.
+
 ## Honesty: what is historical and what is a dial
 
 Every era, city, innovation and event carries a `provenance`.
