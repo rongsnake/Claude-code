@@ -1,0 +1,1780 @@
+{
+ "era": "lombard",
+ "cards": [
+  {
+   "id": "lombard_war_loan_abroad",
+   "title": "{court} floats a war loan in London and Paris",
+   "text": "Its armies are in the field and its revenues are already pledged to the tax-farmers. {court}'s envoy wants a gold loan issued at a deep discount, coupons payable in London, and a house of name to sign the prospectus. The subscription lists open next week, with or without you.",
+   "art": "war",
+   "target": "reachable_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.4,
+      "yield": 0.07,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Seven per cent, issued at a discount, with a fat underwriting commission: the year's profit in one signature.",
+    "prudence": "War loans are serviced by the side that wins, and we do not yet know which side that is.",
+    "court": "Sign, and the envoy will remember us when the railway and tobacco concessions are handed out.",
+    "conscience": "We are lending for powder; at the least, make the prospectus state honestly which revenues are already pledged."
+   },
+   "precedent": "The Ottoman Empire's first foreign loan, floated in London during the Crimean War, 1854; Russia's great post-war loan in Paris and London, 1906",
+   "source": "Clay, Gold for the Sultan (2000); Siegel, For Peace and Money (2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_customs_loan",
+   "title": "{court} borrows against its customs house",
+   "text": "An indemnity is owed to a victorious neighbour, and the treasury cannot pay it. {court} offers a gold loan secured on its maritime customs, which are collected by foreign inspectors and paid into a foreign bank. The rival national syndicates are already quarrelling over the shares.",
+   "art": "seal",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    1860,
+    1937
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.0
+    },
+    {
+     "signal": "many_branches",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.4,
+      "yield": 0.05,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Five per cent on a pledge collected by our own countrymen is as near a certainty as the East offers.",
+    "prudence": "A pledge is only as good as whoever holds the customs house ten years from now.",
+    "court": "Our government wants this loan in friendly hands; refuse, and we hand it to a rival power's bank.",
+    "conscience": "We profit from a beaten people's tribute; price the loan fairly and do not puff it to small investors."
+   },
+   "precedent": "Indemnity loans to China after the Sino-Japanese War, secured on the Maritime Customs, 1895–98 (Anglo-German loans of 1896 and 1898)",
+   "source": "King, The History of the Hongkong and Shanghai Banking Corporation, vol. 2 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_boom_works",
+   "title": "{court} wants its waterworks financed",
+   "text": "Land values double each season, immigrants arrive by the shipload, and every house in the City holds a slice of {court}'s paper. Now its capital wants drains and water mains, and a firm underwriting of the whole issue. The public's appetite has been bottomless. So far.",
+   "art": "harbour",
+   "target": "reachable_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.5,
+      "yield": 0.08,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Eight per cent from a booming republic; the whole City is in, and we cannot be the house that missed it.",
+    "prudence": "Underwriting is a promise to buy whatever the public refuses. Ask what happens if they refuse.",
+    "court": "Their minister dines with ours every week; a refusal will be noticed on both sides.",
+    "conscience": "If we cannot place the issue we must not pretend we have; the market should know what we hold."
+   },
+   "precedent": "Barings underwrote the Buenos Aires Water Supply and Drainage Company issue and could not place it, 1888–89",
+   "source": "Marichal, A Century of Debt Crises in Latin America (1989)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_atlantic_panic",
+   "title": "A panic comes in by the mail steamer",
+   "text": "A western trust company has stopped, railroad paper is unsaleable, and the steamer brings word that the American banks have suspended specie payments. Glasgow and Hamburg houses that drew on New York are suddenly holding bills nobody will discount. Bank Rate goes to ten.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "london",
+    "edinburgh",
+    "new_york",
+    "frankfurt",
+    "hamburg"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2.0
+    },
+    {
+     "signal": "thin_till",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The New York packet is overdue and the American houses here have stopped discounting.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Good bills are going cheap; buy the paper of sound American houses at a fat discount.",
+    "prudence": "Fill the till, shorten the bill case, and accept nothing drawn on New York this month.",
+    "court": "The Government will suspend the Act if it must; stay close to Threadneedle Street this week.",
+    "conscience": "Our clerks must tell depositors plainly what we hold; rumour feeds on silence."
+   },
+   "precedent": "The panic of 1857: Ohio Life failed in August, US banks suspended, the Western Bank of Scotland and Hamburg houses failed; Bank Charter Act suspended 12 November 1857",
+   "source": "Calomiris and Schweikart, 'The Panic of 1857: Origins, Transmission, and Containment', Journal of Economic History (1991)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1850,
+    1914
+   ]
+  },
+  {
+   "id": "lombard_trust_run",
+   "title": "A trust company runs dry on Broadway",
+   "text": "New York's trust companies take deposits like banks, keep reserves like nobody, and sit outside the clearing house. One of them has lent on a failed copper corner, and by noon the queue runs round the block. There is no central bank: the city's great private bankers will decide who is saved.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "new_york"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1890,
+    1913
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 2.0
+    },
+    {
+     "signal": "leverage",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.35
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the trust companies have been lending on copper shares at call.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Call money will touch a hundred per cent while others panic; there has never been a better day to lend.",
+    "prudence": "Our New York balances sit with trust companies; draw them home today and ask questions after.",
+    "court": "The senior private banker downtown will organise a pool; be seen to subscribe to it.",
+    "conscience": "Do not repeat the tale about that trust; our name should not be the match that lights it."
+   },
+   "precedent": "The panic of 1907: the Knickerbocker Trust failed in October after the United Copper corner collapsed",
+   "source": "Bruner and Carr, The Panic of 1907 (2007)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_presidency_rising",
+   "title": "The sepoys rise in the presidencies",
+   "text": "A regiment refuses its cartridges, shoots its officers and marches on the old capital. Up-country agencies go silent, indigo and opium consignments are lost, and the Calcutta agency houses draw hard on London for specie. The rising will be put down; the season's trade will not recover.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "calcutta",
+    "bombay"
+   ],
+   "hazard": 0.005,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1850,
+    1858
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Chapatis are passing from village to village, and nobody can say why.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "When the rising is crushed, indigo land will go for nothing; keep the agency open and buy.",
+    "prudence": "Call in the up-country advances and hold nothing but bills on the Treasury.",
+    "court": "The Company will be blamed and the Crown will step in; lend to the Crown, not the Company.",
+    "conscience": "Our agents must not buy looted goods sold cheap at the coast, whatever the margin."
+   },
+   "precedent": "The Indian Rebellion of 1857: Meerut on 10 May, Delhi taken, Cawnpore and Lucknow besieged",
+   "source": "Metcalf, The Aftermath of Revolt: India 1857–1870 (1964)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_coupon_halved",
+   "title": "{court} halves its coupons",
+   "text": "{court} has borrowed abroad for twenty years to pay the interest on what it borrowed before. A decree announces that half of each coupon will be paid in cash and half in new bonds of doubtful worth. Bondholders' committees convene in London and Paris; the ambassadors begin to talk of administering the revenues.",
+   "art": "seal",
+   "target": "lent_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Their treasury is said to be meeting the coupon with a fresh advance from its own bankers.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Their customs and tobacco revenues are pledged; a government with pledged revenues does not default. Buy the dip.",
+    "prudence": "Sell into any rally; a borrower paying interest out of new loans has already failed.",
+    "court": "The Powers will impose a debt administration; get our man onto its council early.",
+    "conscience": "We sold these bonds to widows and parsons; we owe them a seat at the bondholders' committee."
+   },
+   "precedent": "The Ottoman government halved its coupons, October 1875; Egypt suspended, April 1876; Ottoman Public Debt Administration, 1881",
+   "source": "Pamuk, The Ottoman Economy and Its Institutions (2009); Landes, Bankers and Pashas (1958)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_revolution_repudiates",
+   "title": "Revolution in {court}: the old debts are void",
+   "text": "The new government declares every loan of the old regime a contract between tyrants and usurers, annulled without compensation. Coupons go unpaid, the bonds become curiosities for collectors, and the bondholders' associations begin a wait that will outlast most of their members.",
+   "art": "riot",
+   "target": "lent_sovereign",
+   "hazard": 0.004,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1880,
+    1950
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.9
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The capital is full of strikes, and the soldiers are said to be electing their own officers.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "Bonds at sixty are cheap if the regime survives the winter; add to the position.",
+    "prudence": "No price is cheap for paper whose next master may not recognise it.",
+    "court": "The ambassador assures us the dynasty is secure and these disturbances are mere bread riots.",
+    "conscience": "We lent a despot money to shoot strikers; we may be about to learn what that costs."
+   },
+   "precedent": "Soviet decree repudiating all Tsarist foreign debts, January/February 1918",
+   "source": "Oosterlinck, Hope Springs Eternal: French Bondholders and the Repudiation of Russian Sovereign Debt (2016)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_customs_seized",
+   "title": "{court} suspends its foreign debt under invasion",
+   "text": "An invading army holds the treaty ports, and with them the customs revenues pledged to the foreign loans. {court}, fighting from the interior, announces that service on its external debt is suspended for the duration. The bonds trade at a fraction; the bondholders will still be negotiating long after the war.",
+   "art": "war",
+   "target": "lent_sovereign",
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1914,
+    1950
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.8
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The customs receipts at the coast are said to be lodged in an enemy bank now.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Defaulted bonds at fifteen are a lottery ticket on peace; buy a few.",
+    "prudence": "Write it down now; a pledge held in enemy hands is no pledge at all.",
+    "court": "The occupying power has promised to respect the customs pledge, and the Foreign Office believes it.",
+    "conscience": "Press our claim honestly, but do not lobby for gunboats to collect it."
+   },
+   "precedent": "Nationalist China suspended service on its customs-secured foreign loans, January 1939, after Japan seized the coastal customs",
+   "source": "Goetzmann, Ukhov and Zhu, 'China and the World Financial Markets 1870–1939', Economic History Review (2007)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_boom_default",
+   "title": "{court} cannot meet its gold coupons",
+   "text": "The boom has turned. Paper money has collapsed against gold, the provincial banks have stopped paying on their cédulas, and {court} cannot remit gold for its next coupon. The paper nobody in London could get enough of last year is unsaleable at any price, and one great house is holding far too much of it.",
+   "art": "coin",
+   "target": "lent_sovereign",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3.0
+    },
+    {
+     "signal": "city_heat",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.6
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The gold premium in their capital is said to be over a hundred and fifty.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "A temporary embarrassment; the pampas still grow wheat, and at this price the bonds are a gift.",
+    "prudence": "One house holds millions of this paper; if it falls, its acceptances fall on us.",
+    "court": "The Governor has been very quiet this week, which is how he behaves when he is worried.",
+    "conscience": "If we sell our holding to clients today, we must tell them what we know."
+   },
+   "precedent": "Argentina's default and the Baring crisis, 1890–91",
+   "source": "Ziegler, The Sixth Great Power: Barings 1762–1929 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_guarantee_fund",
+   "title": "The Governor passes the hat",
+   "text": "A great house has accepted more of a foreign government's paper than it can carry, and the Governor has summoned the City to his parlour on a Saturday. He wants a guarantee fund to wind the house down in good order, every bank subscribing by its size, and he is writing down the names of those who decline.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1866,
+    1950
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe generously, near the top of the list",
+     "result": "Your name stands beside the great joint-stock banks, and the calls on the guarantee may turn out to be real money.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 5
+       }
+      },
+      {
+       "kind": "shock",
+       "params": {
+        "kind": "markets",
+        "size": 0.08
+       }
+      }
+     ]
+    },
+    {
+     "label": "Subscribe the minimum your size demands",
+     "result": "You are on the list, and nobody remembers for how much.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline and let the house fall",
+     "result": "You keep your money, the fund fills without you, and the parlour remembers.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -5
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Our money would back a rival's bad underwriting; subscribe the least that looks decent.",
+    "prudence": "If that house stops, its acceptances hit every bill case in London, ours included; subscribe.",
+    "court": "The Governor is keeping a list; be on the first page of it.",
+    "conscience": "The guarantee protects depositors who did nothing wrong; it is a fair use of our strength."
+   },
+   "precedent": "The Bank of England's guarantee fund for Baring Brothers, November 1890",
+   "source": "Ziegler, The Sixth Great Power: Barings 1762–1929 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_false_accounts",
+   "title": "A great Scottish bank stops: the books were false",
+   "text": "A bank with branches in every burgh has closed its doors. The investigators find bad debts carried as assets, gold reserves overstated and directors' friends lending to themselves. The bank is unlimited: every shareholder is liable to his last spoon, and the call letters are going out. Depositors everywhere are asking who else is unlimited.",
+   "art": "ledger",
+   "target": "cities",
+   "cities": [
+    "edinburgh",
+    "london"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1850,
+    1885
+   ],
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 2.0
+    },
+    {
+     "signal": "leverage",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The bank is said to have been buying its own shares to hold up the price.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Frightened Scottish depositors want somewhere safe; open an Edinburgh office and take them.",
+    "prudence": "Register as limited under the Act before our own shareholders take fright and sell.",
+    "court": "The Treasury will want audited accounts soon; volunteer ours before Parliament asks.",
+    "conscience": "Unlimited liability is the honest form of banking; a house that limits its liability limits its honour."
+   },
+   "precedent": "Failure of the City of Glasgow Bank, October 1878; directors imprisoned, unlimited shareholders ruined; Companies Act 1879 introduces reserved liability",
+   "source": "Turner, Banking in Crisis: The Rise and Fall of British Banking Stability (2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_land_boom_breaks",
+   "title": "The land boom breaks in {city}",
+   "text": "Suburban allotments sold on instalments, building societies lending on paper valuations, and banks lending to the building societies. Now the buyers have vanished, the societies are suspending and the depositors are queueing. Banks that pledged to stand by one another discover how few of them meant it.",
+   "art": "bubble",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 5.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.3,
+      "panic": 0.2
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Land in the outer townships is changing hands for half last year's price.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Land in a young country never falls for long; the immigrants keep coming. Lend on.",
+    "prudence": "Stop every new advance on land and bring the London deposits home.",
+    "court": "The colonial government may proclaim bank holidays; be ready to reconstruct rather than fail.",
+    "conscience": "Do not freeze the small depositors' money while the directors' overdrafts run on."
+   },
+   "precedent": "The Australian bank crash of April–May 1893 after the Melbourne land boom; thirteen trading banks suspended",
+   "source": "Merrett, 'The Australian bank crashes of the 1890s revisited', Business History Review (2013)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_earthquake",
+   "title": "Earthquake and fire level {city}",
+   "text": "At noon the ground moved, and by evening the wooden city was burning from end to end. Warehouses, their contents and the bills drawn against them are ashes together. The central bank will rediscount 'earthquake bills' to keep the merchants alive, and some of those bills will still be unpaid years from now.",
+   "art": "quake",
+   "target": "cities",
+   "cities": [
+    "tokyo"
+   ],
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 30,
+   "window": [
+    1885,
+    1950
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.4
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Rebuilding needs credit; the first foreign bank to lend will own the reconstruction.",
+    "prudence": "Take no earthquake bills at face value; mark them down and expect years of renewals.",
+    "court": "The government will remember the banks that rediscounted freely; be counted among them.",
+    "conscience": "Forbear on the debts of the ruined; foreclosing on ashes buys nothing but hatred."
+   },
+   "precedent": "The Great Kantō earthquake, 1 September 1923; the unpaid earthquake bills fed the Shōwa bank panic of 1927",
+   "source": "Tamaki, Japanese Banking: A History, 1859–1959 (1995)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_war_treasury",
+   "title": "War again: the Treasury takes the deposits",
+   "text": "Exchange control is clamped on at once, foreign securities are requisitioned, and within the year the Treasury tells the banks what they will lend it. Each week a slice of your deposits goes into Treasury Deposit Receipts at a little over one per cent: unsaleable, and not to be refused.",
+   "art": "war",
+   "target": "seat_sovereign",
+   "hazard": 0.07,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1936,
+    1950
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.15,
+      "yield": 0.0113
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Lending to the Treasury is dull, but it will be the only business for six years; take it cheerfully.",
+    "prudence": "No default risk, but we will be locked into one per cent if rates rise after the war.",
+    "court": "Volunteer before we are directed; the Treasury remembers who made it ask twice.",
+    "conscience": "The country is fighting for its life; this is no moment to haggle over an eighth."
+   },
+   "precedent": "Second World War finance: exchange control from September 1939, Treasury Deposit Receipts from July 1940",
+   "source": "Sayers, Financial Policy 1939–45 (1956)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_railroad_collapse",
+   "title": "A great railroad's bonds stop selling",
+   "text": "A transcontinental line has been building into the wilderness on the proceeds of bonds sold to clergymen and schoolteachers. The bond sales stall, the banking house behind them closes its doors, and the stock exchange in {city} shuts for days. Every railroad security in your strongroom is now priced by rumour.",
+   "art": "train",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 3.0
+    },
+    {
+     "signal": "leverage",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.2,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Its banker has been carrying the construction on overdraft since the spring.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The bonds are secured on millions of acres of land grants, and land does not run away.",
+    "prudence": "Railroad bonds are only as good as traffic that does not yet exist; reduce them.",
+    "court": "Do not expect help from the government; it has only just finished paying for the last war.",
+    "conscience": "We sold these bonds as safe; our clients are owed a straight account of the line."
+   },
+   "precedent": "Jay Cooke & Co. failed over Northern Pacific bonds, 18 September 1873, and the NYSE closed for ten days; Vienna had crashed that May",
+   "source": "Lubetkin, Jay Cooke's Gamble: The Northern Pacific Railroad, the Sioux, and the Panic of 1873 (2006)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_cable_parted",
+   "title": "The cable to {city} has gone silent",
+   "text": "The submarine cable to {city} carried one garbled message yesterday and nothing today. Until it is grappled up and spliced, instructions go by steamer, prices are a fortnight old, and your agent there is once again his own master. Some agents enjoy that more than others.",
+   "art": "telegraph",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1858,
+    1900
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.08
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.05
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Our rivals are equally blind; our agent's judgement is an advantage this week, not a risk.",
+    "prudence": "Write by every steamer: no new commitments above his limit until the cable speaks again.",
+    "court": "The Admiralty wants that cable mended too; offer to help finance the repair company.",
+    "conscience": "Trust him, but have his books brought home by the next mail."
+   },
+   "precedent": "The first Atlantic cable failed after about three weeks, September 1858; no lasting link until 1866",
+   "source": "Gordon, A Thread Across the Ocean (2002)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_cotton_mania",
+   "title": "The cotton boom in {city} ends overnight",
+   "text": "While war cut off American cotton, the city sold the only bales in the world and spent the proceeds on reclamation companies, new banks and shares bought on time bargains. Now the steamer brings news of peace. Cotton halves, the share premiums vanish, and settlement day approaches with nobody able to pay.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "bombay"
+   ],
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1860,
+    1870
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 4.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.25,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Liverpool letters say the Southern armies are finished.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Cotton is king and the American war has years to run; Back Bay shares will double again.",
+    "prudence": "Close every time bargain before settlement; we cannot know which counterparties will pay.",
+    "court": "The Presidency bank is lending on shares itself; do not expect it to save anyone.",
+    "conscience": "Brokers' clerks are wagering their wages on premiums; we should not be lending to them."
+   },
+   "precedent": "The Bombay share mania collapsed at the end of the American Civil War, 1865; the Bank of Bombay failed in 1868",
+   "source": "Wacha, A Financial Chapter in the History of Bombay City (1910)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_new_goldfield",
+   "title": "A new goldfield sends bullion through {city}",
+   "text": "Prospectors have struck a reef that runs for miles, and the mining companies need everything: assays, advances on crushings, insurance on shipments, and a bank that will buy their gold and draw bills on London against it. The first consignments are already at the coast.",
+   "art": "gold",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1851,
+    1910
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Buy the gold, finance the crushings, float the companies: this is the century's harvest.",
+    "prudence": "Finance shipments, not shafts; reefs peter out and promoters lie.",
+    "court": "The colonial government will want the gold kept within the Empire; be its banker for that.",
+    "conscience": "Mining shares are being sold to clerks on tips; do not lend our name to the promoters."
+   },
+   "precedent": "Discovery of the Witwatersrand gold reef, 1886",
+   "source": "Kubicek, Economic Imperialism in Theory and Practice: The Case of South African Gold Mining Finance 1886–1914 (1979)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_treaty_port",
+   "title": "{city} opens to foreign trade",
+   "text": "A treaty signed under the guns of a foreign squadron obliges the government to open a port, admit foreign merchants and permit the exchange of coin. Its ratio of gold to silver is wildly out of line with the rest of the world, and the first houses to arrive will make fortunes before the gap closes.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "tokyo"
+   ],
+   "hazard": 0.05,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1854,
+    1872
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Open an agency at once; the bullion arbitrage alone will pay for the building.",
+    "prudence": "Trade with a closed island kingdom is a curiosity; it will never be worth a branch.",
+    "court": "Our minister there wants one of our banks on the Bund and will help with the licence.",
+    "conscience": "Draining their gold by arbitrage is lawful, but it ruins the country; do not boast of it."
+   },
+   "precedent": "Yokohama opened to foreign trade under the treaties of 1858, July 1859; the gold–silver arbitrage drained Japanese gold",
+   "source": "Sugiyama, Japan's Industrialization in the World Economy 1859–1899 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_forged_acceptances",
+   "title": "Forged bills discovered in {city}",
+   "text": "A charming foreign customer opened an account with letters of introduction, discounted some excellent first-class bills, and then discounted several thousand pounds more. On the due date the acceptors deny ever having seen them. The signatures and stamps were perfect; the customer has sailed.",
+   "art": "letter",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 8,
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1.0
+    },
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    },
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "One loss on a clever forgery is the price of new customers; do not stop discounting.",
+    "prudence": "No bill from a new name without a word from the acceptor's own banker.",
+    "court": "Let the police chase him across the Atlantic; a public prosecution shows we are not soft.",
+    "conscience": "Our clerk was deceived, not dishonest; do not sack him merely to look stern."
+   },
+   "precedent": "The great Bank of England forgery: American fraudsters discounted forged bills at the Western branch, discovered March 1873",
+   "source": "Booth, The Thieves of Threadneedle Street (2015)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_distant_manager",
+   "title": "The manager in {city} lent beyond his powers",
+   "text": "Head office believed the branch was financing exports against shipping documents. It was in fact lending to planters on the security of their estates, renewing the advances every season, and blight has now taken the crop. The inspector's report runs to forty pages; the overdrafts will not be repaid this decade.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3.0
+    },
+    {
+     "signal": "many_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.25
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Planters' paper from that coast is being renewed rather than paid.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Plantation lending pays twelve per cent, and the manager knows his district better than London does.",
+    "prudence": "Send an inspector by the next mail and take away his discretion over renewals.",
+    "court": "The governor relies on the planters; a hard line will cost us his goodwill.",
+    "conscience": "Whatever his reasons, the manager deceived us; he cannot stay."
+   },
+   "precedent": "The Oriental Bank Corporation suspended in May 1884 after branch lending to Ceylon coffee planters ruined by leaf blight",
+   "source": "Baster, The Imperial Banks (1929)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_metal_corner",
+   "title": "A copper corner collapses in {city}",
+   "text": "A metals syndicate has spent a year buying every ton of copper and contracting forward for the mines' output, financed by a great deposit bank. Now the mines are producing more than anyone can store, the price breaks, and the bank's director is found dead in his office. Its depositors are already at the counters.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "paris",
+    "london"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1870,
+    1950
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.15,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The syndicate is said to be warehousing copper it cannot sell.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The syndicate needs fresh money to hold the price; we can name a ruinous rate.",
+    "prudence": "Call in every advance against metal warrants before the price is reported.",
+    "court": "The central bank will save the deposit bank and let the syndicate burn; position for that.",
+    "conscience": "Do not lend a dying syndicate money it can only lose for its other creditors."
+   },
+   "precedent": "Collapse of the Société des Métaux copper corner and the Banque de France's rescue of the Comptoir d'Escompte, March 1889",
+   "source": "Hautcoeur, Riva and White, 'Floating a lifeboat: The Banque de France and the crisis of 1889', Journal of Monetary Economics (2014)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_rival_crash",
+   "title": "A rival's collapse sends its clients to you",
+   "text": "A brash new bank that promised to beat the old houses at their own game has failed, after its own shares were pushed to absurd premiums with its own money. Its depositors, and the provincial notaries who advised them, now want somewhere dull. Your door is open and your name is old.",
+   "art": "ledger",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.08
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take every account and lend it out; new deposits are the cheapest money we will ever see.",
+    "prudence": "Frightened money leaves as fast as it arrives; keep a good share of it in the till.",
+    "court": "The central bank lent to the brokers so the Bourse could settle; thank it publicly.",
+    "conscience": "No gloating in the newspapers; a rival's ruin includes thousands of small savers."
+   },
+   "precedent": "The crash of the Union Générale, January 1882; deposits fled to the established Paris houses",
+   "source": "White, 'The Crash of 1882 and the Bailout of the Paris Bourse', Cliometrica (2007)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_silver_falls",
+   "title": "Silver falls, and the East pays in cheaper coin",
+   "text": "One after another the gold countries stop coining silver, and the white metal slides month by month. Every rupee and tael remitted home buys fewer pounds, and houses with capital in silver in the East and sterling liabilities at home are quietly insolvent unless they have sold forward.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "bombay",
+    "calcutta",
+    "canton",
+    "hong_kong",
+    "batavia"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1871,
+    1900
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Borrow in silver in the East, hold gold at home: the fall is a trade, not a threat.",
+    "prudence": "Fifteen and a half to one has held for seventy years; this is a passing fright.",
+    "court": "The India Office may close the mints; keep close to whoever is drafting the minute.",
+    "conscience": "Our silver depositors cannot hedge as we can; warn them before we protect ourselves."
+   },
+   "precedent": "Silver's depreciation after German and American demonetisation, 1871–73, and the closing of the Indian mints to silver, June 1893",
+   "source": "Flandreau, The Glitter of Gold: France, Bimetallism, and the Emergence of the International Gold Standard (2004)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_standstill",
+   "title": "Central Europe stops: your credits are frozen",
+   "text": "The largest bank of a small, broke republic has published losses greater than its capital. Panic spreads to its neighbours, gold leaves, and governments impose exchange control. Your acceptance credits to their banks cannot be repaid in sterling, and a standstill agreement will keep them frozen for years.",
+   "art": "seal",
+   "target": "cities",
+   "cities": [
+    "hamburg",
+    "frankfurt"
+   ],
+   "hazard": 0.025,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1925,
+    1939
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.2,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The German banks are drawing every London credit line at once.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Their banks pay well over Bank Rate for our acceptances; renew the lines and collect the commission.",
+    "prudence": "Short credits to a country short of gold become long credits in a crisis; cut them now.",
+    "court": "The Governor wants the City to stand by the Germans; he fears worse if it does not.",
+    "conscience": "Renewing credits we never expect to see repaid, merely to look loyal, is not honest banking."
+   },
+   "precedent": "Collapse of the Creditanstalt, May 1931; the German Standstill Agreement froze short-term foreign credits, September 1931",
+   "source": "Accominotti, 'London Merchant Banks, the Central European Panic, and the Sterling Crisis of 1931', Journal of Economic History (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_cholera",
+   "title": "Cholera in {city}: the port is quarantined",
+   "text": "A city that never got round to filtering its drinking water is paying for it. Hundreds die each day, ships from the port are turned away everywhere else, and the exchange stands deserted. Bills are falling due on merchants who are sick, dead or fled.",
+   "art": "plague",
+   "target": "branch_city",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 10,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.12
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Extend the bills of sound merchants by a month, and they will remember who did.",
+    "prudence": "Quarantine stops trade; expect protested bills and keep coin at hand.",
+    "court": "The city fathers will need a loan for filter beds; we should be the first to offer.",
+    "conscience": "No clerk is to be ordered into the stricken quarters to collect a debt."
+   },
+   "precedent": "The Hamburg cholera epidemic, August–October 1892, about 8,600 dead",
+   "source": "Evans, Death in Hamburg: Society and Politics in the Cholera Years 1830–1910 (1987)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_bad_harvest",
+   "title": "The harvest rots in the fields",
+   "text": "The wettest summer in memory: the corn sprouts in the stook, the sheep die of liver rot, and cheap American grain arrives regardless. Farm rents are cut, land values fall, and the country banks discover what their mortgage books were really worth.",
+   "art": "grain",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.1
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.05
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Land at depressed prices is a bargain for our richer clients; finance their purchases.",
+    "prudence": "Mark the farm mortgages down now; with American wheat, rents are not coming back.",
+    "court": "Parliament will be asked for relief, and the landed interest remembers its friends.",
+    "conscience": "Do not foreclose on tenants who paid for thirty years; give them a season."
+   },
+   "precedent": "The disastrous British harvest of 1879, opening the agricultural depression",
+   "source": "Perren, Agriculture in Depression, 1870–1940 (1995)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_railway_republic",
+   "title": "A distant republic wants its railway floated",
+   "text": "A small Central American republic wants a railway from ocean to ocean and a London loan to build it. Its revenues would barely pay the coupon on a tenth of the sum, but the promoters offer a handsome commission and will support the price with the loan's own proceeds until it is sold. Your name would sell it.",
+   "art": "train",
+   "target": "none",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1855,
+    1895
+   ],
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 1.5
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Bring it out and sell it to the public",
+     "result": "The commission is splendid; when the coupons stop, a select committee will want to read your letters.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Take a small share of the underwriting behind another house",
+     "result": "A quieter fee and a smaller stain, with some of the bonds left on your own books.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "shock",
+       "params": {
+        "kind": "sovereign",
+        "size": 0.08
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline politely",
+     "result": "Another house brings it out at a premium, and your partners grumble until the coupons stop.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 5
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Ten per cent commission for a signature; if the public wishes to buy, that is the public's affair.",
+    "prudence": "A coupon paid out of the loan's own proceeds is a fraud with a timetable.",
+    "court": "Members are already asking questions about foreign loans; this is the wrong year for it.",
+    "conscience": "To sell bonds we believe will default is to rob our clients by prospectus."
+   },
+   "precedent": "The Honduras railway loans of 1867–70, propped up by market rigging and exposed by the Select Committee on Loans to Foreign States, 1875",
+   "source": "Report from the Select Committee on Loans to Foreign States (House of Commons, 1875)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_money_inquiry",
+   "title": "The legislature investigates the money power",
+   "text": "A committee of the legislature, egged on by the newspapers and the farmers' leagues, wants to know who sits on whose boards, who allots whose issues, and how much of the nation's credit a few houses control. Its counsel has subpoenaed your partners and asked for your syndicate books.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1890,
+    1950
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 3.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Open the books and send the senior partner to testify",
+     "result": "He is grilled for two days and the newspapers dislike him; the committee finds little it did not already know.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Fight the subpoena with the best counsel money can buy",
+     "result": "You win on the law and lose in the press, and the eventual statute is written with you in mind.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -15
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.03
+       }
+      }
+     ]
+    },
+    {
+     "label": "Resign the interlocking directorships before the hearings",
+     "result": "You give up a dozen boards and the business that came with them; the committee praises you as the exception.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 8
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.05
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "We have nothing to apologise for; our syndicates built the railways these congressmen ride on.",
+    "prudence": "Hand over the books; a contempt finding would do more harm than anything inside them.",
+    "court": "Cooperate fully; the next banking law will be drafted by these same men.",
+    "conscience": "If our directorships cannot bear daylight, we should not be holding them."
+   },
+   "precedent": "The Pujo Committee's 'Money Trust' investigation, 1912–13; the Senate's Pecora hearings, 1932–34",
+   "source": "Report of the Committee Appointed to Investigate the Concentration of Control of Money and Credit (Pujo Report, 1913)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_bank_rate_call",
+   "title": "Bank Rate at seven: the bill brokers want call money",
+   "text": "Gold is leaving for New York, the Bank has raised its rate to the highest in a generation, and the discount houses are scrambling to renew the call money that carries their bill portfolios. They offer a full rate for a week's loan against good bills. Your cashier wants every sovereign in the vault.",
+   "art": "coin",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 8,
+   "window": [
+    1877,
+    1914
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 1.0
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Lend to the brokers freely against good bills",
+     "result": "You earn a fat week's interest, and the market remembers who stayed in.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Call in your loans to the market and hold coin",
+     "result": "Your till is full and the brokers are driven into the Bank at a penalty rate; they will not forget it.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -8
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend only against Treasury bills and the finest acceptances",
+     "result": "Less interest, no bad paper, and nobody calls you a deserter.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 2
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Seven per cent for a week against first-class bills is the best money we will see this year.",
+    "prudence": "Call in everything; the Bank will let the brokers drown before it lends to them.",
+    "court": "The Governor wants the market supplied; call our money and the Bank must do it for us.",
+    "conscience": "The brokers have dealt fairly with us for decades; abandoning them now is a poor return."
+   },
+   "precedent": "Bank Rate raised to 7 per cent in November 1907 to draw gold from America; the London money market held",
+   "source": "Sayers, The Bank of England 1891–1944 (1976)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_belligerent_agency",
+   "title": "{court} asks you to buy its munitions abroad",
+   "text": "{court} is at war and needs shells, horses and wheat from a neutral country, paid for in that country's currency. It wants your house as sole purchasing agent and as manager of a great loan placed with neutral investors. The commission on purchases is a small percentage and an enormous sum.",
+   "art": "factory",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1899,
+    1945
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Take the agency and manage the loan",
+     "result": "Fees roll in, the court is grateful, and the enemy's sympathisers call you a war profiteer.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 12
+       }
+      },
+      {
+       "kind": "offer",
+       "params": {
+        "size": 0.3,
+        "yield": 0.055,
+        "turns": 1
+       }
+      }
+     ]
+    },
+    {
+     "label": "Take the agency but not the loan",
+     "result": "A steady commission with no balance-sheet risk, and the court notices the half-heartedness.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Stay neutral",
+     "result": "Your neutral clients approve; the court will remember who would not help.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 4
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The largest commission in history; whoever wins, the munition makers must be paid through someone.",
+    "prudence": "If the court loses, its loan becomes our loss; take the agency, not the bonds.",
+    "court": "This is the court's hour of need; there will never be a better chance to earn its gratitude.",
+    "conscience": "Financing one side of a slaughter for a commission deserves a long hour of thought."
+   },
+   "precedent": "J.P. Morgan & Co. as British purchasing agent in America from January 1915, and manager of the Anglo-French loan, October 1915",
+   "source": "Burk, Britain, America and the Sinews of War, 1914–1918 (1985)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_cotton_loan",
+   "title": "A rebel government offers bonds payable in cotton",
+   "text": "A breakaway republic, blockaded and unrecognised, offers bonds convertible into its cotton at a fixed price, deliverable after the war or at its own ports. With cotton at famine prices the conversion right looks golden, and the London subscription will be oversubscribed the day the lists open. Its agent offers you a share of the underwriting.",
+   "art": "ship",
+   "target": "none",
+   "hazard": 0.08,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1861,
+    1865
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Underwrite and sell your allotment at once",
+     "result": "The bonds open at a premium and you are out with a fat commission before the price-support operations begin to fail.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Subscribe for your own book",
+     "result": "You hold a right to cotton that will never be delivered, and the victors will write the debt's nullity into their constitution.",
+     "effects": [
+      {
+       "kind": "shock",
+       "params": {
+        "kind": "markets",
+        "size": 0.12
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse",
+     "result": "You miss the premium and keep clear of a cause your Lancashire clients pity and your conscience does not.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 3
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "At famine prices the cotton option is worth more than the bond; take all they will give us.",
+    "prudence": "Cotton that cannot be shipped is not collateral; sell any allotment on the first day.",
+    "court": "The Government will not recognise the rebels; a London house too close to them invites trouble.",
+    "conscience": "This republic was founded to keep men in chains, and its cotton is picked by slaves."
+   },
+   "precedent": "The Confederate Erlanger cotton loan, March 1863, oversubscribed in London; Confederate debt voided by the Fourteenth Amendment, 1868",
+   "source": "Gentry, 'A Confederate Success in Europe: The Erlanger Loan', Journal of Southern History (1970)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_canal_bridge",
+   "title": "The Cabinet needs millions by Monday",
+   "text": "A bankrupt foreign ruler is selling his shares in a strategic canal, Parliament is not sitting, and the Prime Minister cannot borrow without it. {court} asks your house to advance the purchase money at once, against nothing but its word, for a commission.",
+   "art": "crown",
+   "target": "seat_sovereign",
+   "hazard": 0.015,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1860,
+    1914
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2.0
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.07
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 10
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Two and a half per cent for three months' credit to the safest borrower alive.",
+    "prudence": "Make sure the coin is genuinely spare; millions out of the till makes for a long weekend.",
+    "court": "Say yes before he finishes the sentence; this is how a house becomes the Government's banker.",
+    "conscience": "Parliament has not voted the money; lend, but insist the Commons be told at once."
+   },
+   "precedent": "N M Rothschild & Sons advanced £4 million for the British purchase of the Khedive's Suez Canal shares, November 1875",
+   "source": "Ferguson, The House of Rothschild, vol. 2: The World's Banker 1849–1999 (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "lombard_bondholders_settle",
+   "title": "{court} settles with the bondholders",
+   "text": "After years of arrears, and a bondholders' council that never stopped writing letters, {court} offers terms: arrears capitalised, coupons reduced, and creditors handed railways, guano rights or a share of the customs in exchange for the old bonds. It is less than par, and more than anyone expected.",
+   "art": "letter",
+   "target": "lent_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1868,
+    1950
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take the new paper and the railways; a defaulter that has settled is a borrower again.",
+    "prudence": "Take the cash portion and sell the rest before the next revolution.",
+    "court": "Accept quickly; the Foreign Office wants this matter closed and will note who obliged.",
+    "conscience": "The small holders must get the same terms as the syndicate; insist on it at the council."
+   },
+   "precedent": "The Grace Contract, 1889: Peru's bondholders took its railways and guano through the Peruvian Corporation, 1890; the Corporation of Foreign Bondholders, founded 1868",
+   "source": "Marichal, A Century of Debt Crises in Latin America (1989)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "lombard_atlantic_panic",
+   "field": "window",
+   "why": "US specie suspension, packet-borne news and a 10% Bank Rate under the Bank Charter Act belong to the gold-standard era. Bank Rate never reached 10% after 1914."
+  },
+  {
+   "id": "lombard_presidency_rising",
+   "field": "window",
+   "why": "The card depends on Company rule ('the Company will be blamed and the Crown will step in'), which ended with the Government of India Act 1858. A 1850–1947 window is anachronistic."
+  },
+  {
+   "id": "lombard_forged_acceptances",
+   "field": "text",
+   "why": "Bills of exchange were forged by counterfeiting acceptors' signatures and stamps, not by engraving. The 1873 Bidwell forgeries were penmanship and lithographed forms."
+  },
+  {
+   "id": "lombard_rival_crash",
+   "field": "advice",
+   "why": "In 1882 the Banque de France lent to the agents de change to let the Bourse settle. It did not organise the liquidation of the Union Générale's book."
+  },
+  {
+   "id": "lombard_bank_rate_call",
+   "field": "window",
+   "why": "One choice offers lending against Treasury bills, and British Treasury bills were first issued in 1877."
+  },
+  {
+   "id": "lombard_cotton_loan",
+   "field": "text",
+   "why": "A loan cannot be oversubscribed before it opens; the Erlanger lists were oversubscribed on opening. The cotton was deliverable within six months of peace or at Confederate ports."
+  }
+ ]
+}

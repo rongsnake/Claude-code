@@ -1,0 +1,1670 @@
+{
+ "era": "medici",
+ "cards": [
+  {
+   "id": "medici_court_depositary",
+   "title": "{court} seeks a depositary",
+   "text": "The treasurer of {court} wants one house to hold its receipts and advance against revenues not yet collected: tithes, annates, a tax farm falling due next year. The account brings prestige, a float of coin and every prelate's remittance business. It also brings a debtor no court in Christendom will let you sue.",
+   "art": "seal",
+   "target": "reachable_sovereign",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.25,
+      "yield": 0.12,
+      "turns": 3
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Every bishop's remittance will pass through our counter; the advance is the price of the door.",
+    "prudence": "Advance against next year's tithes only what this year's tithes have already paid in.",
+    "court": "Refuse, and the account goes to a rival who will dine with the treasurer every week.",
+    "conscience": "Holding the Church's money is honourable; charging it disguised interest on advances is another matter."
+   },
+   "precedent": "The Medici as depositaries of the Apostolic Chamber under Martin V and Eugenius IV, advancing against papal revenues; the Curia's account was kept in Florence during Eugenius's residence, 1434–36 and 1439–43",
+   "source": "G. Holmes, 'How the Medici Became the Pope's Bankers', in Rubinstein (ed.), Florentine Studies (1968); R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 9",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_duke_war_chest",
+   "title": "A duke at war wants the branch's money",
+   "text": "{court} is raising an army, and its treasurer calls on your branch manager with a courtier's smile: an advance, unsecured, against aides voted by estates that have not yet met. The manager writes that refusal would cost the branch its licence to export and its best customers at court.",
+   "art": "war",
+   "target": "reachable_sovereign",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.5,
+      "yield": 0.2,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Twenty in the hundred from a sovereign prince beats anything the wool trade will pay this decade.",
+    "prudence": "This sum is twice the branch's capital; if he loses one battle, the branch is his.",
+    "court": "A duke who owes you is a duke who must protect you; his debt is your safe-conduct.",
+    "conscience": "Lending a prince money for a war of conquest is not commerce, and the confessor will say so."
+   },
+   "precedent": "After the Medici lifted their ban on lending to princes (1471), Tommaso Portinari's Bruges branch lent Charles the Bold sums far beyond its capital, 1471–77",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 13",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_prince_slain",
+   "title": "{court}'s prince falls in battle",
+   "text": "A courier brings the news: the prince was found days after the battle, stripped, frozen into a pond. His heir acknowledges the debts in principle and pays nothing in fact, and the revenues assigned to you turn out to be pledged twice over to others.",
+   "art": "war",
+   "target": "lent_sovereign",
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.75
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -6
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A courier from the camp says the Swiss are coming down from the hills in greater numbers than anyone counted.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "The heir needs bankers more than his father did; he will honour the debt to keep the credit.",
+    "prudence": "Write it down now, sell the claims at whatever a Genoese will pay, and stop lending.",
+    "court": "Send condolences and a partner to the new court before the other houses' partners arrive.",
+    "conscience": "We lent for a war and the war has collected its debt; let the house learn humility."
+   },
+   "precedent": "Charles the Bold killed at Nancy, 5 January 1477; the Medici Bruges branch, crippled by his debts, was wound up in 1478–80",
+   "source": "R. Vaughan, Charles the Bold (1973); R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 13",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_king_pays_licences",
+   "title": "{court} pays in licences, not coin",
+   "text": "The king acknowledges every penny and offers to repay through licences to export wool free of custom, once the war, the parliament and the harvest allow. The branch takes the licences, buys the wool and ships it, and finds it has become a wool merchant whose capital is a king's debt.",
+   "art": "crown",
+   "target": "lent_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.35
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Custom-free wool sells dear in Flanders; we may come out ahead of a cash repayment.",
+    "prudence": "Licences are a promise to let us pay ourselves; book the debt at what the wool will fetch.",
+    "court": "Take whatever form of payment the king offers, and thank him for it in writing.",
+    "conscience": "Better slow payment honestly offered than a lawsuit against an anointed king."
+   },
+   "precedent": "The Medici London branch's loans to Edward IV during the Wars of the Roses, part-repaid through wool-export licences; the branch was wound up with heavy losses, 1478–80",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 13",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_regime_falls",
+   "title": "The regime falls in {city}; its bankers are hunted",
+   "text": "A foreign king on the march demands passage, and the ruling family's heir surrenders fortresses without consulting the councils. Within the week the city expels him, and a crowd goes looking for his friends' strongboxes. Anyone with money at a house thought close to the old regime wants it back today.",
+   "art": "riot",
+   "target": "seat",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 40,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.25
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": -10
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the foreign king's harbingers are already chalking doors for billets in the next valley.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Princes come and go; merchants still need bills of exchange the morning after a revolution.",
+    "prudence": "Get coin into the till and the ledgers out of the building before the bells ring.",
+    "court": "We were too close to the old regime; send gifts to the new councillors today.",
+    "conscience": "Return what depositors ask for without haggling, and the crowd may spare the house."
+   },
+   "precedent": "Charles VIII's march through Tuscany and the expulsion of Piero de' Medici, November 1494, after which Medici property was seized; also Cosimo de' Medici's exile by the Albizzi faction, 1433",
+   "source": "F. Guicciardini, Storia d'Italia (1537–40), bk I; R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 15",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_run_on_benches",
+   "title": "A roar on the square: a run in {city}",
+   "text": "One bench stops payment, then another. The state has borrowed from all of them to pay for the fleet, and the fleet has just been beaten. When the next banker opens his shutters a crowd is already waiting, and they want coin, not a transfer in the book.",
+   "art": "riot",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 3
+    },
+    {
+     "signal": "leverage",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.35
+     }
+    }
+   ],
+   "rumour": {
+    "text": "On the square they say a great bench has been sending its silver to the mint by night.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "A run is noise; open late, look calm, and tell them the books are sound.",
+    "prudence": "Pay everyone who asks, at once and in coin, and let the crowd watch the sacks open.",
+    "court": "Ask the councils to guarantee the benches; they owe the benches their fleet.",
+    "conscience": "These are widows' and guildsmen's savings; we must not shut the shutters on them."
+   },
+   "precedent": "The Venetian banking crisis of 1499: the Garzoni and Lippomano banks failed early in the year and a crowd ran on the Pisani bank, as the Republic prepared for the Turkish war that brought defeat at Zonchio that August",
+   "source": "R. C. Mueller, The Venetian Money Market: Banks, Panics, and the Public Debt, 1200–1500 (1997); M. Sanudo, Diarii",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_plague_returns",
+   "title": "The pestilence returns to {city}",
+   "text": "The death lists lengthen. Shops shut, the courts adjourn, and debtors die before they can be dunned. The partners who can leave for their villas in the hills, taking their deposits with them, and the books stay with a junior clerk and the cashier.",
+   "art": "plague",
+   "target": "branch_city",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 10,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.15,
+      "panic": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Heirs will need loans to settle estates; this is the season to be open when others shut.",
+    "prudence": "Collect what is due now, before debtors and their witnesses are in the ground.",
+    "court": "Lend the commune what it needs for the pest-houses; it will remember who stayed.",
+    "conscience": "Forgive the debts of the dead poor; the house will not miss them, and God sees."
+   },
+   "precedent": "Recurrent plague in Florence, notably 1400, 1417, 1424, 1430 and 1478–79, each emptying the city of its wealthier citizens",
+   "source": "A. G. Carmichael, Plague and the Poor in Renaissance Florence (1986)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_forced_loan",
+   "title": "{court} levies another forced loan",
+   "text": "The war goes badly and the councils vote another forced loan, assessed on every household's estimated wealth. Bankers are rated at the top of the scale, and the credits go onto the Monte at five per cent nominal, trading well below par. Refuse, and your name goes on the list of defaulters, barred from office.",
+   "art": "coin",
+   "target": "seat_sovereign",
+   "hazard": 0.05,
+   "once": false,
+   "cooldown": 5,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.08,
+      "yield": 0.03
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The war officers are said to have asked the Monte officials how much more the city can bear.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Pay it and buy more Monte credits cheap from smaller men who cannot carry theirs.",
+    "prudence": "Keep a fifth of deposits in coin precisely so that this does not empty the till.",
+    "court": "Pay early and visibly; the assessors remember who argued about the rate.",
+    "conscience": "Interest on forced loans is compensation for compulsion; the canonists allow it."
+   },
+   "precedent": "Florentine prestanze levied repeatedly during the wars with Milan (1423–28) and Lucca (1429–33), and credited to the Monte Comune",
+   "source": "A. Molho, Florentine Public Finances in the Early Renaissance, 1400–1433 (1971)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_monte_slides",
+   "title": "Monte credits slide on the exchange",
+   "text": "Interest on the state's funded debt is being paid late and partly, and the market in credits has taken note. Partners who bought them as a safe home for idle coin now hold paper quoted at a fraction of par. Those who took them as collateral want more.",
+   "art": "ledger",
+   "target": "cities",
+   "cities": [
+    "venice",
+    "florence",
+    "genoa"
+   ],
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Credits at a deep discount are a bargain; the Republic has never repudiated its Monte.",
+    "prudence": "Mark the credits at what they fetch on the Rialto, and stop taking them as collateral at par.",
+    "court": "Selling now is read at the palace as a vote against the war; hold.",
+    "conscience": "Buying credits from ruined widows at a third of par is not a sin, but it is close."
+   },
+   "precedent": "The steep fall in Venetian Monte Vecchio quotations and arrears of interest through the wars with Milan and the Turk, 1420s–1470s",
+   "source": "G. Luzzatto, Il debito pubblico della Repubblica di Venezia (1963); R. C. Mueller, The Venetian Money Market: Banks, Panics, and the Public Debt, 1200–1500 (1997)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_manager_conceals",
+   "title": "The {city} manager has been hiding bad debts",
+   "text": "A visiting partner audits the books and finds debtors carried at full value who have not paid in years, with the hole covered by borrowing from other houses at exchange. The manager's letters were cheerful to the last; his balance sheets were annual, and late.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3
+    },
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.25
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A Lucchese at the fair says your man borrows from other houses at ten in the hundred.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Every branch carries a few slow debtors; recalling a manager who brings volume is folly.",
+    "prudence": "Send an auditor with authority to open every chest and read every private letter.",
+    "court": "Settle quietly; a trial would tell the fair the house cannot govern its own.",
+    "conscience": "A man who lies in the ledger lies in confession too; remove him."
+   },
+   "precedent": "Lionetto de' Rossi, Medici manager at Lyon, concealed bad debts and borrowed to mask losses; recalled and imprisoned for debt in Florence, 1485",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_galley_seized",
+   "title": "A privateer takes the galley out of {city}",
+   "text": "The galley sailed under a neutral prince's flag, with bales of cloth and a painted altarpiece for a partner's chapel. A privateer of the German towns took her in the Channel, and his masters say she carried enemy goods. The insurers in Florence and Bruges are already arguing over the wording of the policy.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "bruges",
+    "london",
+    "lisbon"
+   ],
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Insure the next voyage heavier and ship again; the Flanders route still pays.",
+    "prudence": "Never again put a season's goods in one hull; split cargoes across sailings.",
+    "court": "We flew a neutral flag; the German towns will return the cargo once the Duke protests.",
+    "conscience": "Pray for the crew, many of whom will be held for ransom."
+   },
+   "precedent": "Danzig privateer Paul Beneke seized the Burgundian-flagged galley San Matteo, operated by the Medici Bruges branch, in the Channel in April 1473; Memling's Last Judgment, aboard for Angelo Tani, is still in Gdańsk",
+   "source": "P. Dollinger, The German Hansa (1970); R. de Roover, The Rise and Decline of the Medici Bank (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_debasement",
+   "title": "The mint of {city} cuts the coin",
+   "text": "A prince short of money orders the mint to strike more pieces from the mark and cries down the old coin. Debts written in money of account are now paid in worse metal, bills drawn on the city fetch fewer florins, and foreign merchants hold back their goods until they see what the money is worth.",
+   "art": "coin",
+   "target": "branch_city",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "More coins mean more trade and higher prices for our goods; this will lift the market.",
+    "prudence": "Shorten every bill on the city and hold balances in gold, not the local money.",
+    "court": "Do not complain at the mint; the prince takes protests about his coin personally.",
+    "conscience": "A prince who debases his coin steals from his people; we must not profit by it."
+   },
+   "precedent": "Maximilian's debasements of the Flemish coinage during his war with the Flemish towns, 1485–92; also the debasements of Henry IV of Castile, 1460s",
+   "source": "P. Spufford, Monetary Problems and Policies in the Burgundian Netherlands, 1433–1496 (1970); A. MacKay, Money, Prices and Politics in Fifteenth-Century Castile (1981)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_common_coinage",
+   "title": "{city} gets a sound common coin",
+   "text": "The Duke orders one coinage for all his provinces, struck to a fixed standard and current in every town he rules. Exchange between Flemish groats and Brabant money stops being a guessing game. The money-changers grumble; everyone else draws bills with more confidence.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "bruges",
+    "antwerp"
+   ],
+   "hazard": 0.015,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1430,
+    1440
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "A sound coin draws the English and the Germans; lend more to Flemish cloth men now.",
+    "prudence": "Good news, but reforms are undone at the next war; keep the bills short anyway.",
+    "court": "Write to the Duke's treasurer with congratulations and an offer to supply the mint.",
+    "conscience": "Honest money is a moral good; it ends a hundred small frauds at the changers' tables."
+   },
+   "precedent": "Philip the Good's monetary unification of the Burgundian Low Countries, 1433–34",
+   "source": "P. Spufford, Monetary Problems and Policies in the Burgundian Netherlands, 1433–1496 (1970)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_dry_exchange_choice",
+   "title": "The confessor raises the matter of the exchange",
+   "text": "Your confessor says that bills drawn to Bruges and back with no goods behind them are dry exchange, usury by another name. A man who dies without restoring ill-gotten gains, he adds, dies badly. The great banker of the age, he reminds you, was told by the Pope to rebuild a convent.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Endow a convent and its library",
+     "result": "The friars pray for the house and the Signoria notes your piety; the gift is drawn from the partners' accounts.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 8
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 3
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.03
+       }
+      }
+     ]
+    },
+    {
+     "label": "Confine the house to real exchange on real trade",
+     "result": "Your conscience is clear, and the clients who wanted speculative exchange take it to a rival.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Thank him and change nothing",
+     "result": "The house keeps its profits, and a preacher in the square keeps its name in his sermons.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -5
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Exchange is a sale of money in another place; no doctor of the Church has ever called it usury.",
+    "prudence": "Fictitious exchange keeps capital locked in bills with no goods behind them; trim it on business grounds.",
+    "court": "A visible benefaction buys more goodwill at the palace than any loan we could make.",
+    "conscience": "Restitution now is cheaper than restitution by your executors, and far cheaper than purgatory."
+   },
+   "precedent": "Eugenius IV's counsel that Cosimo de' Medici make restitution by rebuilding San Marco, 1437–44; Antoninus of Florence condemns dry exchange in his Summa (c. 1440–59)",
+   "source": "Vespasiano da Bisticci, Vite (c. 1480s); R. de Roover, San Bernardino of Siena and Sant'Antonino of Florence (1967)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_fairs_moved",
+   "title": "The king moves the great fairs to {city}",
+   "text": "The king forbids his subjects to attend the fairs beyond his frontier and grants {city} four free fairs a year, with foreign coin allowed to circulate and dead merchants' goods safe from the crown. The Italian houses are already pricing removal carts.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "lyon"
+   ],
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1460,
+    1470
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.25
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Follow the fair: open in Lyon before the Lucchese and the Genoese take the best houses.",
+    "prudence": "Move the branch, but settle every account at the old fair first.",
+    "court": "The king has done us a favour; he will expect one in return before long.",
+    "conscience": "A fair is a fair; make sure the exchange settled there is on real goods."
+   },
+   "precedent": "Louis XI's ordinances of 1462–63 diverting the Geneva fairs to Lyon; the Medici moved their Geneva branch to Lyon in 1466",
+   "source": "J.-F. Bergier, Genève et l'économie européenne de la Renaissance (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_credit_called",
+   "title": "A great house calls in its loans in {city}",
+   "text": "The patriarch of the city's largest bank is dead. His son, advised by a friend who wishes him ill, calls in loans to see what his father left. Merchants who borrowed on the old man's word must find coin within the week; several shut their shops, and every creditor in town is now looking hard at every debtor.",
+   "art": "letter",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1.5
+    },
+    {
+     "signal": "city_heat",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the young master has asked his factors for a list of every sum lent on his father's word.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "His failures are our customers; lend to sound men he has abandoned, at a fair rate.",
+    "prudence": "Our debtors also owe him; expect them to pay him first and us last.",
+    "court": "The family still rules the city; do not be seen profiting from the son's error.",
+    "conscience": "Do not press honest debtors into ruin because a frightened rival did."
+   },
+   "precedent": "Piero de' Medici's recall of loans after Cosimo's death (1464) and the wave of Florentine failures in 1464–65",
+   "source": "N. Machiavelli, Istorie fiorentine (1532), bk VII; R. de Roover, The Rise and Decline of the Medici Bank (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_estate_choice",
+   "title": "A merchant prince dies and leaves it all to the poor",
+   "text": "Your largest correspondent has died, leaving his fortune to a foundation for the poor administered by the commune. His account with you shows a balance in his favour, and your letters show debts of his you never booked. The foundation's notaries are at the door with the will.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Pay the balance and forget what he owed",
+     "result": "The commune and the preachers praise the house, and the cash leaves the till.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 6
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Set off his debts and pay the difference",
+     "result": "Lawful and tidy; the notaries grumble, but the merchants' court upholds you.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Litigate for every penny",
+     "result": "You may win in three years; the town will remember who sued the poor.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -8
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -6
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "His letters are evidence; the merchants' court will set off debts, so claim them all.",
+    "prudence": "Set off and settle; a three-year lawsuit ties up clerks and coin.",
+    "court": "The commune administers the foundation; suing it is suing the Signoria.",
+    "conscience": "A man's last gift to the poor should not be eaten by his banker's lawyers."
+   },
+   "precedent": "Francesco di Marco Datini of Prato died in August 1410, leaving his estate to the Ceppo dei poveri, whose officers spent years settling his accounts with partners and correspondents",
+   "source": "I. Origo, The Merchant of Prato (1957)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_town_revolt",
+   "title": "{city} shuts its gates on its prince",
+   "text": "The guilds have taken the market square and the prince's officers are in the town gaol. This time the prince himself is held, in a house on the square. His armies close the roads and the river, and he orders the foreign merchant nations to leave for a loyal town.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "bruges"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    },
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The weavers' deans have been meeting by night, and the militia captains with them.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Revolts end; the town will need credit to pay its fine, and we will be there.",
+    "prudence": "Move ledgers and coin to Antwerp until the gates open and the fine is settled.",
+    "court": "Stay neutral in word and loyal to the prince in deed; princes win sieges.",
+    "conscience": "Do not finance either side's soldiers; the poor of the town will pay for both."
+   },
+   "precedent": "The Bruges revolts of 1436–38 and 1488, when the town held Maximilian captive in the Craenenburg (February–May) and he ordered foreign merchants to Antwerp",
+   "source": "J. A. Van Houtte, 'The Rise and Decline of the Market of Bruges', Economic History Review 19 (1966)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_nations_move",
+   "title": "The foreign nations move to {city}",
+   "text": "The English cloth fleet and the South German silver men already meet at the Brabant fairs. Now the Portuguese and the Italians are taking houses on the Scheldt. A bench here sees English kerseys, German silver and Portuguese sugar and Guinea pepper all in one season.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "antwerp"
+   ],
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1470,
+    1500
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.03
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Open on the Scheldt now; in twenty years this will be the counting-house of Europe.",
+    "prudence": "Bruges has been the market of the North for two centuries; it will be again.",
+    "court": "The prince favours the loyal town; being seen there pleases him.",
+    "conscience": "A new market is a fresh start; let the branch write honest articles from day one."
+   },
+   "precedent": "The shift of the Low Countries' entrepôt from Bruges to Antwerp, 1480s–1500s, including Maximilian's orders of 1484 and 1488 and the Portuguese crown's move of its factory to Antwerp, c. 1499",
+   "source": "H. Van der Wee, The Growth of the Antwerp Market and the European Economy (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_alum_choice",
+   "title": "Alum in the hills: a monopoly is offered",
+   "text": "A prospector has found alum in {court}'s lands, the best since the Turks took the eastern mines. The court offers your house the farm of the mines and the sale of the alum in the West, with a decree threatening anyone who buys the Turkish kind. The margins are princely, and so are the advances the court will expect.",
+   "art": "gold",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1455,
+    1500
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Take the farm and the cartel",
+     "result": "Alum profits flow, and the cloth towns curse your prices.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Take a share of the farm, refuse the advances",
+     "result": "A smaller profit, and a cooler welcome at court.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline",
+     "result": "A rival takes the farm, and with it the court's ear.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -8
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Every dyer from Florence to Flanders needs alum; a monopoly is the best business in Christendom.",
+    "prudence": "The farm is fine; the advances are the hook. Take the alum, not the prince's debts.",
+    "court": "Refusing a gift from {court} is an insult it will not forget.",
+    "conscience": "A cartel enforced by religious threat raises the poor weaver's costs; think hard before profiting."
+   },
+   "precedent": "Alum discovered at Tolfa in the Papal States, 1461–62; the Medici held the papal alum contract 1466–76, and the Volterra alum dispute ended in the sack of the town in 1472",
+   "source": "J. Delumeau, L'alun de Rome, XVe–XIXe siècle (1962); R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 7",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_plot_sequestration",
+   "title": "After a failed plot, your goods in {city} are seized",
+   "text": "A conspiracy against the ruling family of your seat has failed in blood, and the prince who blessed it is furious at its failure. He declares the house's goods in {city} forfeit and its claims void, and he releases its debtors from paying. The rival who replaced you at his court is pleased to help with the inventory.",
+   "art": "seal",
+   "target": "branch_city",
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    },
+    {
+     "signal": "sov_exposure",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": -10
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Couriers are riding between a prelate's palace and a rival bank at all hours.",
+    "false_rate": 0.45
+   },
+   "advice": {
+    "growth": "Hold your ground; no prince can afford to keep the largest bank out of his city.",
+    "prudence": "Move liquid assets out of every city that prince controls, before the decree is sealed.",
+    "court": "Make terms through a third prince; confiscations are bargaining chips, not verdicts.",
+    "conscience": "Murder in a cathedral; we must not be seen bargaining with those who blessed it."
+   },
+   "precedent": "After the Pazzi conspiracy (26 April 1478), Sixtus IV excommunicated Lorenzo de' Medici and ordered Medici assets in Rome seized; he had already transferred the papal depository to the Pazzi in 1474",
+   "source": "L. Martines, April Blood (2003); R. de Roover, The Rise and Decline of the Medici Bank (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_turkish_war",
+   "title": "War with the Turk closes the eastern trade",
+   "text": "The Republic has lost an island fortress and the fleet that should have relieved it, and the Sultan's horsemen burn villages within sight of the lagoon's bell-towers. Trade with the Black Sea stops, war taxes rise, and the auction of galley voyages finds no bidders.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "constantinople",
+    "venice"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.14
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Pilots back from the islands say the Sultan is building galleys at Gallipoli by the hundred.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "War means freight rates, insurance premiums and state loans; a good bank profits from all three.",
+    "prudence": "Call in loans on eastern voyages and stop insuring hulls bound past Modon.",
+    "court": "The Republic always makes peace within a season or two; lend to the war and wait.",
+    "conscience": "A war against the infidel deserves our help, but not at usurious rates."
+   },
+   "precedent": "The Venetian–Ottoman war of 1463–79: Negroponte lost in 1470, Ottoman raiders in Friuli 1477–78",
+   "source": "F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_pepper_monopoly",
+   "title": "The Sultan fixes the price of pepper in {city}",
+   "text": "The Sultan's agents have made pepper a royal monopoly: Western merchants must buy from his stores at his price, and private sales are punished. The consuls protest, the galley masters threaten to sail home empty, and in the end everyone pays.",
+   "art": "grain",
+   "target": "cities",
+   "cities": [
+    "alexandria"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Dearer pepper in Alexandria means dearer pepper in Bruges; finance the stock and wait.",
+    "prudence": "Cut credit to spice buyers until we see whether the galleys sail full.",
+    "court": "The Republic will negotiate; do nothing that undercuts its consuls.",
+    "conscience": "Paying an infidel's monopoly price is lawful; smuggling around it is not."
+   },
+   "precedent": "Mamluk Sultan Barsbay's pepper monopoly imposed on Venetian and other Western merchants at Alexandria, from 1428 into the 1430s",
+   "source": "E. Ashtor, Levant Trade in the Later Middle Ages (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_dearth",
+   "title": "Dearth: the harvest fails around {city}",
+   "text": "Two wet summers running, and the price of wheat has trebled. Weavers spend their wages on bread, cloth sells slowly, and the commune borrows to buy grain from Sicily. Your merchant debtors ask for time, and the grain dealers ask for credit.",
+   "art": "grain",
+   "target": "branch_city",
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 8,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.1
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Finance the grain ships; the commune pays well and pays first in a famine.",
+    "prudence": "Give good debtors time, cut new cloth credit, and keep coin for depositors who must buy bread.",
+    "court": "Lend to the commune's grain office at cost; it is remembered at the next election.",
+    "conscience": "Speculating in bread while the poor starve is the sin the preachers will name."
+   },
+   "precedent": "The north-western European dearth of 1437–40, with grain prices in England and the Low Countries at their highest of the century",
+   "source": "B. M. S. Campbell, The Great Transition (2016)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_rival_exiled",
+   "title": "A rival house is exiled; its clients walk in",
+   "text": "The councils have banished a great banking family for plotting, and its partners scatter to Bologna and Bruges. Their correspondents need a new house to honour their bills, and their clerical clients need someone to remit their dues to the Curia.",
+   "art": "letter",
+   "target": "seat",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 20,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.1
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Write to every one of their correspondents tonight; the Curia's business is the prize.",
+    "prudence": "New deposits are welcome, but new borrowers from a fallen house need fresh scrutiny.",
+    "court": "Their exile is political; be careful not to look like the faction that profited.",
+    "conscience": "Honour their bills faithfully; the exiled have dependants too."
+   },
+   "precedent": "The exile of the Alberti from Florence (1401 and after) broke up their papal banking business, which passed largely to the Medici",
+   "source": "G. Holmes, 'How the Medici Became the Pope's Bankers', in Rubinstein (ed.), Florentine Studies (1968)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_guinea_gold",
+   "title": "Guinea gold reaches {city}",
+   "text": "The Crown's new fortress on the Guinea coast sends home gold dust by the caravel-load, and the King's factors need bankers to turn it into bills on Bruges and Florence. A Florentine already settled in the city has made himself indispensable to the Crown's African trade.",
+   "art": "gold",
+   "target": "cities",
+   "cities": [
+    "lisbon"
+   ],
+   "hazard": 0.03,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1482,
+    1500
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Gold from source, without Moorish middlemen: open in Lisbon and buy bills on the Crown.",
+    "prudence": "Gold from beyond the desert is a sailor's tale; wait for a second fleet.",
+    "court": "The Crown of Portugal wants Italian bankers; arrive with a gift for the treasurer.",
+    "conscience": "Much of this coast trades in people as well as gold; finance the one, not the other."
+   },
+   "precedent": "São Jorge da Mina founded on the Gold Coast, 1482; Florentine merchant Bartolomeo Marchionni prominent in Lisbon's African trade",
+   "source": "J. Vogt, Portuguese Rule on the Gold Coast, 1469–1682 (1979)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_public_bank_shuts",
+   "title": "{city}'s public bank shuts its counters",
+   "text": "The house of the state's creditors, which also kept current accounts, has stopped paying in coin. Interest on its shares will be paid in instalments years late, and those instalments now trade at a discount on the square. Merchants who kept balances there scramble for cash.",
+   "art": "ledger",
+   "target": "cities",
+   "cities": [
+    "genoa"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.08
+     }
+    }
+   ],
+   "rumour": {
+    "text": "In the Banchi they say the protectors of the House have stopped paying out in silver.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Buy the deferred instalments at a discount; the House always pays in the end.",
+    "prudence": "Expect its depositors to come to us for cash; fill the till before they do.",
+    "court": "The House is the Republic's other self; do not talk it down in public.",
+    "conscience": "Buying a widow's interest coupon at half its value is legal; offer her a fair price."
+   },
+   "precedent": "The Casa di San Giorgio suspended its banking business in 1444–45, while its interest (paghe) was paid years in arrears and traded at a discount",
+   "source": "J. Heers, Gênes au XVe siècle (1961)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_financier_falls_choice",
+   "title": "{court}'s financier is arrested; his estate is for sale",
+   "text": "{court}'s great merchant-financier, master of the mint and lender to the king, is in prison on charges of poisoning, fraud and selling arms to the infidel. His debts to the crown are tripled; the crown's debts to him are forgotten. The commissioners are auctioning his galleys and houses at half their worth.",
+   "art": "crown",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 30,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Bid for the estate",
+     "result": "Bargains, and the uneasy knowledge that you bought a man's ruin from a king who could do it again.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.07
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 5
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Help his factors move his goods abroad",
+     "result": "His family and the merchants will remember; so will the king.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -12
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Stand aside",
+     "result": "Nothing gained, but you note carefully how this court settles its debts.",
+     "effects": [
+      {
+       "kind": "flavour",
+       "params": {}
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Galleys and warehouses at half price; the estate will never be cheaper.",
+    "prudence": "A king who ruins his own banker to cancel a debt is a borrower to avoid.",
+    "court": "Bid, and be seen bidding; the crown needs buyers to make the confiscation respectable.",
+    "conscience": "The charges are a pretext for erasing a debt; profiting from it makes us party to it."
+   },
+   "precedent": "Jacques Coeur, Charles VII's argentier, arrested July 1451 and condemned in 1453; his property was confiscated and sold, and the king's debts to him lapsed",
+   "source": "M. Mollat, Jacques Coeur ou l'esprit d'entreprise au XVe siècle (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_mines_pledged",
+   "title": "{court} pledges its silver mines",
+   "text": "{court} needs coin for a war and offers the output of its silver mines at a fixed price below the mint's, delivered monthly until the loan is paid. Security you can weigh is rare from a prince. But the mines lie in his country, under his judges, and the next prince may not feel bound.",
+   "art": "gold",
+   "target": "reachable_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1450,
+    1500
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.3,
+      "yield": 0.15,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Silver below mint price is repayment you can melt; this is the safest princely loan there is.",
+    "prudence": "Lend no more than three months of output, and send our own man to the smelter.",
+    "court": "A prince who pledges his mines to us is binding his own hands; take it.",
+    "conscience": "Pledged revenues are honest security; just ensure the rate is no usury in disguise."
+   },
+   "precedent": "Archduke Sigismund of Tyrol pledged the Schwaz silver output to Jakob Fugger and other lenders against loans, 1487–88",
+   "source": "M. Häberlein, The Fuggers of Augsburg (2012)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_free_companies",
+   "title": "Free companies on the roads near {city}",
+   "text": "Discharged soldiers who call themselves companies, and whom the country people call flayers, are living off the land, ransoming abbeys and holding up the mule trains. Carriers want double for the road, couriers go by night, and the fair is thin.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "avignon",
+    "lyon"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1435,
+    1445
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.12
+     }
+    },
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Settle by bill, not by moving coin; the roads' danger is the exchange banker's profit.",
+    "prudence": "No specie on the roads until the companies move on; let balances wait at the fair.",
+    "court": "Offer the king's captain a loan to pay them off; he will pass through again.",
+    "conscience": "Do not buy their loot, however cheap; it is stolen from monasteries and peasants."
+   },
+   "precedent": "The Écorcheurs who, after the Treaty of Arras (1435), ravaged Burgundy, Champagne, Lorraine and the Rhône valley until 1444",
+   "source": "P. Contamine, Guerre, état et société à la fin du Moyen Âge (1972)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_riot_italians",
+   "title": "Apprentices riot against the Italians in {city}",
+   "text": "A quarrel in the street between a mercer's apprentice and a Lombard ended with the apprentice arrested, and the next day the crowd sacked the Italians' houses. The Italian nations talk of moving to Winchester. The city's merchants, who owe them money, say nothing.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "london"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    },
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Southampton is closer to the galleys anyway; move the warehouse and keep trading.",
+    "prudence": "Get the books and plate out of the house before the apprentices come back.",
+    "court": "Petition the king's council for protection; the crown needs our customs duties.",
+    "conscience": "Do not answer violence by withholding credit from honest English mercers."
+   },
+   "precedent": "Anti-Italian riots in London, 1456–57, after which Italian merchants withdrew for a time to Winchester and Southampton",
+   "source": "A. A. Ruddock, Italian Merchants and Shipping in Southampton, 1270–1600 (1951)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_wealth_return_choice",
+   "title": "{court} demands a sworn return of all your wealth",
+   "text": "A new tax replaces guesswork with arithmetic: every household must file a sworn return of property, investments, debts and dependants, and bankers must list balances owed by and to them. Officials can check returns against other houses' books. Your return will be read by your rivals' cousins.",
+   "art": "scales",
+   "target": "seat_sovereign",
+   "hazard": 0.02,
+   "once": true,
+   "cooldown": 0,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "File honestly: every branch and balance",
+     "result": "You pay the full assessment and gain a name for candour at the palace.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.06,
+        "yield": 0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Leave the foreign branches out",
+     "result": "The assessment is light; the officials' cousins at the fairs may notice.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "No official can read a Bruges ledger; leave the branches out and keep the capital working.",
+    "prudence": "Declare it all; bad debts are deductible, and we have plenty to list.",
+    "court": "The assessors want a model return from a great house; give them one.",
+    "conscience": "A sworn return is an oath; a false oath is a sin whatever the tax."
+   },
+   "precedent": "The Florentine catasto of 1427, requiring sworn declarations of assets including business balances; the Medici returns survive",
+   "source": "D. Herlihy and C. Klapisch-Zuber, Tuscans and Their Families (1985)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_manager_share_choice",
+   "title": "The {city} manager wants a bigger share",
+   "text": "Your branch manager writes that he made the branch and the branch makes the house's profits. He wants the new articles to give him a larger share, his name in the firm and a free hand with the court's business. He hints that a rival house has made him an offer.",
+   "art": "letter",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Grant the share and the free hand",
+     "result": "He stays, grateful and unsupervised.",
+     "effects": [
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.15
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.03
+       }
+      }
+     ]
+    },
+    {
+     "label": "Grant the share, keep the restrictions in the articles",
+     "result": "He signs, sulks, and writes fewer letters.",
+     "effects": [
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.05
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse and recall him",
+     "result": "His successor is honest and new; some clients follow the old man to his new house.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.06
+       }
+      },
+      {
+       "kind": "control",
+       "params": {
+        "delta": 0.1
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "He knows the court and the fair; a bigger share keeps the best man we have.",
+    "prudence": "A share, perhaps; a free hand with princes, never. Put the lending limit in the articles.",
+    "court": "His friendships at court are the branch; recall him and we lose the duke.",
+    "conscience": "A man who threatens to leave for a rival is already half gone; keep him on a short rein."
+   },
+   "precedent": "Tommaso Portinari's 1471 articles with Lorenzo de' Medici, which made him senior partner at Bruges with wide latitude after Angelo Tani withdrew",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank (1963), ch. 13",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "medici_jubilee",
+   "title": "Jubilee year: pilgrims pour into {city}",
+   "text": "A holy year has been proclaimed, and pilgrims crowd the bridges to the great basilicas, paying in every coin of Christendom. Prelates remit offerings by bill, money-changers work by torchlight, and a bank with a counter near the Curia does a year's business in a season.",
+   "art": "cross",
+   "target": "cities",
+   "cities": [
+    "rome"
+   ],
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 25,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Send our best changers to Rome and every spare florin with them.",
+    "prudence": "Count every coin twice; jubilee crowds bring clippers and counterfeiters too.",
+    "court": "Offer the Chamber a fair rate on offerings; it notices who gouged the pilgrims.",
+    "conscience": "Change the pilgrims' coin honestly; cheating them in a holy year is a double sin."
+   },
+   "precedent": "The Jubilee of 1450, from which the Medici Rome branch drew exceptional profits; it also saw the fatal crush on the Ponte Sant'Angelo that December",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank (1963)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "medici_run_on_benches",
+   "field": "precedent",
+   "why": "The failures preceded Zonchio (August 1499), so the panic was driven by fear of the coming war, not by the defeat itself."
+  },
+  {
+   "id": "medici_monte_slides",
+   "field": "source",
+   "why": "Lane & Mueller vol. 1 deals with coinage; Mueller's vol. 2 is the apt work on the Monte."
+  },
+  {
+   "id": "medici_monte_slides",
+   "field": "advice",
+   "why": "Prudence advised holding depreciated paper as 'good as coin'; that is the opposite of prudent valuation."
+  },
+  {
+   "id": "medici_galley_seized",
+   "field": "precedent",
+   "why": "The galley flew the neutral Burgundian flag and was run by the Medici rather than simply 'Medici-owned'."
+  },
+  {
+   "id": "medici_debasement",
+   "field": "source",
+   "why": "Munro's Wool, Cloth, and Gold stops at 1478 and does not cover Maximilian's debasements."
+  },
+  {
+   "id": "medici_common_coinage",
+   "field": "window",
+   "why": "Tied to the 1433–34 reform, after Philip the Good acquired Brabant in 1430."
+  },
+  {
+   "id": "medici_fairs_moved",
+   "field": "window",
+   "why": "Tied to Louis XI's ordinances of 1462–63."
+  },
+  {
+   "id": "medici_nations_move",
+   "field": "text",
+   "why": "Indies pepper reached Antwerp only from 1501, after the card's window closes."
+  },
+  {
+   "id": "medici_guinea_gold",
+   "field": "window",
+   "why": "The text presupposes São Jorge da Mina, founded in 1482."
+  },
+  {
+   "id": "medici_free_companies",
+   "field": "window",
+   "why": "The Écorcheurs were active from 1435 to 1444."
+  },
+  {
+   "id": "medici_forced_loan",
+   "field": "precedent",
+   "why": "The 1429–33 war was against Lucca, not Milan."
+  }
+ ]
+}

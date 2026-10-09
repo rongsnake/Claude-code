@@ -1,0 +1,1809 @@
+{
+ "era": "rialto",
+ "cards": [
+  {
+   "id": "rialto_wool_customs",
+   "title": "{court} offers the wool customs as security",
+   "text": "The king's wardrobe clerk calls with a proposal: advance coin now, and the house will collect the customs on wool and hides at every port until repaid. The last Italians to hold this farm grew rich and were then thrown out by the barons. Interest will be paid as 'gifts' and compensation for delay.",
+   "art": "crown",
+   "target": "reachable_sovereign",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.3,
+      "yield": 0.2,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The customs are the surest revenue in Christendom, and we collect them ourselves. Take the farm before the Lucchesi do.",
+    "prudence": "A farm held at a king's pleasure ends at his barons' displeasure. Lend only what the wool repays in two years.",
+    "court": "Hold the customs and the king needs us; refuse, and another house holds him, and our licences with him.",
+    "conscience": "Call it gift and damages if you must; a fixed return on a loan is still usury before God."
+   },
+   "precedent": "The Frescobaldi farmed the English customs for Edward I and Edward II, 1299–1311, and were expelled under the Ordinances of 1311; the Riccardi of Lucca had been seized in 1294",
+   "source": "R. W. Kaeuper, 'The Frescobaldi of Florence and the English Crown', Studies in Medieval and Renaissance History 10 (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_war_loan",
+   "title": "A king at war: {court} wants more than ever",
+   "text": "Heralds have gone out, the host is mustering, and the allies across the sea want their subsidies in advance. {court} asks the house to fund the campaign against future customs and a promise of the realm's wool. The sum is larger than any prince has borrowed, the rate generous, the security a parchment.",
+   "art": "war",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.55,
+      "yield": 0.22,
+      "turns": 2
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Purveyors are buying ships, and the king's envoys dine every night with the Florentines.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "The greatest loan in Christendom at a fat rate. Whoever leads it leads the age.",
+    "prudence": "War loans are repaid by victory, and victories are slow and dear. Lend a slice, never the house.",
+    "court": "A king who wins pays double, and this king cannot lose; his archers are the terror of every field.",
+    "conscience": "Lending for Christian blood at interest compounds two sins. At least refuse to fund the foreign subsidies."
+   },
+   "precedent": "The Bardi and Peruzzi advanced Edward III vast sums against the wool customs to open the Hundred Years' War, 1337–40",
+   "source": "E. S. Hunt, The Medieval Super-Companies: A Study of the Peruzzi Company of Florence (1994)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_bench_failures",
+   "title": "Benches stop paying in {city}",
+   "text": "Pepper bought on the bankers' own account has fallen a third since the galleys came in, and copper with it. One bench closes its book; next morning there is a crowd at every other. The Commune will audit the wreck and jail the banker. It will not pay the depositors.",
+   "art": "ledger",
+   "target": "seat",
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 4
+    },
+    {
+     "signal": "leverage",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.3,
+      "panic": 0.2
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A banker was seen selling his wife's plate at the goldsmiths' this morning.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Their failure is our harvest. Buy their pepper cheap with our depositors' coin and wait for the price to return.",
+    "prudence": "Fill the till, call in merchant loans as they fall due, and sell our spices before the crowd reaches us.",
+    "court": "Show the Signori an orderly book. When they audit the fallen, they will remember who was sound.",
+    "conscience": "A deposit is a trust. Pay every depositor who asks, even at a loss."
+   },
+   "precedent": "Repeated Rialto bank failures in the 14th century, after bankers lent deposits into commodity ventures on their own account; in 1374 the Senate barred bankers from trading in copper, tin, iron, lead, saffron and honey",
+   "source": "R. C. Mueller, The Venetian Money Market: Banks, Panics, and the Public Debt, 1200–1500 (1997); F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_king_stops_paying",
+   "title": "{court} stops payment",
+   "text": "The king's receivers no longer honour assignments on the customs; the tallies they hand over are good only at an exchequer with nothing in it. Promises to pay from next year's subsidy are offered instead. The house holds the paper and is learning what it is worth.",
+   "art": "seal",
+   "target": "lent_sovereign",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.75
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The king's treasurer has been replaced, and the new man wants to see the creditors' accounts again.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Kings always pay in the end. Buy the other creditors' claims at a quarter and wait for the peace.",
+    "prudence": "Write the loan down now, tell no one how far, and keep coin ready for depositors who will hear.",
+    "court": "Petition humbly for assignments on another revenue. Quarrelling with a king only moves us down the queue.",
+    "conscience": "The interest we hid as gifts is lost first. Perhaps that is the lesson."
+   },
+   "precedent": "Edward III's failure to repay ruined the Peruzzi (1343) and the Bardi (1346); Villani's figures of 600,000 and 900,000 florins are thought inflated by Hunt",
+   "source": "E. S. Hunt, The Medieval Super-Companies (1994); G. Villani, Nuova Cronica, ed. G. Porta (1990–91), bk XIII",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_great_house_falls",
+   "title": "The greatest company in Christendom stops",
+   "text": "Its partners sit in the Commune's debtors' prison, and its factors are fleeing creditors from London to Naples. Depositors do not read ledgers; they read faces. By noon every company that keeps a bench, sound or not, has a line at its counter.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "florence",
+    "venice",
+    "bruges",
+    "london"
+   ],
+   "hazard": 0.005,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 2
+    },
+    {
+     "signal": "thin_till",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A clerk of the great company was seen burning letters in the courtyard.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Their clients need a new house tomorrow. Stay open late and greet them warmly.",
+    "prudence": "Pay quickly and visibly. Stack coin on the counter where the queue can see it.",
+    "court": "Lend the Signoria a little now. A commune that owes us keeps its bailiffs off our door.",
+    "conscience": "Speak no ill of the fallen in the piazza; our own book holds the same kings."
+   },
+   "precedent": "The Florentine crash of 1342–46: the Acciaiuoli (1345) and the Bardi (1346) followed the Peruzzi (1343) and a string of smaller companies",
+   "source": "A. Sapori, La crisi delle compagnie mercantili dei Bardi e dei Peruzzi (1926); Hunt (1994)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_forced_loan",
+   "title": "{court} levies a forced loan",
+   "text": "An enemy fleet is off the coast, and the councils have voted a levy on every estate, assessed on the tax rolls. The house's share is set by men who can count its deposits better than it would like. Payment is in coin by Friday. The claim will be written into the public debt at a rate the Commune chose.",
+   "art": "war",
+   "target": "seat_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.12,
+      "yield": 0.04
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The assessors have had the estimo books open late into the night.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Pay up, then buy public-debt shares cheap from widows who must sell to meet their own levies.",
+    "prudence": "It is coin out of the till. Call in short loans now, before the levy falls due.",
+    "court": "Pay early and in full. The house that lends in the Republic's worst hour keeps its bench afterwards.",
+    "conscience": "A citizen's loan to his city is no usury; most friars allow the Monte's interest."
+   },
+   "precedent": "The War of Chioggia, 1378–81: repeated Venetian prestiti assessed on the estimo, and a collapse in the price of Monte shares (the fund later called the Monte Vecchio)",
+   "source": "G. Luzzatto, Il debito pubblico della Repubblica di Venezia (1963); F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_debasement",
+   "title": "The prince's mint debases the coin",
+   "text": "To pay for war the prince's mints strike more pennies from each mark of silver, and his coin buys a third less than at Easter. Debts owed in it shrink; rents in it vanish. Worse may follow. When the prince returns to strong money, every debtor owes a third more and the city riots.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "bruges",
+    "avignon"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Weak money is good for debtors. Borrow in the prince's pennies now and repay in lighter ones.",
+    "prudence": "Keep our books in florins and ducats, and lend nothing in the prince's pennies until his mint settles.",
+    "court": "The mint-masters pay a premium for bullion. Sell them silver and earn the prince's thanks.",
+    "conscience": "A prince who debases steals from widows. We need not help him melt their pennies."
+   },
+   "precedent": "Philip IV's debasements of the French coinage, 1295–1305, and the return to strong money in 1306 that set Paris rioting; the Flemish counts' repeated debasements under Louis of Male, 1350s–1380s",
+   "source": "P. Spufford, Money and its Use in Medieval Europe (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_lombards_arrested",
+   "title": "Italians arrested in {city}",
+   "text": "At dawn the bailiffs seal every Italian counting house in {city}, take the factors to the castle and cart off the ledgers to be searched for usury. Release will come on payment of a fine set at what the crown supposes the house can bear. Debtors in the town have stopped paying until the matter is settled.",
+   "art": "seal",
+   "target": "branch_city",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 2
+    },
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.2
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": -8
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The royal bailiffs are asking innkeepers which foreign lodgers keep strongboxes.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Pay the fine quickly. The business here is worth ten fines, and expulsions never last.",
+    "prudence": "This is why the branch stays thin: little coin there, the accounts here, and a factor told to settle fast.",
+    "court": "A gift to the queen's household before the fine is set will shrink it. Send it today.",
+    "conscience": "If the ledgers show interest plainly, the charge is just. Keep cleaner books."
+   },
+   "precedent": "Philip IV's arrest of Italian merchants throughout France on 1 May 1291, released against heavy fines; the Riccardi seized by Edward I, 1294",
+   "source": "J. R. Strayer, The Reign of Philip the Fair (1980); R. W. Kaeuper, Bankers to the Crown: The Riccardi of Lucca and Edward I (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_papal_depositary",
+   "title": "The Apostolic Camera seeks a depositary",
+   "text": "The papal chamberlain needs a company to receive the tithes and annates gathered by collectors from Poland to Portugal, and to move them to the curia by letter of exchange. There is no rate, only the float, the exchange profit and the Church's favour. The Camera will also expect advances when the collectors are late.",
+   "art": "cross",
+   "target": "cities",
+   "cities": [
+    "avignon"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1309,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The Church's money from every diocese passing through our ledger. Accept before the Alberti hear.",
+    "prudence": "The float is pleasant until the Pope wants an advance against Hungarian tithes that never arrive.",
+    "court": "No court protects its bankers like the curia. Its excommunications collect our debts for us.",
+    "conscience": "Serving the Holy Father is no sin. See that the exchange profits are honest exchange."
+   },
+   "precedent": "Florentine companies (Bardi, Peruzzi, Acciaiuoli, later Alberti) served as depositaries and transfer agents of the Apostolic Camera at Avignon, 1316–78",
+   "source": "Y. Renouard, Les relations des papes d'Avignon et des compagnies commerciales et bancaires de 1316 à 1378 (1941)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_interdict",
+   "title": "{city} laid under interdict",
+   "text": "A quarrel over a papal city has ended in a bull. The churches of {city} are shut, its citizens excommunicate, and every Christian prince is licensed to seize their goods and persons. Factors abroad are hiding ledgers with friendly hosts. Debtors abroad discover that paying the house is suddenly unlawful.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.007,
+   "once": false,
+   "cooldown": 30,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.06
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The papal legate rode out of the city this morning without giving his blessing.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Put the foreign accounts in our partners' names and keep trading. Seizures fall on the careless.",
+    "prudence": "Bring coin home before the princes take it, and expect every foreign debt to go unpaid.",
+    "court": "The Republic will not yield, and Rome cannot touch us. Seizures abroad will be trifling.",
+    "conscience": "Excommunicates die unshriven. Press the Signoria for peace, whatever it costs."
+   },
+   "precedent": "Clement V's interdict on Venice over Ferrara, 1309–13, licensing seizure of Venetian goods abroad; Gregory XI's interdict on Florence in the War of the Eight Saints, 1376–78",
+   "source": "R. C. Trexler, The Spiritual Power: Republican Florence under Interdict (1974)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_restitution",
+   "title": "A dying partner's confessor demands restitution",
+   "text": "The old partner is failing, and his confessor will not absolve him until his usuries are restored: to the borrowers if they can be found, to the poor if not. The friar has a list. The heirs have a lawyer. The town is watching to see whether the house's money is clean enough to bury him in consecrated ground.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Restore in full and build a chapel",
+     "result": "The house pays heavily, and a painted chapel tells the city it has made its peace.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "A bequest to the poor, nothing admitted",
+     "result": "A modest gift to the hospital buys absolution without confessing what the ledgers mean.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 2
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse the friar",
+     "result": "The partner dies unabsolved, preachers name the house from the pulpit, and some clients cross the street.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -10
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "A token to the hospital will do. Full restitution would publish our whole book of exchange.",
+    "prudence": "Restitution drains capital we need. Settle quietly with the friar for a fixed sum.",
+    "court": "The Signori fear scandal more than usury. Whatever you choose, keep it out of the pulpits.",
+    "conscience": "His soul outweighs the till. Restore what was taken, all of it."
+   },
+   "precedent": "The Scrovegni Chapel in Padua (1303–05), built by a banker's son and long read as expiation for his family's usury",
+   "source": "A. Derbes and M. Sandona, The Usurer's Heart: Giotto, Enrico Scrovegni, and the Arena Chapel in Padua (2008)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_protested_bill",
+   "title": "A bill comes back protested from {city}",
+   "text": "The house bought a bill drawn on a merchant in {city}. On presentation he refused to accept it, and a notary has drawn up the protest. The money comes back only through the drawer, with re-exchange and costs, if the drawer still exists. Meanwhile correspondents ask, politely, which other bad names sit in the house's portfolio.",
+   "art": "letter",
+   "target": "branch_city",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 5,
+   "odds": [
+    {
+     "signal": "low_standing",
+     "weight": 2
+    },
+    {
+     "signal": "far_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.08
+     }
+    }
+   ],
+   "advice": {
+    "growth": "One bad bill in a hundred is the price of the trade. Buy more, from better drawers.",
+    "prudence": "Know every drawer and acceptor. Buy no bill where both names lean on the same galley.",
+    "court": "Have the merchants' consuls enforce the re-exchange swiftly. Quick justice is reputation.",
+    "conscience": "Re-exchange is lawful damages, not interest. Claim only what was truly lost."
+   },
+   "precedent": "Bills returned under notarial protest, with re-exchange claimed, in the correspondence of the Datini companies, 1380s–1400",
+   "source": "R. de Roover, L'évolution de la lettre de change, XIVe–XVIIIe siècles (1953)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_factor_fraud",
+   "title": "The factor in {city} has been keeping two books",
+   "text": "Letters from {city} have been cheerful for three years. A visiting partner has now found a second ledger: loans to the factor's in-laws, cloth bought from his own shop at double the price, and profits remitted that were never earned. The factor says the losses are temporary. The articles say he owes them personally. He owns a mule.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3
+    },
+    {
+     "signal": "many_branches",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.25
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A merchant back from abroad says our factor has built himself a fine stone house.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "He holds the best clients in the town. Fine him, keep him, and send a second man to watch.",
+    "prudence": "Recall him, audit every account, and from now on rotate factors every three years.",
+    "court": "The local lord will arrest him for us, for a fee. Use his court, not our own men.",
+    "conscience": "Mercy for a penitent, yes. But the depositors trusted their money to us, not to him."
+   },
+   "precedent": "Medici branch managers in London and Bruges overlent and concealed losses from Florence, 1460s–1478; the agency problem is as old as the foreign branch",
+   "source": "R. de Roover, The Rise and Decline of the Medici Bank, 1397–1494 (1963)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_galleys_lost",
+   "title": "The convoy for {city} is lost",
+   "text": "A fast boat brings the news. The convoy bound for {city} met an enemy fleet off the Morea, and half the galleys are taken with their silver and cloth. Few were insured. The house's merchants financed their shares on its credit and now owe for goods that will never be sold.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "constantinople",
+    "alexandria"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 8,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Sailors in the taverns say an enemy fleet slipped past the guard at the straits.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Cargo that does arrive will fetch double. Lend on the survivors' goods.",
+    "prudence": "Never let more than a fifth of the book ride one convoy, and insure the rest.",
+    "court": "The Republic will arm a fleet of vengeance and want money. Offer before it is demanded.",
+    "conscience": "Do not press the widows of drowned crews for their husbands' notes."
+   },
+   "precedent": "The Genoese destruction of the Venetian fleet at Porto Longo (Sapienza), November 1354, in the War of the Straits",
+   "source": "F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1347,
+    1400
+   ]
+  },
+  {
+   "id": "rialto_egypt_embargo",
+   "title": "The Pope forbids trade with the Sultan",
+   "text": "A new bull renews the ban on carrying anything to the Sultan's lands, on pain of excommunication and forfeiture. The Republic suspends its galleys to {city}. Pepper must now come the long way, through Armenia and Cyprus, at Cypriot prices. Merchants who financed Alexandrian voyages are asking for time.",
+   "art": "cross",
+   "target": "cities",
+   "cities": [
+    "alexandria"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1300,
+    1344
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.25
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The ban is for show. Send the galleys anyway; the Pope needs our ships for his crusade.",
+    "prudence": "Lend on the Cyprus and Armenia route for now. Dearer, but the cargo is not forfeit.",
+    "court": "Seek a papal licence through our friends at the curia. Licences go to those who ask well.",
+    "conscience": "Carrying iron and timber to the Sultan arms him against Christians. Obey."
+   },
+   "precedent": "Papal prohibitions on trade with Mamluk Egypt after the fall of Acre (1291); Venice suspended its state galleys to Alexandria c.1323–44",
+   "source": "E. Ashtor, Levant Trade in the Later Middle Ages (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_alexandria_licence",
+   "title": "A papal licence reopens {city}",
+   "text": "After long petitions and a fat donation to the crusade fund, the curia licenses a fixed number of voyages to the Sultan's ports. The galley charters are already at auction, and pepper on the Rialto has dropped on the news. Merchants want credit to bid for charters and to buy the silver that Alexandria craves.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "alexandria"
+   ],
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1330,
+    1400
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Back the first convoy. Whoever reaches Alexandria first sets the year's price.",
+    "prudence": "Lend on the galley charters, secured on the cargo, not on the merchants' hopes.",
+    "court": "The Republic paid for this licence. Support its auction and it will remember.",
+    "conscience": "Licensed trade is lawful trade. Refuse only cargoes of iron and timber."
+   },
+   "precedent": "Venice obtained a papal licence in 1344 and resumed state galley voyages to Alexandria in 1345",
+   "source": "E. Ashtor, Levant Trade in the Later Middle Ages (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_alexandria_sacked",
+   "title": "Crusaders sack {city}",
+   "text": "A crusading king of the islands, with knights from half of Christendom, has stormed {city}, looted it for three days and sailed away. The Frankish merchants left behind are in the Sultan's prisons and their goods in his treasury. The Republic is furious; the crusaders call it a victory. The pepper season is lost.",
+   "art": "fire",
+   "target": "cities",
+   "cities": [
+    "alexandria"
+   ],
+   "hazard": 0.006,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1340,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.25
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A great fleet is gathering at Rhodes, and no one will say where it sails.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "When trade reopens spices will be dear. Buy the pepper already in the Rialto.",
+    "prudence": "Write off the Alexandrian advances now and bring the factor home before the next raid.",
+    "court": "The Republic will treat with the Sultan for its merchants. Support its envoys with a loan.",
+    "conscience": "A crusade is holy work, and our losses are a tithe to it."
+   },
+   "precedent": "The sack of Alexandria by the crusade of Peter I of Cyprus, October 1365, followed by Mamluk seizure of Frankish merchants and goods",
+   "source": "K. M. Setton, The Papacy and the Levant, 1204–1571, vol. I (1976); Ashtor (1983)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_black_sea_closed",
+   "title": "The Khan closes the Black Sea ports",
+   "text": "A brawl in a river town on the Don left a Tatar dead. The Khan has expelled the Italians, seized their warehouses and laid siege to the Genoese colony in the Crimea. Silk and slaves no longer come down to {city}, and grain is dear in the Aegean. The two republics talk of a joint embargo that will hurt them before it hurts the horde.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "constantinople"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1310,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.2
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Merchants from the Crimea say the horde's envoys have stopped coming to the colony.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "The Khan needs our silver. He will reopen within the season, so keep the factors and stock in place.",
+    "prudence": "Bring the factors home and lend nothing on Black Sea cargo until there is a treaty.",
+    "court": "Support the Republic's embargo. Whoever breaks it will be fined and barred from the galleys.",
+    "conscience": "The trade in Christian slaves is forbidden. This may be the moment to leave it."
+   },
+   "precedent": "The Tana affray of 1343: the Khan of the Golden Horde expelled the Italians and besieged Caffa, 1345–46, while Venice and Genoa agreed an embargo",
+   "source": "F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_ciompi",
+   "title": "The wool-carders rise in {city}",
+   "text": "The day labourers of the cloth trade, who belong to no guild and may not combine, have burned the great masters' houses and taken the priors' palace. New guilds are proclaimed and new priors sworn. Cloth production has stopped, and masters who borrowed against their spring wool are not paying.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "florence"
+   ],
+   "hazard": 0.006,
+   "once": false,
+   "cooldown": 30,
+   "window": [
+    1340,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.15
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Bells rang at night in the poor quarters across the Arno, and the masters have hired guards.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Lend to the new guilds. Whoever governs the city will want a banker.",
+    "prudence": "Lend to no one this month. Wait until it is clear who holds the palace.",
+    "court": "The old families will be back within a few years. Stay quietly loyal to them.",
+    "conscience": "The carders are paid in debased silver. Their anger is not without justice."
+   },
+   "precedent": "The revolt of the Ciompi in Florence, July 1378, and the guild regime that lasted until 1382",
+   "source": "J. M. Najemy, A History of Florence, 1200–1575 (2006)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_bruges_ghent",
+   "title": "The men of Ghent take {city}",
+   "text": "Ghent's militia, starving under blockade, marched out and routed the count's army outside {city} on the day of the Holy Blood procession. Now they hold the town, plunder the count's partisans and fine the foreign merchants. The Italian, Hanseatic and Castilian nations are deciding whether to stay. The exchange square is very quiet.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "bruges"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.15,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Weavers from Ghent have been seen buying bread outside the walls.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Every revolt in Flanders ends with a pardon and a fine. Stay open.",
+    "prudence": "Coin onto a Hanse ship, ledgers to the Carmelites, and no new bills on Flemish names.",
+    "court": "The count's French overlord will avenge him. Lend to the side with the knights.",
+    "conscience": "Pay the fine without complaint. Looted factors fare worse than taxed ones."
+   },
+   "precedent": "Ghent's militia defeated the Count of Flanders at Beverhoutsveld and took Bruges, 3 May 1382",
+   "source": "D. Nicholas, Medieval Flanders (1992)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_staple_moved",
+   "title": "The wool staple leaves {city}",
+   "text": "By royal ordinance, all English wool for export must pass through a single staple town of the crown's choosing, and it is not {city}. Flemish clothiers must travel and pay more for their wool, and the Italian buyers follow the wool. Bills on {city} drawn against the wool trade are suddenly harder to place.",
+   "art": "seal",
+   "target": "cities",
+   "cities": [
+    "bruges"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1313,
+    1400
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Follow the wool. Open a desk at the new staple before the Lucchesi think of it.",
+    "prudence": "Shorten our bills on Flemish clothiers. Their margins have just gone to the staplers.",
+    "court": "The staplers' company decides where the wool goes next. Lend them something modest.",
+    "conscience": "Nothing here troubles the soul, only the purse."
+   },
+   "precedent": "The Ordinance of the Staple of 1353 moved the staple from Bruges to English towns; it was fixed at Calais from 1363",
+   "source": "T. H. Lloyd, The English Wool Trade in the Middle Ages (1977)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_plague_returns",
+   "title": "The pestilence returns to {city}",
+   "text": "The sickness is back, and this time it takes the children born after the great mortality. The rich leave for their villas and the courts close. Debtors die, and their heirs cannot be found or refuse the inheritance. Notaries write wills all day, and the depositors who remain want their coin in their own chests.",
+   "art": "plague",
+   "target": "cities",
+   "cities": [
+    "venice",
+    "florence",
+    "genoa",
+    "rome",
+    "avignon",
+    "bruges",
+    "london"
+   ],
+   "hazard": 0.035,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1360,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.14,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Ships from the east were turned away from the harbour, and the gravediggers are hiring.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "After the last mortality wages and rents rose. The survivors will be richer; lend to them.",
+    "prudence": "Coin in the till, partners scattered to safe towns, every loan backed by heirs who are alive.",
+    "court": "The Signori have closed the gates to foreigners. The sickness will not pass the walls this time.",
+    "conscience": "Remit the debts of the dead to their orphans. God's anger is not abated by collecting."
+   },
+   "precedent": "The pestis secunda of 1361–63, which struck children hardest, and later waves in 1369, 1374–75, 1383, 1390 and 1400",
+   "source": "S. K. Cohn, The Black Death Transformed (2002)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_famine",
+   "title": "Rain on the harvest: dearth in {city}",
+   "text": "It has rained since Pentecost. The grain rotted in the fields and a measure of wheat costs three times last year's price. The Commune buys grain abroad with borrowed money, the poor sell their tools, and weavers buy bread instead of wool. Merchants who sold on credit to the countryside will not be paid before a good harvest, if then.",
+   "art": "grain",
+   "target": "cities",
+   "cities": [
+    "bruges",
+    "london",
+    "florence"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Finance the grain ships from Sicily and Apulia. The cities will pay anything.",
+    "prudence": "Bad harvests trouble peasants, not bankers. Keep lending as before.",
+    "court": "The Commune must buy grain abroad. Lend for it and the priors will owe us.",
+    "conscience": "Hoarding grain in dearth is a sin the preachers will name. Lend to feed, not to speculate."
+   },
+   "precedent": "The Great Famine of northern Europe, 1315–17; Florentine dearths of 1329–30 and 1346–47 recorded by Villani",
+   "source": "W. C. Jordan, The Great Famine: Northern Europe in the Early Fourteenth Century (1996)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_flood",
+   "title": "The river bursts its banks in {city}",
+   "text": "Four days of rain in the mountains, and the river came over the walls by night, carrying away bridges, mills and the dyers' sheds along the bank. Ground-floor warehouses are full of mud and ruined cloth. Debtors whose stock was in those cellars come to the bench asking for time.",
+   "art": "flood",
+   "target": "cities",
+   "cities": [
+    "florence"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 25,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Rebuilding needs money. Lend to the bridge-builders and the mill owners.",
+    "prudence": "Write off the cellar stock now, and lend on no goods kept below the flood line.",
+    "court": "The Commune will levy for the bridges. Volunteer a loan before it becomes a tax.",
+    "conscience": "The friars call it a judgement on usury. Give alms to the drowned families."
+   },
+   "precedent": "The Arno flood of 4 November 1333, which carried away the Ponte Vecchio and other Florentine bridges",
+   "source": "G. Villani, Nuova Cronica, bk XII, chs 1–2",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_crockards",
+   "title": "Base foreign pennies flood {city}",
+   "text": "Pennies from the Low Countries that look like the king's sterling but carry less silver pass everywhere in {city}; merchants take them at face because everyone else does. Now the crown has cried them down to half value and will forbid them altogether at Easter. Whatever sits in the till is worth half what the ledger says.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "london",
+    "bruges"
+   ],
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1300,
+    1340
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 0.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Keep taking them at face. The king will never punish his own merchants by refusing them.",
+    "prudence": "Weigh, don't count. Take coin by weight and run the base pennies to the exchange before Easter.",
+    "court": "Bring our bad coin to the king's exchange first; early comers get the crown's best rate.",
+    "conscience": "Do not pass bad pennies to the poor, who cannot weigh them."
+   },
+   "precedent": "Continental crockards and pollards circulating in England were cried down to a halfpenny in 1299 and demonetised at Easter 1300",
+   "source": "M. Mate, 'Monetary Policies in England, 1272–1307', British Numismatic Journal 41 (1972)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_rival_clients",
+   "title": "A failed rival's clients walk in",
+   "text": "A company across the square stopped payment last week, and its clients are looking for a bench that will still be there next year. They bring their deposits, their bills and their gossip about which of the dead firm's debtors are good. The house's habit of paying out promptly has been noticed.",
+   "art": "coin",
+   "target": "seat",
+   "hazard": 0.025,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.12
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 4
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take them all, and have their deposits lent out by month's end.",
+    "prudence": "Take them, but keep a third of the new coin in the till. They ran once; they will run again.",
+    "court": "Ask the Signori to name us administrators of the fallen bench's estate.",
+    "conscience": "Do not buy the dead firm's debts for a pittance from its widows."
+   },
+   "precedent": "After the Bardi and Peruzzi crash, the Alberti antichi rose to become the principal papal bankers, 1350s–1370s",
+   "source": "Y. Renouard, Les relations des papes d'Avignon et des compagnies commerciales et bancaires (1941)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_heirs",
+   "title": "A partner dies, and his heirs want their capital",
+   "text": "The partnership dies with him, and the articles must be redrawn. His sons, who have never set foot in the counting house, want their father's share of the corpo paid out at book value, and book value carries the loans to princes at par. Paying them strips the till. Refusing them brings lawyers and gossip.",
+   "art": "ledger",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Pay the heirs in full, now",
+     "result": "The till empties, but the house's name for honest dealing grows.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Pay over five years from profits",
+     "result": "The heirs accept, and grumble in every tavern about the house's liquidity.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Make the sons partners",
+     "result": "The capital stays in the house, and so do two young men with no head for exchange.",
+     "effects": [
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 2
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Make them partners. Capital is capital, and boys learn.",
+    "prudence": "Pay over years. Book value overstates what our royal paper would fetch in the square.",
+    "court": "Their mother is cousin to a councillor. Settle before the merchants' court hears of it.",
+    "conscience": "Pay what is truly owed, and tell them honestly what the royal loans are worth."
+   },
+   "precedent": "Florentine compagnie were dissolved and re-formed on a partner's death or withdrawal; the Peruzzi company was reconstituted repeatedly, including in 1331",
+   "source": "E. S. Hunt, The Medieval Super-Companies (1994)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_run_rumour",
+   "title": "A rumour starts a run in {city}",
+   "text": "Someone in the fish market says the house lost a fortune on a galley; someone else says the cashier was seen weeping. By noon there is a crowd at the bench in {city} demanding coin instead of transfers in the book. The story is false, but a bench that cannot pay at once makes it true.",
+   "art": "riot",
+   "target": "branch_city",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 4
+    },
+    {
+     "signal": "low_standing",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.2
+     }
+    }
+   ],
+   "rumour": {
+    "text": "They say the house's cashier was seen at the pawnbroker's.",
+    "false_rate": 0.5
+   },
+   "advice": {
+    "growth": "Promise a gift to every depositor who leaves his money in. Confidence can be bought.",
+    "prudence": "Pay everyone, slowly and visibly, with coin stacked high on the counter.",
+    "court": "Ask the Commune to stand behind the bench. No Republic lets a sound bank fail.",
+    "conscience": "Swear no false oaths about the books to calm them. Answer only truthfully."
+   },
+   "precedent": "The Venetian runs of 1499 that broke the Lippomano and Garzoni banks, recorded in Girolamo Priuli's diary",
+   "source": "F. C. Lane, 'Venetian Bankers, 1496–1533', Journal of Political Economy 45 (1937)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_schism",
+   "title": "Two popes, two Cameras",
+   "text": "The cardinals have elected a second pope and gone back to Avignon, and Christendom takes sides by kingdom. Each pope demands the collections of his obedience, excommunicates the other's bankers and invites the house to serve him. The Italian republics lean to Rome. The money of France, Castile and Scotland goes to Avignon.",
+   "art": "cross",
+   "target": "seat_sovereign",
+   "hazard": 0.06,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1378,
+    1400
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Serve the Roman pope",
+     "result": "The house stands with Italy and loses its Avignon clients.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 8
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.04
+       }
+      }
+     ]
+    },
+    {
+     "label": "Serve the Avignon pope",
+     "result": "French tithes flow through the books, and the Signori look at the house sideways.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Serve both, through separate partnerships",
+     "result": "Profitable and clever, until someone reads both ledgers.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.1
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -6
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Serve both through separate companies. Money keeps no obedience.",
+    "prudence": "Choose the obedience where our depositors live. A banker excommunicated at home has no clients.",
+    "court": "The schism will be healed by summer. Serve whoever pays and apologise later.",
+    "conscience": "Only one is Peter's successor. Choose truly, not profitably."
+   },
+   "precedent": "The Great Western Schism, from the double election of 1378, which split the Camera's collections between Rome and Avignon until 1417",
+   "source": "W. Ullmann, The Origins of the Great Schism (1948)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_old_debt_paid",
+   "title": "{court} pays something on an old debt",
+   "text": "A royal writ arrives: the exchequer will assign part of the customs at one port to the house in settlement of debts everyone had written off. It is a fraction of what was owed, paid in instalments, but it is coin. The clerk hints that further assignments depend on the house's attitude to new requests.",
+   "art": "gold",
+   "target": "lent_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1350,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Coin from a debt we had buried. Put it to work in new business.",
+    "prudence": "Bank it. Do not let a few florins buy a new loan to the same king.",
+    "court": "Accept humbly. A grateful creditor gets paid before one who is right.",
+    "conscience": "If conscience bids, keep only the principal. The rest was interest dressed as gifts."
+   },
+   "precedent": "After 1346 the English Crown made slow, partial assignments to the Bardi in settlement of Edward III's war debts",
+   "source": "E. Russell, 'The Societies of the Bardi and the Peruzzi and their Dealings with Edward III', in G. Unwin (ed.), Finance and Trade under Edward III (1918)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_jubilee",
+   "title": "A Holy Year fills {city}",
+   "text": "The Pope has proclaimed a jubilee, with plenary indulgence for pilgrims who visit the basilicas. Hundreds of thousands come, with coin of every mint in their purses and offerings for the altars. Changers sit at every bridge, and the clergy want the offerings remitted by letter of exchange. The house's exchange desk is busy from dawn to dusk.",
+   "art": "cross",
+   "target": "cities",
+   "cities": [
+    "rome"
+   ],
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 25,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Every pilgrim needs change. Open a second table by the bridge.",
+    "prudence": "Watch for clipped and counterfeit coin from distant mints. Weigh everything.",
+    "court": "Offer to remit the offerings for the Camera at a modest rate. Favour outlasts a fee.",
+    "conscience": "A holy business. Take a fair margin from pilgrims, and no more."
+   },
+   "precedent": "The first Jubilee, proclaimed for 1300, whose pilgrim crowds and altar offerings Villani witnessed; repeated in 1350",
+   "source": "G. Villani, Nuova Cronica, bk IX, ch. 36",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_flanders_galleys",
+   "title": "Galleys sail direct to {city}",
+   "text": "The Republic now sends armed merchant galleys out past the Straits to Flanders and England: spices out, wool and cloth home. The long haul overland to the Champagne fairs is emptying. Bills on {city} are in demand, and correspondents there want credit to buy cargo for the return voyage.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "bruges"
+   ],
+   "hazard": 0.04,
+   "once": true,
+   "cooldown": 0,
+   "window": [
+    1300,
+    1345
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Bruges will be the Rialto of the north. Open a branch there now.",
+    "prudence": "On a route a year old, one wreck wipes out all its profit. Spread the cargo across many galleys and many partners.",
+    "court": "Bid for the galley charters at auction. The Signori favour houses that keep the line running.",
+    "conscience": "A new route and honest trade. Nothing here troubles God."
+   },
+   "precedent": "Genoese direct voyages to Bruges from 1277–78 and Venetian state galleys to Flanders from 1314 drew trade away from the Champagne fairs",
+   "source": "F. C. Lane, Venice: A Maritime Republic (1973)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_insurance",
+   "title": "A shipowner asks the house to bear his risk",
+   "text": "A merchant in {city} wants the house to stand the loss if his cog sinks or is taken before port, against a payment now. Canonists frown on profit from sea risk, so notaries dress the deal as a loan the house has 'received' and must repay unless the ship arrives safely. The premium is handsome.",
+   "art": "ship",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1340,
+    1400
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Write it, dressed as a fictitious loan",
+     "result": "The premium is pocketed, and the contract is safe from the canonists unless the consuls look closely.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Write a share openly, before a notary",
+     "result": "A smaller premium, shared with other underwriters, and a name for plain dealing.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 5
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline",
+     "result": "The shipowner goes to a Genoese, who takes the premium and the client.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.02
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "A premium for a promise. Take every line offered; most ships arrive.",
+    "prudence": "Share the line with three other houses. One wreck must never cost more than a month's profit.",
+    "court": "The Commune will want to tax assurances. Better it sees ours than catches them.",
+    "conscience": "Disguising a contract to evade the Church's judgement is a lie told to a notary and to God."
+   },
+   "precedent": "The earliest known marine insurance contract, Genoa, 23 October 1347, for the Santa Clara to Majorca, drafted as a fictitious gratuitous loan",
+   "source": "F. Edler de Roover, 'Early Examples of Marine Insurance', Journal of Economic History 5 (1945)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_free_company",
+   "title": "A free company threatens {court}",
+   "text": "Three thousand unemployed lances under a foreign captain have ridden into the countryside, burning mills and offering to leave for a price. The councils will pay; they always do. The question is who advances the coin by Sunday. The captain accepts bills of exchange on Avignon, and he is looking for a banker.",
+   "art": "war",
+   "target": "seat_sovereign",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1340,
+    1400
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Advance the ransom to the Commune",
+     "result": "The company rides off, the house is repaid slowly from a new gabelle, and the councils remember.",
+     "effects": [
+      {
+       "kind": "forced_loan",
+       "params": {
+        "share": 0.08,
+        "yield": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse; let others pay",
+     "result": "Another house advances the coin, and the councils note who did not.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Bank the captain's own plunder",
+     "result": "His war chest earns the house a fat fee, and the city learns whose coffers the brigands trust.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -15
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The captain's war chest is bigger than ours. Bank it and charge him for the privilege.",
+    "prudence": "Advance only against a gabelle pledged by law, not against the councils' gratitude.",
+    "court": "Advance it. A Commune saved from the torch forgives its bankers many sins.",
+    "conscience": "Paying brigands feeds the next raid, and banking their plunder is receiving stolen goods."
+   },
+   "precedent": "Siena bought off the mercenary companies dozens of times between 1342 and 1399; Florence and Pisa paid similar ransoms",
+   "source": "W. Caferro, Mercenary Companies and the Decline of Siena (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_dry_exchange",
+   "title": "A client wants an exchange that goes nowhere",
+   "text": "A cloth merchant in {city} wants coin for six months. He proposes a bill on Bruges that the house's correspondent will not collect but redraw back at the Bruges rate, so the money returns with the spread between the two markets. No goods move, and no money reaches Bruges. Canonists call it dry exchange, and usury.",
+   "art": "scales",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 10,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Do the dry exchange",
+     "result": "Quick and profitable, and the friars have a fresh example for Sunday.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Make it a real exchange, remitted in Bruges",
+     "result": "Slower and carrying true exchange risk, but the contract would survive any confessor.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.02
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 2
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse",
+     "result": "The merchant takes his business to a less scrupulous bench.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.03
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "regulator",
+        "delta": 4
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Everyone does it. The rate differs only because we bear the risk of the Bruges market.",
+    "prudence": "Real exchange carries currency risk; dry exchange carries a usury suit. Take the risk you can price.",
+    "court": "Councillors borrow this way themselves. No magistrate will prosecute what the priors practise.",
+    "conscience": "If nothing moves but time, the gain is the price of time, and that is usury."
+   },
+   "precedent": "Exchange and re-exchange (cambio e ricambio) between Florence and Bruges in Italian merchant records of the late 14th and 15th centuries, condemned by canonists as dry exchange",
+   "source": "R. de Roover, 'What is Dry Exchange? A Contribution to the Study of English Mercantilism', Journal of Political Economy 52 (1944)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "rialto_bohemian_silver",
+   "title": "New silver comes over the Alps",
+   "text": "Miners in the hills of Bohemia have struck the richest silver of the age, and a king there strikes a heavy new groat from it. Pack trains carry the bullion south to the German merchants' warehouse and the mint, where it buys gold, spices and the coin of the Levant trade. The house's dealings in bullion and copper turn a handsome profit this year.",
+   "art": "gold",
+   "target": "none",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1300,
+    1350
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.04
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Buy the Germans' silver as it arrives and ship it to Alexandria, where silver is dear.",
+    "prudence": "Bullion profits come once. Take them, and do not mistake a lucky year for skill.",
+    "court": "The mint-masters want silver. Sell to the Republic's mint and stand well with the Signori.",
+    "conscience": "Profit from honest trade in metal is no sin."
+   },
+   "precedent": "The Kutná Hora silver strikes and the Prague groschen introduced by Wenceslas II in 1300, much of whose silver flowed south to Venice",
+   "source": "P. Spufford, Money and its Use in Medieval Europe (1988)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "rialto_bench_failures",
+   "field": "precedent",
+   "why": "A 'wave of failures in the 1340s' is not securely attested. The documented landmark is the 1374 restriction on bankers' own-account trade."
+  },
+  {
+   "id": "rialto_bench_failures",
+   "field": "source",
+   "why": "Removed an unverified chapter reference and added a standard corroborating reference."
+  },
+  {
+   "id": "rialto_king_stops_paying",
+   "field": "source",
+   "why": "In the standard Porta edition, the 1343–46 failures fall in book XIII, not XII."
+  },
+  {
+   "id": "rialto_great_house_falls",
+   "field": "text",
+   "why": "'Balance sheet' is an anachronistic term for the 1340s."
+  },
+  {
+   "id": "rialto_forced_loan",
+   "field": "precedent",
+   "why": "'Monte Vecchio' dates only from the creation of the Monte Nuovo in 1482."
+  },
+  {
+   "id": "rialto_debasement",
+   "field": "title",
+   "why": "The card's cities (Bruges, Avignon) did not lie under the French king's own mint, so 'king's' is wrong."
+  },
+  {
+   "id": "rialto_debasement",
+   "field": "text",
+   "why": "Generalised the issuer to fit Flemish and French money circulating in the target cities."
+  },
+  {
+   "id": "rialto_debasement",
+   "field": "precedent",
+   "why": "Added a precedent that actually fits Bruges."
+  },
+  {
+   "id": "rialto_debasement",
+   "field": "advice",
+   "why": "Debasement harms lenders, who are repaid the same count of lighter coins; the old growth advice had the finance backwards."
+  },
+  {
+   "id": "rialto_protested_bill",
+   "field": "text",
+   "why": "Acceptance is sought on presentation. Usance is the date payment falls due."
+  },
+  {
+   "id": "rialto_galleys_lost",
+   "field": "window",
+   "why": "The text and advice assume marine insurance, which is unattested before the 1340s. Porto Longo (1354) still fits the window."
+  },
+  {
+   "id": "rialto_alexandria_sacked",
+   "field": "text",
+   "why": "The 1365 sack lasted about three days, not a week."
+  },
+  {
+   "id": "rialto_plague_returns",
+   "field": "window",
+   "why": "The second pestilence began in 1360–61; a 1355 start precedes the episode the card describes."
+  },
+  {
+   "id": "rialto_flanders_galleys",
+   "field": "advice",
+   "why": "Marine insurance is anachronistic for a 1300–1345 window."
+  }
+ ]
+}

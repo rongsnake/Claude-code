@@ -47,7 +47,11 @@ Stdlib-only Python so it runs on the Pi with nothing to compile.
 - `python -m banksim.saga.build` → `banksim/saga.html`, **The Long Ledger**: a
   turn-based game (Colonization-style) of one house from the Rialto in 1300 to
   G-SIB designation, played on an SVG map board (`saga/board.js`, spliced into
-  `saga_template.html` by the build). History is data in `banksim/saga/`
+  `saga_template.html` by the build). Two modes: *As it might have been*
+  (default) draws events from per-era decks (`saga/deck/*.json`, loaded by
+  `saga/deck.py`, played by `saga/deck.js` with rumours, a four-seat council,
+  period-styled cards and the drawn seat); *As it happened* keeps every event on
+  its date. Tested by `tests/test_saga_deck.py`. History is data in `banksim/saga/`
   (eras, cities, techs, borrowers, events, rivals, `geo.py` positions and sea
   lanes — each with a provenance), tested by `tests/test_saga_data.py` and
   `tests/test_saga_geo.py` (sea lanes must stay off the coastline). The

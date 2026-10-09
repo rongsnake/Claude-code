@@ -1,0 +1,1894 @@
+{
+ "council": {
+  "rialto": {
+   "growth": {
+    "name": "Ser Bortolo Calbo",
+    "title": "Socio maggiore",
+    "bio": "Spent his youth on the Alexandria galleys and believes any ducat not at sea is a ducat wasting its life.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "olive",
+     "hair": "short",
+     "hair_colour": "black",
+     "facial_hair": "beard",
+     "headwear": "cappuccio",
+     "garment": "robe",
+     "colour": "#8b1a1a",
+     "accessory": "ledger"
+    },
+    "remarks": {
+     "thin_till": [
+      "The till is thin because the coin is working. Idle ducats breed nothing.",
+      "Let depositors wait a day. The Alexandria galleys will fill the chest by Lent."
+     ],
+     "flush_till": [
+      "Ducats sleeping in a chest! Lend them to the spring muda before they grow mould.",
+      "A full till is a coward's pride. Put it to sea."
+     ],
+     "high_leverage": [
+      "We write more in the book than lies in the chest. So does every bench on the Rialto.",
+      "The book is the bank, cassiere. Coin is for fishwives."
+     ],
+     "big_prince_exposure": [
+      "The Commune never defaults. It merely delays. We can wait.",
+      "A forced loan to the Signoria still pays its five per cent. Mostly on time."
+     ],
+     "bubble_city": [
+      "Every merchant on the Rialto wants credit. Shall we refuse the whole city?",
+      "Pepper never falls. Lend on it."
+     ],
+     "far_branches": [
+      "One good correspondent in Bruges is worth ten in Padua.",
+      "News takes six weeks from Bruges? So do the profits. Patience."
+     ],
+     "loss_turn": [
+      "A bad season at sea. The autumn convoy will mend it.",
+      "One loss and the cassiere wants to bury our coin in the garden."
+     ],
+     "good_turn": [
+      "You see? The galleys came home. Double the stake next voyage.",
+      "Profit, sers. Now let us go and find more of it."
+     ],
+     "court_offer": [
+      "Lend to the Doge and the Doge remembers. That alone is worth the interest.",
+      "A prestito to the Republic? Take it, and ask for the salt tolls as pledge."
+     ],
+     "new_tech": [
+      "Double entry, they call it. Anything that writes faster sells faster.",
+      "If the Florentines already use it, we are late. Adopt it."
+     ],
+     "centre_moving": [
+      "The money goes west? Then so shall we, by correspondent.",
+      "Bruges talks louder every year. We should be there to listen."
+     ],
+     "quiet": [
+      "A quiet Rialto is a Rialto where somebody else is making money.",
+      "Nothing happening? Then something is about to. Be first to it."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Zuane Dolfinetto",
+    "title": "Cassiere",
+    "bio": "Has counted the same chest twice daily for thirty-one years and found it short only once, which he still mentions.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "grey",
+     "facial_hair": "none",
+     "headwear": "coif",
+     "garment": "robe",
+     "colour": "#4a3b2a",
+     "accessory": "ledger"
+    },
+    "remarks": {
+     "thin_till": [
+      "If three depositors come at once, we shut the bench. Remember the one that broke at Easter.",
+      "Writing in a book does not pay the widow who asks for her coin."
+     ],
+     "flush_till": [
+      "Idle coin never yet broke a bench.",
+      "Let the chest be heavy. Heavy chests sleep well, and so do I."
+     ],
+     "high_leverage": [
+      "Three ducats written for every one in the chest. The Senate has banished bankers for less.",
+      "Book money is a promise. Promises do not clink."
+     ],
+     "big_prince_exposure": [
+      "The Commune pays when it pleases, and it is rarely pleased.",
+      "Every forced loan is a coin I shall never count again."
+     ],
+     "bubble_city": [
+      "When the fishwife borrows to buy pepper, sell the pepper.",
+      "Half the Rialto is borrowing on the same cargo. One storm, sers."
+     ],
+     "far_branches": [
+      "Our man in Bruges could be dead a month and still signing letters.",
+      "Distance is where honest factors become rich ones."
+     ],
+     "loss_turn": [
+      "I said so. Write it in the book, and write it plainly.",
+      "Draw in the loans before the depositors draw out their coin."
+     ],
+     "good_turn": [
+      "Good. Put the profit in the chest, not on a galley.",
+      "A profit is a pleasant thing. A reserve is a useful one."
+     ],
+     "court_offer": [
+      "The Doge asks; the Doge does not repay. Lend a little, gracefully.",
+      "Ask for a pledge. Salt, jewels, anything I can weigh."
+     ],
+     "new_tech": [
+      "New ways of writing are new ways of hiding.",
+      "Forty years in Roman numerals and the book balances. Why change?"
+     ],
+     "centre_moving": [
+      "Let the money wander. Venice will be here when it returns.",
+      "Bruges? They pay in cloth and excuses."
+     ],
+     "quiet": [
+      "Quiet is my favourite season.",
+      "Count the chest. Then count it again."
+     ]
+    }
+   },
+   "court": {
+    "name": "Ser Andrea Querinetto",
+    "title": "Agent to the Signoria",
+    "bio": "Knows which Procurator dines where, which Senator owes whom, and pretends to know nothing of either.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "brown",
+     "facial_hair": "beard",
+     "headwear": "beret",
+     "garment": "robe",
+     "colour": "#b22222",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "Let no Senator hear the chest echo.",
+      "If we wobble, the Signoria may lend us a kind word. Only a word."
+     ],
+     "flush_till": [
+      "The Arsenal is fitting a fleet. Our idle coin could be very patriotic.",
+      "Coin in the chest invites a forced loan. Better to offer one first."
+     ],
+     "high_leverage": [
+      "The Senate is debating rules for the banchi. Let us not be the example.",
+      "Write less, or be ready to explain it to the Provveditori."
+     ],
+     "big_prince_exposure": [
+      "Our loans to the Commune are our citizenship papers.",
+      "A bench the Republic owes cannot be allowed to fail. Probably."
+     ],
+     "bubble_city": [
+      "The Council of Ten dislikes a bench that fails noisily. Lend quietly.",
+      "If it bursts, I want us on the right side of the Ten."
+     ],
+     "far_branches": [
+      "Letters abroad pass through the Doge's eyes. Write accordingly.",
+      "A correspondent in Bruges is also an informant. Useful to the Signoria."
+     ],
+     "loss_turn": [
+      "Losses can be described as service to the Republic.",
+      "Let me reach the Senator before the rumour does."
+     ],
+     "good_turn": [
+      "Profits invite envy. A gift to the Arsenal would soothe it.",
+      "Good. Now the Signoria will want its share. Plan for that."
+     ],
+     "court_offer": [
+      "One does not refuse the Serenissima. One negotiates the rate.",
+      "Lend, and our name sits in the Doge's ear for a generation."
+     ],
+     "new_tech": [
+      "Is it permitted? I shall ask before we are fined for it.",
+      "The Senate likes any novelty that keeps the books clear for tax."
+     ],
+     "centre_moving": [
+      "Venice is the centre of the world. Kindly lower your voice.",
+      "If the money moves, follow it with a Venetian passport."
+     ],
+     "quiet": [
+      "A quiet turn is a fine time to dine with a Procurator.",
+      "Nothing to report to the Signoria. Excellent."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Fra Tomaso da Treviso",
+    "title": "Confessore",
+    "bio": "A Dominican who hears the partners' confessions weekly and their excuses daily, and prefers the confessions.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "olive",
+     "hair": "none",
+     "hair_colour": "grey",
+     "facial_hair": "none",
+     "headwear": "none",
+     "garment": "habit",
+     "colour": "#efeadf",
+     "accessory": "rosary"
+    },
+    "remarks": {
+     "thin_till": [
+      "Better a thin till than a fat sin.",
+      "Poverty is no shame. Failing the widows who trusted you is."
+     ],
+     "flush_till": [
+      "Treasure that rusts accuses its owner. Alms cure rust.",
+      "Idle coin harms no one. Some of it might feed the poor of San Polo."
+     ],
+     "high_leverage": [
+      "You promise ducats you do not have. That is a lie, neatly written.",
+      "Writing money from air smells of alchemy."
+     ],
+     "big_prince_exposure": [
+      "Lending to the Commune is duty, and its interest a gift, not usury. Probably.",
+      "Princes sin too, but rarely confess it to their creditors."
+     ],
+     "bubble_city": [
+      "Greed has gripped the city. I see it Sundays, in the empty poor box.",
+      "When every man wants the same pepper, the Devil is selling it."
+     ],
+     "far_branches": [
+      "Far from home, a factor forgets his confessor.",
+      "A true bill of exchange is licit. A dry one is usury in a travelling cloak."
+     ],
+     "loss_turn": [
+      "Perhaps God is reviewing your interest rates.",
+      "A loss is a sermon. Listen to it."
+     ],
+     "good_turn": [
+      "Profit, yes. Was any of it usury? Tell me privately.",
+      "Leave a bequest for restitution in your will. In case."
+     ],
+     "court_offer": [
+      "A loan to the Republic in war is near to charity. Charge modestly.",
+      "Serve the Doge, but do not charge him like a pawnbroker."
+     ],
+     "new_tech": [
+      "Arab numerals? Count honestly in any numerals.",
+      "If it hides interest more cleverly, I shall find it anyway."
+     ],
+     "centre_moving": [
+      "Wherever the money goes, the Church is there already.",
+      "Bruges also has confessors. Stricter ones."
+     ],
+     "quiet": [
+      "A quiet turn. A good time for confession.",
+      "Remember: time belongs to God. You cannot sell it."
+     ]
+    }
+   }
+  },
+  "medici": {
+   "growth": {
+    "name": "Matteo di Ser Biagio Corsellini",
+    "title": "Direttore generale",
+    "bio": "Runs seven branches, three cardinals and one mistress, and keeps a separate ledger for each.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "olive",
+     "hair": "short",
+     "hair_colour": "black",
+     "facial_hair": "none",
+     "headwear": "cappuccio",
+     "garment": "gown",
+     "colour": "#6b1f3a",
+     "accessory": "chain"
+    },
+    "remarks": {
+     "thin_till": [
+      "The coin is in the branches. Draw a bill on Bruges.",
+      "Every great house runs thin. That is what branches are for."
+     ],
+     "flush_till": [
+      "Florins idle while the Apostolic Camera needs funding? Shameful.",
+      "Open at Geneva. The fairs eat coin."
+     ],
+     "high_leverage": [
+      "Partnership capital is small by design. The name carries the rest.",
+      "Our credit is our name, and our name is excellent."
+     ],
+     "big_prince_exposure": [
+      "The Duke of Burgundy pays in time and in favours.",
+      "Lend to the King of England; the wool licences follow."
+     ],
+     "bubble_city": [
+      "Bruges is booming. Raise the branch's limit.",
+      "Everyone lends in Bruges because Bruges is where the money is."
+     ],
+     "far_branches": [
+      "Our London partner writes cheerfully. Cheer is profitable.",
+      "Each branch is its own partnership. If one fails, it fails alone."
+     ],
+     "loss_turn": [
+      "A branch manager's error. Replace him and carry on.",
+      "Losses in London, profits in Rome. The whole is fine."
+     ],
+     "good_turn": [
+      "The papal account carries us again. Bless the Curia.",
+      "Open another branch. Avignon looks lonely."
+     ],
+     "court_offer": [
+      "A prince asking is a prince listening. Lend, and ask for the alum.",
+      "Kings make poor debtors and excellent customers."
+     ],
+     "new_tech": [
+      "A holding of partnerships. Let us exploit it before others copy.",
+      "Printed exchange tables? Faster than a rival's abacus."
+     ],
+     "centre_moving": [
+      "The centre is wherever our best branch is.",
+      "If Bruges rises, so does our Bruges partner's share."
+     ],
+     "quiet": [
+      "Quiet? Write to every branch: find me a cardinal.",
+      "Idle partners are expensive partners."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Agnolo Fantoni",
+    "title": "Ragioniere",
+    "bio": "The first man in the house to own spectacles, which he uses chiefly to find errors in other men's arithmetic.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "white",
+     "facial_hair": "none",
+     "headwear": "coif",
+     "garment": "robe",
+     "colour": "#3b3b3b",
+     "accessory": "spectacles"
+    },
+    "remarks": {
+     "thin_till": [
+      "A branch is only a promise in another city.",
+      "Recall the Bruges remittance before Bruges spends it."
+     ],
+     "flush_till": [
+      "Let it sit. I have read the London ledgers.",
+      "A full chest has never ruined a house."
+     ],
+     "high_leverage": [
+      "Ten thousand florins of capital, a hundred thousand of letters. Sleep well.",
+      "The name carries the rest, until the day it doesn't."
+     ],
+     "big_prince_exposure": [
+      "Kings borrow for wars and repay with more wars.",
+      "The Burgundy loan now exceeds the Bruges branch. Count it."
+     ],
+     "bubble_city": [
+      "When wool doubles, so does the foolishness.",
+      "The Bruges branch has lent to everyone in Bruges. That is the problem."
+     ],
+     "far_branches": [
+      "London's accounts arrive in June describing a year that ended in March.",
+      "Branch managers lie by distance."
+     ],
+     "loss_turn": [
+      "Audit the branch. In person, with a mule and a notary.",
+      "Fewer princes, more merchants."
+     ],
+     "good_turn": [
+      "Repay the foreign lords' deposits. They are skittish.",
+      "Profit is pleasant. Reserves are wiser."
+     ],
+     "court_offer": [
+      "Lend him wool, not florins.",
+      "The articles set a limit. Lend half of it."
+     ],
+     "new_tech": [
+      "Spectacles are the only novelty I approve.",
+      "New schemes still need old arithmetic."
+     ],
+     "centre_moving": [
+      "Moving the house costs more than missing the centre.",
+      "Let Bruges keep its glory and its bankruptcies."
+     ],
+     "quiet": [
+      "Quiet is a ledger that balances.",
+      "I am checking the Geneva books. Again."
+     ]
+    }
+   },
+   "court": {
+    "name": "Messer Bernardo Tedaldini",
+    "title": "Procuratore presso la Curia",
+    "bio": "Young, charming and fluent in Latin flattery; has never met a cardinal he couldn't seat beside a creditor.",
+    "portrait": {
+     "sex": "m",
+     "age": "young",
+     "skin": "olive",
+     "hair": "curled",
+     "hair_colour": "brown",
+     "facial_hair": "none",
+     "headwear": "beret",
+     "garment": "doublet",
+     "colour": "#1f4d7a",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "Let no cardinal see us thin.",
+      "The Depositary of the Camera may lend a hand, discreetly."
+     ],
+     "flush_till": [
+      "His Holiness wants a crusade financed. Piety with a rate.",
+      "Idle coin, if not offered, is often requested."
+     ],
+     "high_leverage": [
+      "Leverage is invisible to princes, if we keep it so.",
+      "The Catasto officials count our florins. Keep the books tidy."
+     ],
+     "big_prince_exposure": [
+      "A prince in our debt is a prince in our pocket. Or we in his.",
+      "The Pope's debts are holy. Their punctuality is not."
+     ],
+     "bubble_city": [
+      "If Bruges collapses, the Duke will blame foreign bankers. Us.",
+      "Hot cities breed new laws against lenders."
+     ],
+     "far_branches": [
+      "Our London man dines with the King. Encourage it.",
+      "Branches are embassies with ledgers."
+     ],
+     "loss_turn": [
+      "A loss? Then a well-timed favour to the Duke.",
+      "Losses are better explained in person, over dinner."
+     ],
+     "good_turn": [
+      "Profit! Now a chapel, a fresco and a grateful prior.",
+      "Show piety publicly. It calms both creditors and censors."
+     ],
+     "court_offer": [
+      "Say yes elegantly. Negotiate the rate after.",
+      "Refuse a king and his heir remembers it too."
+     ],
+     "new_tech": [
+      "The Curia dislikes surprises. Introduce it slowly.",
+      "If the prince's treasurer understands it, he will tax it."
+     ],
+     "centre_moving": [
+      "Follow the court, not the coin.",
+      "Where the Pope goes, the money follows."
+     ],
+     "quiet": [
+      "I am arranging a marriage with useful in-laws.",
+      "A quiet court is a court that is plotting."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Fra Silvestro Bocchetti",
+    "title": "Confessore",
+    "bio": "A Franciscan who preaches against avarice on Sunday and drafts the house's exchange contracts on Monday.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "olive",
+     "hair": "none",
+     "hair_colour": "brown",
+     "facial_hair": "beard",
+     "headwear": "none",
+     "garment": "habit",
+     "colour": "#5a4632",
+     "accessory": "rosary"
+    },
+    "remarks": {
+     "thin_till": [
+      "Better poor and honest than bankrupt and damned.",
+      "A thin till is a humble till. Mind it stays honest."
+     ],
+     "flush_till": [
+      "Give a tithe to the poor and a candle to San Francesco.",
+      "A chest full of florins is a sermon waiting to be preached."
+     ],
+     "high_leverage": [
+      "Letters you cannot honour are false witness, sealed.",
+      "Pride goes before a fall, even in double entry."
+     ],
+     "big_prince_exposure": [
+      "Lending to a prince for war is no sin, if the war is just.",
+      "Kings rarely pay their confessors either."
+     ],
+     "bubble_city": [
+      "All Bruges runs after riches. Lent will come for Bruges.",
+      "When the city burns with gain, keep a bucket of penance near."
+     ],
+     "far_branches": [
+      "Exchange between cities is licit. When the bill returns home unspent, it is not.",
+      "Dry exchange is usury in a travelling cloak."
+     ],
+     "loss_turn": [
+      "God is tempering your margins.",
+      "Restitution, perhaps? It is never too early."
+     ],
+     "good_turn": [
+      "Give one florin in ten. God keeps excellent books.",
+      "Gain is permitted. Gloating is not."
+     ],
+     "court_offer": [
+      "A prince's loan is service, if the interest is a gift.",
+      "Lend to princes with prayer and a pledge."
+     ],
+     "new_tech": [
+      "New contracts must still pass the canonists.",
+      "Clever instruments demand clever penance."
+     ],
+     "centre_moving": [
+      "Bruges, Rome, London: your soul travels with you.",
+      "Moving the house does not move the sin."
+     ],
+     "quiet": [
+      "Commission an altarpiece. For restitution, you understand.",
+      "A quiet turn. Confess the noisy ones."
+     ]
+    }
+   }
+  },
+  "princes": {
+   "growth": {
+    "name": "Gerolamo Vivaldini",
+    "title": "Fattore generale",
+    "bio": "A Genoese who can quote the Piacenza exchange rate in his sleep and has twice been woken to do so.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "olive",
+     "hair": "short",
+     "hair_colour": "black",
+     "facial_hair": "beard",
+     "headwear": "beret",
+     "garment": "doublet",
+     "colour": "#1a1a1a",
+     "accessory": "chain"
+    },
+    "remarks": {
+     "thin_till": [
+      "We clear at the fair. Coin is for tavern keepers.",
+      "Roll the bills to the next fair and the till fills itself."
+     ],
+     "flush_till": [
+      "Seville silver sitting idle? The King needs it in Flanders by Tuesday.",
+      "Idle coin at Antwerp is a crime against arbitrage."
+     ],
+     "high_leverage": [
+      "An asiento is leverage wearing a crown.",
+      "Every Genoese house runs this way, and Genoa rules the fairs."
+     ],
+     "big_prince_exposure": [
+      "The silver fleet comes every year. Every single year.",
+      "Philip is the richest prince alive. What could go wrong?"
+     ],
+     "bubble_city": [
+      "Antwerp is the Bourse of the world. Lend.",
+      "Pepper contracts double weekly in Antwerp. We should be in them."
+     ],
+     "far_branches": [
+      "Our factors in Seville, Lyon and Antwerp write weekly. Distance is our profit.",
+      "Arbitrage lives in the weeks between cities."
+     ],
+     "loss_turn": [
+      "The King's decree is a delay, not a default.",
+      "A rescheduling is merely a new asiento with better fees."
+     ],
+     "good_turn": [
+      "The juros paid! Write another asiento.",
+      "Profit on the exchange. Double our stake at the next fair."
+     ],
+     "court_offer": [
+      "Lend to the King; the silver will follow.",
+      "Name the rate and ask for export licences on silver."
+     ],
+     "new_tech": [
+      "Bills negotiable by endorsement. Our paper travels without us.",
+      "The Antwerp Bourse trades all day. So must we."
+     ],
+     "centre_moving": [
+      "The centre is the fair. The fair moves, and so do we.",
+      "If Amsterdam rises, we will own a corner of it."
+     ],
+     "quiet": [
+      "Quiet means the King's treasurer is drafting a request.",
+      "Let us find a deposit from the Augsburg houses' rivals."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Margriet van Ooteghem",
+    "title": "Boekhoudster",
+    "bio": "Widowed by a merchant who believed in the fairs, she kept his books, paid his debts and believes in nothing.",
+    "portrait": {
+     "sex": "f",
+     "age": "old",
+     "skin": "light",
+     "hair": "bun",
+     "hair_colour": "grey",
+     "facial_hair": "none",
+     "headwear": "coif",
+     "garment": "gown",
+     "colour": "#2b2b2b",
+     "accessory": "ledger"
+    },
+    "remarks": {
+     "thin_till": [
+      "My late husband also said the fair would fill the till. Ask his creditors.",
+      "Keep enough coin for three days of withdrawals. Three."
+     ],
+     "flush_till": [
+      "Coin in a chest has never yet gone bankrupt.",
+      "Keep it. Antwerp eats bankers in bad years."
+     ],
+     "high_leverage": [
+      "Paper upon paper. It burns quickly.",
+      "I count the coin. The rest is wind from Genoa."
+     ],
+     "big_prince_exposure": [
+      "The King of Spain decrees, and his creditors decay.",
+      "Philip owes half the Bourse. That is not security, it is company."
+     ],
+     "bubble_city": [
+      "When the alleys smell of speculation, I sell.",
+      "Everyone buys pepper on credit. So I sell pepper."
+     ],
+     "far_branches": [
+      "A letter from Seville is ten weeks stale when I read it.",
+      "Agents far away grow rich before we do."
+     ],
+     "loss_turn": [
+      "Recount everything. Then recount it in silver.",
+      "Do not chase a loss with a king."
+     ],
+     "good_turn": [
+      "Pay the depositors first. Celebrate second.",
+      "Profit I can count. Promises I cannot."
+     ],
+     "court_offer": [
+      "Lend him a little. Princes repay a little.",
+      "Demand jewels in pledge, jewels I can hold."
+     ],
+     "new_tech": [
+      "New paper is new trouble.",
+      "Endorsement only multiplies the people who might fail."
+     ],
+     "centre_moving": [
+      "I stay with Antwerp till it burns.",
+      "Move, then. But the books travel with me."
+     ],
+     "quiet": [
+      "I like quiet. Quiet I can audit.",
+      "Count the till before supper."
+     ]
+    }
+   },
+   "court": {
+    "name": "Don Diego de Arellano y Mesía",
+    "title": "Agente en la Corte",
+    "bio": "Lives in Valladolid on the house's money, writes beautiful letters, and is owed favours by three royal secretaries.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "olive",
+     "hair": "short",
+     "hair_colour": "black",
+     "facial_hair": "beard",
+     "headwear": "beret",
+     "garment": "doublet",
+     "colour": "#111111",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "The Contaduría need not know the till is thin.",
+      "A word from the King's secretary steadies depositors wonderfully."
+     ],
+     "flush_till": [
+      "His Majesty notices idle silver. Offer it before he asks.",
+      "Idle coin in Flanders is coin the rebels may seize."
+     ],
+     "high_leverage": [
+      "At court they call it confidence. Let us not correct them.",
+      "Leverage is invisible as long as His Majesty smiles."
+     ],
+     "big_prince_exposure": [
+      "To be owed by Spain is to be a grandee of credit.",
+      "If the King suspends payments, I will negotiate the settlement myself."
+     ],
+     "bubble_city": [
+      "The Regent of the Netherlands dislikes failures on the Bourse.",
+      "Speculation brings edicts. I hear them drafting one now."
+     ],
+     "far_branches": [
+      "Our factor in Seville must charm the Casa de Contratación.",
+      "Distance from court is distance from favour."
+     ],
+     "loss_turn": [
+      "The Council of Finance may compensate us in juros.",
+      "Ask for a monopoly to repair the loss."
+     ],
+     "good_turn": [
+      "Profits make the King's accountants curious.",
+      "Send a gift to the King. He will remember it at the next default."
+     ],
+     "court_offer": [
+      "One does not refuse His Catholic Majesty.",
+      "Accept, and fix the silver licences into the contract."
+     ],
+     "new_tech": [
+      "If it serves the Crown's wars, the court will approve.",
+      "Innovation is welcome until the Inquisition reads it."
+     ],
+     "centre_moving": [
+      "The court is the centre. Everything else is commerce.",
+      "Wherever the King's silver lands, we stand."
+     ],
+     "quiet": [
+      "A quiet court is planning a war.",
+      "I am buying our senior partner a title. Modestly priced."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Fray Melchor de Arteaga",
+    "title": "Confesor y teólogo",
+    "bio": "A Salamanca-trained Dominican who can justify any exchange contract in Latin, and condemn it in Castilian.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "olive",
+     "hair": "none",
+     "hair_colour": "white",
+     "facial_hair": "none",
+     "headwear": "skullcap",
+     "garment": "habit",
+     "colour": "#f0ece0",
+     "accessory": "rosary"
+    },
+    "remarks": {
+     "thin_till": [
+      "A thin till endangers widows' deposits. That is sin, not daring.",
+      "Deposits are a trust before they are a resource."
+     ],
+     "flush_till": [
+      "Coin held idle harms none. Lent at usury, it harms many.",
+      "Alms are a better investment than the Bourse."
+     ],
+     "high_leverage": [
+      "Your paper outruns your coin. The Salamanca masters would frown.",
+      "Risk taken with others' money does not earn lucrum cessans."
+     ],
+     "big_prince_exposure": [
+      "A loan for just war is licit. Is this war just?",
+      "Interest from the Crown is compensation for damnum emergens. Probably."
+     ],
+     "bubble_city": [
+      "The just price is the common estimation. Antwerp has lost its common sense.",
+      "Speculation is not trade. Recall Saint Thomas."
+     ],
+     "far_branches": [
+      "Real exchange between places is licit. Bills that go nowhere are dry exchange.",
+      "Confirm that the bills truly travel."
+     ],
+     "loss_turn": [
+      "Losses are no sin. Lying about them is.",
+      "Do penance by honest accounts."
+     ],
+     "good_turn": [
+      "Profit from true exchange is licit. From fictitious bills, damnable.",
+      "Endow a chapel. It clears the conscience."
+     ],
+     "court_offer": [
+      "The King's war becomes your sin if it is unjust.",
+      "Lend, but do not charge for time itself."
+     ],
+     "new_tech": [
+      "Each new paper needs new casuistry. I am ready.",
+      "Endorsement is licit. Rolling bills to nowhere is not."
+     ],
+     "centre_moving": [
+      "The Calvinists lend freely in the north. Do not follow them.",
+      "Moving north moves you out of Rome's sight, not God's."
+     ],
+     "quiet": [
+      "Examine your contracts, one by one.",
+      "A quiet turn for confession."
+     ]
+    }
+   }
+  },
+  "northern": {
+   "growth": {
+    "name": "Jacob Ruysdonck",
+    "title": "Koopman-bankier",
+    "bio": "Owns VOC shares, two herring busses and one regrettable tulip bulb, and has never once read a prospectus.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "long",
+     "hair_colour": "brown",
+     "facial_hair": "moustache",
+     "headwear": "none",
+     "garment": "doublet",
+     "colour": "#141414",
+     "accessory": "pipe"
+    },
+    "remarks": {
+     "thin_till": [
+      "Our money is in the Wisselbank. Same as coin, only safer.",
+      "Draw on Hamburg. We settle in a fortnight."
+     ],
+     "flush_till": [
+      "VOC shares, sir, or bulbs if you have the stomach.",
+      "Idle guilders vex me. Lend to the Baltic grain men."
+     ],
+     "high_leverage": [
+      "Every merchant on the Dam borrows. Amsterdam is leverage.",
+      "Bank money is better than coin, so we may stretch it."
+     ],
+     "big_prince_exposure": [
+      "The States always pay; they are merchants themselves.",
+      "King Charles is good for it. Ask any London goldsmith."
+     ],
+     "bubble_city": [
+      "Bulbs rise weekly. We must lend or look foolish.",
+      "Speculation is merely commerce with ambition."
+     ],
+     "far_branches": [
+      "Our man in Batavia writes once a year, profitably.",
+      "Ships carry letters and profits together."
+     ],
+     "loss_turn": [
+      "Bad wind. Good winds follow.",
+      "Sell short on the Beurs and recover by Friday."
+     ],
+     "good_turn": [
+      "Profits at the Beurs! More ships.",
+      "We should open a counting house in London."
+     ],
+     "court_offer": [
+      "The Stadtholder needs money. He pays in favours.",
+      "Lend to the English Crown. The goldsmiths do."
+     ],
+     "new_tech": [
+      "Bank money! Faster than coin and cleaner.",
+      "Joint stock is the future. Buy."
+     ],
+     "centre_moving": [
+      "London is rising. Send a partner.",
+      "If the centre moves, move faster than it."
+     ],
+     "quiet": [
+      "Quiet? The Beurs is never quiet.",
+      "Find me a voyage."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Cornelis Swaenswijck",
+    "title": "Kassier",
+    "bio": "Has kept the house's coin for forty years in a chest with three locks, carrying two keys and suspecting the third.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "long",
+     "hair_colour": "white",
+     "facial_hair": "none",
+     "headwear": "skullcap",
+     "garment": "gown",
+     "colour": "#2a2a2a",
+     "accessory": "pocket_watch"
+    },
+    "remarks": {
+     "thin_till": [
+      "A till this thin invites a run.",
+      "Keep guilders in the chest against the bad morning."
+     ],
+     "flush_till": [
+      "Better guilders in the chest than bulbs in the ground.",
+      "I sleep on a heavy chest."
+     ],
+     "high_leverage": [
+      "Amsterdam is leverage. Amsterdam also has a paupers' graveyard.",
+      "Paper is fine until everyone wants coin."
+     ],
+     "big_prince_exposure": [
+      "Kings close their exchequers. Mark me.",
+      "Charles of England will stop payment one day."
+     ],
+     "bubble_city": [
+      "A bulb is an onion with ambition.",
+      "When the chimney sweep buys shares, sell yours."
+     ],
+     "far_branches": [
+      "Batavia is a year away. Fraud is faster.",
+      "Distance turns honest clerks into nabobs."
+     ],
+     "loss_turn": [
+      "Retrench. Sell what you do not understand.",
+      "Write it plain: we lost."
+     ],
+     "good_turn": [
+      "Put half of it into Wisselbank money.",
+      "Pay down debt while the sun shines."
+     ],
+     "court_offer": [
+      "Lend to the States, not to kings.",
+      "The English Crown has a short memory for debts."
+     ],
+     "new_tech": [
+      "The Wisselbank is sound because it does not lend. Remember that.",
+      "New is not wrong. New is untested."
+     ],
+     "centre_moving": [
+      "London is a nest of goldsmiths and debtors.",
+      "Let them move. Amsterdam coin stays honest."
+     ],
+     "quiet": [
+      "Quiet days, sound books.",
+      "I am counting the till."
+     ]
+    }
+   },
+   "court": {
+    "name": "Adriaen van Coeverden",
+    "title": "Agent bij de Staten-Generaal",
+    "bio": "The son of a burgomaster's cousin, he believes every problem in Amsterdam can be solved over oysters with the right magistrate.",
+    "portrait": {
+     "sex": "m",
+     "age": "young",
+     "skin": "light",
+     "hair": "curled",
+     "hair_colour": "brown",
+     "facial_hair": "moustache",
+     "headwear": "none",
+     "garment": "doublet",
+     "colour": "#3c2f5a",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "The Wisselbank commissioners would be distressed. Let us not distress them.",
+      "The burgomasters prefer solvent bankers."
+     ],
+     "flush_till": [
+      "The States need war money against France.",
+      "Patriotic loans buy tolerance."
+     ],
+     "high_leverage": [
+      "The magistrates are drafting rules on credit. Tread softly.",
+      "Leverage in Amsterdam is a matter of politics."
+     ],
+     "big_prince_exposure": [
+      "The States pay; they are merchants like us.",
+      "English kings come and go. Their debts stay."
+     ],
+     "bubble_city": [
+      "The magistrates will ban the bulb trade soon.",
+      "Speculation leads to ordinances."
+     ],
+     "far_branches": [
+      "The VOC directors are good friends to have.",
+      "Distance is managed through marriage."
+     ],
+     "loss_turn": [
+      "The burgomasters can be sympathetic.",
+      "A loss is a fine reason to petition for a privilege."
+     ],
+     "good_turn": [
+      "A donation to the orphanage. Publicly.",
+      "Profit noticed is profit taxed."
+     ],
+     "court_offer": [
+      "The Stadtholder asks, the States agree, we lend.",
+      "A new king in London seeks Dutch bankers. Go."
+     ],
+     "new_tech": [
+      "The new Bank in London borrows our methods. Watch it.",
+      "Innovation needs a charter first."
+     ],
+     "centre_moving": [
+      "Follow the Stadtholder to London.",
+      "Where the court goes, credit goes."
+     ],
+     "quiet": [
+      "I am dining with a burgomaster.",
+      "Quiet. Good for petitions."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Dominee Gerrit Abbema",
+    "title": "Predikant",
+    "bio": "A Reformed minister who permits interest on Calvin's authority and forbids enjoyment of it on his own.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "grey",
+     "facial_hair": "beard",
+     "headwear": "skullcap",
+     "garment": "gown",
+     "colour": "#0d0d0d",
+     "accessory": "none"
+    },
+    "remarks": {
+     "thin_till": [
+      "Better a thin till than robbed depositors.",
+      "A steward must render account."
+     ],
+     "flush_till": [
+      "Wealth is a trust from God. Give.",
+      "Do not bury your talent. But do not gamble it either."
+     ],
+     "high_leverage": [
+      "Debt is a chain. Calvin permits interest, not folly.",
+      "Reckless credit shames the congregation."
+     ],
+     "big_prince_exposure": [
+      "Popish kings repay in promises.",
+      "Lend to Protestant princes, prudently."
+     ],
+     "bubble_city": [
+      "Bulbs are vanity. Ecclesiastes said so.",
+      "When greed blooms, pray."
+     ],
+     "far_branches": [
+      "In the Indies our men forget God.",
+      "Send admonitions with the orders."
+     ],
+     "loss_turn": [
+      "Providence humbles.",
+      "A loss is a summons to repentance."
+     ],
+     "good_turn": [
+      "Profit is blessing. Remember the poor box.",
+      "Sober gain is no sin."
+     ],
+     "court_offer": [
+      "Render unto Caesar, at moderate interest.",
+      "Lend if the cause is godly."
+     ],
+     "new_tech": [
+      "Honest bank money is a blessing.",
+      "Novelty tempts. Pray first."
+     ],
+     "centre_moving": [
+      "London is full of bishops and luxury.",
+      "God is not confined to Amsterdam."
+     ],
+     "quiet": [
+      "Read the Psalms between the ledgers.",
+      "Quiet. Good for sobriety."
+     ]
+    }
+   }
+  },
+  "country": {
+   "growth": {
+    "name": "Josiah Pennefather Hale",
+    "title": "Senior Partner",
+    "bio": "Has founded two banks, one turnpike trust and a canal that runs nowhere, and is cheerful about all four.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "wig",
+     "hair_colour": "white",
+     "facial_hair": "none",
+     "headwear": "tricorn",
+     "garment": "frock_coat",
+     "colour": "#5b2a1a",
+     "accessory": "pocket_watch"
+    },
+    "remarks": {
+     "thin_till": [
+      "We'll draw on our London agent. That's what he's for.",
+      "Our notes circulate, sir. Gold is old-fashioned."
+     ],
+     "flush_till": [
+      "Canal shares, sir. Turnpikes. Anything with a toll.",
+      "Idle guineas! Discount more bills."
+     ],
+     "high_leverage": [
+      "Our notes are as good as gold, so long as no one asks.",
+      "Every country bank issues. We issue better."
+     ],
+     "big_prince_exposure": [
+      "Consols are the safest thing in England.",
+      "The Government always pays. It has the Navy."
+     ],
+     "bubble_city": [
+      "South Sea stock is rising. Buy.",
+      "Manchester is booming. Open a branch."
+     ],
+     "far_branches": [
+      "Our Bristol correspondent is perfectly reliable.",
+      "An agency in Calcutta? Letters take months; so do profits."
+     ],
+     "loss_turn": [
+      "A bad harvest. Next year will mend it.",
+      "One poor quarter. Discount more."
+     ],
+     "good_turn": [
+      "Splendid. Open a branch in Leeds.",
+      "Profit! Issue more notes."
+     ],
+     "court_offer": [
+      "The Treasury needs a war loan. Patriotism at five per cent.",
+      "Lend to the Government. They print the bonds."
+     ],
+     "new_tech": [
+      "The cheque! Quicker than notes.",
+      "Railway shares, sir. They never lose."
+     ],
+     "centre_moving": [
+      "London is the City, sir. Open there.",
+      "Our notes clear through Lombard Street anyway."
+     ],
+     "quiet": [
+      "Quiet? Let's buy a mill.",
+      "Advertise for depositors."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Mrs Hester Clewlow",
+    "title": "Partner",
+    "bio": "Inherited her husband's share and his ledgers; kept the share, corrected the ledgers, and has outlived two runs.",
+    "portrait": {
+     "sex": "f",
+     "age": "old",
+     "skin": "light",
+     "hair": "bun",
+     "hair_colour": "grey",
+     "facial_hair": "none",
+     "headwear": "coif",
+     "garment": "gown",
+     "colour": "#3a3a4a",
+     "accessory": "ledger"
+    },
+    "remarks": {
+     "thin_till": [
+      "Mr Clewlow kept a third in gold. He also died solvent.",
+      "Recall the London balance at once."
+     ],
+     "flush_till": [
+      "Gold in the vault never ran on anyone.",
+      "Keep it. The panic of 'ninety-three is not forgotten in this town."
+     ],
+     "high_leverage": [
+      "Our notes are promises. Promises run.",
+      "Fewer notes, gentlemen."
+     ],
+     "big_prince_exposure": [
+      "Consols fall in war. Hold fewer.",
+      "The Government suspends gold payments when it suits."
+     ],
+     "bubble_city": [
+      "When the parson buys South Sea, sell.",
+      "Railway mania is still mania."
+     ],
+     "far_branches": [
+      "Branches far off mean clerks far off.",
+      "A cashier in Bristol can embezzle for a year undetected."
+     ],
+     "loss_turn": [
+      "Retrench. Call in the weaker loans.",
+      "Write to the London agent today."
+     ],
+     "good_turn": [
+      "Add it to the reserve.",
+      "Pay off the London overdraft."
+     ],
+     "court_offer": [
+      "Lend to the Treasury, never to dukes.",
+      "Ministers make poor guarantors."
+     ],
+     "new_tech": [
+      "The cheque merely makes fraud quicker.",
+      "Railways need capital, not our depositors' savings."
+     ],
+     "centre_moving": [
+      "London takes our money and our nerve.",
+      "Stay country. We know our borrowers."
+     ],
+     "quiet": [
+      "Quiet is profitable.",
+      "Balance the books, then the books again."
+     ]
+    }
+   },
+   "court": {
+    "name": "Sir Ambrose Kettlewood",
+    "title": "Parliamentary Agent",
+    "bio": "Sits for a borough with eleven voters, nine of whom bank with the house; considers this public service.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "wig",
+     "hair_colour": "white",
+     "facial_hair": "none",
+     "headwear": "tricorn",
+     "garment": "coat",
+     "colour": "#2a3d6b",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "The Bank of England discounts for its friends.",
+      "Keep friends in Threadneedle Street."
+     ],
+     "flush_till": [
+      "The Chancellor seeks subscribers.",
+      "Idle money offends the Treasury."
+     ],
+     "high_leverage": [
+      "Parliament is debating note issue. Be discreet.",
+      "Peel's men are counting country notes."
+     ],
+     "big_prince_exposure": [
+      "Holding Consols makes us patriots.",
+      "A Government that owes us must support us."
+     ],
+     "bubble_city": [
+      "Parliament passes Bubble Acts after bubbles.",
+      "A collapse will bring legislation, and inquiries."
+     ],
+     "far_branches": [
+      "See that the county members are customers.",
+      "Branches bring votes."
+     ],
+     "loss_turn": [
+      "Perhaps a Treasury remittance contract.",
+      "I shall speak with the Bank."
+     ],
+     "good_turn": [
+      "Subscribe to the war loan.",
+      "Profit noticed by Parliament is profit taxed."
+     ],
+     "court_offer": [
+      "Lend to the Crown. Knighthoods follow.",
+      "Accept, and ask for the Army remittance business."
+     ],
+     "new_tech": [
+      "Parliament likes cheques; they are not notes.",
+      "Railway bills pass with the right friends."
+     ],
+     "centre_moving": [
+      "London is where Parliament sits.",
+      "Be in the City or be forgotten."
+     ],
+     "quiet": [
+      "I am dining with an under-secretary.",
+      "Quiet. Prepare petitions."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Ezra Thistlewaite",
+    "title": "Elder and Counsel",
+    "bio": "A Quaker elder who holds that a bank which fails its depositors fails God, and that this is worse than failing Parliament.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "grey",
+     "facial_hair": "none",
+     "headwear": "none",
+     "garment": "coat",
+     "colour": "#6b6b5a",
+     "accessory": "quill"
+    },
+    "remarks": {
+     "thin_till": [
+      "Plain dealing: keep coin enough to pay all.",
+      "A Friend never fails his creditors."
+     ],
+     "flush_till": [
+      "Surplus may relieve the poor of the parish.",
+      "Idle wealth is at least wealth spared from vanity."
+     ],
+     "high_leverage": [
+      "To promise more than thou hast is untruth.",
+      "The Meeting disowns members who fail."
+     ],
+     "big_prince_exposure": [
+      "Lending for war troubles me.",
+      "War loans buy cannon. Friends abstain."
+     ],
+     "bubble_city": [
+      "South Sea? I would not touch it.",
+      "Vanity, in shares."
+     ],
+     "far_branches": [
+      "Bills from the slave trade pass through Bristol. Refuse them.",
+      "Know whom thy correspondents serve."
+     ],
+     "loss_turn": [
+      "Losses must be borne truthfully.",
+      "Make good thy creditors first."
+     ],
+     "good_turn": [
+      "Profit is honest when the measure is honest.",
+      "Give to the abolition fund."
+     ],
+     "court_offer": [
+      "The Crown wants guns. I counsel no.",
+      "The law allows five per cent. Charge no more, and lend for roads."
+     ],
+     "new_tech": [
+      "The cheque is honest if honoured.",
+      "Railways join distant Meetings. Good."
+     ],
+     "centre_moving": [
+      "Lombard Street has many Friends.",
+      "Move only if the Meeting there will receive thee."
+     ],
+     "quiet": [
+      "Silence is a good counsellor.",
+      "Wait in the Light."
+     ]
+    }
+   }
+  },
+  "lombard": {
+   "growth": {
+    "name": "Augustus Merriman-Lowe",
+    "title": "Senior Partner",
+    "bio": "Has floated loans for four republics and two emperors, and regards the occasional default as character-building for others.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "brown",
+     "facial_hair": "whiskers",
+     "headwear": "top_hat",
+     "garment": "frock_coat",
+     "colour": "#1c1c1c",
+     "accessory": "pocket_watch"
+    },
+    "remarks": {
+     "thin_till": [
+      "The Bank lends freely in a panic. Everyone knows the rule.",
+      "We'll rediscount at Threadneedle Street. Stop fretting."
+     ],
+     "flush_till": [
+      "Argentine railways, five per cent guaranteed.",
+      "Idle money in the City is an insult to the City."
+     ],
+     "high_leverage": [
+      "Every accepting house runs lean.",
+      "Leverage is the price of a seat in Lombard Street."
+     ],
+     "big_prince_exposure": [
+      "Argentina will pay; it has beef.",
+      "The Russian loan is oversubscribed twice."
+     ],
+     "bubble_city": [
+      "Buenos Aires is the new Chicago.",
+      "Wall Street is roaring. Let us roar with it."
+     ],
+     "far_branches": [
+      "Our Shanghai agency is a gold mine.",
+      "The cable makes the Empire one market."
+     ],
+     "loss_turn": [
+      "One bad bill. The Bank will discount the rest.",
+      "Losses happen. Bigger deals follow."
+     ],
+     "good_turn": [
+      "Splendid. Another foreign loan.",
+      "Profit! Take a bigger floor on the Exchange."
+     ],
+     "court_offer": [
+      "A government loan! Flotation fees of three per cent.",
+      "Lend, and the Foreign Office smiles."
+     ],
+     "new_tech": [
+      "The telephone, sir. Faster than any clerk.",
+      "Cable to New York; arbitrage by noon."
+     ],
+     "centre_moving": [
+      "New York is a provincial town with ambitions.",
+      "If New York rises, open there. Quietly."
+     ],
+     "quiet": [
+      "Quiet? Let's float something.",
+      "Find me a foreign railway."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Mr Silas Pettigrew",
+    "title": "Chief Accountant",
+    "bio": "Bald since Overend Gurney and blames it; keeps a framed copy of the 1866 Bank Rate above his desk.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "none",
+     "hair_colour": "white",
+     "facial_hair": "whiskers",
+     "headwear": "bowler",
+     "garment": "suit",
+     "colour": "#2e2e2e",
+     "accessory": "spectacles"
+    },
+    "remarks": {
+     "thin_till": [
+      "Remember Overend Gurney. Everyone in this building should.",
+      "Keep cash at the Bank, and more than you think."
+     ],
+     "flush_till": [
+      "Cash has never failed a bank.",
+      "Reserves are dull. Dull survives."
+     ],
+     "high_leverage": [
+      "Acceptances are liabilities, gentlemen, whatever the partners say.",
+      "Leverage is a rope. Mind your neck."
+     ],
+     "big_prince_exposure": [
+      "Argentina has defaulted before. It will again.",
+      "Foreign governments enjoy defaulting."
+     ],
+     "bubble_city": [
+      "When the office boy buys shares, sell.",
+      "Wall Street will crash, and New York will drag us with it."
+     ],
+     "far_branches": [
+      "The Shanghai agent gambles with our name.",
+      "The cable shows prices, not fraud."
+     ],
+     "loss_turn": [
+      "Write down the bad bills now.",
+      "Call in loans before the rumour."
+     ],
+     "good_turn": [
+      "Add it to the reserve fund.",
+      "Pay down acceptances."
+     ],
+     "court_offer": [
+      "Take the fees. Do not keep the bonds.",
+      "Governments promise; creditors wait."
+     ],
+     "new_tech": [
+      "The typewriter is noisy and the clerks are slower.",
+      "Machines cannot judge a borrower's character."
+     ],
+     "centre_moving": [
+      "Keep sterling. Let dollars wander.",
+      "London has survived worse."
+     ],
+     "quiet": [
+      "A quiet turn is my favourite.",
+      "Balance the reserve."
+     ]
+    }
+   },
+   "court": {
+    "name": "Captain Rupert Daunsey",
+    "title": "Liaison to Threadneedle Street",
+    "bio": "A Guards officer who resigned for the City; knows the Governor's moods, his club and the name of his dog.",
+    "portrait": {
+     "sex": "m",
+     "age": "middle",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "blond",
+     "facial_hair": "moustache",
+     "headwear": "bowler",
+     "garment": "suit",
+     "colour": "#2b3a55",
+     "accessory": "seal_ring"
+    },
+    "remarks": {
+     "thin_till": [
+      "The Governor's eyebrows are our regulation.",
+      "A word at the Discount Office, before anyone else's word."
+     ],
+     "flush_till": [
+      "The Bank likes reserves. Tell them.",
+      "The Treasury needs a war loan."
+     ],
+     "high_leverage": [
+      "The Governor will raise an eyebrow. One is enough.",
+      "Keep it quiet, and keep it off the club gossip."
+     ],
+     "big_prince_exposure": [
+      "The Foreign Office supports this loan.",
+      "Patriotic lending. Whitehall will remember."
+     ],
+     "bubble_city": [
+      "The Bank dislikes speculation. Expect Bank Rate to rise.",
+      "If it ends badly, the Governor asks who lent most."
+     ],
+     "far_branches": [
+      "The Colonial Office approves of our agencies.",
+      "An office in Cairo is useful. To several people."
+     ],
+     "loss_turn": [
+      "The Bank can organise a lifeboat. For friends.",
+      "Let me discuss it with the Governor."
+     ],
+     "good_turn": [
+      "Subscribe to the war loan.",
+      "Dinner at the Mansion House, then."
+     ],
+     "court_offer": [
+      "A foreign loan with Whitehall behind it. Safe as houses.",
+      "His Majesty's Government will appreciate it."
+     ],
+     "new_tech": [
+      "The Bank uses the telephone now. So may we.",
+      "New methods should be shown to the Governor first."
+     ],
+     "centre_moving": [
+      "Sterling is the world's money.",
+      "New York? A passing fancy."
+     ],
+     "quiet": [
+      "Quiet. Good for lunch at the club.",
+      "I'll have a chat with the Deputy Governor."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Mr Lionel Grieve",
+    "title": "Company Solicitor",
+    "bio": "Reads every prospectus twice and every partner's letter three times; the partners call him 'the Vicar' behind his back.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "white",
+     "facial_hair": "beard",
+     "headwear": "none",
+     "garment": "frock_coat",
+     "colour": "#222222",
+     "accessory": "spectacles"
+    },
+    "remarks": {
+     "thin_till": [
+      "Directors who trade while insolvent may answer personally.",
+      "Do not take deposits you know you cannot repay."
+     ],
+     "flush_till": [
+      "Idle cash breaks no law.",
+      "Excess cash is legally safe."
+     ],
+     "high_leverage": [
+      "Limited liability is limited.",
+      "Directors may be prosecuted."
+     ],
+     "big_prince_exposure": [
+      "Sovereign immunity: you cannot sue a king.",
+      "Bondholders' committees are slow and sad."
+     ],
+     "bubble_city": [
+      "Puffed prospectuses become fraud claims.",
+      "Check the prospectus; I shall."
+     ],
+     "far_branches": [
+      "Foreign law differs, and so do foreign juries.",
+      "Opium bills? Not in this house, whatever is legal."
+     ],
+     "loss_turn": [
+      "Disclose it to the shareholders.",
+      "Truthful accounts, gentlemen."
+     ],
+     "good_turn": [
+      "Pay a dividend, not a bonus.",
+      "Remember the shareholders."
+     ],
+     "court_offer": [
+      "Read the bond covenant before signing.",
+      "Is the treaty sound? Check it."
+     ],
+     "new_tech": [
+      "The telephone leaves no record. Write it down after.",
+      "Typed contracts still need signatures."
+     ],
+     "centre_moving": [
+      "New York law is unfamiliar.",
+      "Stay under English law."
+     ],
+     "quiet": [
+      "I am reading the articles of association.",
+      "Reviewing the minute book."
+     ]
+    }
+   }
+  },
+  "basel": {
+   "growth": {
+    "name": "Trent Halvorsen",
+    "title": "Head of Global Markets",
+    "bio": "Ran the rates desk at thirty-one; believes risk models are suggestions and bonuses are human rights.",
+    "portrait": {
+     "sex": "m",
+     "age": "young",
+     "skin": "light",
+     "hair": "short",
+     "hair_colour": "blond",
+     "facial_hair": "stubble",
+     "headwear": "none",
+     "garment": "open_collar",
+     "colour": "#4a6fa5",
+     "accessory": "tablet"
+    },
+    "remarks": {
+     "thin_till": [
+      "Liquidity's a funding-desk problem. Roll it in repo overnight like grown-ups.",
+      "The Fed has a window for a reason. Stop panicking."
+     ],
+     "flush_till": [
+      "Cash on the balance sheet is negative carry. Deploy it or buy back stock.",
+      "We're sitting on a fortress of nothing. Put it to work."
+     ],
+     "high_leverage": [
+      "Thirty-to-one is industry standard. Ask anyone on the Street.",
+      "Leverage is just ROE that hasn't been explained to Risk yet."
+     ],
+     "big_prince_exposure": [
+      "Sovereigns in the euro don't default. That's the whole point of the euro.",
+      "Zero risk weight, juicy spread. Basel practically begs us."
+     ],
+     "bubble_city": [
+      "House prices haven't fallen nationally since the Depression. Write the paper.",
+      "Everyone's lending there because it works. Want market share or a lecture?"
+     ],
+     "far_branches": [
+      "Singapore trades while London sleeps. That's not distance, it's coverage.",
+      "Book it offshore. The model doesn't care where the server is."
+     ],
+     "loss_turn": [
+      "Six-sigma event. Won't happen again for ten thousand years.",
+      "One bad quarter. Don't let Risk cut my limits over noise."
+     ],
+     "good_turn": [
+      "Record quarter. Bonus pool, then a bigger desk.",
+      "Size works. Double the book before competitors notice."
+     ],
+     "court_offer": [
+      "Underwriting fees plus repo-eligible collateral. What's not to love?",
+      "Primary dealer status is franchise. Lend to the Treasury."
+     ],
+     "new_tech": [
+      "AI execution, tokenized deposits. Adopt now or become a case study.",
+      "Electronic trading means volume. Volume means us."
+     ],
+     "centre_moving": [
+      "Flow's moved. Put the desk where the flow is, tomorrow.",
+      "Frankfurt, Dublin, Singapore. I'll go wherever basis points live."
+     ],
+     "quiet": [
+      "Low vol? Sell volatility. Free money.",
+      "Quiet markets are when you build positions."
+     ]
+    }
+   },
+   "prudence": {
+    "name": "Dr Meera Vasudevan",
+    "title": "Chief Risk Officer",
+    "bio": "A former physicist who models tail risk for a living and has stopped being invited to the markets Christmas party.",
+    "portrait": {
+     "sex": "f",
+     "age": "middle",
+     "skin": "brown",
+     "hair": "bob",
+     "hair_colour": "black",
+     "facial_hair": "none",
+     "headwear": "none",
+     "garment": "suit",
+     "colour": "#3a3f4a",
+     "accessory": "spectacles"
+    },
+    "remarks": {
+     "thin_till": [
+      "Our LCR is under a hundred. Social media can empty a bank in a day now.",
+      "Liquidity is a funding-desk problem until it's everyone's problem."
+     ],
+     "flush_till": [
+      "That buffer is HQLA, not idle cash. It's why we exist on Monday.",
+      "Excess liquidity is insurance. Nobody complains about insurance during the fire."
+     ],
+     "high_leverage": [
+      "The leverage ratio ignores your models. So will the market.",
+      "Thirty-to-one means a three per cent fall ends us."
+     ],
+     "big_prince_exposure": [
+      "Zero risk weight is a regulatory fiction, not a credit view.",
+      "One sovereign, huge concentration. It's going in the stress scenario."
+     ],
+     "bubble_city": [
+      "Everyone's lending there. That's the risk, not the reassurance.",
+      "Run the severely adverse scenario on that book. I'll wait."
+     ],
+     "far_branches": [
+      "Who checks the Singapore desk's marks at three in the morning?",
+      "Remote booking entities are where rogue traders hide."
+     ],
+     "loss_turn": [
+      "Six-sigma events happen every few years. The model is wrong.",
+      "Cut limits, raise capital, then argue."
+     ],
+     "good_turn": [
+      "Retain it. CET1 is the only friend that stays.",
+      "Good quarter. Now ask what we got lucky on."
+     ],
+     "court_offer": [
+      "Long sovereign duration reprices fast. Ask a regional bank.",
+      "Lend if the rate risk is hedged. Is it hedged?"
+     ],
+     "new_tech": [
+      "New tech is new operational risk. Where's model validation?",
+      "Tokenized deposits run faster than the paper kind."
+     ],
+     "centre_moving": [
+      "Moving entities moves risk, not just people.",
+      "Relocation is a capital event. Price it."
+     ],
+     "quiet": [
+      "Quiet is when you build buffers.",
+      "Stress test. Again."
+     ]
+    }
+   },
+   "court": {
+    "name": "Colette Ashworth-Baptiste",
+    "title": "Head of Regulatory Affairs",
+    "bio": "Ex-central banker who crossed to the private side and now briefs her former colleagues, who pretend not to remember her.",
+    "portrait": {
+     "sex": "f",
+     "age": "middle",
+     "skin": "dark",
+     "hair": "bun",
+     "hair_colour": "black",
+     "facial_hair": "none",
+     "headwear": "none",
+     "garment": "suit",
+     "colour": "#1f2a44",
+     "accessory": "lanyard"
+    },
+    "remarks": {
+     "thin_till": [
+      "The supervisor will call before the market does. Better they hear it from us.",
+      "The discount window carries stigma. Let's not need it."
+     ],
+     "flush_till": [
+      "Supervisors love buffers. Let me tell them how big ours is.",
+      "Spare capital buys goodwill at the next stress test."
+     ],
+     "high_leverage": [
+      "We're near the next G-SIB surcharge bucket. One step costs fifty basis points.",
+      "The Fed reads leverage ratios before breakfast."
+     ],
+     "big_prince_exposure": [
+      "Home treasuries are politically protected. Foreign ones are not.",
+      "The supervisor will ask about concentration. I'll need a story."
+     ],
+     "bubble_city": [
+      "Expect a countercyclical buffer and loan-to-value caps.",
+      "If it bursts there'll be hearings. Let's not be the witness."
+     ],
+     "far_branches": [
+      "Every jurisdiction wants a ring-fenced subsidiary now.",
+      "Resolution planners hate complexity. Our living will runs nine hundred pages."
+     ],
+     "loss_turn": [
+      "I'll brief the supervisor this afternoon. No surprises.",
+      "Losses invite the enforcement team. Let's be helpful."
+     ],
+     "good_turn": [
+      "Don't announce buybacks before the stress test result.",
+      "Regulators notice record bonuses. So do legislators."
+     ],
+     "court_offer": [
+      "Supporting the sovereign auction keeps the Treasury on side.",
+      "Primary dealer status is a seat at their table."
+     ],
+     "new_tech": [
+      "The regulators want it in a sandbox first.",
+      "Crypto? The SEC will have opinions."
+     ],
+     "centre_moving": [
+      "Passporting is gone. We need a licence there.",
+      "Wherever we go, supervision follows."
+     ],
+     "quiet": [
+      "I'm lunching with the Fed liaison.",
+      "Good time to comment on the Basel III endgame drafts."
+     ]
+    }
+   },
+   "conscience": {
+    "name": "Samuel Achterberg",
+    "title": "Chief Compliance Officer",
+    "bio": "Has read every trader chat since 2008 and no longer believes in humanity, only in archived messages.",
+    "portrait": {
+     "sex": "m",
+     "age": "old",
+     "skin": "light",
+     "hair": "none",
+     "hair_colour": "grey",
+     "facial_hair": "beard",
+     "headwear": "none",
+     "garment": "suit",
+     "colour": "#2f2f2f",
+     "accessory": "ledger"
+    },
+    "remarks": {
+     "thin_till": [
+      "Don't let liquidity pressure become disclosure pressure.",
+      "Misleading depositors is fraud, even in a crisis."
+     ],
+     "flush_till": [
+      "Idle cash is quiet. Quiet is legal.",
+      "Better idle than laundered."
+     ],
+     "high_leverage": [
+      "Leverage tempts mismarking. I've read those emails before.",
+      "No off-balance-sheet vehicles to hide it. Not again."
+     ],
+     "big_prince_exposure": [
+      "Some sovereigns come with sanctions attached. Check the list.",
+      "Politically exposed persons behind that wealth fund. Enhanced due diligence."
+     ],
+     "bubble_city": [
+      "Hot lending means liar loans. Pull the files.",
+      "Today's mis-selling is a fine in five years."
+     ],
+     "far_branches": [
+      "Offshore entities are where AML fails.",
+      "Know your customer in every country, not just the home one."
+     ],
+     "loss_turn": [
+      "Losses tempt cover-ups. Don't.",
+      "Report it fully. The cover-up is always the bigger fine."
+     ],
+     "good_turn": [
+      "Profitable? Check where it came from.",
+      "Record quarter. I'll be reading the chats."
+     ],
+     "court_offer": [
+      "Sanctions screening first, then the term sheet.",
+      "Lending to kleptocracies makes headlines."
+     ],
+     "new_tech": [
+      "Crypto rails are laundering highways.",
+      "AI models must be explainable to supervisors."
+     ],
+     "centre_moving": [
+      "New jurisdiction, new rules. Train the staff.",
+      "Different law, same ethics."
+     ],
+     "quiet": [
+      "Training season.",
+      "Checking the messaging app archives."
+     ]
+    }
+   }
+  }
+ }
+}

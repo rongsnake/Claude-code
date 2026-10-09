@@ -1,0 +1,1732 @@
+{
+ "era": "country",
+ "cards": [
+  {
+   "id": "country_war_scare_run",
+   "title": "The rebels are said to be on the North Road",
+   "text": "An army is marching south, or the French have landed. Either way, every depositor in town wants coin today. The great Bank pays out in sixpences, counted slowly, to buy a week. The country banks have no sixpences to spare.",
+   "art": "riot",
+   "target": "cities",
+   "cities": [
+    "london",
+    "edinburgh"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 18,
+   "window": [
+    1700,
+    1815
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.25
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Dragoons riding hard through Derby, they say, and the Highlanders not far behind.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Rebels never reach London. Lend on, and let the hoarders lose their interest while they sit on coin.",
+    "prudence": "Fetch coin from our correspondents tonight and pay every note promptly. Slow paying is how a run starts.",
+    "court": "Stand firm beside the great Bank. The Ministry will remember which houses kept their doors open.",
+    "conscience": "The depositors' coin is theirs, not ours. Give it back without tricks or excuses."
+   },
+   "precedent": "Run on the Bank of England as the Jacobites reached Derby, paid in sixpences, Dec 1745; country bank stoppages and £5m Exchequer bills lent to merchants on the outbreak of war with France, 1793",
+   "source": "Clapham, The Bank of England: A History (1944)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_lisbon_quake",
+   "title": "The ground opens under {city}",
+   "text": "All Saints' morning: the churches are full of candles when the earth heaves. The fire follows, and then the river comes up over the quays. The English Factory's warehouses are gone, and so are the ledgers that said who owed what to whom.",
+   "art": "quake",
+   "target": "cities",
+   "cities": [
+    "lisbon"
+   ],
+   "hazard": 0.004,
+   "once": true,
+   "cooldown": 0,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.45
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Lisbon will be rebuilt in stone and on English credit. Lend to the rebuilders before the Dutch do.",
+    "prudence": "Write down every Lisbon debt today. The ledgers that proved them are ash, and so are half the debtors.",
+    "court": "Parliament will vote relief. Stand with the English Factory and be seen to stand with it.",
+    "conscience": "Preachers call it judgment on a sinful trade. Whatever it is, call in no widow's debt this winter."
+   },
+   "precedent": "The Lisbon earthquake, fire and tsunami, 1 November 1755",
+   "source": "Kendrick, The Lisbon Earthquake (1956)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_acceptance_chain",
+   "title": "Protested acceptances on the {city} Exchange",
+   "text": "A great house accepted bills for half the Exchange, against grain bought for the armies at war prices. Peace has halved the price of grain. The house cannot meet its acceptances, and they are coming back protested to every drawer from Hamburg to Berlin.",
+   "art": "letter",
+   "target": "cities",
+   "cities": [
+    "amsterdam",
+    "hamburg"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1740,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.3
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A certain house on the Dam has asked its friends to renew rather than pay.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "Acceptance is the cleanest business on the Exchange: a signature, a fee, and no coin leaves the till.",
+    "prudence": "Find out whose names stand behind our acceptances. If two of them are the same grain contractor, cut one.",
+    "court": "Keep the burgomasters sweet. They decide which houses get help and which are left to fall.",
+    "conscience": "Accepting a bill is giving our word. We honour ours, even at a loss."
+   },
+   "precedent": "Failure of De Neufville Brothers and the Amsterdam acceptance crisis, July–Aug 1763; the Hamburg crisis of autumn 1799",
+   "source": "Schnabel & Shin, 'Liquidity and Contagion: The Crisis of 1763', JEEA (2004)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_province_famine",
+   "title": "Famine in the Company's province",
+   "text": "Last year the rains failed, and this year the rice failed too. In the districts the Company now governs, a third of the cultivators are dead or fled, yet the collectors squeeze the land revenue out of the survivors all the same. Somehow the Company's servants are still sending home fortunes.",
+   "art": "grain",
+   "target": "cities",
+   "cities": [
+    "calcutta"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 30,
+   "window": [
+    1765,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.35
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The revenue will come back with the rains. Buy Company stock while it is cheap.",
+    "prudence": "Revenue squeezed from a dying province cannot last. Cut our Calcutta drafts to what we hold in hand.",
+    "court": "Parliament will inquire into the Company. Better to be its creditor than its partner when that happens.",
+    "conscience": "Men are dying while the Company's servants corner rice. We touch none of that trade."
+   },
+   "precedent": "The Bengal famine of 1769–70: revenue was wrung from the survivors regardless, but the Company's finances buckled into the crisis of 1772",
+   "source": "Marshall, Bengal: The British Bridgehead, 1740–1828 (1987)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_bridge_for_borrower",
+   "title": "{court} cannot meet its bills",
+   "text": "Its revenue has fallen short and its paper is sliding. A speculator who bet on it has fled abroad, owing half of Lombard Street. {court} asks the house for a bridging loan until the next fleet, or the next tax, comes in, and it promises that Parliament will see it right.",
+   "art": "seal",
+   "target": "reachable_sovereign",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.4,
+      "yield": 0.07,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Seven per cent from a borrower that Parliament dare not let fail is the best paper on offer.",
+    "prudence": "If it cannot pay its bills now, it cannot pay ours later. Lend only against goods in a warehouse.",
+    "court": "Whoever lends the bridge gets a seat at the table when Parliament takes it in hand.",
+    "conscience": "Lend if you will, but not so that it can pay dividends it has not earned."
+   },
+   "precedent": "Alexander Fordyce flees, June 1772; the cash-starved East India Company seeks emergency loans from the Bank of England that summer; the Loan Act of 1773 lends it £1.4m",
+   "source": "Bowen, Revenue and Reform: The Indian Problem in British Politics 1757–1773 (1991)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_note_bank_fails",
+   "title": "The gentlemen's bank stops payment",
+   "text": "A new bank of landed gentlemen lent before its partners had paid in their capital. It kept its London drafts afloat by drawing and redrawing on the same few names. Its notes are half the paper in the country, and this morning its doors stayed shut.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "edinburgh",
+    "london",
+    "amsterdam"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1.5
+    },
+    {
+     "signal": "thin_till",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "panic",
+     "params": {
+      "size": 0.35
+     }
+    }
+   ],
+   "rumour": {
+    "text": "Their London agent is said to have refused a draft on Saturday.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Their notes are dead, and every farmer still needs paper. Ours can fill the country.",
+    "prudence": "Our London drafts pass through the same correspondents as theirs. Find out which ones, today.",
+    "court": "The public banks will sit on their hands. We had better look after ourselves.",
+    "conscience": "Their partners are liable to their last acre. Press for the small noteholders to be paid before the lawyers."
+   },
+   "precedent": "Douglas, Heron & Co. (the Ayr Bank) stops, June 1772, a fortnight after the failure of Neal, James, Fordyce & Downe broke its London drafting and redrafting chain",
+   "source": "Kosmetatos, The 1772–73 British Credit Crisis (2018)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_fleet_taken",
+   "title": "The homeward fleet is taken at sea",
+   "text": "It is war at sea, and the enemy's frigates are waiting off the Cape. The Company's homeward fleet has been taken and its pepper and cloth sold as prize. In {city} the Company is borrowing on next year's ships to pay this year's dividend.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "batavia",
+    "amsterdam"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1700,
+    1799
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.35
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Prize goods sell cheap in London. Buy the pepper at the auction and sell it to Amsterdam after the peace.",
+    "prudence": "A company that pays dividends with borrowed money is already broke. Sell its paper.",
+    "court": "Our cargoes sail under a neutral flag, and the Navy respects neutrals. We have nothing to fear.",
+    "conscience": "Profit on prizes is lawful in war. Trading in a ruined company's secrets is not."
+   },
+   "precedent": "The Fourth Anglo-Dutch War: the Royal Navy takes VOC shipping and the Company never recovers, 1780–84",
+   "source": "Gaastra, The Dutch East India Company: Expansion and Decline (2003)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_paid_in_paper",
+   "title": "{court} will pay in its own new paper",
+   "text": "{court} has taken over its old debts, or consolidated them, which comes to the same thing. Creditors will be paid in new state paper. It is at par on its face, at a heavy discount in the street, and late.",
+   "art": "seal",
+   "target": "lent_sovereign",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.35
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The deputies are debating a 'reorganisation' of the public debt, behind closed doors.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "State paper bought at a discount rises when peace comes. Hold it, and buy more.",
+    "prudence": "Sell the paper for coin now and book the loss. The discount will only get deeper.",
+    "court": "Accept it with good grace. The creditor who complains is the one paid last.",
+    "conscience": "A debtor who pays in paper worth less than its face has defaulted, whatever the decree calls it."
+   },
+   "precedent": "VOC nationalised 1796 and wound up 31 Dec 1799, its debts passing to the Batavian Republic; the French 'tiers consolidé' writes off two-thirds of the rentes, Sept 1797",
+   "source": "Gaastra, The Dutch East India Company (2003); Sargent & Velde, 'Macroeconomic Features of the French Revolution', JPE (1995)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_contract_loan",
+   "title": "{court} wants cash now and bonds later",
+   "text": "{court} needs money at once and will pay for it in bonds. The house is asked to take the whole issue at a fixed price, carry it, and sell it on to the public in London and Amsterdam before the market turns. The commission is handsome. The risk in between is all ours.",
+   "art": "gold",
+   "target": "reachable_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    1780,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.45,
+      "yield": 0.065,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take the whole issue. The commission and the turn on resale will make our year.",
+    "prudence": "Take a share and pass the rest to Amsterdam. Never carry a whole loan through a war.",
+    "court": "Lending to a government at war with ours needs a nod from the Ministry first.",
+    "conscience": "Bonds sold to widows at a premium must be good bonds. Read the security yourself."
+   },
+   "precedent": "Barings and Hope take the US stock that paid for Louisiana, 1803; the French indemnity loans contracted by Barings and Hope, 1817–18",
+   "source": "Ziegler, The Sixth Great Power: Barings 1762–1929 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_new_republic_loan",
+   "title": "{court} wants a million at eighty-five",
+   "text": "{court} proposes six per cent bonds, issued at eighty-five, with two years' dividends kept back out of the proceeds. The prospectus has a map, a mint and a cathedral. The coffee-houses are full of new republics, and every one of them wants London's money.",
+   "art": "ship",
+   "target": "reachable_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 10,
+   "window": [
+    1815,
+    1850
+   ],
+   "odds": [],
+   "effects": [
+    {
+     "kind": "offer",
+     "params": {
+      "size": 0.3,
+      "yield": 0.08,
+      "turns": 2
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Two years' coupons held back means the bonds pay themselves until the mines come in. Safe as Consols.",
+    "prudence": "Interest paid out of the loan proves nothing. Nobody knows whether they can pay in the third year.",
+    "court": "The Foreign Office favours these republics, and our merchants want their markets.",
+    "conscience": "Read what the prospectus says about the mines, and ask whether anyone has visited the country."
+   },
+   "precedent": "Barings' £1m 6% loan for the province of Buenos Aires, issued at 85, 1824, at the height of the Latin American loan boom (Poyais included), 1822–25",
+   "source": "Dawson, The First Latin American Debt Crisis (1990)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_mining_mania",
+   "title": "The mining shares break",
+   "text": "For a year every subscription list in the coffee-houses has filled within the hour: Andean silver, pearl fisheries, a steam company to drain a lake. Now the calls are due, the ships bring no silver, and the country banks that lent on the scrip are sending to London for gold.",
+   "art": "bubble",
+   "target": "cities",
+   "cities": [
+    "london",
+    "edinburgh"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1820,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2
+    },
+    {
+     "signal": "thin_till",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.3,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "A West Country bank is said to have sent a chaise to London for sovereigns, twice this week.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "The calls are a passing squeeze. The Andes are full of silver, and steam will bring it up.",
+    "prudence": "Stop lending on scrip and send to London for gold before the country banks take it all.",
+    "court": "The great Bank will lend freely this time. The Ministry has told it to.",
+    "conscience": "Many of these companies were formed to be sold, not to dig. We sold some of them."
+   },
+   "precedent": "The panic of December 1825 after the Latin American mining boom; some seventy banks stop",
+   "source": "Neal, 'The Financial Crisis of 1825 and the Restructuring of the British Financial System', Fed. Reserve Bank of St Louis Review (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_republic_suspends",
+   "title": "{court} suspends its dividends",
+   "text": "There is war with a neighbour, a blockade of the river, and the customs house that was meant to pay the dividends is empty. {court} suspends payment on its foreign bonds. It sends the bondholders' committee a polite letter promising better days.",
+   "art": "war",
+   "target": "lent_sovereign",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 12,
+   "odds": [
+    {
+     "signal": "sov_exposure",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "sovereign_default",
+     "params": {
+      "haircut": 0.5
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The half-year's remittance has not come on the packet, and the agents say nothing.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Buy the defaulted bonds at thirty. One day they will settle at sixty.",
+    "prudence": "Write them down by half now, and stop counting the coupons as income.",
+    "court": "The Foreign Office will not send gunboats for bondholders. Do not wait for them.",
+    "conscience": "We sold these bonds to customers. We owe them the truth about the price."
+   },
+   "precedent": "Buenos Aires suspends dividends during the war with Brazil, 1827; nearly every Latin American loan of 1822–25 is in default by 1828",
+   "source": "Marichal, A Century of Debt Crises in Latin America (1989)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_agency_houses",
+   "title": "The agency houses of {city} stop",
+   "text": "The great agency houses took the savings of Company officers at eight and ten per cent and lent them to indigo planters up-country. Indigo has fallen by half. One house has stopped, and its depositors are running on all the rest.",
+   "art": "ledger",
+   "target": "cities",
+   "cities": [
+    "calcutta"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1790,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.4
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Indigo always comes back. Lend to the planters now, at the bottom.",
+    "prudence": "Our Calcutta deposits are lent long to the same planters. Shorten them.",
+    "court": "The Company will never let the agency houses fall. Its own servants' savings are in them.",
+    "conscience": "These houses took widows' savings at ten per cent. We will not buy their remains at a discount."
+   },
+   "precedent": "Palmer & Co. stops in 1830; Alexander & Co., Mackintosh & Co. and the other Calcutta agency houses follow by 1834",
+   "source": "Webster, The Twilight of the East India Company (2009)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_canton_closed",
+   "title": "The factories at {city} are shut",
+   "text": "An imperial commissioner has seized the foreigners' chests of a forbidden drug, and the warships are on their way. The factories on the river are shut. The hong merchants will not settle what they owe, and the tea season is lost.",
+   "art": "war",
+   "target": "cities",
+   "cities": [
+    "canton"
+   ],
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1830,
+    1845
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.35
+     }
+    }
+   ],
+   "advice": {
+    "growth": "When this war ends, five ports will open instead of one. Lend now for the trade that comes after.",
+    "prudence": "Every bill on Canton is now a bill on a closed port. Mark them down.",
+    "court": "The Ministry backs the merchants, and the fleet is ours.",
+    "conscience": "The goods seized are a drug the Emperor forbids. Do not plead for that trade."
+   },
+   "precedent": "Opium destroyed at Humen, June 1839; the Opium War stops the Canton trade until the Treaty of Nanking, 1842",
+   "source": "Lovell, The Opium War (2011)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_railway_calls",
+   "title": "Railway calls drain the money market",
+   "text": "Parliament has passed railway bills by the hundred, and every scrip-holder must now pay his calls. Money that sat at call with the bill-brokers is going into embankments. A poor harvest has left the corn merchants holding bills on grain that is falling.",
+   "art": "train",
+   "target": "cities",
+   "cities": [
+    "london"
+   ],
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 12,
+   "window": [
+    1835,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "markets",
+      "size": 0.25,
+      "panic": 0.1
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The brokers say Lombard Street will not take corn bills at any rate this week.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "The lines will carry the kingdom. Lend to the brokers on railway scrip, and calls be damned.",
+    "prudence": "Call money is going into embankments. Keep our reserve in Exchequer bills, not scrip.",
+    "court": "If the Bank runs dry, the Treasury will write a letter. Do not count on it coming early.",
+    "conscience": "Directors who pay dividends out of capital deserve no credit from us."
+   },
+   "precedent": "The railway mania of 1845–47 breaks; the corn-bill failures and the first suspension of the Bank Charter Act, 25 Oct 1847",
+   "source": "Lewin, The Railway Mania and its Aftermath, 1845–1852 (1936)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_great_fire",
+   "title": "Fire in the warehouses of {city}",
+   "text": "Fire broke out in a warehouse in the night, and the wind did the rest. Whole streets of merchants' stores and counting-houses are ash. The insurers cannot pay it all, and neither can the merchants who owed you.",
+   "art": "fire",
+   "target": "branch_city",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.2
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Rebuilding needs credit. Open a book with the builders.",
+    "prudence": "Find out which insurers can still pay before we count on any of their policies.",
+    "court": "The city fathers will borrow to rebuild. Offer to take their bonds.",
+    "conscience": "Pay the clerks who lost their homes their wages in advance."
+   },
+   "precedent": "The Great Fire of New York bankrupts most of the city's fire insurers, Dec 1835; the Great Fire of Hamburg, May 1842",
+   "source": "Burrows & Wallace, Gotham: A History of New York City to 1898 (1999)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_dearth",
+   "title": "A wet summer and a dear loaf",
+   "text": "The wheat is thin and blighted and bread is dear. Gold is going to the Baltic to pay for foreign corn. The farmers' bills are coming back to the country banks, and there is a crowd in the market-place.",
+   "art": "grain",
+   "target": "seat",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.12
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.05
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Dear corn makes rich corn-factors. Discount their bills while prices are high and the bills are good.",
+    "prudence": "Bullion is leaving for the Baltic. Keep coin in the till for when the farmers come for theirs.",
+    "court": "Parliament will pay bounties on imported corn. Finance the importers.",
+    "conscience": "Lend nothing to the forestallers who hoard grain while the poor riot."
+   },
+   "precedent": "The harvest failures of 1795 and 1799–1800, with grain imports draining bullion before and during the Restriction",
+   "source": "Wells, Wretched Faces: Famine in Wartime England 1793–1801 (1988)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_partner_forgery",
+   "title": "A partner has been forging powers of attorney",
+   "text": "To cover his losses on building speculations, one of the partners forged customers' powers of attorney and sold their Consols. The forgeries ran for nine years. The customers want their stock back, and the hangman wants the partner.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.008,
+   "once": false,
+   "cooldown": 25,
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -12
+     }
+    },
+    {
+     "kind": "deposits",
+     "params": {
+      "share": -0.06
+     }
+    },
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Keep it quiet and restore the stock from our own capital. The clients need never know.",
+    "prudence": "Go through every power of attorney he signed, and make good each sale he made.",
+    "court": "The great Bank prosecutes every forgery. There will be a trial, and it will be public.",
+    "conscience": "The clients have been robbed. Pay them first, and ask mercy for him afterwards."
+   },
+   "precedent": "Henry Fauntleroy of Marsh, Sibbald & Co. hanged for forging powers of attorney to sell clients' stock, Nov 1824",
+   "source": "Bleackley (ed.), Trial of Henry Fauntleroy and Other Famous Trials for Forgery (Notable British Trials, 1924)",
+   "provenance": "ARCHETYPE",
+   "window": [
+    1752,
+    1837
+   ]
+  },
+  {
+   "id": "country_agent_private_trade",
+   "title": "Our agent in {city} trades on his own account",
+   "text": "Our agent has been trading on his own account with the house's credit: salt, opium, piece-goods. He has also lent to the local governor in his own name. The profits are his. The bad debts, it now appears, are ours, and his letters take eight months to answer.",
+   "art": "ledger",
+   "target": "branch_city",
+   "hazard": 0.03,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1700,
+    1845
+   ],
+   "odds": [
+    {
+     "signal": "far_branches",
+     "weight": 3
+    }
+   ],
+   "effects": [
+    {
+     "kind": "control",
+     "params": {
+      "delta": -0.25
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": -4
+     }
+    }
+   ],
+   "advice": {
+    "growth": "His private trade made money. Take it into the house and make him a partner.",
+    "prudence": "Recall him by the next ship, and send a man who reports every month.",
+    "court": "The governor he lent to is a useful friend. Do not embarrass him.",
+    "conscience": "A servant trading on his master's credit is a thief who has not yet lost."
+   },
+   "precedent": "Private trade by East India Company servants in Bengal; William Bolts deported for it, 1768",
+   "source": "Marshall, East Indian Fortunes: The British in Bengal in the Eighteenth Century (1976)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_usury_commission",
+   "title": "Eight per cent, if we call three of it commission",
+   "text": "Money is tight, and a good name will pay eight per cent for three months. The law allows five. His broker proposes the usual arrangement: five per cent interest, a commission for 'trouble', and a little play in the rate of exchange.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1714,
+    1833
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Take the commission",
+     "result": "The bill is discounted at eight in all but name, and an attorney's clerk takes a note of the terms.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.04
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend at five and no more",
+     "result": "He takes the money gratefully and tells the Exchange the house is straight.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline the business",
+     "result": "He goes to a less careful house, and so do two of his friends.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.03
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Every house charges commission. Five per cent is a law for country squires, not merchants.",
+    "prudence": "If he offers eight, he cannot borrow at five anywhere else. Ask why.",
+    "court": "Judges see through a commission, and a common informer can sue us for treble the sum.",
+    "conscience": "The law says five. Usury does not stop being usury because we call it commission."
+   },
+   "precedent": "Evasion of the 5% usury ceiling of 1714 by commissions and exchange devices, until bills of under three months were exempted by the Bank Charter Act of 1833",
+   "source": "Homer & Sylla, A History of Interest Rates (4th ed., 2005)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_rival_flees",
+   "title": "A great foreign house moves to London",
+   "text": "The armies of a revolution are on the frontier. The greatest house of a neighbouring city has packed up its partners, its plate and its pictures and left for London. Its correspondents need a new house to accept their bills, and some of them have chosen yours.",
+   "art": "ship",
+   "target": "seat",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 25,
+   "window": [
+    1780,
+    1815
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "deposits",
+     "params": {
+      "share": 0.1
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "merchants",
+      "delta": 5
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take every client they bring, and the clerks who came with them.",
+    "prudence": "Their clients come with their bad debts. Take the correspondents, but check every acceptance.",
+    "court": "Their friends at the exiled court may be useful later. Be polite.",
+    "conscience": "They are refugees. Do not use their misfortune to blacken their name."
+   },
+   "precedent": "The Hopes leave Amsterdam for London ahead of the French, 1794–95, working closely with Barings, which gains much of their London business",
+   "source": "Buist, At Spes Non Fracta: Hope & Co. 1770–1815 (1974)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_old_debts_settled",
+   "title": "A convention pays the debts the war forgot",
+   "text": "A war ago, the house's correspondents across the ocean owed it money that the peace forgot. Now two governments have signed a convention. One of them pays a lump sum, a commission divides it among the creditors, and a debt long written off comes back to life.",
+   "art": "letter",
+   "target": "none",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 30,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.06
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Spend it on a branch in New York while the Americans are friendly.",
+    "prudence": "Put it in the reserve. It is money we had already lost once.",
+    "court": "The Ministry made this treaty. Thank them, in writing.",
+    "conscience": "Some of the debtors were ruined by the war. Do not pursue them for the balance."
+   },
+   "precedent": "Anglo-American convention of Jan 1802: the United States pays £600,000 to settle pre-Revolutionary debts owed to British creditors",
+   "source": "Perkins, The First Rapprochement: England and the United States 1795–1805 (1955)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_blockade_decrees",
+   "title": "Decrees, Orders and an embargo",
+   "text": "One emperor declares the islands of his enemy blockaded and forbids his allies their goods. The enemy's navy answers by stopping every neutral that has not called first at its own ports. The neutral republic keeps its ships at home. Coffee rots on the quays at {city}.",
+   "art": "harbour",
+   "target": "cities",
+   "cities": [
+    "hamburg",
+    "amsterdam",
+    "new_york"
+   ],
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 9,
+   "window": [
+    1806,
+    1815
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.2
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The packet from the Elbe says French douaniers are searching every warehouse.",
+    "false_rate": 0.4
+   },
+   "advice": {
+    "growth": "Running goods through Heligoland pays thirty per cent. Lend to the smugglers.",
+    "prudence": "A neutral cargo is now any navy's prize. Stop accepting bills against them.",
+    "court": "The Orders in Council are law. Finance only licensed trade.",
+    "conscience": "Licences are sold and forged every day. Do not lend on paper we know is false."
+   },
+   "precedent": "The Berlin Decree, Nov 1806; the British Orders in Council, 1807; the US Embargo Act, Dec 1807",
+   "source": "Crouzet, L'économie britannique et le blocus continental (1958)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_american_houses",
+   "title": "The American houses are refused at the Bank",
+   "text": "Three London houses have accepted bills for half the cotton and dry-goods trade of the American seaboard, on the strength of American banks' paper. The great Bank now refuses to discount their bills. Cotton has broken, and the American banks have stopped paying in specie.",
+   "art": "ship",
+   "target": "cities",
+   "cities": [
+    "london",
+    "new_york"
+   ],
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1815,
+    1850
+   ],
+   "odds": [
+    {
+     "signal": "leverage",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "trade",
+      "size": 0.2,
+      "panic": 0.15
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The Bank's Court met late, and the American houses' bills were not taken on Thursday.",
+    "false_rate": 0.3
+   },
+   "advice": {
+    "growth": "American banks are chartered by the states and backed by land. Their paper is as good as ours.",
+    "prudence": "Our acceptances for American houses are twice our capital. Cut them now.",
+    "court": "When the great Bank stops discounting a name, it is warning everyone. Heed it.",
+    "conscience": "We pressed this credit on them. Give the honest ones time to pay."
+   },
+   "precedent": "Failure of the 'three Ws' (Wildes, Wiggin, Wilson) in Anglo-American acceptance credit, 1836–37, and the US suspension of specie payments, May 1837",
+   "source": "Hidy, The House of Baring in American Trade and Finance (1949)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_pestilence",
+   "title": "Pestilence in {city}",
+   "text": "A ship from the Levant brought it past the lazaretto, or a coal brig brought the new blue sickness. In {city} the market is closed by a cordon and the rich have left. The debtors who stayed are in the burial lists.",
+   "art": "plague",
+   "target": "branch_city",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "many_branches",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "plague",
+      "size": 0.2
+     }
+    },
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": -0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "The merchants who flee leave the trade to those who stay.",
+    "prudence": "Move the coin and the ledgers out, and make no new loans there until the cordon lifts.",
+    "court": "The magistrates will quarantine the port. Obey the cordon to the letter.",
+    "conscience": "Pay double to the clerks who stay, and pensions to their widows if they die."
+   },
+   "precedent": "Plague of Marseille brought by the Grand Saint-Antoine, 1720–22; cholera reaches Sunderland in Oct 1831, and London and Paris in 1832",
+   "source": "Durey, The Return of the Plague: British Society and the Cholera 1831–2 (1979)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_paper_money",
+   "title": "The money of {city} is worth a tenth",
+   "text": "The treasury pays its armies in paper secured on confiscated land, or in coin with less silver in it every year. Prices double by the season. Debts payable in the local money are repaid, to the letter of the contract, in money worth a fraction of what was lent.",
+   "art": "coin",
+   "target": "cities",
+   "cities": [
+    "paris",
+    "augsburg",
+    "constantinople"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 20,
+   "window": [
+    1780,
+    1845
+   ],
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "sovereign",
+      "size": 0.18
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Buy confiscated land with their paper at a discount. That is where the bargains are.",
+    "prudence": "Write our contracts in sterling or in silver by weight, never in their money.",
+    "court": "Their minister has promised to redeem the paper at par. We can take him at his word.",
+    "conscience": "Repaying gold with paper is lawful there. Here it would be called theft."
+   },
+   "precedent": "French assignats, 1790–96; the Austrian Finanzpatent cuts the Bancozettel to a fifth, 1811; Ottoman debasements under Mahmud II, 1808–39",
+   "source": "Sargent & Velde, JPE (1995); Pamuk, A Monetary History of the Ottoman Empire (2000)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_peace_deflation",
+   "title": "Peace, cheap wheat and shut banks",
+   "text": "Two good harvests and the end of the war have halved the price of wheat. Farmers who borrowed at war prices to enclose and drain cannot pay their rents, and their landlords cannot pay the bank. Up and down the county, shutters are going up on banks that lent their own notes on land.",
+   "art": "grain",
+   "target": "seat",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "city_heat",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "shock",
+     "params": {
+      "kind": "property",
+      "size": 0.2,
+      "panic": 0.1
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Land is cheap now. Lend to the buyers at the bottom.",
+    "prudence": "Our notes were lent on land. Collect what we can, and keep coin for the run.",
+    "court": "The landed interest sits in Parliament. It will raise the corn duties.",
+    "conscience": "Do not foreclose on tenants whose landlords have failed them."
+   },
+   "precedent": "The post-war collapse of agricultural prices and the wave of English country bank failures, 1814–16",
+   "source": "Pressnell, Country Banking in the Industrial Revolution (1956)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_subsidy_remittance",
+   "title": "The Treasury needs gold beyond the blockade",
+   "text": "The Treasury has promised its allies millions in subsidy and must get coin to armies on the far side of a blockaded continent. The house is asked to remit it by bills on Hamburg and Frankfurt, buying gold quietly wherever it can, for a commission.",
+   "art": "gold",
+   "target": "none",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "window": [
+    1740,
+    1815
+   ],
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 2
+    }
+   ],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.07
+     }
+    },
+    {
+     "kind": "standing",
+     "params": {
+      "who": "crown",
+      "delta": 8
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Take the commission and the bullion dealing that comes with it. Nobody else can move this much.",
+    "prudence": "Insure every shipment, and never let one convoy carry more than we can lose.",
+    "court": "Serve the Treasury well now, and the next loan will be ours.",
+    "conscience": "War money is honest money if the accounts are honest."
+   },
+   "precedent": "Rothschild remittances for Wellington's army and the allied subsidies, arranged with the Commissary-in-Chief, 1814–15",
+   "source": "Ferguson, The World's Banker: The History of the House of Rothschild (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_trade_treaty",
+   "title": "A treaty of commerce opens {city}",
+   "text": "Two old enemies have signed a treaty of commerce: lower duties on cloth and pottery one way, on wine and brandy the other. The merchants on the Exchange say the trade will double. The weavers who lose their market say they will starve.",
+   "art": "seal",
+   "target": "cities",
+   "cities": [
+    "london",
+    "paris",
+    "lisbon"
+   ],
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 25,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "commerce",
+     "params": {
+      "delta": 0.15
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Open a book with the wine merchants and the potters both.",
+    "prudence": "Treaties are torn up at the next war. Lend for one season at a time.",
+    "court": "The Ministry made this treaty. Finance it, and be seen to.",
+    "conscience": "The weavers will lose their work. Give to the parish relief."
+   },
+   "precedent": "The Methuen Treaty with Portugal, 1703; the Eden Treaty with France, Sept 1786",
+   "source": "Browning, 'The Treaty of Commerce between England and France in 1786', TRHS (1885)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_partner_dies",
+   "title": "The senior partner dies away from home",
+   "text": "The senior partner has died suddenly, abroad. His will is clear that his capital must stay in the house. His widow's advisers say a will cannot bind what she does with her share, and the younger partners are already quarrelling over his chair.",
+   "art": "cross",
+   "target": "seat",
+   "hazard": 0.02,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Buy out the heirs",
+     "result": "The heirs leave rich. The house is smaller, but it is wholly ours.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.08
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 4
+       }
+      }
+     ]
+    },
+    {
+     "label": "Keep the heirs in as sleeping partners",
+     "result": "The capital stays, and so do the heirs' opinions on how it should be lent.",
+     "effects": [
+      {
+       "kind": "control",
+       "params": {
+        "delta": -0.15
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 6
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Keep his capital in at any cost. The house is its capital.",
+    "prudence": "Heirs who do not understand the business ask for their money at the worst moment.",
+    "court": "His connections at Court die with him unless his sons keep them up.",
+    "conscience": "Honour his will, and his widow's needs as well."
+   },
+   "precedent": "Nathan Rothschild dies at Frankfurt, July 1836, his will binding his sons to the partnership",
+   "source": "Ferguson, The World's Banker (1998)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_forced_loan",
+   "title": "{court} decrees a loan from the rich",
+   "text": "{court} has decreed a loan from the rich, assessed by a committee on what it believes you have, and payable within the month. The receipt is a certificate that may one day buy confiscated land.",
+   "art": "crown",
+   "target": "seat_sovereign",
+   "hazard": 0.01,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1.5
+    }
+   ],
+   "effects": [
+    {
+     "kind": "forced_loan",
+     "params": {
+      "share": 0.1,
+      "yield": 0.03
+     }
+    }
+   ],
+   "rumour": {
+    "text": "The section committee has been asking the porters which houses keep coin.",
+    "false_rate": 0.35
+   },
+   "advice": {
+    "growth": "Pay, and use the receipts to buy national land cheap.",
+    "prudence": "Move what we can abroad before the assessors come.",
+    "court": "Refusing now is treason. Pay with good grace.",
+    "conscience": "We are bound to obey lawful authority, even when it robs us."
+   },
+   "precedent": "France's emprunt forcé on the rich, decreed May 1793, and the forced loan of Dec 1795",
+   "source": "Bosher, French Finances 1770–1795 (1970)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_note_raid",
+   "title": "A rival's clerk arrives with a bag of our notes",
+   "text": "A rival bank has been quietly collecting our notes for months. This morning its clerk stands at our counter with a bag of them and demands gold for the lot, and another bag is said to be on its way. Our notes carry the option clause: payment may be deferred six months, with interest.",
+   "art": "coin",
+   "target": "seat",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1730,
+    1765
+   ],
+   "odds": [
+    {
+     "signal": "thin_till",
+     "weight": 2
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Pay every note in gold",
+     "result": "The till is scraped bare, but the town sees that our notes are as good as coin.",
+     "effects": [
+      {
+       "kind": "panic",
+       "params": {
+        "size": 0.12
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Invoke the option clause",
+     "result": "The gold stays in the vault, and every tavern says our notes are not worth the paper.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -10
+       }
+      }
+     ]
+    },
+    {
+     "label": "Raid them back",
+     "result": "Both banks spend the winter presenting each other's notes, and the merchants grow tired of both.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -3
+       }
+      },
+      {
+       "kind": "panic",
+       "params": {
+        "size": 0.06
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "We hold as many of their notes as they hold of ours. Raid them back.",
+    "prudence": "Pay every note in gold today. The option clause is a confession of weakness.",
+    "court": "The public bank's governors are friends of the Ministry. Do not quarrel with them.",
+    "conscience": "The note promises payment on demand. The small print is not the promise."
+   },
+   "precedent": "Note raids between the Edinburgh public banks and their rivals, and the Bank of Scotland's option clause, 1730–65; option clauses banned by Act of 1765",
+   "source": "Checkland, Scottish Banking: A History, 1695–1973 (1975)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_peace_rally",
+   "title": "Preliminaries of peace, and the funds jump",
+   "text": "The preliminaries of peace are signed. The funds rise several points in a day, and the house's stock of government annuities is worth more than the partners paid for it. The bill-brokers are cheerful. The army contractors are not.",
+   "art": "ledger",
+   "target": "none",
+   "hazard": 0.012,
+   "once": false,
+   "cooldown": 15,
+   "odds": [],
+   "effects": [
+    {
+     "kind": "windfall",
+     "params": {
+      "share": 0.05
+     }
+    }
+   ],
+   "advice": {
+    "growth": "Sell the funds into the rally, and buy them back at the next war scare.",
+    "prudence": "Take the profit on half, and keep the rest as reserve.",
+    "court": "Peace means fewer Treasury loans. Look for new business.",
+    "conscience": "Rejoice that fewer men will die, not that our stock has risen."
+   },
+   "precedent": "Consols rally on the preliminaries of the Peace of Amiens, Oct 1801",
+   "source": "Neal, The Rise of Financial Capitalism (1990)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_slaving_bills",
+   "title": "A Liverpool house asks us to accept its bills",
+   "text": "A Liverpool house asks us to accept bills drawn at long sight by its captains in the islands, against the sale of enslaved Africans there. The trade is legal, the drawer is sound, and the commission is the best in England. The abolitionists' petitions are in every parish this year.",
+   "art": "ship",
+   "target": "seat",
+   "hazard": 0.04,
+   "once": false,
+   "cooldown": 6,
+   "window": [
+    1787,
+    1807
+   ],
+   "odds": [],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Accept the bills",
+     "result": "The commission comes in every season, and so do the pamphlets that name the houses behind the trade.",
+     "effects": [
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -3
+       }
+      }
+     ]
+    },
+    {
+     "label": "Decline",
+     "result": "The West India interest finds another acceptor and remembers which house said no.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -4
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The paper is good, the trade is legal, and Liverpool pays the best commission in England.",
+    "prudence": "Long-sight bills on island sales depend on sugar, the war and the fever. Cap them.",
+    "court": "Parliament debates abolition every session. The Ministry may yet change sides.",
+    "conscience": "These are bills on the sale of men and women. No commission makes that clean."
+   },
+   "precedent": "London and Liverpool houses accept and guarantee the long-dated remittance bills of the slave trade until the Abolition Act of 1807",
+   "source": "Inikori, Africans and the Industrial Revolution in England (2002)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_heirs_debts",
+   "title": "The heir of {court} owes a fortune",
+   "text": "The heir of {court} owes more than a quarter of a million to jewellers, builders and his own servants. His secretary proposes that the house take up the debts on his bond, payable when he comes to the throne or when Parliament takes pity on him.",
+   "art": "crown",
+   "target": "seat_sovereign",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 20,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Take up the bond",
+     "result": "The heir is grateful, and the capital is locked up until Parliament feels generous.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 12
+       }
+      },
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.05
+       }
+      }
+     ]
+    },
+    {
+     "label": "Lend a part against his jewels",
+     "result": "The diamonds go into our vault and he remembers the insult, though not for long.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": 3
+       }
+      },
+      {
+       "kind": "windfall",
+       "params": {
+        "share": 0.02
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse politely",
+     "result": "The secretary bows and goes to another house, and the heir does not forget.",
+     "effects": [
+      {
+       "kind": "standing",
+       "params": {
+        "who": "crown",
+        "delta": -8
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "The heir will be king, and a king's banker is never short of clients.",
+    "prudence": "Royal bonds are paid when Parliament pleases, which may be never.",
+    "court": "Refuse him now, and you refuse the next reign.",
+    "conscience": "Lend nothing for jewels and gaming while his tradesmen go unpaid."
+   },
+   "precedent": "The Prince of Wales's debts, settled by Parliament in 1787 and again on his marriage in 1795",
+   "source": "Smith, George IV (Yale English Monarchs, 1999)",
+   "provenance": "ARCHETYPE"
+  },
+  {
+   "id": "country_rescue_neighbour",
+   "title": "A neighbour asks for a subscription",
+   "text": "A larger house, London agent to forty country banks, is losing deposits by the hour. Its partners ask us to join a subscription to see it through the week, and the great Bank will lend too, on good security. If it stops, its country banks will need a new London house by Monday.",
+   "art": "scales",
+   "target": "seat",
+   "hazard": 0.015,
+   "once": false,
+   "cooldown": 15,
+   "odds": [
+    {
+     "signal": "fame",
+     "weight": 1
+    }
+   ],
+   "effects": [],
+   "choice": [
+    {
+     "label": "Subscribe",
+     "result": "Our money goes in. Whether it is enough is something the week will tell.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": -0.05
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": 8
+       }
+      }
+     ]
+    },
+    {
+     "label": "Refuse and court its clients",
+     "result": "It stops on Saturday, and its correspondents come to us, eyeing us with suspicion.",
+     "effects": [
+      {
+       "kind": "deposits",
+       "params": {
+        "share": 0.06
+       }
+      },
+      {
+       "kind": "standing",
+       "params": {
+        "who": "merchants",
+        "delta": -6
+       }
+      },
+      {
+       "kind": "panic",
+       "params": {
+        "size": 0.08
+       }
+      }
+     ]
+    }
+   ],
+   "advice": {
+    "growth": "Let it fail. Its forty country banks will need a new London agent, and that agent is us.",
+    "prudence": "If it falls, its correspondents run on us next. Better to stop the fire at its door.",
+    "court": "The great Bank is lending. Join it, and be seen to join it.",
+    "conscience": "We drank their port for twenty years. We owe them a hand."
+   },
+   "precedent": "Pole, Thornton & Co., supported by the Bank of England, stops anyway and brings down its country correspondents, Dec 1825",
+   "source": "Clapham, The Bank of England: A History (1944)",
+   "provenance": "ARCHETYPE"
+  }
+ ],
+ "review": [
+  {
+   "id": "country_province_famine",
+   "field": "window",
+   "why": "The Company governed Bengal's land revenue only from the diwani grant of 1765."
+  },
+  {
+   "id": "country_province_famine",
+   "field": "text",
+   "why": "Bengal revenue was famously kept up through the 1769–70 famine; the Company's revenue did not simply collapse."
+  },
+  {
+   "id": "country_province_famine",
+   "field": "precedent",
+   "why": "Hastings reported that 1771 collections exceeded 1768's despite losing a third of the inhabitants."
+  },
+  {
+   "id": "country_province_famine",
+   "field": "advice",
+   "why": "The prudence line now matches the corrected text."
+  },
+  {
+   "id": "country_bridge_for_borrower",
+   "field": "precedent",
+   "why": "The specific '£1m request in July 1772' is not secure; the softened wording is accurate."
+  },
+  {
+   "id": "country_note_bank_fails",
+   "field": "precedent",
+   "why": "The London failure brought down Ayr, not the reverse."
+  },
+  {
+   "id": "country_fleet_taken",
+   "field": "window",
+   "why": "The Company archetype is the VOC, dissolved 31 Dec 1799."
+  },
+  {
+   "id": "country_paid_in_paper",
+   "field": "advice",
+   "why": "'Pays a third' contradicted the 0.35 haircut and the VOC case, where debt was assumed rather than cut."
+  },
+  {
+   "id": "country_mining_mania",
+   "field": "window",
+   "why": "Andean mining companies, steam drainage schemes and gold sovereigns (from 1817) are 1820s features, not 1722."
+  },
+  {
+   "id": "country_canton_closed",
+   "field": "window",
+   "why": "The commissioner, the opium seizure and the 'five ports' all belong to 1839–42."
+  },
+  {
+   "id": "country_partner_forgery",
+   "field": "window",
+   "why": "Consols date from 1751–52; capital punishment for forging stock powers of attorney ended in 1837."
+  },
+  {
+   "id": "country_blockade_decrees",
+   "field": "window",
+   "why": "The Decrees, Orders in Council, Embargo and Heligoland smuggling post-date 1806–07."
+  },
+  {
+   "id": "country_slaving_bills",
+   "field": "window",
+   "why": "Parish abolition petitioning began with the 1787–88 campaign."
+  },
+  {
+   "id": "country_trade_treaty",
+   "field": "text",
+   "why": "Bill-brokers are anachronistic in 1703, and silks were left prohibited under the Eden Treaty."
+  },
+  {
+   "id": "country_rival_flees",
+   "field": "precedent",
+   "why": "Hope & Co. continued trading; Barings did not simply take over its business."
+  }
+ ]
+}

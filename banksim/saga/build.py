@@ -16,12 +16,14 @@ import json
 from datetime import date
 from pathlib import Path
 
-from . import borrowers, cities, eras, events, geo, rivals, techs
+from . import borrowers, cities, deck, eras, events, geo, rivals, techs
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE = HERE / "saga_template.html"
 #: the map board's script, spliced into the template's script block
 BOARD_JS = HERE / "board.js"
+#: the era decks, rumours, council, cards and the drawn seat, spliced after the board
+DECK_JS = HERE / "deck.js"
 OUT_HTML = HERE.parent / "saga.html"
 OUT_FRAGMENT = HERE.parent / "saga_artifact.html"
 OUT_JSON = HERE.parent / "data" / "saga.json"
@@ -49,7 +51,11 @@ def data() -> dict:
         "funding": borrowers.FUNDING,
         "regimes": borrowers.CAPITAL_REGIMES,
         "gsib": borrowers.GSIB,
-        "events": sorted(events.EVENTS, key=lambda e: e["year"]),
+        # fixed: kept on its date in "As it might have been" (structural, or an epoch anchor)
+        "events": [dict(e, fixed=(e["effect"]["type"] not in deck.DECKABLE or e["id"] in deck.ANCHORS))
+                   for e in sorted(events.EVENTS, key=lambda e: e["year"])],
+        "deck": deck.CARDS,
+        "council": deck.COUNCIL,
         "rivals": rivals.RIVALS,
         "acquisition": rivals.ACQUISITION,
         "branch_weight": rivals.BRANCH_WEIGHT,
@@ -66,10 +72,13 @@ def build() -> dict:
     blob = blob.replace("</", "<\\/")
     template = TEMPLATE.read_text(encoding="utf-8")
     board = BOARD_JS.read_text(encoding="utf-8")
-    if "</script" in board.lower():
-        raise ValueError("board.js must not contain a closing script tag")
+    deckjs = DECK_JS.read_text(encoding="utf-8")
+    for name, js in (("board.js", board), ("deck.js", deckjs)):
+        if "</script" in js.lower():
+            raise ValueError(name + " must not contain a closing script tag")
     fragment = (template
                 .replace("/*__BOARD_JS__*/", board, 1)
+                .replace("/*__DECK_JS__*/", deckjs, 1)
                 .replace("/*__SAGA_DATA__*/null", blob, 1))
     OUT_FRAGMENT.write_text(fragment, encoding="utf-8")
     OUT_HTML.write_text(STANDALONE_HEAD + fragment + STANDALONE_TAIL, encoding="utf-8")

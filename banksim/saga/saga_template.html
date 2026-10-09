@@ -1,5 +1,5 @@
 <title>The Long Ledger</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
 :root{
   color-scheme: light;
@@ -198,6 +198,10 @@ h1{font-family:"IBM Plex Serif",Georgia,serif; font-size:clamp(26px,4vw,36px); f
 #map .fx-ring{fill:none; stroke:var(--m-ink)}
 #map .fx-ring.good{stroke:#0ca30c} #map .fx-ring.bad{stroke:#d03b3b} #map .fx-ring.hist{stroke:var(--m-mine)}
 #map .fx-person{color:var(--m-ink)}
+#map .fx-plague{fill:none; stroke:#2a2420; stroke-linecap:round}
+#map.shake{animation:shake .7s}
+@keyframes shake{20%{transform:translate(3px,-2px)}40%{transform:translate(-3px,2px)}60%{transform:translate(2px,1px)}80%{transform:translate(-1px,-1px)}}
+@media (prefers-reduced-motion:reduce){#map.shake{animation:none}}
 
 .cartouche{position:absolute; top:12px; left:12px; z-index:3; pointer-events:none; padding:8px 14px 9px; border-radius:6px;
   background:color-mix(in srgb,var(--m-paper) 86%,transparent); border:1px solid color-mix(in srgb,var(--m-ink) 30%,transparent); color:var(--m-ink); max-width:min(330px,62%)}
@@ -313,6 +317,77 @@ tr.total td{font-weight:600; border-top:1px solid var(--rule-strong)}
 .lad.pos.bad{background:color-mix(in srgb,var(--critical) 22%,var(--sunk))}
 
 /* modal */
+
+/* ---- the council */
+.council{display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-top:8px}
+@media (max-width:560px){.council{grid-template-columns:1fr}}
+.adv{display:flex; gap:10px; align-items:flex-start}
+.adv .por{flex:none; width:58px; height:58px; border-radius:8px; overflow:hidden; border:1px solid var(--rule)}
+.adv .who{min-width:0; font-size:12.5px; line-height:1.35}
+.adv .who b{display:block; font-size:13px}
+.adv .who span{display:block; color:var(--ink-3); font-size:11px; margin-bottom:3px}
+.adv q{display:block; color:var(--ink-2); font-style:italic; quotes:"“" "”"}
+.adv .on{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent)}
+.rumours{grid-column:1/-1; border:1px dashed color-mix(in srgb,var(--warning) 60%,var(--rule)); background:var(--warning-wash); border-radius:8px; padding:8px 10px; font-size:12.5px}
+.rumours .rh{font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-2); margin-bottom:4px}
+.rumours .rm{margin:3px 0} .rumours .rm-c{font-weight:600}
+.bios{margin-top:10px} .bios div{margin:4px 0}
+.chron .eprec{font-size:11.5px; color:var(--ink-3); margin-top:3px; font-style:italic}
+/* ---- portraits, in the manner of the age */
+.portrait{display:block; width:100%; height:100%}
+.portrait .pbg{fill:#efe2c0}
+.portrait.st-engraving .pbg{fill:#f3ead6}
+.portrait.st-newsprint{filter:grayscale(1) contrast(1.15)} .portrait.st-newsprint .pbg{fill:#e2e0d8}
+.portrait.st-terminal .pbg{fill:#1b2733}
+/* ---- dispatches: the turn's cards */
+.modal:has(.dcards){max-width:760px}
+.dcards{display:flex; flex-direction:column; gap:14px; margin:14px 0 4px}
+.dcard{display:grid; grid-template-columns:96px minmax(0,1fr); gap:14px; padding:14px 16px; border-radius:6px; position:relative}
+@media (max-width:560px){.dcard{grid-template-columns:1fr} .dcard .dart{width:72px}}
+.dcard .dart{width:96px}
+.dcard .art{width:100%; height:auto}
+.dcard .dy{font-size:11px; letter-spacing:.1em; text-transform:uppercase; opacity:.75}
+.dcard h3{font-size:20px; margin:2px 0 6px; line-height:1.15}
+.dcard p, .modal .dcard p{margin:0 0 8px; line-height:1.45; color:inherit}
+.dcard .dprec{font-size:12px; opacity:.85; border-top:1px solid currentColor; border-color:color-mix(in srgb,currentColor 25%,transparent); padding-top:6px; margin-top:8px}
+.dcard .dprec span{font-weight:700; letter-spacing:.05em; text-transform:uppercase; font-size:10.5px; margin-right:4px}
+.dcard .dadv summary{cursor:pointer; font-size:12px; font-weight:600; opacity:.85}
+.dcard .cadv{display:flex; gap:8px; align-items:flex-start; font-size:12.5px; margin:6px 0}
+.dcard .cav{flex:none; width:30px; height:30px; border-radius:5px; overflow:hidden}
+.copts{display:flex; flex-direction:column; gap:6px; margin:6px 0 4px}
+.copt{text-align:left; display:block; background:transparent; color:inherit; border-color:currentColor}
+.copt b{display:block} .copt span{display:block; font-size:12px; opacity:.8; font-weight:400}
+.chosen{font-weight:600; font-size:13px; padding:4px 0}
+.art .mot{fill:currentColor; stroke:currentColor; stroke-linejoin:round; stroke-linecap:round}
+.art .lt{fill:none} .art .ln{fill:none} .art .lt2{opacity:.55}
+.st-woodcut{background:#f1e4c4; color:#2a1d10; font-family:"IM Fell English",Georgia,serif; box-shadow:inset 0 0 0 2px #2a1d10, inset 0 0 0 5px #f1e4c4, inset 0 0 0 6px #2a1d10}
+.st-woodcut h3{font-family:"UnifrakturMaguntia","IM Fell English",serif; font-weight:400; font-size:23px}
+.st-woodcut .art .mot{stroke-width:2.6} .st-woodcut .art .w{stroke-width:4}
+.st-engraving{background:#f6efdf; color:#1d1a24; font-family:"IM Fell English",Georgia,serif; box-shadow:inset 0 0 0 1px #1d1a24, inset 0 0 0 4px #f6efdf, inset 0 0 0 5px #1d1a24}
+.st-engraving h3{font-style:italic}
+.st-engraving .art .mot{stroke-width:1.1; fill:url(#hh-engraving)} .st-engraving .art .lt{fill:none} .st-engraving .art .w{stroke-width:2}
+.st-newsprint{background:#ecebe6; color:#141414; font-family:"Old Standard TT",Georgia,serif; border-top:4px double #141414; border-bottom:1px solid #141414}
+.st-newsprint h3{font-weight:700; font-size:22px; text-transform:none}
+.st-newsprint .art .mot{stroke-width:1.4; fill:url(#ht-newsprint)} .st-newsprint .art .lt{fill:none}
+.st-terminal{background:#0b0f0a; color:#ffb000; font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:13px; box-shadow:0 0 0 1px #3a2c00}
+.st-terminal h3{font-family:"IBM Plex Mono",monospace; font-size:16px; text-transform:uppercase; letter-spacing:.02em}
+.st-terminal .art .mot{fill:none; stroke-width:1.6} .st-terminal .copt{border-color:#ffb000}
+.modes{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+.mode{text-align:left; display:block} .mode b{display:block; font-size:15px; margin-bottom:3px} .mode span{display:block; font-weight:400; color:var(--ink-2); font-size:13px}
+/* ---- the house, drawn */
+.scene-card svg{display:block; width:100%; height:auto; aspect-ratio:640/200; border-radius:6px; margin-top:8px}
+.scene .sc-bg{fill:#efe2c0} .scene .sc-arch{fill:none; stroke:#2a1d10; stroke-width:5} .scene .sc-water{fill:#7d9a9a} .scene .sc-line{fill:none; stroke:#2a1d10; stroke-width:2}
+.scene .sc-line.w{stroke-width:3} .scene .sc-dark{fill:#3a2a1a} .scene .sc-win{fill:#cfd9d6; stroke:#2a1d10; stroke-width:3} .scene .sc-col{fill:#e6dcc4; stroke:#2a1d10; stroke-width:2}
+.scene .sc-tick{fill:#ffb000; font:12px "IBM Plex Mono",monospace}
+.scene.st-engraving .sc-bg{fill:#f6efdf} .scene.st-engraving .sc-water{fill:url(#p-hatch)}
+.scene.st-newsprint{filter:grayscale(.85) contrast(1.05)} .scene.st-newsprint .sc-bg{fill:#e6e4dc}
+.scene.st-terminal .sc-bg{fill:#1b2733} .scene.st-terminal .sc-dark{fill:#0d141c} .scene.st-terminal .sc-win{fill:#5f7f9f; stroke:none}
+/* ---- rumours on the map */
+.L-rum .rum-r{fill:var(--warning); opacity:.9; stroke:#2a1d10; stroke-width:1}
+.L-rum .rum-t{font:700 12px "IBM Plex Serif",Georgia,serif; fill:#2a1d10}
+.L-rum .rum{animation:rumpulse 1.6s ease-in-out infinite}
+@keyframes rumpulse{50%{opacity:.55}}
+@media (prefers-reduced-motion:reduce){.L-rum .rum{animation:none}}
 .modal-bg{position:fixed; inset:0; background:rgba(8,12,16,.55); z-index:100; display:none; align-items:center; justify-content:center; padding:16px}
 .modal-bg.show{display:flex}
 .modal{background:var(--surface); color:var(--ink); border-radius:12px; max-width:640px; width:100%; max-height:88vh; overflow:auto; padding:22px 24px; box-shadow:0 20px 60px rgba(0,0,0,.35); border:1px solid var(--rule)}
@@ -365,6 +440,12 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
 <div class="col">
   <div class="verdict" id="verdict" data-state="good"><div><div class="t" id="v-t">A new ledger</div><div class="x" id="v-x"></div></div></div>
 
+  <div class="card" id="card-council">
+    <h2>The council <span class="sub">four voices, four agendas; none always right</span></h2>
+    <div class="council" id="council"></div>
+    <details class="small faint bios"><summary>Who they are</summary><div id="council-bios"></div></details>
+  </div>
+
   <div class="card">
     <h2>The ledger <span class="sub" id="l-cur"></span></h2>
     <div class="tiles" id="tiles"></div>
@@ -409,6 +490,11 @@ footer{margin-top:28px; font-size:12px; color:var(--ink-3); border-top:1px solid
 </div>
 
 <div class="col">
+  <div class="card scene-card">
+    <h2>The house <span class="sub" id="scene-cap"></span></h2>
+    <svg id="scene" viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The house's seat, drawn in the manner of the age"></svg>
+  </div>
+
   <div class="card">
     <h2>Places <span class="sub">tap a city on the map, or a name here</span></h2>
     <p id="map-text"></p>
@@ -534,9 +620,9 @@ function cityAttribution(){ // share of the house's business attributed to each 
   for(const c in w) w[c]/=t; return w; }
 
 /* ------------------------------------------------------------------ new game */
-function newGame(seed){
+function newGame(seed,mode){
   seed=seed>>>0; rng=mulberry32(seed);
-  S={ seed, year:1300, turn:0, seat:'venice', centre:'venice', alive:true, dead:null, won:null, designated:null,
+  S={ seed, mode:mode||'deck', deckFired:{}, deckLast:{}, rumours:[], pending:[], choices:[], dispatch:[], year:1300, turn:0, seat:'venice', centre:'venice', alive:true, dead:null, won:null, designated:null,
     funding:{deposits:30,notes:0,wholesale:0},
     assets:{cash:10,merchants:18,commodities:8,state_bonds:6,trade_bills:0,princes:{},foreign_bonds:{},syndicated_loans:{},
             discount_market:0,acceptances:0,mortgages:0,industry:0,retail:0,trading_book:0},
@@ -555,7 +641,7 @@ function newGame(seed){
   // a city takes branches from its `opens` year; an event may still close it (open:false) or mark the day it opened
   for(const c of D.cities){ S.cityState[c.id]={open:true,sacked:false,prosperity_mult:1}; S.commerce[c.id]=1; }
   log(1300,'A bench on the Rialto','The house opens its ledger at San Giacomo: twelve thousand ducats of the partners\' own, thirty thousand on deposit, and a reputation to make.','hist','STYLISED');
-  snapshot();
+  snapshot(); deckPredraw();
 }
 function log(year,title,text,kind,prov){ S.log.unshift({year,title,text,kind:kind||'',prov:prov||''}); if(S.log.length>400) S.log.length=400; }
 function snapshot(){ S.series.push({year:S.year,equity:equity(),assets:totalAssets(),deposits:S.funding.deposits}); }
@@ -598,7 +684,7 @@ function acceptOffer(i,shareOfMax){ const o=S.offers[i]; if(!o) return false; if
   const cls=o.cls||'princes'; S.assets[cls][o.sovereign]=(S.assets[cls][o.sovereign]||0)+amt; S.offerYield=S.offerYield||{}; S.offerYield[o.sovereign]=o.yield;
   S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]+15,0,100); S.offers.splice(i,1);
   log(S.year,'Lent to '+D.sovereigns[o.sovereign].name,fmtMoney(amt)+' at '+pct(o.yield,0)+' a year. '+D.sovereigns[o.sovereign].title+' is pleased.','','STYLISED'); render(); flash({k:'chest',from:S.seat,to:sovSeat(o.sovereign)}); flash({k:'float',sov:o.sovereign,text:'+'+fmtMoney(amt)+' lent',tone:'hist'}); return true; }
-function declineOffer(i){ const o=S.offers[i]; if(!o) return false; if(o.kind==='acquire'){ S.offers.splice(i,1); render(); return true; } S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]-8,0,100); S.offers.splice(i,1);
+function declineOffer(i){ const o=S.offers[i]; if(!o) return false; if(o.kind==='acquire'){ S.offers.splice(i,1); render(); return true; } S.standing.crown[o.sovereign]=clamp(S.standing.crown[o.sovereign]-(o.deck?DECK_TUNE.decline:8),0,100); S.offers.splice(i,1);
   log(S.year,'Declined '+D.sovereigns[o.sovereign].title,'Standing at that court falls. Houses that said no to Edward III are still in business.','','STYLISED'); render(); return true; }
 
 /* ------------------------------------------------------------------ turn engine */
@@ -613,9 +699,12 @@ function advance(){
   // 1. raise equity if allowed
   if(S.raise>0&&FX.capital_raise>0&&R.joint_stock){ const amt=Math.min(Math.min(S.raise,FX.capital_raise)*equity(),0.004*pool(S.year)*prosperity(S.seat)*years); S.assets.cash+=amt; S.standing.merchants=clamp(S.standing.merchants-3,0,100); notes.push('Raised '+fmtMoney(amt)+' of new equity.'); S.raise=0; }
   // 2. events of this turn
-  const evs=D.events.filter(e=>e.year>=S.year&&e.year<S.year+years&&!S.fired[e.id]);
+  ensureDeckState(); settleChoices();
+  const evs=D.events.filter(e=>e.year>=S.year&&e.year<S.year+years&&!S.fired[e.id]&&(S.mode!=='deck'||e.fixed));
   let panic=0, panicCities=null; const shocks=[]; const defaults=[];
-  for(const e of evs){ S.fired[e.id]=true; applyEvent(e,{shocks,defaults,addPanic:(p,c)=>{panic+=p; if(c) panicCities=(panicCities||[]).concat(c);}}); }
+  const evctx={shocks,defaults,addPanic:(p,c)=>{panic+=p; if(c) panicCities=(panicCities||[]).concat(c);}};
+  for(const e of evs){ S.fired[e.id]=true; applyEvent(e,evctx); }
+  deckTurn(years,evctx);
   processRivals(years,(p,c)=>{panic+=p; if(c) panicCities=(panicCities||[]).concat(c);});
   // 3. funding. Deposits follow capital and standing — a house attracts
   //    deposits in proportion to what its partners have at risk, faster at the
@@ -713,7 +802,8 @@ function advance(){
   else if(R.reserve_floor>0&&S.assets.cash<R.reserve_floor*liabilities()){ S.standing.regulator=clamp(S.standing.regulator-6,0,100); notes.push('Below the required liquid-asset ratio; the authorities notice.'); }
   // 15. standing drift
   if(profit>0) S.standing.merchants=clamp(S.standing.merchants+2,0,100); else S.standing.merchants=clamp(S.standing.merchants-4,0,100);
-  for(const s in S.standing.crown) S.standing.crown[s]=clamp(S.standing.crown[s]+(S.standing.crown[s]<40?1:-1)*0.5,0,100);
+  // princes forget: half a point a turn toward neutral, or (with the decks) half a point a year
+  const forget=S.mode==='deck'?0.5*years:0.5; for(const s in S.standing.crown){ const c0=S.standing.crown[s]; S.standing.crown[s]=c0<40?Math.min(40,c0+forget):Math.max(40,c0-forget); }
   S.standing.regulator=clamp(S.standing.regulator+1,0,100);
   // 16. G-SIB
   if(S.gsibOn){ const g=gsibScore(); if(g.total>=D.gsib.designation_score&&!S.designated){ S.designated=S.year; S.won={year:S.year,score:g.total,bucket:g.bucket}; } }
@@ -724,14 +814,14 @@ function advance(){
   finishTurn(years,notes,evs);
 }
 function finishTurn(years,notes,evs){
-  const y0=S.year; S.year+=years; S.turn++;
+  const y0=S.year; S.year+=years; S.turn++; deckPredraw();
   if(notes.length) log(y0,'The turn of '+y0+'–'+(S.year-1),notes.join(' '),S.lastProfit<0?'bad':'');
   // the charts grow: places first reached by Europeans this turn come out of the fog
   for(const c of D.cities){ const k=D.geo.known[c.id]; if(k!=null&&k>y0&&k<=S.year) fx({k:'open',city:c.id,text:'Charted: '+c.name}); }
   snapshot(); save(); render();
   const E=era(), newEra=!S.eraSeen[E.id]; if(newEra) S.eraSeen[E.id]=true;
-  play(TURN_FX,()=>{ if(newEra&&S.year>1300) showEra(E);
-    if(!S.alive) showDeath(); else if(S.won&&!S.wonShown){ S.wonShown=true; showWin(); } else if(S.year>=2027) showEnd(); });
+  play(TURN_FX,()=>showDispatches(()=>{ if(newEra&&S.year>1300) showEra(E);
+    if(!S.alive) showDeath(); else if(S.won&&!S.wonShown){ S.wonShown=true; showWin(); } else if(S.year>=2027) showEnd(); }));
 }
 /* Commerce: lending grows a city's trade. Each city's multiplier on its
    historical prosperity drifts toward 1 + 0.4·tanh(1.1·r), where r is the
@@ -820,7 +910,7 @@ function applyEvent(e,ctx){
     case 'flavour': break;
     case 'sovereign_default': ctx.defaults.push(f); break;
     case 'forced_loan': if(f.sovereign===seatSovereign()||S.branches[Object.keys(S.branches).find(c=>citySov(c)===f.sovereign)||'']){ const amt=f.share*S.funding.deposits; spend(amt); S.assets.state_bonds=(S.assets.state_bonds||0)+amt; ctx.addPanic(0.1); } break;
-    case 'shock': ctx.shocks.push(f); if(f.panic) ctx.addPanic(f.panic,f.cities); if(f.wholesale_freeze) S.wholesaleFreeze=true; break;
+    case 'shock': ctx.shocks.push(f); if(f.kind==='plague') fx({k:'plague',city:(f.cities&&f.cities[0])||S.seat}); if(f.panic) ctx.addPanic(f.panic,f.cities); if(f.wholesale_freeze) S.wholesaleFreeze=true; break;
     case 'panic': ctx.addPanic(f.size,f.cities); break;
     case 'rule': S.ruleOverrides.push({year:e.year,field:f.field,value:f.value,scope:f.scope||null}); if(f.panic&&!scoped) ctx.addPanic(f.panic,f.cities); break;
     case 'centre': S.centre=f.city; fx({k:'float',city:f.city,text:'The centre of the money',tone:'hist'}); break;
@@ -833,6 +923,11 @@ function applyEvent(e,ctx){
     case 'offer': { const s=f.sovereign; if(sovereignsReachable().has(s)||(S.year<1500&&courtActive(s))){ const amt=f.size*Math.max(equity(),1)*2; S.offers.push({sovereign:s,amount:amt,yield:f.yield,turns:f.turns,cls:S.year>=1800&&hasTech('sovereign_bonds')?'foreign_bonds':(era().id==='basel'?'syndicated_loans':'princes'),text:D.sovereigns[s].title+' asks for '+fmtMoney(amt)+' at '+pct(f.yield,0)+'.',prov:'HISTORICAL',hist:e.title}); } break; }
     case 'lifeboat': if(f.shock) ctx.shocks.push(Object.assign({cities:f.cities},f.shock)); if(seatSovereign()==='england') S.lifeboatOffer=true; break;
     case 'gsib_on': S.gsibOn=true; break;
+    case 'windfall': { const amt=(f.share||0)*Math.max(equity(),1); S.assets.cash+=amt; fx({k:'float',city:f.city||S.seat,text:'+'+fmtMoney(amt),tone:'good'}); break; }
+    case 'deposits': { const d=(f.share||0)*S.funding.deposits; S.funding.deposits=Math.max(0,S.funding.deposits+d); if(d>=0) S.assets.cash+=d; else spend(-d); break; }
+    case 'standing': { const v=f.delta||0; if(f.who==='crown'){ const s=f.sovereign||seatSovereign(); S.standing.crown[s]=clamp((S.standing.crown[s]??40)+v,0,100); } else if(f.who==='regulator') S.standing.regulator=clamp(S.standing.regulator+v,0,100); else S.standing.merchants=clamp(S.standing.merchants+v,0,100); break; }
+    case 'commerce': { const c=f.city||S.seat; S.commerce[c]=clamp((S.commerce[c]||1)+(f.delta||0),0.5,1.45); break; }
+    case 'control': { const b=S.branches[f.city]; if(b) b.control=clamp(b.control+(f.delta||0),0,1); break; }
     case 'fraud_check': if(S.branches[f.city]&&S.assets.trading_book>0&&!hasTech('var')&&rng()<0.5*techFx().fraud){ const dl=Math.min(S.assets.trading_book*f.size,equity()*0.7); reduceClass('trading_book',dl); ctx.shocks.push({kind:'none',size:0}); log(e.year,'Account 88888','A trader in '+city(f.city).name+' has been hiding losses in an error account. '+fmtMoney(dl)+' gone. Your controls were his.','bad','STYLISED'); fx({k:'smoke',city:f.city,text:'−'+fmtMoney(dl)}); } break;
   }
   // a nested effect (a default that also hands a city to a new court) applies quietly under the same headline
@@ -894,7 +989,7 @@ function render(){
   ${S.funding.notes>0.5?`<tr><td>Banknotes</td><td class="n">${fmtMoney(S.funding.notes)}</td><td class="n">${pct(S.funding.notes/T,0)}</td><td colspan="3"></td></tr>`:''}
   ${S.funding.wholesale>0.5?`<tr><td>Wholesale</td><td class="n">${fmtMoney(S.funding.wholesale)}</td><td class="n">${pct(S.funding.wholesale/T,0)}</td><td colspan="3"></td></tr>`:''}
   <tr class="total"><td>Partners' capital</td><td class="n">${fmtMoney(eq)}</td><td class="n">${pct(eq/T,1)}</td><td colspan="3"></td></tr>`;
-  renderAlloc(); renderCourt(); renderMap(); renderHouses(); renderTechs(); renderChron(); renderChart(); renderCapital(); renderBoard();
+  renderAlloc(); renderCourt(); renderMap(); renderHouses(); renderTechs(); renderChron(); renderChart(); renderCapital(); renderBoard(); renderCouncil(); renderScene(); drawRumours();
   save(); // every action is kept, not only the end of a turn
 }
 function sovList(m){ const e=Object.entries(m).filter(([,v])=>v>0.5).sort((a,b)=>b[1]-a[1]); const top=e.slice(0,3).map(([s,v])=>esc((D.sovereigns[s]?.name||s).replace(/^the /,''))+' '+fmtMoney(v)); return top.join(', ')+(e.length>3?' +'+(e.length-3)+' more':''); }
@@ -951,7 +1046,7 @@ function renderTechs(){ const list=D.techs.filter(t=>t.id!=='giro').sort((a,b)=>
       <div class="acts">${have?'<span>Adopted</span>':avail?`<button class="btn sm" data-tech="${t.id}">Adopt · ${fmtMoney(cost)}</button>`:future?`<span>Not yet</span>`:S.techGates[t.id]===false?'<span>Forbidden by law here</span>':`<span>Needs ${t.requires.filter(r=>!S.techs[r]).map(r=>byId(D.techs,r).name).join(', ')}</span>`}</div></div>`; }).join('');
   for(const b of $('techs').querySelectorAll('[data-tech]')) b.addEventListener('click',()=>{ if(!adoptTech(b.dataset.tech)) toast('Cannot afford it this turn.'); });
 }
-function renderChron(){ $('chron').innerHTML=S.log.slice(0,60).map(e=>`<div class="entry ${e.kind}"><div class="ey">${e.year}${e.prov?'<span class="prov">'+esc(e.prov)+'</span>':''}</div><div class="et">${esc(e.title)}</div><div class="ex">${esc(e.text)}</div></div>`).join(''); }
+function renderChron(){ $('chron').innerHTML=S.log.slice(0,60).map(e=>`<div class="entry ${e.kind}"><div class="ey">${e.year}${e.prov?'<span class="prov">'+esc(e.prov)+'</span>':''}</div><div class="et">${esc(e.title)}</div><div class="ex">${esc(e.text)}</div>${e.precedent?`<div class="eprec">History remembers: ${esc(e.precedent)}</div>`:''}</div>`).join(''); }
 function renderChart(){ const s=S.series; const W=640,H=220,L=48,R=10,T=12,B=26; const xs=s.map(p=>p.year), ys=s.map(p=>Math.max(1,p.equity)); const x0=1300,x1=2030;
   const lmin=Math.log10(1), lmax=Math.log10(Math.max(100,...ys)*1.5); const X=y=>L+(y-x0)/(x1-x0)*(W-L-R), Y=v=>T+(1-(Math.log10(Math.max(1,v))-lmin)/(lmax-lmin))*(H-T-B);
   let g=''; for(let d=0;d<=Math.ceil(lmax);d++){ const v=Math.pow(10,d); g+=`<line class="ax" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L-4}" y="${Y(v)+3}" text-anchor="end">${v>=1e6?(v/1e6)+'bn':v>=1e3?(v/1e3)+'m':v+'k'}</text>`; }
@@ -969,21 +1064,23 @@ function renderCapital(){ const cap=capitalPosition(); $('card-capital').hidden=
 /* ------------------------------------------------------------------ modals */
 function modal(html){ $('modal-box').innerHTML=html; $('modal').classList.add('show'); for(const b of $('modal-box').querySelectorAll('[data-close]')) b.addEventListener('click',()=>$('modal').classList.remove('show')); }
 function showEra(E){ modal(`<div class="eyebrow">${E.start}–${E.end} · ${E.turn_years}-year turns</div><h2>${esc(E.name)}</h2><div class="sub">${esc(E.subtitle)}</div><p>${esc(E.intro)}</p><p class="small faint">${esc(E.source)}</p><div class="acts"><button class="btn primary" data-close>Open the ledger</button></div>`); }
-function showDeath(){ const d=S.dead; modal(`<div class="eyebrow">${d.year} · game over</div><h2>${esc(d.title)}</h2><p>${esc(d.text)}</p><div class="kv"><span>Turns survived</span><b>${S.turn}</b><span>Capital at the peak</span><b>${fmtMoney(Math.max(...S.series.map(p=>p.equity)))}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b><span>Houses outlived</span><b>${D.rivals.filter(r=>!rivalState(r.id).alive&&!rivalState(r.id).acquired).length}</b><span>Houses bought</span><b>${D.rivals.filter(r=>rivalState(r.id).acquired).length}</b></div><p class="small faint">Permadeath, as you asked. The seed is ${S.seed}; the same seed replays the same history.</p><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); startNew(); }); }
+function showDeath(){ const d=S.dead; modal(`<div class="eyebrow">${d.year} · game over</div><h2>${esc(d.title)}</h2><p>${esc(d.text)}</p><div class="kv"><span>Turns survived</span><b>${S.turn}</b><span>Capital at the peak</span><b>${fmtMoney(Math.max(...S.series.map(p=>p.equity)))}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b><span>Houses outlived</span><b>${D.rivals.filter(r=>!rivalState(r.id).alive&&!rivalState(r.id).acquired).length}</b><span>Houses bought</span><b>${D.rivals.filter(r=>rivalState(r.id).acquired).length}</b></div><p class="small faint">Permadeath, as you asked. The seed is ${S.seed}; the same seed replays the same history.</p><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); chooseMode(m=>startNew(undefined,m)); }); }
 function showWin(){ const w=S.won; modal(`<div class="eyebrow">${w.year} · the FSB's November list</div><h2>Designated</h2><p>Score ${Math.round(w.score)} basis points: bucket ${w.bucket}, a surcharge of ${pct(D.gsib.buckets[w.bucket-1][1])} of risk-weighted assets on top of everything else. Seven centuries from a bench on the Rialto to a bank whose failure would matter everywhere. Play on to 2027 and the output floor.</p><div class="acts"><button class="btn primary" data-close>Carry on</button></div>`); }
-function showEnd(){ const g=S.gsibOn?gsibScore():null; modal(`<div class="eyebrow">2027 · Basel 3.1</div><h2>${S.won?'A G-SIB':'Survived'}</h2><p>${S.won?'Designated in '+S.won.year+', and still standing at the output floor.':'Seven hundred and twenty-seven years without a fatal run, default or regulator — and not systemically important. Score '+(g?Math.round(g.total):0)+' of 130. Bigger, more cross-border, more complex next time; or safer. The two pull against each other, which is the point.'}</p><div class="kv"><span>Capital</span><b>${fmtMoney(equity())}</b><span>Assets</span><b>${fmtMoney(totalAssets())}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b></div><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); startNew(); }); }
+function showEnd(){ const g=S.gsibOn?gsibScore():null; modal(`<div class="eyebrow">2027 · Basel 3.1</div><h2>${S.won?'A G-SIB':'Survived'}</h2><p>${S.won?'Designated in '+S.won.year+', and still standing at the output floor.':'Seven hundred and twenty-seven years without a fatal run, default or regulator — and not systemically important. Score '+(g?Math.round(g.total):0)+' of 130. Bigger, more cross-border, more complex next time; or safer. The two pull against each other, which is the point.'}</p><div class="kv"><span>Capital</span><b>${fmtMoney(equity())}</b><span>Assets</span><b>${fmtMoney(totalAssets())}</b><span>Seat</span><b>${esc(city(S.seat).name)}</b><span>Branches</span><b>${branchIds().length}</b></div><div class="acts"><button class="btn" data-close>Read the chronicle</button><button class="btn primary" id="m-new">Start again</button></div>`); $('m-new').addEventListener('click',()=>{ $('modal').classList.remove('show'); chooseMode(m=>startNew(undefined,m)); }); }
 function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:8px;font-size:13px;z-index:200;box-shadow:var(--shadow)'; document.body.appendChild(t); setTimeout(()=>t.remove(),1800); }
-function startNew(seed){ flushPlay(); closePop(); newGame(seed??(Date.now()&0xffffffff)); save(); MAP.follow=true; render(); showEra(era()); }
+function startNew(seed,mode){ flushPlay(); closePop(); newGame(seed??(Date.now()&0xffffffff),mode); save(); MAP.follow=true; render(); if(!AUTOPLAY) showEra(era()); }
 
 /*__BOARD_JS__*/
 
+/*__DECK_JS__*/
+
 /* ------------------------------------------------------------------ wire up */
-function endTurn(){ if(MAP.playing){ flushPlay(); return; } if($('modal').classList.contains('show')) return; closePop(); advance(); }
+function endTurn(){ if(MAP.playing){ flushPlay(); return; } if($('modal').classList.contains('show')) return; closePop(); if(S.choices&&S.choices.length){ S.dispatch=S.choices.map(c=>({id:c.id,t:c.t,year:c.year,choice:true})); showDispatches(()=>{}); return; } advance(); }
 $('b-end').addEventListener('click',endTurn);
 function syncAnim(){ const b=$('b-anim'); b.setAttribute('aria-pressed',MAP.anim?'true':'false'); b.textContent=MAP.anim?'Motion on':'Motion off'; }
 $('b-anim').addEventListener('click',()=>{ MAP.anim=!MAP.anim; try{ localStorage.setItem('longledger.anim',MAP.anim?'on':'off'); }catch(e){} if(!MAP.anim) flushPlay(); syncAnim(); });
 $('b-save').addEventListener('click',()=>{ save(); toast('Saved to this browser.'); });
-$('b-new').addEventListener('click',()=>{ const s=prompt('New game. Enter a seed (number) or leave blank for a fresh one:',''); startNew(s?(+s>>>0):undefined); });
+$('b-new').addEventListener('click',()=>chooseMode(mode=>{ const s=prompt('Enter a seed (number), or leave blank for a fresh one:',''); startNew(s?(+s>>>0):undefined,mode); }));
 $('c-reserve').addEventListener('input',e=>{ S.reserve=+e.target.value/100; $('c-reserve-v').textContent=pct(S.reserve,0); });
 $('c-payout').addEventListener('input',e=>{ S.payout=+e.target.value/100; $('c-payout-v').textContent=pct(S.payout,0); });
 $('c-notes').addEventListener('input',e=>{ S.notesShare=+e.target.value/100; $('c-notes-v').textContent=pct(S.notesShare,0); });
@@ -991,11 +1088,11 @@ $('c-wholesale').addEventListener('input',e=>{ S.wholesaleShare=+e.target.value/
 $('c-raise').addEventListener('input',e=>{ S.raise=+e.target.value/100; $('c-raise-v').textContent=pct(S.raise,0); });
 document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.target.closest('input,button,textarea,.city')&&!$('modal').classList.contains('show')) endTurn(); });
 
-const resumed=load(); if(!resumed){ newGame(Date.now()&0xffffffff); save(); }
+const resumed=load(); if(resumed) ensureDeckState(); else { newGame(Date.now()&0xffffffff,'deck'); save(); }
 buildBoard(); syncAnim(); render(); if(!resumed) showEra(era());
 
 /* test hook: a scripted player for headless runs */
-window.Saga={get S(){return S}, newGame:startNew, advance, adoptTech, openBranch, moveSeat, acceptOffer, declineOffer, era, rules, techFx, capitalPosition, gsibScore, classes, equity, totalAssets,
+window.Saga={get S(){return S}, newGame:(seed,mode)=>{ AUTOPLAY=true; try{ startNew(seed,mode); } finally { AUTOPLAY=false; } }, resolveChoice, deckPredraw, cardById, advance, adoptTech, openBranch, moveSeat, acceptOffer, declineOffer, era, rules, techFx, capitalPosition, gsibScore, classes, equity, totalAssets,
   autoplay(turns,opts){ opts=opts||{}; const out=[]; AUTOPLAY=true; try{ for(let i=0;i<turns&&S.alive&&S.year<2027;i++){
     // a plain strategy: keep a fifth in coin, lend by yield/loss, adopt what is affordable, follow the centre, lend the court half of what it asks
     S.reserve=opts.reserve??0.2; S.payout=opts.payout??0.35;
@@ -1007,6 +1104,7 @@ window.Saga={get S(){return S}, newGame:startNew, advance, adoptTech, openBranch
     while(S.offers.length){ const o=S.offers[0]; if(o.kind==='acquire'){ if(opts.buy!==false&&(o.amount+o.bad)<0.2*equity()&&o.amount<0.3*liquidCapacity()&&acquire(0)==='ok') continue; declineOffer(0); continue; } if(rng()<(opts.lendCourt??0.5)) { if(!acceptOffer(0,0.5)) declineOffer(0); } else declineOffer(0); }
     if(era().id==='basel'){ S.wholesaleShare=opts.wholesale??0.3; S.raise=opts.raise??0; }
     S.notesShare=opts.notes??0.3;
+    settleChoices();
     advance(); out.push({year:S.year,equity:Math.round(equity()),assets:Math.round(totalAssets()),alive:S.alive,dead:S.dead&&S.dead.reason,seat:S.seat,techs:Object.keys(S.techs).length,branches:branchIds().length,gsib:S.gsibOn?Math.round(gsibScore().total):null,bought:D.rivals.filter(r=>rivalState(r.id).acquired).map(r=>r.short),cap:capitalPosition()&&+capitalPosition().ratio.toFixed(3),
       far:branchIds().filter(c=>!['venice','florence','genoa','rome','bruges','london','avignon','lyon','antwerp','augsburg','seville','amsterdam','frankfurt','paris','edinburgh','zurich','lisbon','hamburg'].includes(c)),
       com:Math.max(...branchIds().map(c=>S.commerce[c]||1)).toFixed(2)});
